@@ -117,6 +117,7 @@ CSV_REQUIRED_FIELDS = {
       'system_alias',
       'title',
       'publication_status',
+      'original_strongest_evidence_output',
     ],
     'product_ecosystem_snapshot.csv': [
       'product_or_system',
@@ -405,6 +406,22 @@ def validate_second_coder_files(blind_rows, adjudication_rows):
         'claim-level audit material',
         'governance boundary case',
     }
+    adjudication_fields = set(adjudication_rows[0].keys()) if adjudication_rows else set()
+    has_current_baseline = 'original_strongest_evidence_output' in adjudication_fields
+    if adjudication_rows:
+        if has_current_baseline:
+            baseline_values = [row.get('original_strongest_evidence_output', '').strip() for row in adjudication_rows]
+            invalid_baselines = sorted(set(value for value in baseline_values if value not in allowed_outputs))
+            missing_baselines = [row.get('core_id', '?') for row in adjudication_rows if not row.get('original_strongest_evidence_output', '').strip()]
+            status('ERROR', not missing_baselines, 'adjudication template original_strongest_evidence_output is populated for all rows')
+            if missing_baselines:
+                print('ERROR: missing original_strongest_evidence_output for:', ', '.join(missing_baselines))
+            status('ERROR', not invalid_baselines, 'adjudication template original_strongest_evidence_output values use approved labels')
+            if invalid_baselines:
+                print('ERROR: invalid original_strongest_evidence_output labels:', ', '.join(invalid_baselines))
+        else:
+            print('WARNING: adjudication template lacks original_strongest_evidence_output; falling back to legacy original_primary_evidence_stage mapping if coder2 results are complete')
+
     coder_values = [row.get('coder2_strongest_evidence_output', '').strip() for row in blind_rows]
     filled = [value for value in coder_values if value]
     invalid = sorted(set(value for value in filled if value not in allowed_outputs))
@@ -425,14 +442,20 @@ def validate_second_coder_files(blind_rows, adjudication_rows):
             'NA': 'governance boundary case',
         }
         original_by_core = {}
+        baseline_source = 'original_strongest_evidence_output' if has_current_baseline else 'legacy original_primary_evidence_stage mapping'
         for row in adjudication_rows:
             core_id = row.get('core_id', '')
-            original = row.get('original_primary_evidence_stage', '')
-            mapped = e_to_output.get(original)
-            if mapped:
-                original_by_core[core_id] = mapped
+            if has_current_baseline:
+                original = row.get('original_strongest_evidence_output', '').strip()
+                if original in allowed_outputs:
+                    original_by_core[core_id] = original
+            else:
+                original = row.get('original_primary_evidence_stage', '')
+                mapped = e_to_output.get(original)
+                if mapped:
+                    original_by_core[core_id] = mapped
         missing_original = [row.get('core_id', '?') for row in blind_rows if row.get('core_id', '') not in original_by_core]
-        status('ERROR', not missing_original, 'adjudication template provides original strongest-evidence baseline for populated coder2 rows')
+        status('ERROR', not missing_original, f'adjudication template provides original strongest-evidence baseline for populated coder2 rows via {baseline_source}')
         if missing_original:
             print('ERROR: missing original evidence baseline for:', ', '.join(missing_original))
         else:
@@ -446,7 +469,6 @@ def validate_second_coder_files(blind_rows, adjudication_rows):
                 print(f'SECOND_CODER_RESULT: Cohen kappa for strongest evidence output = {kappa:.3f}')
 
     if adjudication_rows:
-        adjudication_fields = set(adjudication_rows[0].keys())
         status('ERROR', any(field.startswith('original_') for field in adjudication_fields), 'adjudication template retains original_* fields for post-coding comparison')
         status('ERROR', len(adjudication_rows) == 31, f'core31_second_coder_adjudication_template.csv rows = {len(adjudication_rows)}; expected 31')
 

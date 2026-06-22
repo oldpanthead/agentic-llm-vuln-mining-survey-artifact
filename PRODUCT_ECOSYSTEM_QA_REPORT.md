@@ -1,3 +1,5 @@
+This report records the v13 product-ecosystem QA round and is retained for historical traceability; current v14 manuscript QA should be tracked separately.
+
 # Product Ecosystem QA Report
 
 Date: 2026-06-15
@@ -109,5 +111,3 @@ No Core candidate requires author decision in this round. The remaining manual d
 ## 11. Commit / Push Suitability
 
 This report should be read as a tracked QA note. Future rounds should update this section only when there are new uncommitted changes requiring author review.
-
-

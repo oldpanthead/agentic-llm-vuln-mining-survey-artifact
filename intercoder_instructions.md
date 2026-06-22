@@ -59,7 +59,7 @@ The optional task can inspect corpus layer, legacy A-profile, evidence object, a
 After independent coding is complete:
 
 1. Copy coder2 decisions into `data/core31_second_coder_adjudication_template.csv` or an equivalent adjudication sheet.
-2. Compare coder2 decisions with the original labels.
+2. Compare coder2 decisions with `original_strongest_evidence_output`; legacy E-level fields are retained only for historical traceability or fallback.
 3. Mark disagreements in the disagreement fields.
 4. Discuss disagreements with reference to `evidence_output_codebook.md`, `codebook.md`, and the public materials.
 5. Record final adjudicated decisions only after review.

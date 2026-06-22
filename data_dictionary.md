@@ -107,6 +107,7 @@ This file is for comparison and adjudication after independent coding is complet
 
 - `core_id`, `record_id`, `system_alias`, `title`: Core-study identifiers.
 - `original_a_level`, `original_primary_evidence_stage`, `original_e4_profile`, `original_evidence_object`, `original_task_category`: first-pass labels retained for adjudication and historical traceability.
+- `original_strongest_evidence_output`: current manuscript evidence-output baseline used only after independent coding for comparison and adjudication.
 - `original_artifact_note`, `original_environment_note`, `publication_status`: context fields for later comparison.
 - `coder2_a_level`, `coder2_primary_evidence_stage`, `coder2_e4_profile`, `coder2_evidence_object`: optional legacy second-coder decision fields.
 - `coder2_orchestration_flag`, `coder2_adaptation_flag`, `coder2_external_confirmation_level`, `coder2_reproducibility_level`, `coder2_publication_confidence`: optional auxiliary audit fields.
@@ -198,5 +199,3 @@ Do not infer a missing value from surrounding rows without recording the source 
 ## data/core_reproducibility_audit.csv
 
 Per-Core public-material audit linked by `core_id`. Private Zotero paths are excluded. Status fields distinguish public artifact visibility, target version, environment, replay/PoC/PoV material, structured trace, author-reported external traces, publicly traceable external material, and claim-level alignment.
-
-
