@@ -7,6 +7,9 @@ This checklist prepares the minimal artifact for a future GitHub or Zenodo relea
 - [ ] Do not include undisclosed PoCs, exploit payloads, private targets, credentials, reproduction scripts for live vulnerabilities, or sensitive crash inputs.
 - [ ] Do not include private reviewer, coder, or author notes unless explicitly intended for release.
 - [ ] Keep `intercoder_sample_key.csv` private until independent second-coder work is complete.
+- [ ] Confirm `data/core31_second_coder_blind.csv` does not expose original labels or answer-key fields.
+- [ ] Confirm `data/core31_second_coder_adjudication_template.csv` is not used before independent coding.
+- [ ] Report agreement statistics only after real second-coder decisions exist.
 - [ ] Confirm that any public repository URL has author approval before replacing `[REPOSITORY URL]` in the manuscript.
 
 ## Data Files
@@ -15,7 +18,8 @@ This checklist prepares the minimal artifact for a future GitHub or Zenodo relea
 - [x] `data/core_coding.csv` contains coding rationales and caveats, not exploit payloads.
 - [x] `data/reference_audit.csv` has DOI coverage improved from Zotero/local audit and leaves unresolved DOI cases as `NA`.
 - [x] `data/screening_summary.csv` marks unrecoverable intermediate counts as `NA`.
-- [x] `data/intercoder_sample_blind.csv` can be shared with a second coder.
+- [x] `data/core31_second_coder_blind.csv` can be shared for independent 31-Core strongest-evidence-output coding.
+- [x] `data/intercoder_sample_blind.csv` can be shared for optional sampled review.
 - [ ] Decide whether proposed/intermediate audit files should be included in public release or moved to a private working archive.
 - [ ] Decide whether `zotero_export_20260530.bib` should remain private because it reflects the local Zotero library export.
 
@@ -33,7 +37,7 @@ This checklist prepares the minimal artifact for a future GitHub or Zenodo relea
 
 - [x] `reproduce_tables.py` runs without count or A/E distribution errors.
 - [x] Remaining DOI gaps are documented rather than guessed.
-- [ ] If second-coder results are completed, add an auditable agreement script and output.
+- [ ] If second-coder results are completed, add auditable agreement output; do not report raw agreement or Cohen's kappa from blank templates.
 - [ ] Record the final corpus date and search cutoff date in the manuscript and artifact README.
 
 ## Submission Notes
@@ -48,3 +52,5 @@ This checklist prepares the minimal artifact for a future GitHub or Zenodo relea
 - [x] Confirm `unknown_not_audited` is not counted as absence of material.
 - [x] Confirm `data/product_ecosystem_snapshot.csv` is an independent boundary layer and not counted in the 212 candidate records.
 - [x] Confirm product-page changes do not automatically alter Core statistics.
+
+

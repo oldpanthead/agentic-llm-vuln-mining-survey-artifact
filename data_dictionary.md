@@ -1,6 +1,6 @@
 # Data Dictionary
 
-This dictionary describes the non-sensitive audit artifact used by the survey manuscript. It is intended to help reviewers inspect corpus construction, A/E coding, bibliographic verification, and second-coder preparation.
+This dictionary describes the non-sensitive audit artifact used by the survey manuscript. It is intended to help reviewers inspect corpus construction, legacy A/E traceability fields, current evidence-output labels, bibliographic verification, and second-coder preparation.
 
 ## Common Identifiers
 
@@ -90,14 +90,27 @@ This dictionary describes the non-sensitive audit artifact used by the survey ma
 - `e4c_impact`: whether the record changes the manuscript's specific-vulnerability E4c conclusion.
 - `audit_note`: reviewer-facing caution and next-step note.
 
-## `data/core31_second_coder_full_template_submission.csv`
+## `data/core31_second_coder_blind.csv`
+
+This is the primary input file for independent second-coder review of all 31 Core studies. It intentionally hides original A/E labels, original evidence labels, original evidence objects, and other answer-key fields.
 
 - `core_id`, `record_id`, `system_alias`, `title`: Core-study identifiers.
-- `original_a_level`, `original_primary_evidence_stage`, `original_e4_profile`, `original_evidence_object`, `original_task_category`: first-pass labels from `core_coding.csv`.
-- `original_artifact_note`, `original_environment_note`, `publication_status`: context fields for independent checking.
-- `coder2_a_level`, `coder2_primary_evidence_stage`, `coder2_e4_profile`, `coder2_evidence_object`: blank second-coder decision fields.
-- `coder2_orchestration_flag`, `coder2_adaptation_flag`, `coder2_external_confirmation_level`, `coder2_reproducibility_level`, `coder2_publication_confidence`: blank auxiliary audit fields.
-- `coder2_decision`, `evidence_note`, `disagreement_note`, `adjudication_result`: blank decision and adjudication fields.
+- `publication_status`: public-material status known to the artifact.
+- `materials_to_review`: non-sensitive instruction describing which public materials to inspect.
+- `coder2_strongest_evidence_output`: blank second-coder decision field for the current manuscript evidence-output label.
+- `coder2_decision_reason`: blank rationale field for the second coder.
+- `coder2_uncertainty_note`: blank uncertainty or missing-material note.
+
+## `data/core31_second_coder_adjudication_template.csv`
+
+This file is for comparison and adjudication after independent coding is complete. It may contain `original_*` fields and should not be used as second-coder input.
+
+- `core_id`, `record_id`, `system_alias`, `title`: Core-study identifiers.
+- `original_a_level`, `original_primary_evidence_stage`, `original_e4_profile`, `original_evidence_object`, `original_task_category`: first-pass labels retained for adjudication and historical traceability.
+- `original_artifact_note`, `original_environment_note`, `publication_status`: context fields for later comparison.
+- `coder2_a_level`, `coder2_primary_evidence_stage`, `coder2_e4_profile`, `coder2_evidence_object`: optional legacy second-coder decision fields.
+- `coder2_orchestration_flag`, `coder2_adaptation_flag`, `coder2_external_confirmation_level`, `coder2_reproducibility_level`, `coder2_publication_confidence`: optional auxiliary audit fields.
+- `coder2_decision`, `evidence_note`, `disagreement_note`, `adjudication_result`: decision and adjudication fields to fill only after real independent coding.
 
 ## `data/screening_summary.csv`
 
@@ -161,9 +174,9 @@ Rows already audited with DOI or official URL in `reference_audit.csv` are not d
 
 ## Intercoder Files
 
-`data/intercoder_sample_blind.csv` is the file to share with an independent second coder. It intentionally withholds current labels.
+`data/core31_second_coder_blind.csv` is the primary file to share for independent full coding of all 31 Core studies. `data/intercoder_sample_blind.csv` is an optional sampled-review worksheet. Both intentionally withhold current labels.
 
-`data/intercoder_sample_key.csv` is for adjudication only and should not be shared before independent coding is complete.
+`data/intercoder_sample_key.csv` is private and not included in the public artifact until independent coding is complete. It is for adjudication only and should not be shared before independent coding.
 
 `data/disagreement_resolution_template.csv` records coder decisions, adjudicated decisions, rationales, and resolution metadata after real second-coder results exist.
 
@@ -185,3 +198,5 @@ Do not infer a missing value from surrounding rows without recording the source 
 ## data/core_reproducibility_audit.csv
 
 Per-Core public-material audit linked by `core_id`. Private Zotero paths are excluded. Status fields distinguish public artifact visibility, target version, environment, replay/PoC/PoV material, structured trace, author-reported external traces, publicly traceable external material, and claim-level alignment.
+
+

@@ -98,30 +98,9 @@ Security/file-boundary checks:
 - No tracked PDF, SQLite, SQLite journal, private working directory, or private Zotero resolution report.
 - Local/private path scan over public artifact files found no matches.
 
-## 9. git diff --stat
+## 9. Repository Status
 
-Artifact tracked-file diff is:
-
-```text
-README.md                            |   6 ++
-RELEASE_MANIFEST.md                  |   6 ++
-SECURITY_BOUNDARY.md                 |   2 +
-ZOTERO_PDF_RESOLUTION_REPORT.md      |   2 +
-data/doi_remaining_manual_status.csv |   2 +-
-data/product_ecosystem_snapshot.csv  |   2 +-
-data/reference_audit.csv             |   2 +-
-data_dictionary.md                   |   4 +-
-public_release_checklist.md          |   2 +
-reproduce_tables.py                  | 163 +++++++++++++++++++++++++++++++++++
-10 files changed, 187 insertions(+), 4 deletions(-)
-```
-
-This report adds one untracked Markdown file:
-
-```text
-PRODUCT_ECOSYSTEM_QA_REPORT.md | 134 ++++++++++++++++++++++++++++++++++
-1 file changed, 134 insertions(+)
-```
+This report is now tracked in the public artifact repository. The product-ecosystem QA updates were committed and pushed in the artifact history; this section no longer reports an untracked-file or pre-push state.
 
 ## 10. Manual Decisions
 
@@ -129,6 +108,6 @@ No Core candidate requires author decision in this round. The remaining manual d
 
 ## 11. Commit / Push Suitability
 
-- Suitable to commit after author review.
-- Suitable to push after commit if the author wants the artifact repo updated.
-- This round did not commit and did not push.
+This report should be read as a tracked QA note. Future rounds should update this section only when there are new uncommitted changes requiring author review.
+
+

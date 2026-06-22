@@ -12,14 +12,14 @@ Prepared for public review of the Agentic LLM vulnerability-mining survey artifa
 The release includes only non-sensitive materials needed to review the survey evidence:
 
 - corpus metadata, corpus-layer audit, and screening summary;
-- 31-Core coding table, A-profile codebook, and field dictionary;
+- 31-Core coding table, current evidence-output codebook, legacy A-profile codebook, and field dictionary;
 - boundary/high-relevance classification notes and literature-update decisions;
 - v13 synthesis statistics, benchmark-boundary notes, research-agenda outputs, and Core synthesis matrix;
 - public-material reproducibility audit and aggregate summary;
 - DOI/reference audit and DOI-not-applicable product-page notes;
 - citation-expansion audit note for the 2026-06-19 manuscript reference-list update;
 - product-ecosystem snapshot for public coding-agent and security-agent materials;
-- second-coder templates and blind sample, without adjudicated answers;
+- second-coder blind 31-Core input table, adjudication template, and optional sampled-review worksheets, without completed coder2 results or adjudicated answers;
 - security boundary, release checklist, repository setup notes, licenses, and reproducibility script.
 
 ## Excluded
@@ -28,7 +28,7 @@ The release excludes:
 
 - undisclosed PoCs, exploit payloads, live reproduction instructions, sensitive crash inputs, private targets, credentials, or tokens;
 - local Zotero storage paths, Zotero SQLite databases, PDFs, private working directories, and private verification exports;
-- second-coder answer keys, adjudication results, and private disagreement notes;
+- second-coder answer keys, completed coder2 results, agreement statistics, adjudication results, and private disagreement notes;
 - manuscript source files, build logs, ZIP archives, and temporary audit variants.
 
 ## Evidence Boundary
@@ -39,7 +39,7 @@ The 2026-06-19 reference-list expansion increases manuscript citation density by
 
 The product-ecosystem snapshot is an independent boundary data layer and is not counted in the 212 candidate records. If a product material also supports background or supporting discussion, that role is recorded in `data/reference_audit.csv`.
 
-Legacy A/E fields are retained for historical reproducibility and cross-version traceability. The current manuscript presents the synthesis primarily through natural-language workflow, capability, and evidence fields.
+Legacy A/E fields are retained for historical reproducibility and cross-version traceability. The current manuscript presents the synthesis primarily through natural-language workflow, capability, and evidence-output fields.
 
 The product ecosystem snapshot is date-bounded and should be refreshed before each manuscript release. Product changes do not automatically alter Core statistics.
 
@@ -48,5 +48,6 @@ The reproducibility audit separates repository presence, target version, environ
 ## Open Items
 
 - Decide whether and when to archive on Zenodo.
-- Add real second-coder results only after independent coding is complete.
+- Add real second-coder results, agreement statistics, and adjudication notes only after independent coding is complete.
 - Refresh fast-changing product materials before the next manuscript revision.
+

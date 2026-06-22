@@ -2,77 +2,79 @@
 
 ## Purpose
 
-This template supports an independent second-coder check for the survey corpus layering, A-profile coding, E-level coding, evidence object coding, and external-evidence profile coding. It is a template only. It does not contain second-coder decisions, agreement rates, Cohen's kappa, weighted kappa, or resolved disagreements.
+This artifact prepares materials for an independent second-coder check. It does not contain completed second-coder decisions, agreement rates, Cohen's kappa, weighted kappa, or resolved disagreements.
+
+## Task Priority
+
+Primary task:
+
+- Independent full coding of the strongest evidence output for all 31 Core studies.
+
+Optional task:
+
+- Sampled review of corpus layer, legacy A-profile, evidence object, and external-evidence profile.
+
+The primary task matches the current manuscript synthesis, which uses natural-language workflow, capability, and evidence-output fields rather than the historical A/E axis as its main prose structure.
 
 ## Independence Requirement
 
-The second coder must complete the check independently. They should not copy or adjust answers after seeing the first coder's detailed decisions. The goal is to measure whether another informed reader can apply the coding guide to the same records, not to confirm the current table mechanically.
+The second coder must complete coding independently. For the 31-Core primary task, give the coder:
 
-Before coding, give the second coder:
+- `evidence_output_codebook.md`;
+- `data/core31_second_coder_blind.csv`;
+- the public papers and public project/artifact pages listed in the blind file.
 
-- The paper abstract or scope statement.
-- `codebook.md`.
-- The sampled records or papers to inspect.
-- This instruction file.
+Do not give the second coder `data/core31_second_coder_adjudication_template.csv` before independent coding is complete. That file contains original labels and is only for later comparison, disagreement discussion, and adjudication. The second coder should not inspect original A/E labels, original evidence labels, original evidence objects, adjudication fields, or any answer key before recording their own decisions.
 
-Do not give them a pre-filled answer key for the sampled rows.
+Agreement rates and Cohen's kappa require real second-coder decisions. They must not be invented, estimated, or reported from blank templates.
 
-## Suggested Sample
+## Primary CSV Fields
 
-Use a compact but meaningful sample rather than the full corpus unless the author has enough reviewer time.
+Fill `data/core31_second_coder_blind.csv` during the primary task.
 
-- Select 10--12 Core studies.
-- Select 8--10 Core / Supporting boundary records.
-- Select 5--8 Supporting studies.
+- `core_id`: stable Core-study identifier.
+- `record_id`: candidate record identifier from the artifact.
+- `system_alias`: short system or benchmark name.
+- `title`: record title.
+- `publication_status`: public-material status known to the artifact.
+- `materials_to_review`: non-sensitive instruction describing which public materials to inspect.
+- `coder2_strongest_evidence_output`: second coder's strongest-evidence-output decision. Use `candidate judgment`, `controlled task completion`, `runtime safety signal`, `reproducible validation`, `externally traceable material`, `claim-level audit material`, or `governance boundary case`.
+- `coder2_decision_reason`: short justification grounded in the paper or public material.
+- `coder2_uncertainty_note`: optional uncertainty note, including missing material or ambiguous evidence boundary.
 
-The sample should include at least:
+## Optional Sampled Review
 
-- One A0/A1 or boundary prompt-based case.
-- Several A3 execution-feedback cases.
-- Several A4 multi-agent or benchmark cases.
-- At least one E4a case.
-- At least one E4b case.
-- The governance-oriented Core case, if governance risk is part of the manuscript's argument.
+If reviewer time allows, the author may also ask for a sampled review of corpus layer and historical A/E-style fields using `data/intercoder_sample_blind.csv` and `data/intercoder_check_template.csv`. This optional task should remain separate from the 31-Core strongest-evidence-output task.
 
-## CSV Fields
+The sample may include:
 
-Fill `data/intercoder_check_template.csv` with one row per sampled record.
+- 10--12 Core studies;
+- 8--10 Core / Supporting boundary records;
+- 5--8 Supporting studies.
 
-- `sample_id`: Local sample identifier, such as `S01`.
-- `record_id`: The candidate or Core record identifier from the artifact data.
-- `corpus_layer_decision`: Second coder's layer decision, such as `Core`, `Supporting`, `Background`, or `Excluded`.
-- `a_level`: Second coder's A-profile decision, such as `A0`, `A1`, `A2`, `A3`, `A4`, `A5`, or a plus-style capability combination if the codebook permits it.
-- `e_level`: Second coder's E-level decision, such as `E0`, `E1`, `E2`, `E3`, `E4a`, `E4b`, or `E4c`.
-- `evidence_object`: One of the six manuscript categories: model judgment, task completion, system output, task background, external clues, or governance risk.
-- `external_evidence_profile`: Use `E4a`, `E4b`, `E4c`, or `NA` when no external-evidence profile applies.
-- `coder`: The second coder identifier or initials.
-- `decision_reason`: Short justification grounded in the paper or public material.
-- `disagreement_note`: Leave blank during independent coding. Fill later only when comparing against the first coding.
-- `resolution`: Leave blank during independent coding. Fill later after discussion and adjudication.
+The optional task can inspect corpus layer, legacy A-profile, evidence object, and external-evidence profile. It should not be used to claim full-corpus agreement.
 
-## Agreement Calculation
-
-After the second coder completes the sheet, the author may calculate:
-
-- Raw agreement for corpus layer.
-- Raw agreement for A-profile.
-- Raw agreement for E-level.
-- Raw agreement for evidence object.
-- Cohen's kappa for categorical fields, if appropriate.
-- Weighted kappa for ordinal-like fields, if the author defines and justifies weights.
-
-Codex must not invent agreement rates, Cohen's kappa, weighted kappa, or disagreement resolutions. These values require real second-coder decisions.
-
-## Handling Disagreements
+## Adjudication Workflow
 
 After independent coding is complete:
 
-1. Compare second-coder decisions against the first coding.
-2. Mark disagreements in `disagreement_note`.
-3. Discuss each disagreement with reference to `codebook.md` and the paper text.
-4. Record the final adjudicated decision in `resolution`.
-5. Preserve both the original second-coder decision and the resolution for auditability.
+1. Copy coder2 decisions into `data/core31_second_coder_adjudication_template.csv` or an equivalent adjudication sheet.
+2. Compare coder2 decisions with the original labels.
+3. Mark disagreements in the disagreement fields.
+4. Discuss disagreements with reference to `evidence_output_codebook.md`, `codebook.md`, and the public materials.
+5. Record final adjudicated decisions only after review.
+6. Preserve the original coder2 decision, reason, uncertainty note, disagreement note, and adjudicated result.
+
+## Agreement Calculation
+
+After real second-coder decisions exist, the author may calculate:
+
+- raw agreement for strongest evidence output;
+- Cohen's kappa for strongest evidence output, if the category set is appropriate and all rows are coded;
+- optional raw agreement for sampled corpus layer, legacy A-profile, evidence object, and external-evidence profile.
+
+Blank coder2 fields mean coding is incomplete. In that state the artifact may warn that second-coder results are pending, but it must not report agreement or kappa.
 
 ## Security Boundary
 
-Do not include undisclosed PoCs, exploit payloads, private target details, or sensitive vulnerability reproduction steps in the intercoder file. If a decision depends on sensitive material, record a non-sensitive reason and mark the sensitive source as restricted.
+Do not include undisclosed PoCs, exploit payloads, private target details, sensitive crash inputs, private vendor communication, or vulnerability reproduction steps in any intercoder file. If a decision depends on sensitive material, record a non-sensitive reason and mark the source as restricted.

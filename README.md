@@ -21,31 +21,37 @@ This repository contains the non-sensitive public artifact for a Chinese survey 
 
 The manuscript reference list may cite a subset of already-audited Supporting or Background rows more densely than earlier drafts. Reference-list size is therefore not the same as corpus-record size. The 2026-06-19 reference expansion drew only on rows already present in `data/corpus.csv` and `data/reference_audit.csv`; it did not change the 212 / 31 / 66 / 95 / 20 corpus statistics.
 
-The public coding scheme uses A-profile language: A0--A3 describe the main interaction path, while A4 orchestration and A5 workflow adaptation are overlay capability tags. The plus sign means coexistence, not an ordinal interval.
-
 Product pages, help pages, official blogs, model pages, and disclosure policies are recorded as dated boundary material. They do not automatically enter Core statistics and are not treated as independent reproduction evidence.
 
 The product ecosystem snapshot is an independent boundary data layer. It is not part of the 212 candidate records; when a product item also supports background or supporting discussion, its use is recorded separately in `data/reference_audit.csv`.
 
-Legacy A/E fields are retained for historical reproducibility and cross-version traceability. The current manuscript presents the synthesis primarily through natural-language workflow, capability, and evidence fields.
+The current manuscript synthesis is based on natural-language workflow, capability, and evidence-output fields. Legacy A/E fields are retained only for historical reproducibility and cross-version traceability.
 
 The product ecosystem snapshot is date-bounded and should be refreshed before each manuscript release. Product changes do not automatically alter Core statistics.
+
+## Historical Traceability
+
+The public artifact still includes legacy A-profile and E-level columns because earlier manuscript versions used them for reproducibility checks. They should be read as historical traceability fields. The current manuscript-facing synthesis uses workflow position, Agent capability, strongest evidence output, external audit material, and claim-boundary notes.
+
+## Second-Coder Status
+
+The artifact currently prepares second-coder materials; it does not report completed second-coder results. `data/core31_second_coder_blind.csv` is the independent input table and intentionally hides original labels. `data/core31_second_coder_adjudication_template.csv` is for later comparison only after independent coding is complete. Agreement rates, Cohen's kappa, and adjudication outcomes require real coder2 decisions and are not present in this release.
 
 ## Main Files
 
 - `data/corpus.csv`: corpus metadata and analysis-use layers.
-- `data/core_coding.csv`: A/E coding for the 31 Core studies.
+- `data/core_coding.csv`: legacy A/E coding for the 31 Core studies, retained for historical traceability.
 - `data/corpus_layer_audit.csv`: layer audit fields for Core / Supporting / Background / Excluded records.
 - `data/reference_audit.csv`: bibliographic audit table.
 - `data/doi_remaining_manual_status.csv`: DOI-less or DOI-not-applicable status notes.
-- `data/v13_core_synthesis_matrix.csv`: natural-language Core synthesis matrix.
+- `data/v13_core_synthesis_matrix.csv`: natural-language Core synthesis matrix used by the current manuscript.
 - `data/v13_synthesis_statistics.csv`: checked synthesis counts used by the manuscript.
 - `data/core_reproducibility_audit.csv`: public-material reproducibility audit for 30 vulnerability-mining Core studies; C27 is excluded as a governance boundary case.
 - `data/product_ecosystem_snapshot.csv`: public coding-agent and security-agent product snapshot as of 2026-06-13.
-- `codebook.md` and `data_dictionary.md`: coding definitions and field descriptions.
+- `evidence_output_codebook.md`, `codebook.md`, and `data_dictionary.md`: current evidence-output labels, legacy coding definitions, and field descriptions.
 - `ZOTERO_PDF_RESOLUTION_REPORT.md`: path-redacted public Zotero/PDF resolution summary.
 
-Auxiliary reviewer worksheets include `data/intercoder_sample_blind.csv`, `data/intercoder_check_template.csv`, `data/disagreement_resolution_template.csv`, and `data/core31_second_coder_full_template_submission.csv`.
+Second-coder preparation files include `data/core31_second_coder_blind.csv` for independent 31-Core strongest-evidence-output coding and `data/core31_second_coder_adjudication_template.csv` for later comparison after real coder2 decisions exist. Auxiliary sampled-review worksheets include `data/intercoder_sample_blind.csv`, `data/intercoder_check_template.csv`, and `data/disagreement_resolution_template.csv`.
 
 ## Security Boundary
 
@@ -59,7 +65,7 @@ Run from this directory:
 python reproduce_tables.py
 ```
 
-Expected result: all schema, corpus count, Core count, A-profile, E-level, classification, and reproducibility-audit checks pass. Missing DOI rows are warnings unless marked otherwise.
+Expected result: all schema, corpus count, Core count, product-snapshot, second-coder-template, legacy A/E, classification, and reproducibility-audit checks pass. Missing DOI rows and incomplete coder2 fields are warnings unless marked otherwise.
 
 ## License
 
@@ -67,3 +73,6 @@ Expected result: all schema, corpus count, Core count, A-profile, E-level, class
 - Code scripts: MIT License, see `LICENSE-CODE`.
 
 The current public repository URL is `https://github.com/oldpanthead/agentic-llm-vuln-mining-survey-artifact`. An archival DOI is not yet assigned.
+
+
+

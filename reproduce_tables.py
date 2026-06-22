@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import csv
 import sys
+import subprocess
 from collections import Counter
 from datetime import date
 from pathlib import Path
@@ -101,6 +102,21 @@ CSV_REQUIRED_FIELDS = {
       'evidence',
       'manual_action_required',
       'notes',
+    ],
+    'core31_second_coder_blind.csv': [
+      'core_id',
+      'record_id',
+      'system_alias',
+      'title',
+      'publication_status',
+      'materials_to_review',
+    ],
+    'core31_second_coder_adjudication_template.csv': [
+      'core_id',
+      'record_id',
+      'system_alias',
+      'title',
+      'publication_status',
     ],
     'product_ecosystem_snapshot.csv': [
       'product_or_system',
@@ -336,6 +352,142 @@ def validate_product_ecosystem_snapshot(rows):
         print('ERROR: product Core-eligibility rows needing review:', ', '.join(map(str, sorted(set(unconfirmed_core_rows)))))
     print(f'product_ecosystem_snapshot.csv rows: {len(rows)}')
 
+
+def cohen_kappa(first, second):
+    if not first or len(first) != len(second):
+        return None
+    total = len(first)
+    observed = sum(1 for a, b in zip(first, second) if a == b) / total
+    first_counts = Counter(first)
+    second_counts = Counter(second)
+    categories = set(first_counts) | set(second_counts)
+    expected = sum((first_counts[c] / total) * (second_counts[c] / total) for c in categories)
+    if expected == 1:
+        return 1.0 if observed == 1 else None
+    return (observed - expected) / (1 - expected)
+
+def validate_second_coder_files(blind_rows, adjudication_rows):
+    blind_path = DATA / 'core31_second_coder_blind.csv'
+    adjudication_path = DATA / 'core31_second_coder_adjudication_template.csv'
+    status('ERROR', blind_path.exists(), 'core31_second_coder_blind.csv exists')
+    status('ERROR', adjudication_path.exists(), 'core31_second_coder_adjudication_template.csv exists')
+    if not blind_rows:
+        return
+
+    blind_fields = set(blind_rows[0].keys())
+    required_blind_fields = {
+        'core_id',
+        'record_id',
+        'system_alias',
+        'title',
+        'publication_status',
+        'materials_to_review',
+        'coder2_strongest_evidence_output',
+        'coder2_decision_reason',
+        'coder2_uncertainty_note',
+    }
+    missing_blind_fields = sorted(required_blind_fields - blind_fields)
+    original_fields = sorted(field for field in blind_fields if field.startswith('original_'))
+    status('ERROR', len(blind_rows) == 31, f'core31_second_coder_blind.csv rows = {len(blind_rows)}; expected 31')
+    status('ERROR', not missing_blind_fields, 'core31_second_coder_blind.csv contains required fields')
+    if missing_blind_fields:
+        print('ERROR: blind second-coder file missing fields:', ', '.join(missing_blind_fields))
+    status('ERROR', not original_fields, 'core31_second_coder_blind.csv contains no original_* answer-key columns')
+    if original_fields:
+        print('ERROR: blind second-coder file exposes original fields:', ', '.join(original_fields))
+
+    allowed_outputs = {
+        'candidate judgment',
+        'controlled task completion',
+        'runtime safety signal',
+        'reproducible validation',
+        'externally traceable material',
+        'claim-level audit material',
+        'governance boundary case',
+    }
+    coder_values = [row.get('coder2_strongest_evidence_output', '').strip() for row in blind_rows]
+    filled = [value for value in coder_values if value]
+    invalid = sorted(set(value for value in filled if value not in allowed_outputs))
+    status('ERROR', not invalid, 'coder2 strongest-evidence-output values use approved labels when populated')
+    if invalid:
+        print('ERROR: invalid coder2 strongest-evidence-output labels:', ', '.join(invalid))
+    if not filled:
+        print('WARNING: coder2 strongest-evidence-output fields are blank; second-coder results are pending, so no agreement or Cohen kappa is reported')
+    elif len(filled) < len(blind_rows):
+        print(f'WARNING: coder2 strongest-evidence-output fields are incomplete ({len(filled)}/{len(blind_rows)}); no agreement or Cohen kappa is reported')
+    else:
+        e_to_output = {
+            'E0': 'candidate judgment',
+            'E1': 'controlled task completion',
+            'E2': 'runtime safety signal',
+            'E3': 'reproducible validation',
+            'N/A': 'governance boundary case',
+            'NA': 'governance boundary case',
+        }
+        original_by_core = {}
+        for row in adjudication_rows:
+            core_id = row.get('core_id', '')
+            original = row.get('original_primary_evidence_stage', '')
+            mapped = e_to_output.get(original)
+            if mapped:
+                original_by_core[core_id] = mapped
+        missing_original = [row.get('core_id', '?') for row in blind_rows if row.get('core_id', '') not in original_by_core]
+        status('ERROR', not missing_original, 'adjudication template provides original strongest-evidence baseline for populated coder2 rows')
+        if missing_original:
+            print('ERROR: missing original evidence baseline for:', ', '.join(missing_original))
+        else:
+            original_values = [original_by_core[row.get('core_id', '')] for row in blind_rows]
+            raw = sum(1 for a, b in zip(original_values, coder_values) if a == b) / len(coder_values)
+            kappa = cohen_kappa(original_values, coder_values)
+            print(f'SECOND_CODER_RESULT: raw agreement for strongest evidence output = {raw:.3f}')
+            if kappa is None:
+                print('WARNING: Cohen kappa could not be computed for the populated coder2 labels')
+            else:
+                print(f'SECOND_CODER_RESULT: Cohen kappa for strongest evidence output = {kappa:.3f}')
+
+    if adjudication_rows:
+        adjudication_fields = set(adjudication_rows[0].keys())
+        status('ERROR', any(field.startswith('original_') for field in adjudication_fields), 'adjudication template retains original_* fields for post-coding comparison')
+        status('ERROR', len(adjudication_rows) == 31, f'core31_second_coder_adjudication_template.csv rows = {len(adjudication_rows)}; expected 31')
+
+
+def validate_tracked_file_boundary():
+    try:
+        result = subprocess.run(['git', 'ls-files'], cwd=ROOT, check=True, capture_output=True, text=True)
+    except Exception as exc:
+        print(f'WARNING: could not run git ls-files for tracked-file boundary check: {exc}')
+        return
+    tracked = [line.strip() for line in result.stdout.splitlines() if line.strip()]
+    forbidden_path_tokens = [
+        'local_private_working/',
+        'zotero_private_paths',
+        '.sqlite',
+        '.sqlite-journal',
+    ]
+    forbidden_suffixes = ('.pdf', '.sqlite', '.sqlite-journal')
+    forbidden_paths = []
+    private_content_hits = []
+    for rel in tracked:
+        normalized = rel.replace('\\', '/').lower()
+        if normalized.endswith(forbidden_suffixes) or any(token in normalized for token in forbidden_path_tokens):
+            forbidden_paths.append(rel)
+            continue
+        path = ROOT / rel
+        try:
+            content = path.read_text(encoding='utf-8')
+        except Exception:
+            continue
+        lowered = content.lower()
+        actual_private_markers = ['c:\\users\\', 'zotero\\storage', 'zotero/storage']
+        if rel != 'reproduce_tables.py' and any(marker in lowered for marker in actual_private_markers):
+            private_content_hits.append(rel)
+    status('ERROR', not forbidden_paths, 'no tracked PDFs, SQLite files, local_private_working files, or private Zotero path files')
+    if forbidden_paths:
+        print('ERROR: forbidden tracked paths:', ', '.join(forbidden_paths))
+    status('ERROR', not private_content_hits, 'tracked text files contain no absolute local Zotero paths or Zotero storage references')
+    if private_content_hits:
+        print('ERROR: tracked files needing security-boundary review:', ', '.join(sorted(set(private_content_hits))))
+
 validate_all_csv_files()
 
 corpus = read_csv('corpus.csv')
@@ -343,11 +495,15 @@ core = read_csv('core_coding.csv')
 summary = read_csv('screening_summary.csv')
 ref = read_csv('reference_audit.csv')
 product_snapshot = read_csv('product_ecosystem_snapshot.csv')
+second_coder_blind = read_csv('core31_second_coder_blind.csv')
+second_coder_adjudication = read_csv('core31_second_coder_adjudication_template.csv')
 record_classification = read_csv('record_classification_audit.csv')
 repro_audit = read_csv('core_reproducibility_audit.csv')
 repro_summary = read_csv('core_reproducibility_audit_summary.csv')
 
 validate_product_ecosystem_snapshot(product_snapshot)
+validate_second_coder_files(second_coder_blind, second_coder_adjudication)
+validate_tracked_file_boundary()
 
 expected_layers = {'Core': 31, 'Supporting': 66, 'Background': 95, 'Excluded': 20}
 if corpus:
