@@ -19,9 +19,17 @@ This repository contains the non-sensitive public artifact for a Chinese survey 
 - Excluded records: 20
 - Last incremental manuscript search date: 2026-05-20
 
+The manuscript reference list may cite a subset of already-audited Supporting or Background rows more densely than earlier drafts. Reference-list size is therefore not the same as corpus-record size. The 2026-06-19 reference expansion drew only on rows already present in `data/corpus.csv` and `data/reference_audit.csv`; it did not change the 212 / 31 / 66 / 95 / 20 corpus statistics.
+
 The public coding scheme uses A-profile language: A0--A3 describe the main interaction path, while A4 orchestration and A5 workflow adaptation are overlay capability tags. The plus sign means coexistence, not an ordinal interval.
 
 Product pages, help pages, official blogs, model pages, and disclosure policies are recorded as dated boundary material. They do not automatically enter Core statistics and are not treated as independent reproduction evidence.
+
+The product ecosystem snapshot is an independent boundary data layer. It is not part of the 212 candidate records; when a product item also supports background or supporting discussion, its use is recorded separately in `data/reference_audit.csv`.
+
+Legacy A/E fields are retained for historical reproducibility and cross-version traceability. The current manuscript presents the synthesis primarily through natural-language workflow, capability, and evidence fields.
+
+The product ecosystem snapshot is date-bounded and should be refreshed before each manuscript release. Product changes do not automatically alter Core statistics.
 
 ## Main Files
 

@@ -118,7 +118,11 @@ This dictionary describes the non-sensitive audit artifact used by the survey ma
 - `last_verified_date`: date of the latest local audit update for this row.
 - `note`: provenance, risk flags, and manual-check notes.
 
+Manuscript citation count is not a corpus statistic. The 2026-06-19 reference-list expansion cited additional rows that were already present in `corpus.csv` and `reference_audit.csv`; those citations remain Supporting or Background material and do not alter the 212 candidate records, 31 Core studies, 66 Supporting studies, 95 Background references, or 20 Excluded records.
+
 ## `data/product_ecosystem_snapshot.csv`
+
+This file is an independent product-ecosystem boundary data layer. Rows in this file are not part of `data/corpus.csv`, do not count toward the 212 candidate records, and do not alter Core aggregate statistics. Product materials that also support manuscript background or supporting discussion are represented separately in `data/reference_audit.csv`.
 
 - `product_or_system`: public product, model, workflow, policy, or attempted source check.
 - `vendor`: vendor or organization associated with the material.
@@ -151,7 +155,9 @@ This dictionary describes the non-sensitive audit artifact used by the survey ma
 
 `data/doi_remaining_manual_status.csv` documents records that remain DOI-less after the DOI merge and supplemental pass.
 
-Product and policy pages added for the product-ecosystem snapshot are also listed there when DOI is not applicable. These rows record `doi_not_applicable_product_page` or equivalent status and do not change manuscript corpus or Core counts.
+Product and policy pages added for the product-ecosystem snapshot are also listed there when DOI is not applicable. These rows record `doi_not_applicable_product_page` or equivalent status and do not change manuscript corpus, the 212 candidate records, or Core counts.
+
+Rows already audited with DOI or official URL in `reference_audit.csv` are not duplicated in `doi_remaining_manual_status.csv` merely because they are newly cited in a manuscript draft.
 
 ## Intercoder Files
 

@@ -37,3 +37,5 @@ Before public release, authors should decide:
 - the archival target, such as GitHub, Zenodo, or both.
 
 The reproducibility audit does not publish Zotero PDFs, private paths, undisclosed PoC, exploit payloads, sensitive crash inputs, private targets, credentials, or vendor communications. Local review files are excluded through `.gitignore`.
+
+The product-ecosystem snapshot records only official public product, model, help, blog, and policy materials. It is an independent boundary data layer, not part of the 212 candidate-record corpus, and product changes do not automatically alter Core statistics.

@@ -46,3 +46,5 @@ This checklist prepares the minimal artifact for a future GitHub or Zenodo relea
 - [x] Confirm `local_private_working/`, `.pdf`, and `.sqlite` files are not tracked.
 - [x] Confirm `core_reproducibility_audit.csv` contains no private Zotero paths.
 - [x] Confirm `unknown_not_audited` is not counted as absence of material.
+- [x] Confirm `data/product_ecosystem_snapshot.csv` is an independent boundary layer and not counted in the 212 candidate records.
+- [x] Confirm product-page changes do not automatically alter Core statistics.

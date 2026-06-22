@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import csv
+import sys
 from collections import Counter
+from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
@@ -100,11 +102,62 @@ CSV_REQUIRED_FIELDS = {
       'manual_action_required',
       'notes',
     ],
+    'product_ecosystem_snapshot.csv': [
+      'product_or_system',
+      'vendor',
+      'snapshot_date',
+      'model_or_version',
+      'public_capabilities',
+      'security_workflow',
+      'public_evidence_type',
+      'source_url',
+      'publication_or_update_date',
+      'access_date',
+      'manuscript_role',
+      'core_eligibility',
+      'evidence_caveat',
+      'external_traceability',
+      'update_required',
+      'notes',
+    ],
 }
 VALIDATED_CSVS = set()
+ERROR_COUNT = 0
 
 def status(kind, ok, msg):
+    global ERROR_COUNT
+    if not ok:
+        ERROR_COUNT += 1
     print(f'{kind if not ok else "PASS"}: {msg}')
+
+def parse_iso_date(value):
+    try:
+        return date.fromisoformat(value)
+    except Exception:
+        return None
+
+def load_manifest_product_snapshot_date():
+    path = ROOT / 'RELEASE_MANIFEST.md'
+    if not path.exists():
+        return None
+    prefix = '- Product-ecosystem snapshot date:'
+    for line in path.read_text(encoding='utf-8').splitlines():
+        if line.startswith(prefix):
+            return line.split(':', 1)[1].strip()
+    return None
+
+def contains_private_material(value):
+    lowered = value.lower()
+    sensitive_tokens = [
+        'c:\\users\\',
+        'zotero\\storage',
+        '.sqlite',
+        '.sqlite-journal',
+        'local_private_working',
+        'zotero_private_paths',
+        'private working directory',
+    ]
+    return any(token in lowered for token in sensitive_tokens)
 
 def validate_csv_schema(name, reader, rows):
     fieldnames = reader.fieldnames or []
@@ -180,15 +233,121 @@ def expand_a_level(value):
             return [value]
     return [value]
 
+def validate_product_ecosystem_snapshot(rows):
+    manifest_snapshot_date = load_manifest_product_snapshot_date()
+    status('ERROR', bool(rows), 'product_ecosystem_snapshot.csv has at least one row')
+    status('ERROR', bool(manifest_snapshot_date), 'RELEASE_MANIFEST.md records product snapshot date')
+    if not rows:
+        return
+
+    allowed_roles = {'Background', 'Supporting', 'Emerging boundary case', 'Core candidate', 'Excluded'}
+    allowed_update_required = {'yes', 'no', 'true', 'false'}
+    product_doc_markers = [
+        'product',
+        'documentation',
+        'help',
+        'faq',
+        'use-case',
+        'use case',
+        'blog',
+        'model',
+        'policy',
+    ]
+
+    invalid_snapshot_dates = []
+    manifest_mismatches = []
+    invalid_access_dates = []
+    invalid_roles = []
+    invalid_update_flags = []
+    missing_public_urls = []
+    empty_urls = []
+    private_material_rows = []
+    unconfirmed_core_rows = []
+
+    for idx, row in enumerate(rows, start=2):
+        snapshot_value = row.get('snapshot_date', '')
+        parsed_snapshot = parse_iso_date(snapshot_value)
+        if not parsed_snapshot:
+            invalid_snapshot_dates.append(idx)
+        if manifest_snapshot_date and snapshot_value != manifest_snapshot_date:
+            manifest_mismatches.append(idx)
+
+        access_value = row.get('access_date', '')
+        if not parse_iso_date(access_value):
+            invalid_access_dates.append(idx)
+
+        role = row.get('manuscript_role', '')
+        if role not in allowed_roles:
+            invalid_roles.append((idx, role))
+
+        update_required = row.get('update_required', '').strip().lower()
+        if update_required not in allowed_update_required:
+            invalid_update_flags.append((idx, row.get('update_required', '')))
+
+        source_url = row.get('source_url', '').strip()
+        if source_url == '':
+            empty_urls.append(idx)
+        if role != 'Excluded' and not source_url.startswith(('http://', 'https://')):
+            missing_public_urls.append(idx)
+
+        joined = ' '.join(str(v) for v in row.values())
+        if contains_private_material(joined):
+            private_material_rows.append(idx)
+
+        evidence_type = row.get('public_evidence_type', '').lower()
+        core_eligibility = row.get('core_eligibility', '').lower()
+        manual_text = ' '.join([
+            row.get('core_eligibility', ''),
+            row.get('evidence_caveat', ''),
+            row.get('notes', ''),
+        ]).lower()
+        looks_like_product_doc = any(marker in evidence_type for marker in product_doc_markers)
+        if looks_like_product_doc and role == 'Core candidate' and 'manual' not in manual_text and 'author' not in manual_text:
+            unconfirmed_core_rows.append(idx)
+        if looks_like_product_doc and 'not core' not in core_eligibility and role != 'Excluded' and role != 'Core candidate':
+            unconfirmed_core_rows.append(idx)
+
+    status('ERROR', not invalid_snapshot_dates, 'product snapshot dates parse as ISO dates')
+    if invalid_snapshot_dates:
+        print('ERROR: invalid product snapshot date rows:', ', '.join(map(str, invalid_snapshot_dates)))
+    status('ERROR', not manifest_mismatches, 'product snapshot dates match RELEASE_MANIFEST.md')
+    if manifest_mismatches:
+        print('ERROR: product snapshot date mismatch rows:', ', '.join(map(str, manifest_mismatches)))
+    status('ERROR', not invalid_access_dates, 'product access dates parse as ISO dates')
+    if invalid_access_dates:
+        print('ERROR: invalid product access date rows:', ', '.join(map(str, invalid_access_dates)))
+    status('ERROR', not invalid_roles, 'product manuscript_role values use the approved enumeration')
+    if invalid_roles:
+        print('ERROR: invalid product manuscript_role rows:', invalid_roles[:10])
+    status('ERROR', not invalid_update_flags, 'product update_required values are parseable booleans')
+    if invalid_update_flags:
+        print('ERROR: invalid update_required rows:', invalid_update_flags[:10])
+    status('ERROR', not empty_urls, 'product source_url values are non-empty')
+    if empty_urls:
+        print('ERROR: empty product source_url rows:', ', '.join(map(str, empty_urls)))
+    status('ERROR', not missing_public_urls, 'non-Excluded product rows have public source URLs')
+    if missing_public_urls:
+        print('ERROR: non-Excluded product rows missing public URLs:', ', '.join(map(str, missing_public_urls)))
+    status('ERROR', not private_material_rows, 'product snapshot contains no local Zotero/PDF/SQLite/private path material')
+    if private_material_rows:
+        print('ERROR: product private-material rows:', ', '.join(map(str, private_material_rows)))
+    status('ERROR', not unconfirmed_core_rows, 'product/vendor documentation is not promoted to Core without manual confirmation')
+    if unconfirmed_core_rows:
+        print('ERROR: product Core-eligibility rows needing review:', ', '.join(map(str, sorted(set(unconfirmed_core_rows)))))
+    print(f'product_ecosystem_snapshot.csv rows: {len(rows)}')
+
 validate_all_csv_files()
 
 corpus = read_csv('corpus.csv')
 core = read_csv('core_coding.csv')
 summary = read_csv('screening_summary.csv')
 ref = read_csv('reference_audit.csv')
+product_snapshot = read_csv('product_ecosystem_snapshot.csv')
 record_classification = read_csv('record_classification_audit.csv')
 repro_audit = read_csv('core_reproducibility_audit.csv')
 repro_summary = read_csv('core_reproducibility_audit_summary.csv')
+
+validate_product_ecosystem_snapshot(product_snapshot)
 
 expected_layers = {'Core': 31, 'Supporting': 66, 'Background': 95, 'Excluded': 20}
 if corpus:
@@ -283,5 +442,9 @@ if repro_audit:
 
 if repro_summary:
     print('core_reproducibility_audit_summary rows:', len(repro_summary))
+
+if ERROR_COUNT:
+    print(f'DONE with {ERROR_COUNT} error(s)')
+    sys.exit(1)
 
 print('DONE')

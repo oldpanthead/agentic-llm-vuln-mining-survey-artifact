@@ -4,6 +4,8 @@ This public report records Zotero/PDF resolution status without exposing private
 
 Product-ecosystem materials added on 2026-06-13 were checked through the local Zotero API by title/query, but no matching local Zotero items were found for the product and policy pages. They are recorded from official public URLs in `data/product_ecosystem_snapshot.csv`; no PDFs, local Zotero storage paths, SQLite databases, private working directories, or sensitive vulnerability materials are included.
 
+On 2026-06-15, the Claude Code security documentation entry was rechecked. `https://docs.anthropic.com/en/docs/claude-code/security` redirects to `https://code.claude.com/docs/en/security`; the current official entry is recorded in `data/product_ecosystem_snapshot.csv`, `data/reference_audit.csv`, and `data/doi_remaining_manual_status.csv`.
+
 | core_id | system_alias | reference_key | title | doi | zotero_item_match_status | pdf_path | pdf_read_status | matching_basis | manual_action_required | notes |
 |---|---|---|---|---|---|---|---|---|---|---|
 | C01 | UniFuzz | ngo2025unifuzz | UniFuzz: a unified fuzzing framework for smart contract vulnerability detection with LLMs and audit report | NA | matched | private_path_redacted | zotero_indexed_fulltext_reviewed | Zotero local API search plus indexed full text where available | no | Conservative Zotero indexed-fulltext audit; local PDF paths are excluded from public artifact. |
