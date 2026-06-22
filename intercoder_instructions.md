@@ -36,7 +36,8 @@ Fill `data/core31_second_coder_blind.csv` during the primary task.
 - `record_id`: candidate record identifier from the artifact.
 - `system_alias`: short system or benchmark name.
 - `title`: record title.
-- `publication_status`: public-material status known to the artifact.
+- `publication_status`: publication/material status only. Boundary role is recorded separately.
+- `boundary_role`: `standard_core_entry` or `governance_boundary_case`.
 - `materials_to_review`: non-sensitive instruction describing which public materials to inspect.
 - `coder2_strongest_evidence_output`: second coder's strongest-evidence-output decision. Use `candidate judgment`, `controlled task completion`, `runtime safety signal`, `reproducible validation`, `externally traceable material`, `claim-level audit material`, or `governance boundary case`.
 - `coder2_decision_reason`: short justification grounded in the paper or public material.
@@ -58,7 +59,7 @@ The optional task can inspect corpus layer, legacy A-profile, evidence object, a
 
 After independent coding is complete:
 
-1. Copy coder2 decisions into `data/core31_second_coder_adjudication_template.csv` or an equivalent adjudication sheet.
+1. Copy `coder2_strongest_evidence_output`, `coder2_decision_reason`, and `coder2_uncertainty_note` into `data/core31_second_coder_adjudication_template.csv` or an equivalent adjudication sheet.
 2. Compare coder2 decisions with `original_strongest_evidence_output`; legacy E-level fields are retained only for historical traceability or fallback.
 3. Mark disagreements in the disagreement fields.
 4. Discuss disagreements with reference to `evidence_output_codebook.md`, `codebook.md`, and the public materials.

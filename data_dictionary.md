@@ -95,7 +95,8 @@ This dictionary describes the non-sensitive audit artifact used by the survey ma
 This is the primary input file for independent second-coder review of all 31 Core studies. It intentionally hides original A/E labels, original evidence labels, original evidence objects, and other answer-key fields.
 
 - `core_id`, `record_id`, `system_alias`, `title`: Core-study identifiers.
-- `publication_status`: public-material status known to the artifact.
+- `publication_status`: publication/material status only. Current allowed values in the 31-Core second-coder files include `not_publicly_available`, `preprint_or_arxiv_from_local_metadata`, `arXiv preprint`, `journal article`, `preprint/project page`, `verified_by_official_source`, and `peer_reviewed`. This field must not encode boundary role.
+- `boundary_role`: analysis-boundary role for second-coder workflow; currently `standard_core_entry` or `governance_boundary_case`.
 - `materials_to_review`: non-sensitive instruction describing which public materials to inspect.
 - `coder2_strongest_evidence_output`: blank second-coder decision field for the current manuscript evidence-output label.
 - `coder2_decision_reason`: blank rationale field for the second coder.
@@ -108,10 +109,11 @@ This file is for comparison and adjudication after independent coding is complet
 - `core_id`, `record_id`, `system_alias`, `title`: Core-study identifiers.
 - `original_a_level`, `original_primary_evidence_stage`, `original_e4_profile`, `original_evidence_object`, `original_task_category`: first-pass labels retained for adjudication and historical traceability.
 - `original_strongest_evidence_output`: current manuscript evidence-output baseline used only after independent coding for comparison and adjudication.
-- `original_artifact_note`, `original_environment_note`, `publication_status`: context fields for later comparison.
-- `coder2_a_level`, `coder2_primary_evidence_stage`, `coder2_e4_profile`, `coder2_evidence_object`: optional legacy second-coder decision fields.
+- `original_artifact_note`, `original_environment_note`, `publication_status`, `boundary_role`: context fields for later comparison. `publication_status` records publication/material status only; `boundary_role` records whether the row is a standard Core entry or governance boundary case.
+- `coder2_strongest_evidence_output`, `coder2_decision_reason`, `coder2_uncertainty_note`: fields copied from the blind workflow after real independent coding. They match `data/core31_second_coder_blind.csv`.
+- `coder2_a_level`, `coder2_primary_evidence_stage`, `coder2_e4_profile`, `coder2_evidence_object`: optional legacy second-coder decision fields if a later sampled A/E review is performed.
 - `coder2_orchestration_flag`, `coder2_adaptation_flag`, `coder2_external_confirmation_level`, `coder2_reproducibility_level`, `coder2_publication_confidence`: optional auxiliary audit fields.
-- `coder2_decision`, `evidence_note`, `disagreement_note`, `adjudication_result`: decision and adjudication fields to fill only after real independent coding.
+- `disagreement_note`, `adjudication_result`: adjudication fields to fill only after real independent coding.
 
 ## `data/screening_summary.csv`
 

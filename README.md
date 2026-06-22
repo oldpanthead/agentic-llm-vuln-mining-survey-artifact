@@ -35,7 +35,7 @@ The public artifact still includes legacy A-profile and E-level columns because 
 
 ## Second-Coder Status
 
-The artifact currently prepares second-coder materials; it does not report completed second-coder results. `data/core31_second_coder_blind.csv` is the independent input table and intentionally hides original labels. `data/core31_second_coder_adjudication_template.csv` is for later comparison only after independent coding is complete. Agreement rates, Cohen's kappa, and adjudication outcomes require real coder2 decisions and are not present in this release.
+The artifact currently prepares second-coder materials; it does not report completed second-coder results. `data/core31_second_coder_blind.csv` is the independent input table and intentionally hides original labels. `data/core31_second_coder_adjudication_template.csv` is for later comparison only after independent coding is complete. Agreement rates, Cohen's kappa, and adjudication outcomes require real coder2 decisions and are not present in this release. Future completed outputs should use `data/core31_second_coder_results.csv`, `data/core31_second_coder_adjudicated.csv`, and `reports/SECOND_CODER_AGREEMENT_REPORT.md`; these files should be added only after real independent coding and adjudication exist.
 
 ## Main Files
 
@@ -73,6 +73,3 @@ Expected result: all schema, corpus count, Core count, product-snapshot, second-
 - Code scripts: MIT License, see `LICENSE-CODE`.
 
 The current public repository URL is `https://github.com/oldpanthead/agentic-llm-vuln-mining-survey-artifact`. An archival DOI is not yet assigned.
-
-
-

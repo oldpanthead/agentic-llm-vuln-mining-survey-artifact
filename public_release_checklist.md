@@ -37,7 +37,9 @@ This checklist prepares the minimal artifact for a future GitHub or Zenodo relea
 
 - [x] `reproduce_tables.py` runs without count or A/E distribution errors.
 - [x] Remaining DOI gaps are documented rather than guessed.
-- [ ] If second-coder results are completed, add auditable agreement output; do not report raw agreement or Cohen's kappa from blank templates.
+- [ ] If second-coder results are completed, add `data/core31_second_coder_results.csv`; do not create it from blank templates.
+- [ ] If disagreements are adjudicated, add `data/core31_second_coder_adjudicated.csv`; do not create it before adjudication.
+- [ ] Add `reports/SECOND_CODER_AGREEMENT_REPORT.md` only after raw agreement and Cohen's kappa are computed from real coder2 decisions.
 - [ ] Record the final corpus date and search cutoff date in the manuscript and artifact README.
 
 ## Submission Notes
@@ -52,5 +54,3 @@ This checklist prepares the minimal artifact for a future GitHub or Zenodo relea
 - [x] Confirm `unknown_not_audited` is not counted as absence of material.
 - [x] Confirm `data/product_ecosystem_snapshot.csv` is an independent boundary layer and not counted in the 212 candidate records.
 - [x] Confirm product-page changes do not automatically alter Core statistics.
-
-

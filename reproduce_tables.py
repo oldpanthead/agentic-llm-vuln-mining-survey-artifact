@@ -109,6 +109,7 @@ CSV_REQUIRED_FIELDS = {
       'system_alias',
       'title',
       'publication_status',
+      'boundary_role',
       'materials_to_review',
     ],
     'core31_second_coder_adjudication_template.csv': [
@@ -117,6 +118,7 @@ CSV_REQUIRED_FIELDS = {
       'system_alias',
       'title',
       'publication_status',
+      'boundary_role',
       'original_strongest_evidence_output',
     ],
     'product_ecosystem_snapshot.csv': [
@@ -389,6 +391,9 @@ def validate_second_coder_files(blind_rows, adjudication_rows):
     }
     missing_blind_fields = sorted(required_blind_fields - blind_fields)
     original_fields = sorted(field for field in blind_fields if field.startswith('original_'))
+    allowed_boundary_roles = {'standard_core_entry', 'governance_boundary_case'}
+    blind_boundary_roles = sorted(set(row.get('boundary_role', '').strip() for row in blind_rows))
+    invalid_blind_boundary_roles = [role for role in blind_boundary_roles if role not in allowed_boundary_roles]
     status('ERROR', len(blind_rows) == 31, f'core31_second_coder_blind.csv rows = {len(blind_rows)}; expected 31')
     status('ERROR', not missing_blind_fields, 'core31_second_coder_blind.csv contains required fields')
     if missing_blind_fields:
@@ -396,6 +401,9 @@ def validate_second_coder_files(blind_rows, adjudication_rows):
     status('ERROR', not original_fields, 'core31_second_coder_blind.csv contains no original_* answer-key columns')
     if original_fields:
         print('ERROR: blind second-coder file exposes original fields:', ', '.join(original_fields))
+    status('ERROR', not invalid_blind_boundary_roles, 'core31_second_coder_blind.csv boundary_role values use approved labels')
+    if invalid_blind_boundary_roles:
+        print('ERROR: invalid blind boundary_role values:', ', '.join(invalid_blind_boundary_roles))
 
     allowed_outputs = {
         'candidate judgment',
@@ -407,6 +415,17 @@ def validate_second_coder_files(blind_rows, adjudication_rows):
         'governance boundary case',
     }
     adjudication_fields = set(adjudication_rows[0].keys()) if adjudication_rows else set()
+    required_adjudication_fields = {
+        'boundary_role',
+        'original_strongest_evidence_output',
+        'coder2_strongest_evidence_output',
+        'coder2_decision_reason',
+        'coder2_uncertainty_note',
+    }
+    missing_adjudication_fields = sorted(required_adjudication_fields - adjudication_fields)
+    status('ERROR', not missing_adjudication_fields, 'adjudication template contains current second-coder workflow fields')
+    if missing_adjudication_fields:
+        print('ERROR: adjudication template missing fields:', ', '.join(missing_adjudication_fields))
     has_current_baseline = 'original_strongest_evidence_output' in adjudication_fields
     if adjudication_rows:
         if has_current_baseline:
@@ -470,6 +489,11 @@ def validate_second_coder_files(blind_rows, adjudication_rows):
 
     if adjudication_rows:
         status('ERROR', any(field.startswith('original_') for field in adjudication_fields), 'adjudication template retains original_* fields for post-coding comparison')
+        adjudication_boundary_roles = sorted(set(row.get('boundary_role', '').strip() for row in adjudication_rows))
+        invalid_adjudication_boundary_roles = [role for role in adjudication_boundary_roles if role not in allowed_boundary_roles]
+        status('ERROR', not invalid_adjudication_boundary_roles, 'adjudication template boundary_role values use approved labels')
+        if invalid_adjudication_boundary_roles:
+            print('ERROR: invalid adjudication boundary_role values:', ', '.join(invalid_adjudication_boundary_roles))
         status('ERROR', len(adjudication_rows) == 31, f'core31_second_coder_adjudication_template.csv rows = {len(adjudication_rows)}; expected 31')
 
 
