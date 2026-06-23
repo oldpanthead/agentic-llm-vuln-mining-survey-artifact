@@ -19,7 +19,7 @@ The release includes only non-sensitive materials needed to review the survey ev
 - DOI/reference audit and DOI-not-applicable product-page notes;
 - citation-expansion audit note for the 2026-06-19 manuscript reference-list update;
 - product-ecosystem snapshot for public coding-agent and security-agent materials;
-- second-coder blind 31-Core input table, adjudication template, and optional sampled-review worksheets, without completed coder2 results or adjudicated answers;
+- second-coder blind 31-Core input table, completed coder2 results, pre-adjudication agreement report, adjudication template, and optional sampled-review worksheets;
 - security boundary, release checklist, repository setup notes, licenses, and reproducibility script.
 
 ## Excluded
@@ -28,7 +28,7 @@ The release excludes:
 
 - undisclosed PoCs, exploit payloads, live reproduction instructions, sensitive crash inputs, private targets, credentials, or tokens;
 - local Zotero storage paths, Zotero SQLite databases, PDFs, private working directories, and private verification exports;
-- second-coder answer keys, completed coder2 results, agreement statistics, adjudication results, and private disagreement notes;
+- second-coder answer keys before independent coding, adjudication results, and private disagreement notes beyond the public pre-adjudication comparison fields;
 - manuscript source files, build logs, ZIP archives, and temporary audit variants.
 
 ## Evidence Boundary
@@ -48,6 +48,14 @@ The reproducibility audit separates repository presence, target version, environ
 ## Open Items
 
 - Decide whether and when to archive on Zenodo.
-- Add real second-coder results, agreement statistics, and adjudication notes only after independent coding is complete.
+- Complete disagreement adjudication only after reviewing rows marked in `data/core31_second_coder_adjudication_template.csv`; add `data/core31_second_coder_adjudicated.csv` only after that review is complete.
 - Refresh fast-changing product materials before the next manuscript revision.
 
+
+
+## Second-Coder Outputs
+
+- `data/core31_second_coder_blind.csv`
+- `data/core31_second_coder_results.csv`
+- `data/core31_second_coder_adjudication_template.csv`
+- `reports/SECOND_CODER_AGREEMENT_REPORT.md`

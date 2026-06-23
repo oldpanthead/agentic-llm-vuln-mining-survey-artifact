@@ -112,6 +112,18 @@ CSV_REQUIRED_FIELDS = {
       'boundary_role',
       'materials_to_review',
     ],
+    'core31_second_coder_results.csv': [
+      'core_id',
+      'record_id',
+      'system_alias',
+      'title',
+      'publication_status',
+      'boundary_role',
+      'materials_to_review',
+      'coder2_strongest_evidence_output',
+      'coder2_decision_reason',
+      'coder2_uncertainty_note',
+    ],
     'core31_second_coder_adjudication_template.csv': [
       'core_id',
       'record_id',
@@ -369,9 +381,12 @@ def cohen_kappa(first, second):
         return 1.0 if observed == 1 else None
     return (observed - expected) / (1 - expected)
 
-def validate_second_coder_files(blind_rows, adjudication_rows):
+def validate_second_coder_files(blind_rows, adjudication_rows, results_rows=None):
+    results_rows = results_rows or []
     blind_path = DATA / 'core31_second_coder_blind.csv'
+    results_path = DATA / 'core31_second_coder_results.csv'
     adjudication_path = DATA / 'core31_second_coder_adjudication_template.csv'
+    report_path = ROOT / 'reports' / 'SECOND_CODER_AGREEMENT_REPORT.md'
     status('ERROR', blind_path.exists(), 'core31_second_coder_blind.csv exists')
     status('ERROR', adjudication_path.exists(), 'core31_second_coder_adjudication_template.csv exists')
     if not blind_rows:
@@ -447,6 +462,7 @@ def validate_second_coder_files(blind_rows, adjudication_rows):
     status('ERROR', not invalid, 'coder2 strongest-evidence-output values use approved labels when populated')
     if invalid:
         print('ERROR: invalid coder2 strongest-evidence-output labels:', ', '.join(invalid))
+    coder2_complete = bool(filled) and len(filled) == len(blind_rows) and not invalid
     if not filled:
         print('WARNING: coder2 strongest-evidence-output fields are blank; second-coder results are pending, so no agreement or Cohen kappa is reported')
     elif len(filled) < len(blind_rows):
@@ -486,6 +502,29 @@ def validate_second_coder_files(blind_rows, adjudication_rows):
                 print('WARNING: Cohen kappa could not be computed for the populated coder2 labels')
             else:
                 print(f'SECOND_CODER_RESULT: Cohen kappa for strongest evidence output = {kappa:.3f}')
+            status('ERROR', results_path.exists(), 'core31_second_coder_results.csv exists after completed coder2 coding')
+            status('ERROR', len(results_rows) == len(blind_rows), f'core31_second_coder_results.csv rows = {len(results_rows)}; expected {len(blind_rows)}')
+            if results_rows:
+                mismatches = []
+                result_by_core = {row.get('core_id', ''): row for row in results_rows}
+                for row in blind_rows:
+                    result = result_by_core.get(row.get('core_id', ''))
+                    if not result:
+                        mismatches.append((row.get('core_id', '?'), 'missing result row'))
+                        continue
+                    for field in ['coder2_strongest_evidence_output', 'coder2_decision_reason', 'coder2_uncertainty_note']:
+                        if row.get(field, '') != result.get(field, ''):
+                            mismatches.append((row.get('core_id', '?'), field))
+                status('ERROR', not mismatches, 'core31_second_coder_results.csv matches blind coder2 decision fields')
+                if mismatches:
+                    print('ERROR: second-coder result mismatches:', mismatches[:10])
+            status('ERROR', report_path.exists(), 'SECOND_CODER_AGREEMENT_REPORT.md exists for completed coder2 coding')
+            if report_path.exists():
+                report_text = report_path.read_text(encoding='utf-8')
+                expected_raw = f'Raw agreement: {raw:.3f}'
+                expected_kappa = f'Cohen\'s kappa: {kappa:.3f}' if kappa is not None else 'Cohen\'s kappa: not computable'
+                status('ERROR', expected_raw in report_text, 'agreement report records current raw agreement')
+                status('ERROR', expected_kappa in report_text, 'agreement report records current Cohen kappa')
 
     if adjudication_rows:
         status('ERROR', any(field.startswith('original_') for field in adjudication_fields), 'adjudication template retains original_* fields for post-coding comparison')
@@ -542,13 +581,14 @@ summary = read_csv('screening_summary.csv')
 ref = read_csv('reference_audit.csv')
 product_snapshot = read_csv('product_ecosystem_snapshot.csv')
 second_coder_blind = read_csv('core31_second_coder_blind.csv')
+second_coder_results = read_csv('core31_second_coder_results.csv')
 second_coder_adjudication = read_csv('core31_second_coder_adjudication_template.csv')
 record_classification = read_csv('record_classification_audit.csv')
 repro_audit = read_csv('core_reproducibility_audit.csv')
 repro_summary = read_csv('core_reproducibility_audit_summary.csv')
 
 validate_product_ecosystem_snapshot(product_snapshot)
-validate_second_coder_files(second_coder_blind, second_coder_adjudication)
+validate_second_coder_files(second_coder_blind, second_coder_adjudication, second_coder_results)
 validate_tracked_file_boundary()
 
 expected_layers = {'Core': 31, 'Supporting': 66, 'Background': 95, 'Excluded': 20}

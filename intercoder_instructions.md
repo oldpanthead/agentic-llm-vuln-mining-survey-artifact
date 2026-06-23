@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This artifact prepares materials for an independent second-coder check. It does not contain completed second-coder decisions, agreement rates, Cohen's kappa, weighted kappa, or resolved disagreements.
+This artifact supports an independent second-coder check. The 31-Core strongest-evidence-output coding has been completed and recorded in `data/core31_second_coder_results.csv`; agreement statistics are reported before adjudication in `reports/SECOND_CODER_AGREEMENT_REPORT.md`. Resolved disagreements are not yet recorded.
 
 ## Task Priority
 
@@ -30,7 +30,7 @@ Agreement rates and Cohen's kappa require real second-coder decisions. They must
 
 ## Primary CSV Fields
 
-Fill `data/core31_second_coder_blind.csv` during the primary task.
+The primary task was filled in `data/core31_second_coder_blind.csv`. The completed decisions are also copied to `data/core31_second_coder_results.csv`.
 
 - `core_id`: stable Core-study identifier.
 - `record_id`: candidate record identifier from the artifact.
@@ -59,22 +59,21 @@ The optional task can inspect corpus layer, legacy A-profile, evidence object, a
 
 After independent coding is complete:
 
-1. Copy `coder2_strongest_evidence_output`, `coder2_decision_reason`, and `coder2_uncertainty_note` into `data/core31_second_coder_adjudication_template.csv` or an equivalent adjudication sheet.
+1. Use `data/core31_second_coder_adjudication_template.csv`, where coder2 decisions have been copied from the completed blind workflow.
 2. Compare coder2 decisions with `original_strongest_evidence_output`; legacy E-level fields are retained only for historical traceability or fallback.
-3. Mark disagreements in the disagreement fields.
+3. Review rows marked in `disagreement_note` as needing adjudication.
 4. Discuss disagreements with reference to `evidence_output_codebook.md`, `codebook.md`, and the public materials.
 5. Record final adjudicated decisions only after review.
 6. Preserve the original coder2 decision, reason, uncertainty note, disagreement note, and adjudicated result.
 
 ## Agreement Calculation
 
-After real second-coder decisions exist, the author may calculate:
+With complete real second-coder decisions, the artifact reports:
 
 - raw agreement for strongest evidence output;
-- Cohen's kappa for strongest evidence output, if the category set is appropriate and all rows are coded;
-- optional raw agreement for sampled corpus layer, legacy A-profile, evidence object, and external-evidence profile.
+- Cohen's kappa for strongest evidence output.
 
-Blank coder2 fields mean coding is incomplete. In that state the artifact may warn that second-coder results are pending, but it must not report agreement or kappa.
+Optional sampled review of corpus layer, legacy A-profile, evidence object, and external-evidence profile remains separate. Blank or incomplete coder2 fields would mean coding is incomplete; in that state the artifact must warn rather than report agreement or kappa.
 
 ## Security Boundary
 
