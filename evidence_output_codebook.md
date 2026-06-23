@@ -48,4 +48,8 @@ Legacy crosswalk: commonly recorded as `N/A` or boundary-specific in old E-level
 
 ## Coding Rule
 
-Code the strongest evidence output supported by public materials. Tool count, number of agents, workflow length, benchmark name, or author wording does not automatically increase evidence strength. When public material is incomplete, keep the decision at the weaker supported label and explain the uncertainty.
+Code `strongest_evidence_output` as the highest evidence strength supported by the system's own public output. Tool count, number of agents, workflow length, benchmark name, or author wording does not automatically increase the evidence-output label. When public material is incomplete, keep the decision at the weaker supported label and explain the uncertainty.
+
+External materials such as CVE, CNVD, maintainer confirmation, bug bounty, vendor confirmation, or fix records do not automatically move the main label to `externally traceable material` when they appear only as aggregate author reports or cannot be checked item by item. Code `externally traceable material` only when the external material can be aligned with a concrete system output, target version, reproducibility material, and a public issue, advisory, CVE, PR, commit, vendor notice, or specific vulnerability claim.
+
+If the system provides PoC, PoV, replay, patch validation, or verified benchmark artifacts, but external confirmation appears only as an aggregate author-reported clue, keep the main label at `reproducible validation` and record the external clue in the rationale or uncertainty note.

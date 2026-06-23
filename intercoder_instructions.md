@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This artifact supports an independent second-coder check. The 31-Core strongest-evidence-output coding has been completed and recorded in `data/core31_second_coder_results.csv`; agreement statistics are reported before adjudication in `reports/SECOND_CODER_AGREEMENT_REPORT.md`. Resolved disagreements are not yet recorded.
+This artifact supports an independent second-coder check. The first completed pass is archived as a pilot calibration round under `archive/pilot_second_coder_round_1/`; its agreement and kappa should not be cited as formal intercoder reliability. The formal second-coder reliability check should be rerun after the clarified evidence-output codebook is frozen.
 
 ## Task Priority
 
@@ -21,7 +21,7 @@ The primary task matches the current manuscript synthesis, which uses natural-la
 The second coder must complete coding independently. For the 31-Core primary task, give the coder:
 
 - `evidence_output_codebook.md`;
-- `data/core31_second_coder_blind.csv`;
+- `data/core31_second_coder_formal_blind_template.csv`;
 - the public papers and public project/artifact pages listed in the blind file.
 
 Do not give the second coder `data/core31_second_coder_adjudication_template.csv` before independent coding is complete. That file contains original labels and is only for later comparison, disagreement discussion, and adjudication. The second coder should not inspect original A/E labels, original evidence labels, original evidence objects, adjudication fields, or any answer key before recording their own decisions.
@@ -30,7 +30,7 @@ Agreement rates and Cohen's kappa require real second-coder decisions. They must
 
 ## Primary CSV Fields
 
-The primary task was filled in `data/core31_second_coder_blind.csv`. The completed decisions are also copied to `data/core31_second_coder_results.csv`.
+Fill `data/core31_second_coder_formal_blind_template.csv` during the future formal primary task. The current template is intentionally blank.
 
 - `core_id`: stable Core-study identifier.
 - `record_id`: candidate record identifier from the artifact.
@@ -59,21 +59,21 @@ The optional task can inspect corpus layer, legacy A-profile, evidence object, a
 
 After independent coding is complete:
 
-1. Use `data/core31_second_coder_adjudication_template.csv`, where coder2 decisions have been copied from the completed blind workflow.
+1. After the future formal coding pass, copy `coder2_strongest_evidence_output`, `coder2_decision_reason`, and `coder2_uncertainty_note` into `data/core31_second_coder_adjudication_template.csv` or an equivalent adjudication sheet.
 2. Compare coder2 decisions with `original_strongest_evidence_output`; legacy E-level fields are retained only for historical traceability or fallback.
-3. Review rows marked in `disagreement_note` as needing adjudication.
+3. Mark disagreements in the disagreement fields.
 4. Discuss disagreements with reference to `evidence_output_codebook.md`, `codebook.md`, and the public materials.
 5. Record final adjudicated decisions only after review.
 6. Preserve the original coder2 decision, reason, uncertainty note, disagreement note, and adjudicated result.
 
 ## Agreement Calculation
 
-With complete real second-coder decisions, the artifact reports:
+After the future formal second-coder decisions are complete, the author may report:
 
 - raw agreement for strongest evidence output;
 - Cohen's kappa for strongest evidence output.
 
-Optional sampled review of corpus layer, legacy A-profile, evidence object, and external-evidence profile remains separate. Blank or incomplete coder2 fields would mean coding is incomplete; in that state the artifact must warn rather than report agreement or kappa.
+Optional sampled review of corpus layer, legacy A-profile, evidence object, and external-evidence profile remains separate. Blank or incomplete coder2 fields mean coding is incomplete; in that state the artifact must warn rather than report formal agreement or kappa. Pilot agreement/kappa values are calibration notes only.
 
 ## Security Boundary
 

@@ -9,7 +9,7 @@ This checklist prepares the minimal artifact for a future GitHub or Zenodo relea
 - [ ] Keep `intercoder_sample_key.csv` private until independent second-coder work is complete.
 - [ ] Confirm `data/core31_second_coder_blind.csv` does not expose original labels or answer-key fields.
 - [ ] Confirm `data/core31_second_coder_adjudication_template.csv` is not used before independent coding.
-- [x] Report agreement statistics only after real second-coder decisions exist.
+- [ ] Report formal agreement statistics only after revised codebook freeze and new independent coding.
 - [ ] Confirm that any public repository URL has author approval before replacing `[REPOSITORY URL]` in the manuscript.
 
 ## Data Files
@@ -37,9 +37,11 @@ This checklist prepares the minimal artifact for a future GitHub or Zenodo relea
 
 - [x] `reproduce_tables.py` runs without count or A/E distribution errors.
 - [x] Remaining DOI gaps are documented rather than guessed.
-- [x] If second-coder results are completed, add `data/core31_second_coder_results.csv`; do not create it from blank templates.
+- [x] Pilot second-coder round archived for codebook calibration.
+- [x] Pilot agreement/kappa must not be cited as formal reliability.
+- [x] Formal second-coder template is blank and hides original labels.
+- [ ] Add formal agreement report only after revised codebook freeze and new independent coding.
 - [ ] If disagreements are adjudicated, add `data/core31_second_coder_adjudicated.csv`; do not create it before adjudication.
-- [x] Add `reports/SECOND_CODER_AGREEMENT_REPORT.md` only after raw agreement and Cohen's kappa are computed from real coder2 decisions.
 - [ ] Record the final corpus date and search cutoff date in the manuscript and artifact README.
 
 ## Submission Notes

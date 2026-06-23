@@ -1,6 +1,6 @@
 # Data Dictionary
 
-This dictionary describes the non-sensitive audit artifact used by the survey manuscript. It is intended to help reviewers inspect corpus construction, legacy A/E traceability fields, current evidence-output labels, bibliographic verification, completed second-coder decisions, and pending adjudication materials.
+This dictionary describes the non-sensitive audit artifact used by the survey manuscript. It is intended to help reviewers inspect corpus construction, legacy A/E traceability fields, current evidence-output labels, bibliographic verification, pilot second-coder calibration materials, formal blank second-coder templates, and pending adjudication materials.
 
 ## Common Identifiers
 
@@ -92,19 +92,23 @@ This dictionary describes the non-sensitive audit artifact used by the survey ma
 
 ## `data/core31_second_coder_blind.csv`
 
-This is the primary input file for independent second-coder review of all 31 Core studies. It intentionally hides original A/E labels, original evidence labels, original evidence objects, and other answer-key fields.
+This file is retained as a blank blind template after the pilot round was archived. It intentionally hides original A/E labels, original evidence labels, original evidence objects, and other answer-key fields.
 
 - `core_id`, `record_id`, `system_alias`, `title`: Core-study identifiers.
 - `publication_status`: publication/material status only. Current allowed values in the 31-Core second-coder files include `not_publicly_available`, `preprint_or_arxiv_from_local_metadata`, `arXiv preprint`, `journal article`, `preprint/project page`, `verified_by_official_source`, and `peer_reviewed`. This field must not encode boundary role.
 - `boundary_role`: analysis-boundary role for second-coder workflow; currently `standard_core_entry` or `governance_boundary_case`.
 - `materials_to_review`: non-sensitive instruction describing which public materials to inspect.
-- `coder2_strongest_evidence_output`: completed second-coder decision for the current manuscript evidence-output label.
-- `coder2_decision_reason`: second-coder rationale grounded in public materials.
-- `coder2_uncertainty_note`: second-coder uncertainty or missing-material note.
+- `coder2_strongest_evidence_output`: blank field for a future formal second-coder decision using the current manuscript evidence-output label.
+- `coder2_decision_reason`: blank rationale field for the future formal second coder.
+- `coder2_uncertainty_note`: blank uncertainty or missing-material note.
 
-## `data/core31_second_coder_results.csv`
+## `data/core31_second_coder_formal_blind_template.csv`
 
-This file preserves the completed independent coder2 decisions copied from the blind workflow. It has the same schema as `data/core31_second_coder_blind.csv` and should be treated as pre-adjudication coder2 output. It does not contain original labels or adjudicated decisions.
+This is the blank formal second-coder template for the rerun after codebook clarification. It has the same schema as `data/core31_second_coder_blind.csv`, contains 31 rows, contains no `original_*` fields, and keeps `coder2_strongest_evidence_output`, `coder2_decision_reason`, and `coder2_uncertainty_note` empty.
+
+## `archive/pilot_second_coder_round_1/`
+
+This archive preserves the first pilot second-coder round for codebook calibration. It contains the pilot results and pre-adjudication agreement report. These materials should not be cited as the formal intercoder reliability result.
 
 ## `data/core31_second_coder_adjudication_template.csv`
 
@@ -117,8 +121,7 @@ This file is for comparison and adjudication after independent coding is complet
 - `coder2_strongest_evidence_output`, `coder2_decision_reason`, `coder2_uncertainty_note`: fields copied from the blind workflow after real independent coding. They match `data/core31_second_coder_blind.csv`.
 - `coder2_a_level`, `coder2_primary_evidence_stage`, `coder2_e4_profile`, `coder2_evidence_object`: optional legacy second-coder decision fields if a later sampled A/E review is performed.
 - `coder2_orchestration_flag`, `coder2_adaptation_flag`, `coder2_external_confirmation_level`, `coder2_reproducibility_level`, `coder2_publication_confidence`: optional auxiliary audit fields.
-- `disagreement_note`: pre-adjudication comparison note, marking agreement or rows needing adjudication.
-- `adjudication_result`: final adjudicated label field; currently blank until disagreement review is complete.
+- `disagreement_note`, `adjudication_result`: adjudication fields to fill only after a future formal independent coding pass is complete.
 
 ## `data/screening_summary.csv`
 
@@ -182,9 +185,9 @@ Rows already audited with DOI or official URL in `reference_audit.csv` are not d
 
 ## Intercoder Files
 
-`data/core31_second_coder_blind.csv` is the original blind file used for independent full coding of all 31 Core studies. `data/core31_second_coder_results.csv` records the completed coder2 decisions copied from the blind workflow. `data/core31_second_coder_adjudication_template.csv` is the comparison worksheet used after independent coding; it includes original labels and pre-adjudication disagreement notes, but not final adjudicated results.
+`data/core31_second_coder_formal_blind_template.csv` is the blank formal second-coder input for the rerun after codebook clarification. `data/core31_second_coder_blind.csv` is also kept blank as a blind workflow template. `data/core31_second_coder_adjudication_template.csv` is the comparison worksheet to use only after a future formal independent coding pass.
 
-`reports/SECOND_CODER_AGREEMENT_REPORT.md` reports pre-adjudication raw agreement and Cohen's kappa computed from real coder2 decisions.
+`archive/pilot_second_coder_round_1/` preserves the pilot round for calibration only; its raw agreement and kappa should not be cited as formal reliability.
 
 `data/intercoder_sample_blind.csv` is an optional sampled-review worksheet. `data/intercoder_sample_key.csv` is private and not included in the public artifact.
 

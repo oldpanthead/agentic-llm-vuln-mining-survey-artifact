@@ -1,14 +1,14 @@
-# Second-Coder Agreement Report
+# Pilot Second-Coder Agreement Report
 
-This report summarizes completed independent second-coder decisions for the 31 Core studies. It reports agreement before adjudication; it does not contain adjudicated final labels.
+This archived report summarizes a pilot second-coder calibration round for the 31 Core studies. It reports pre-adjudication agreement for codebook calibration only; it should not be cited as the formal intercoder reliability result and does not contain adjudicated final labels.
 
 ## Scope
 
 - Coding task: strongest evidence output for all 31 Core studies.
 - Coder2 input file: `data/core31_second_coder_blind.csv`.
-- Published coder2 result file: `data/core31_second_coder_results.csv`.
-- Baseline comparison file: `data/core31_second_coder_adjudication_template.csv`, using `original_strongest_evidence_output`.
-- Adjudication status: pending; `adjudication_result` remains blank.
+- Archived pilot coder2 result file: `core31_second_coder_results.csv`.
+- Baseline comparison file used during the pilot: `data/core31_second_coder_adjudication_template.csv`, using `original_strongest_evidence_output`.
+- Pilot adjudication status: not performed; this archive is retained only for calibration.
 
 ## Agreement
 
@@ -17,7 +17,7 @@ This report summarizes completed independent second-coder decisions for the 31 C
 - Cohen's kappa: 0.470
 - Disagreements requiring adjudication: 13
 
-Interpretation note: the kappa value should be described conservatively as moderate agreement. Final manuscript wording should distinguish this pre-adjudication agreement from any later adjudicated labels.
+Interpretation note: the kappa value was useful for identifying codebook ambiguity, especially around externally traceable material, but it should not be presented as a formal reliability result.
 
 ## Label Counts
 

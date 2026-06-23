@@ -112,7 +112,7 @@ CSV_REQUIRED_FIELDS = {
       'boundary_role',
       'materials_to_review',
     ],
-    'core31_second_coder_results.csv': [
+    'core31_second_coder_formal_blind_template.csv': [
       'core_id',
       'record_id',
       'system_alias',
@@ -198,12 +198,19 @@ def validate_csv_schema(name, reader, rows):
     status('ERROR', not missing, f'{name} contains required fields: {", ".join(required) if required else "no file-specific required fields"}')
     if missing:
         print(f'ERROR: {name} missing fields:', ', '.join(missing))
+    required_non_empty = list(required)
+    if name == 'core31_second_coder_formal_blind_template.csv':
+        required_non_empty = [field for field in required_non_empty if field not in {
+            'coder2_strongest_evidence_output',
+            'coder2_decision_reason',
+            'coder2_uncertainty_note',
+        }]
     width_errors = []
     required_errors = []
     for idx, row in enumerate(rows, start=2):
         if None in row:
             width_errors.append(idx)
-        empty_required = [field for field in required if row.get(field, '') == '']
+        empty_required = [field for field in required_non_empty if row.get(field, '') == '']
         if empty_required:
             required_errors.append((idx, empty_required))
     status('ERROR', not width_errors, f'{name} has consistent column width for {len(rows)} rows')
@@ -381,44 +388,19 @@ def cohen_kappa(first, second):
         return 1.0 if observed == 1 else None
     return (observed - expected) / (1 - expected)
 
-def validate_second_coder_files(blind_rows, adjudication_rows, results_rows=None):
-    results_rows = results_rows or []
+def validate_second_coder_files(blind_rows, adjudication_rows, formal_rows=None):
+    formal_rows = formal_rows or []
     blind_path = DATA / 'core31_second_coder_blind.csv'
-    results_path = DATA / 'core31_second_coder_results.csv'
+    formal_path = DATA / 'core31_second_coder_formal_blind_template.csv'
     adjudication_path = DATA / 'core31_second_coder_adjudication_template.csv'
-    report_path = ROOT / 'reports' / 'SECOND_CODER_AGREEMENT_REPORT.md'
+    pilot_dir = ROOT / 'archive' / 'pilot_second_coder_round_1'
+    pilot_report = pilot_dir / 'SECOND_CODER_AGREEMENT_REPORT.md'
+    pilot_results = pilot_dir / 'core31_second_coder_results.csv'
     status('ERROR', blind_path.exists(), 'core31_second_coder_blind.csv exists')
+    status('ERROR', formal_path.exists(), 'core31_second_coder_formal_blind_template.csv exists')
     status('ERROR', adjudication_path.exists(), 'core31_second_coder_adjudication_template.csv exists')
     if not blind_rows:
         return
-
-    blind_fields = set(blind_rows[0].keys())
-    required_blind_fields = {
-        'core_id',
-        'record_id',
-        'system_alias',
-        'title',
-        'publication_status',
-        'materials_to_review',
-        'coder2_strongest_evidence_output',
-        'coder2_decision_reason',
-        'coder2_uncertainty_note',
-    }
-    missing_blind_fields = sorted(required_blind_fields - blind_fields)
-    original_fields = sorted(field for field in blind_fields if field.startswith('original_'))
-    allowed_boundary_roles = {'standard_core_entry', 'governance_boundary_case'}
-    blind_boundary_roles = sorted(set(row.get('boundary_role', '').strip() for row in blind_rows))
-    invalid_blind_boundary_roles = [role for role in blind_boundary_roles if role not in allowed_boundary_roles]
-    status('ERROR', len(blind_rows) == 31, f'core31_second_coder_blind.csv rows = {len(blind_rows)}; expected 31')
-    status('ERROR', not missing_blind_fields, 'core31_second_coder_blind.csv contains required fields')
-    if missing_blind_fields:
-        print('ERROR: blind second-coder file missing fields:', ', '.join(missing_blind_fields))
-    status('ERROR', not original_fields, 'core31_second_coder_blind.csv contains no original_* answer-key columns')
-    if original_fields:
-        print('ERROR: blind second-coder file exposes original fields:', ', '.join(original_fields))
-    status('ERROR', not invalid_blind_boundary_roles, 'core31_second_coder_blind.csv boundary_role values use approved labels')
-    if invalid_blind_boundary_roles:
-        print('ERROR: invalid blind boundary_role values:', ', '.join(invalid_blind_boundary_roles))
 
     allowed_outputs = {
         'candidate judgment',
@@ -429,6 +411,53 @@ def validate_second_coder_files(blind_rows, adjudication_rows, results_rows=None
         'claim-level audit material',
         'governance boundary case',
     }
+    allowed_boundary_roles = {'standard_core_entry', 'governance_boundary_case'}
+    coder2_fields = [
+        'coder2_strongest_evidence_output',
+        'coder2_decision_reason',
+        'coder2_uncertainty_note',
+    ]
+
+    def check_blind_like(rows, label, require_blank=True):
+        fields = set(rows[0].keys()) if rows else set()
+        required = {
+            'core_id',
+            'record_id',
+            'system_alias',
+            'title',
+            'publication_status',
+            'boundary_role',
+            'materials_to_review',
+            *coder2_fields,
+        }
+        missing = sorted(required - fields)
+        original_fields = sorted(field for field in fields if field.startswith('original_'))
+        status('ERROR', len(rows) == 31, f'{label} rows = {len(rows)}; expected 31')
+        status('ERROR', not missing, f'{label} contains required fields')
+        if missing:
+            print(f'ERROR: {label} missing fields:', ', '.join(missing))
+        status('ERROR', not original_fields, f'{label} contains no original_* answer-key columns')
+        if original_fields:
+            print(f'ERROR: {label} exposes original fields:', ', '.join(original_fields))
+        boundary_roles = sorted(set(row.get('boundary_role', '').strip() for row in rows))
+        invalid_boundary_roles = [role for role in boundary_roles if role not in allowed_boundary_roles]
+        status('ERROR', not invalid_boundary_roles, f'{label} boundary_role values use approved labels')
+        if invalid_boundary_roles:
+            print(f'ERROR: invalid {label} boundary_role values:', ', '.join(invalid_boundary_roles))
+        if require_blank:
+            filled = []
+            for row in rows:
+                for field in coder2_fields:
+                    if row.get(field, '').strip():
+                        filled.append((row.get('core_id', '?'), field))
+            status('ERROR', not filled, f'{label} coder2 fields are blank for formal rerun')
+            if filled:
+                print(f'ERROR: {label} nonblank coder2 fields:', filled[:10])
+
+    check_blind_like(blind_rows, 'core31_second_coder_blind.csv', require_blank=True)
+    if formal_rows:
+        check_blind_like(formal_rows, 'core31_second_coder_formal_blind_template.csv', require_blank=True)
+
     adjudication_fields = set(adjudication_rows[0].keys()) if adjudication_rows else set()
     required_adjudication_fields = {
         'boundary_role',
@@ -441,92 +470,16 @@ def validate_second_coder_files(blind_rows, adjudication_rows, results_rows=None
     status('ERROR', not missing_adjudication_fields, 'adjudication template contains current second-coder workflow fields')
     if missing_adjudication_fields:
         print('ERROR: adjudication template missing fields:', ', '.join(missing_adjudication_fields))
-    has_current_baseline = 'original_strongest_evidence_output' in adjudication_fields
     if adjudication_rows:
-        if has_current_baseline:
-            baseline_values = [row.get('original_strongest_evidence_output', '').strip() for row in adjudication_rows]
-            invalid_baselines = sorted(set(value for value in baseline_values if value not in allowed_outputs))
-            missing_baselines = [row.get('core_id', '?') for row in adjudication_rows if not row.get('original_strongest_evidence_output', '').strip()]
-            status('ERROR', not missing_baselines, 'adjudication template original_strongest_evidence_output is populated for all rows')
-            if missing_baselines:
-                print('ERROR: missing original_strongest_evidence_output for:', ', '.join(missing_baselines))
-            status('ERROR', not invalid_baselines, 'adjudication template original_strongest_evidence_output values use approved labels')
-            if invalid_baselines:
-                print('ERROR: invalid original_strongest_evidence_output labels:', ', '.join(invalid_baselines))
-        else:
-            print('WARNING: adjudication template lacks original_strongest_evidence_output; falling back to legacy original_primary_evidence_stage mapping if coder2 results are complete')
-
-    coder_values = [row.get('coder2_strongest_evidence_output', '').strip() for row in blind_rows]
-    filled = [value for value in coder_values if value]
-    invalid = sorted(set(value for value in filled if value not in allowed_outputs))
-    status('ERROR', not invalid, 'coder2 strongest-evidence-output values use approved labels when populated')
-    if invalid:
-        print('ERROR: invalid coder2 strongest-evidence-output labels:', ', '.join(invalid))
-    coder2_complete = bool(filled) and len(filled) == len(blind_rows) and not invalid
-    if not filled:
-        print('WARNING: coder2 strongest-evidence-output fields are blank; second-coder results are pending, so no agreement or Cohen kappa is reported')
-    elif len(filled) < len(blind_rows):
-        print(f'WARNING: coder2 strongest-evidence-output fields are incomplete ({len(filled)}/{len(blind_rows)}); no agreement or Cohen kappa is reported')
-    else:
-        e_to_output = {
-            'E0': 'candidate judgment',
-            'E1': 'controlled task completion',
-            'E2': 'runtime safety signal',
-            'E3': 'reproducible validation',
-            'N/A': 'governance boundary case',
-            'NA': 'governance boundary case',
-        }
-        original_by_core = {}
-        baseline_source = 'original_strongest_evidence_output' if has_current_baseline else 'legacy original_primary_evidence_stage mapping'
-        for row in adjudication_rows:
-            core_id = row.get('core_id', '')
-            if has_current_baseline:
-                original = row.get('original_strongest_evidence_output', '').strip()
-                if original in allowed_outputs:
-                    original_by_core[core_id] = original
-            else:
-                original = row.get('original_primary_evidence_stage', '')
-                mapped = e_to_output.get(original)
-                if mapped:
-                    original_by_core[core_id] = mapped
-        missing_original = [row.get('core_id', '?') for row in blind_rows if row.get('core_id', '') not in original_by_core]
-        status('ERROR', not missing_original, f'adjudication template provides original strongest-evidence baseline for populated coder2 rows via {baseline_source}')
-        if missing_original:
-            print('ERROR: missing original evidence baseline for:', ', '.join(missing_original))
-        else:
-            original_values = [original_by_core[row.get('core_id', '')] for row in blind_rows]
-            raw = sum(1 for a, b in zip(original_values, coder_values) if a == b) / len(coder_values)
-            kappa = cohen_kappa(original_values, coder_values)
-            print(f'SECOND_CODER_RESULT: raw agreement for strongest evidence output = {raw:.3f}')
-            if kappa is None:
-                print('WARNING: Cohen kappa could not be computed for the populated coder2 labels')
-            else:
-                print(f'SECOND_CODER_RESULT: Cohen kappa for strongest evidence output = {kappa:.3f}')
-            status('ERROR', results_path.exists(), 'core31_second_coder_results.csv exists after completed coder2 coding')
-            status('ERROR', len(results_rows) == len(blind_rows), f'core31_second_coder_results.csv rows = {len(results_rows)}; expected {len(blind_rows)}')
-            if results_rows:
-                mismatches = []
-                result_by_core = {row.get('core_id', ''): row for row in results_rows}
-                for row in blind_rows:
-                    result = result_by_core.get(row.get('core_id', ''))
-                    if not result:
-                        mismatches.append((row.get('core_id', '?'), 'missing result row'))
-                        continue
-                    for field in ['coder2_strongest_evidence_output', 'coder2_decision_reason', 'coder2_uncertainty_note']:
-                        if row.get(field, '') != result.get(field, ''):
-                            mismatches.append((row.get('core_id', '?'), field))
-                status('ERROR', not mismatches, 'core31_second_coder_results.csv matches blind coder2 decision fields')
-                if mismatches:
-                    print('ERROR: second-coder result mismatches:', mismatches[:10])
-            status('ERROR', report_path.exists(), 'SECOND_CODER_AGREEMENT_REPORT.md exists for completed coder2 coding')
-            if report_path.exists():
-                report_text = report_path.read_text(encoding='utf-8')
-                expected_raw = f'Raw agreement: {raw:.3f}'
-                expected_kappa = f'Cohen\'s kappa: {kappa:.3f}' if kappa is not None else 'Cohen\'s kappa: not computable'
-                status('ERROR', expected_raw in report_text, 'agreement report records current raw agreement')
-                status('ERROR', expected_kappa in report_text, 'agreement report records current Cohen kappa')
-
-    if adjudication_rows:
+        baseline_values = [row.get('original_strongest_evidence_output', '').strip() for row in adjudication_rows]
+        invalid_baselines = sorted(set(value for value in baseline_values if value not in allowed_outputs))
+        missing_baselines = [row.get('core_id', '?') for row in adjudication_rows if not row.get('original_strongest_evidence_output', '').strip()]
+        status('ERROR', not missing_baselines, 'adjudication template original_strongest_evidence_output is populated for all rows')
+        if missing_baselines:
+            print('ERROR: missing original_strongest_evidence_output for:', ', '.join(missing_baselines))
+        status('ERROR', not invalid_baselines, 'adjudication template original_strongest_evidence_output values use approved labels')
+        if invalid_baselines:
+            print('ERROR: invalid original_strongest_evidence_output labels:', ', '.join(invalid_baselines))
         status('ERROR', any(field.startswith('original_') for field in adjudication_fields), 'adjudication template retains original_* fields for post-coding comparison')
         adjudication_boundary_roles = sorted(set(row.get('boundary_role', '').strip() for row in adjudication_rows))
         invalid_adjudication_boundary_roles = [role for role in adjudication_boundary_roles if role not in allowed_boundary_roles]
@@ -534,7 +487,24 @@ def validate_second_coder_files(blind_rows, adjudication_rows, results_rows=None
         if invalid_adjudication_boundary_roles:
             print('ERROR: invalid adjudication boundary_role values:', ', '.join(invalid_adjudication_boundary_roles))
         status('ERROR', len(adjudication_rows) == 31, f'core31_second_coder_adjudication_template.csv rows = {len(adjudication_rows)}; expected 31')
+        formal_filled = []
+        for row in adjudication_rows:
+            for field in coder2_fields + ['disagreement_note', 'adjudication_result']:
+                if row.get(field, '').strip():
+                    formal_filled.append((row.get('core_id', '?'), field))
+        status('ERROR', not formal_filled, 'adjudication template coder2/adjudication fields are blank before formal rerun')
+        if formal_filled:
+            print('ERROR: nonblank formal adjudication fields:', formal_filled[:10])
 
+    status('ERROR', pilot_dir.exists(), 'pilot second-coder calibration archive exists')
+    status('ERROR', pilot_report.exists(), 'pilot agreement report is archived outside the formal report path')
+    status('ERROR', pilot_results.exists(), 'pilot coder2 results are archived outside the formal data path')
+    pilot_readme = pilot_dir / 'README.md'
+    status('ERROR', pilot_readme.exists(), 'pilot archive README exists')
+    if pilot_readme.exists():
+        archive_text = pilot_readme.read_text(encoding='utf-8')
+        status('ERROR', 'formal intercoder reliability' in archive_text and 'should not be cited' in archive_text, 'pilot archive warns against formal reliability citation')
+    print('PILOT_SECOND_CODER_ARCHIVE: archived for calibration only; formal reliability check pending after codebook clarification')
 
 def validate_tracked_file_boundary():
     try:
@@ -581,14 +551,14 @@ summary = read_csv('screening_summary.csv')
 ref = read_csv('reference_audit.csv')
 product_snapshot = read_csv('product_ecosystem_snapshot.csv')
 second_coder_blind = read_csv('core31_second_coder_blind.csv')
-second_coder_results = read_csv('core31_second_coder_results.csv')
+second_coder_formal = read_csv('core31_second_coder_formal_blind_template.csv')
 second_coder_adjudication = read_csv('core31_second_coder_adjudication_template.csv')
 record_classification = read_csv('record_classification_audit.csv')
 repro_audit = read_csv('core_reproducibility_audit.csv')
 repro_summary = read_csv('core_reproducibility_audit_summary.csv')
 
 validate_product_ecosystem_snapshot(product_snapshot)
-validate_second_coder_files(second_coder_blind, second_coder_adjudication, second_coder_results)
+validate_second_coder_files(second_coder_blind, second_coder_adjudication, second_coder_formal)
 validate_tracked_file_boundary()
 
 expected_layers = {'Core': 31, 'Supporting': 66, 'Background': 95, 'Excluded': 20}

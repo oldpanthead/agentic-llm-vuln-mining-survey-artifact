@@ -35,7 +35,7 @@ The public artifact still includes legacy A-profile and E-level columns because 
 
 ## Second-Coder Status
 
-The independent second-coder pass for strongest evidence output has been completed for all 31 Core studies. `data/core31_second_coder_blind.csv` remains the blind input table and intentionally hides original labels; `data/core31_second_coder_results.csv` records the completed coder2 decisions. `reports/SECOND_CODER_AGREEMENT_REPORT.md` reports pre-adjudication raw agreement and Cohen's kappa computed from real coder2 decisions. `data/core31_second_coder_adjudication_template.csv` copies coder2 decisions for comparison with `original_strongest_evidence_output`; adjudication is still pending, and `adjudication_result` remains blank. A future adjudicated output should use `data/core31_second_coder_adjudicated.csv` only after disagreement review is complete.
+An initial pilot second-coder round has been archived for codebook calibration. It revealed ambiguity around `externally traceable material`; therefore, the formal second-coder reliability check will be rerun after the clarified codebook is frozen. Pilot files are stored under `archive/pilot_second_coder_round_1/` and should not be cited as the formal intercoder reliability result. The current formal blind template is `data/core31_second_coder_formal_blind_template.csv`; its coder2 fields are intentionally blank.
 
 ## Main Files
 
@@ -51,7 +51,7 @@ The independent second-coder pass for strongest evidence output has been complet
 - `evidence_output_codebook.md`, `codebook.md`, and `data_dictionary.md`: current evidence-output labels, legacy coding definitions, and field descriptions.
 - `ZOTERO_PDF_RESOLUTION_REPORT.md`: path-redacted public Zotero/PDF resolution summary.
 
-Second-coder files include `data/core31_second_coder_blind.csv` for the blind 31-Core coding input, `data/core31_second_coder_results.csv` for completed coder2 strongest-evidence-output decisions, `data/core31_second_coder_adjudication_template.csv` for pre-adjudication comparison, and `reports/SECOND_CODER_AGREEMENT_REPORT.md` for agreement statistics. Auxiliary sampled-review worksheets include `data/intercoder_sample_blind.csv`, `data/intercoder_check_template.csv`, and `data/disagreement_resolution_template.csv`.
+Second-coder files include `data/core31_second_coder_formal_blind_template.csv` for the next formal 31-Core strongest-evidence-output coding pass and `data/core31_second_coder_adjudication_template.csv` for later comparison after new independent coding. The archived pilot files are under `archive/pilot_second_coder_round_1/`. Auxiliary sampled-review worksheets include `data/intercoder_sample_blind.csv`, `data/intercoder_check_template.csv`, and `data/disagreement_resolution_template.csv`.
 
 ## Security Boundary
 
@@ -65,7 +65,7 @@ Run from this directory:
 python reproduce_tables.py
 ```
 
-Expected result: all schema, corpus count, Core count, product-snapshot, second-coder, legacy A/E, classification, and reproducibility-audit checks pass. Missing DOI rows remain documented warnings.
+Expected result: all schema, corpus count, Core count, product-snapshot, formal second-coder-template, legacy A/E, classification, and reproducibility-audit checks pass. Missing DOI rows remain documented warnings.
 
 ## License
 
