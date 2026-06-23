@@ -19,7 +19,7 @@ The release includes only non-sensitive materials needed to review the survey ev
 - DOI/reference audit and DOI-not-applicable product-page notes;
 - citation-expansion audit note for the 2026-06-19 manuscript reference-list update;
 - product-ecosystem snapshot for public coding-agent and security-agent materials;
-- pilot second-coder round archived for calibration; formal second-coder check pending after codebook clarification;
+- pilot second-coder round archived for calibration; formal second-coder pass completed after codebook clarification; formal agreement report included; adjudication status recorded separately;
 - security boundary, release checklist, repository setup notes, licenses, and reproducibility script.
 
 ## Excluded
@@ -28,7 +28,7 @@ The release excludes:
 
 - undisclosed PoCs, exploit payloads, live reproduction instructions, sensitive crash inputs, private targets, credentials, or tokens;
 - local Zotero storage paths, Zotero SQLite databases, PDFs, private working directories, and private verification exports;
-- second-coder answer keys before independent coding, formal agreement statistics, adjudication results, and private disagreement notes;
+- second-coder answer keys before independent coding, undisclosed adjudication results, and private disagreement notes;
 - manuscript source files, build logs, ZIP archives, and temporary audit variants.
 
 ## Evidence Boundary
@@ -48,7 +48,6 @@ The reproducibility audit separates repository presence, target version, environ
 ## Open Items
 
 - Decide whether and when to archive on Zenodo.
-- Freeze the clarified evidence-output codebook before rerunning the formal second-coder reliability check.
 - Refresh fast-changing product materials before the next manuscript revision.
 
 
@@ -56,7 +55,9 @@ The reproducibility audit separates repository presence, target version, environ
 ## Second-Coder Outputs
 
 - `data/core31_second_coder_formal_blind_template.csv`
+- `data/core31_second_coder_formal_results.csv`
 - `data/core31_second_coder_adjudication_template.csv`
+- `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md`
 - `archive/pilot_second_coder_round_1/`
 
-Pilot agreement/kappa values in the archive are retained for codebook calibration only and must not be cited as formal intercoder reliability.
+Pilot agreement/kappa values in the archive are retained for codebook calibration only and must not be cited as formal intercoder reliability. Formal agreement statistics are reported in `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md`; adjudicated labels should be recorded separately if adjudication is performed.

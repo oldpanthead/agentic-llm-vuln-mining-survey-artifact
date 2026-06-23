@@ -1,6 +1,6 @@
 # Data Dictionary
 
-This dictionary describes the non-sensitive audit artifact used by the survey manuscript. It is intended to help reviewers inspect corpus construction, legacy A/E traceability fields, current evidence-output labels, bibliographic verification, pilot second-coder calibration materials, formal blank second-coder templates, and pending adjudication materials.
+This dictionary describes the non-sensitive audit artifact used by the survey manuscript. It is intended to help reviewers inspect corpus construction, legacy A/E traceability fields, current evidence-output labels, bibliographic verification, pilot second-coder calibration materials, formal second-coder templates/results, agreement reports, and pending adjudication materials.
 
 ## Common Identifiers
 
@@ -104,7 +104,15 @@ This file is retained as a blank blind template after the pilot round was archiv
 
 ## `data/core31_second_coder_formal_blind_template.csv`
 
-This is the blank formal second-coder template for the rerun after codebook clarification. It has the same schema as `data/core31_second_coder_blind.csv`, contains 31 rows, contains no `original_*` fields, and keeps `coder2_strongest_evidence_output`, `coder2_decision_reason`, and `coder2_uncertainty_note` empty.
+This is the blank formal second-coder template for future reruns. It has the same schema as `data/core31_second_coder_blind.csv`, contains 31 rows, contains no `original_*` fields, and keeps `coder2_strongest_evidence_output`, `coder2_decision_reason`, and `coder2_uncertainty_note` empty.
+
+## `data/core31_second_coder_formal_results.csv`
+
+This file contains the completed formal second-coder results after codebook clarification. It has 31 rows, contains no `original_*` fields, and preserves the second coder's strongest-evidence-output labels, decision rationales, and uncertainty notes.
+
+## `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md`
+
+This report is generated from the author baseline in `data/core31_second_coder_adjudication_template.csv` and the completed formal coder2 decisions in `data/core31_second_coder_formal_results.csv`. It reports formal pre-adjudication raw agreement, Cohen's kappa, and disagreement rows.
 
 ## `archive/pilot_second_coder_round_1/`
 
@@ -121,7 +129,7 @@ This file is for comparison and adjudication after independent coding is complet
 - `coder2_strongest_evidence_output`, `coder2_decision_reason`, `coder2_uncertainty_note`: fields copied from the blind workflow after real independent coding. They match `data/core31_second_coder_blind.csv`.
 - `coder2_a_level`, `coder2_primary_evidence_stage`, `coder2_e4_profile`, `coder2_evidence_object`: optional legacy second-coder decision fields if a later sampled A/E review is performed.
 - `coder2_orchestration_flag`, `coder2_adaptation_flag`, `coder2_external_confirmation_level`, `coder2_reproducibility_level`, `coder2_publication_confidence`: optional auxiliary audit fields.
-- `disagreement_note`, `adjudication_result`: adjudication fields to fill only after a future formal independent coding pass is complete.
+- `disagreement_note`, `adjudication_result`: adjudication fields to fill only if a separate adjudication step is performed after the formal independent coding pass.
 
 ## `data/screening_summary.csv`
 
@@ -185,9 +193,9 @@ Rows already audited with DOI or official URL in `reference_audit.csv` are not d
 
 ## Intercoder Files
 
-`data/core31_second_coder_formal_blind_template.csv` is the blank formal second-coder input for the rerun after codebook clarification. `data/core31_second_coder_blind.csv` is also kept blank as a blind workflow template. `data/core31_second_coder_adjudication_template.csv` is the comparison worksheet to use only after a future formal independent coding pass.
+`data/core31_second_coder_formal_blind_template.csv` is the blank formal second-coder input for future reruns. `data/core31_second_coder_formal_results.csv` contains the completed formal second-coder pass and no `original_*` fields. `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md` reports formal pre-adjudication agreement against `data/core31_second_coder_adjudication_template.csv`. `data/core31_second_coder_blind.csv` is also kept blank as a blind workflow template.
 
-`archive/pilot_second_coder_round_1/` preserves the pilot round for calibration only; its raw agreement and kappa should not be cited as formal reliability.
+`archive/pilot_second_coder_round_1/` preserves the pilot round for calibration only; its raw agreement and kappa should not be cited as formal reliability. Formal reliability statistics are reported only in `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md`.
 
 `data/intercoder_sample_blind.csv` is an optional sampled-review worksheet. `data/intercoder_sample_key.csv` is private and not included in the public artifact.
 

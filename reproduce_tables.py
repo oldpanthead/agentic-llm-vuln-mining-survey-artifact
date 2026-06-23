@@ -8,6 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 DATA = ROOT / 'data'
+REPORTS = ROOT / 'reports'
 
 CSV_REQUIRED_FIELDS = {
     'corpus.csv': ['record_id', 'corpus_layer'],
@@ -113,6 +114,18 @@ CSV_REQUIRED_FIELDS = {
       'materials_to_review',
     ],
     'core31_second_coder_formal_blind_template.csv': [
+      'core_id',
+      'record_id',
+      'system_alias',
+      'title',
+      'publication_status',
+      'boundary_role',
+      'materials_to_review',
+      'coder2_strongest_evidence_output',
+      'coder2_decision_reason',
+      'coder2_uncertainty_note',
+    ],
+    'core31_second_coder_formal_results.csv': [
       'core_id',
       'record_id',
       'system_alias',
@@ -388,16 +401,80 @@ def cohen_kappa(first, second):
         return 1.0 if observed == 1 else None
     return (observed - expected) / (1 - expected)
 
-def validate_second_coder_files(blind_rows, adjudication_rows, formal_rows=None):
+def validate_formal_agreement_report(formal_results_rows, adjudication_rows, allowed_outputs):
+    report_path = REPORTS / 'FORMAL_SECOND_CODER_AGREEMENT_REPORT.md'
+    status('ERROR', report_path.exists(), 'formal second-coder agreement report exists')
+    if not formal_results_rows or not adjudication_rows:
+        return
+
+    baseline_by_id = {row.get('core_id', ''): row for row in adjudication_rows}
+    missing_baselines = [row.get('core_id', '?') for row in formal_results_rows if row.get('core_id', '') not in baseline_by_id]
+    status('ERROR', not missing_baselines, 'formal results rows all have adjudication-template baselines')
+    if missing_baselines:
+        print('ERROR: formal results missing baselines:', ', '.join(missing_baselines))
+        return
+
+    baseline = []
+    coder2 = []
+    disagreements = []
+    for row in formal_results_rows:
+        core_id = row.get('core_id', '')
+        base_label = baseline_by_id[core_id].get('original_strongest_evidence_output', '').strip()
+        coder_label = row.get('coder2_strongest_evidence_output', '').strip()
+        baseline.append(base_label)
+        coder2.append(coder_label)
+        if base_label != coder_label:
+            disagreements.append((core_id, row.get('system_alias', ''), base_label, coder_label))
+
+    rows_compared = len(formal_results_rows)
+    agreements = sum(1 for a, b in zip(baseline, coder2) if a == b)
+    raw_agreement = agreements / rows_compared if rows_compared else 0
+    kappa = cohen_kappa(baseline, coder2)
+    status('ERROR', all(label in allowed_outputs for label in baseline), 'formal agreement baseline labels use approved values')
+    status('ERROR', all(label in allowed_outputs for label in coder2), 'formal agreement coder2 labels use approved values')
+
+    expected_disagreements = {'C12', 'C17', 'C24'}
+    actual_disagreements = {core_id for core_id, *_ in disagreements}
+    status('ERROR', rows_compared == 31, f'formal agreement rows compared = {rows_compared}; expected 31')
+    status('ERROR', len(disagreements) == 3, f'formal agreement disagreements = {len(disagreements)}; expected 3')
+    status('ERROR', actual_disagreements == expected_disagreements, 'formal disagreement rows are C12, C17, and C24')
+    if actual_disagreements != expected_disagreements:
+        print('ERROR: formal disagreement rows:', ', '.join(sorted(actual_disagreements)))
+    print(f'FORMAL_SECOND_CODER_AGREEMENT: rows={rows_compared} raw={raw_agreement:.3f} kappa={kappa:.3f} disagreements={len(disagreements)}')
+
+    if report_path.exists():
+        report_text = report_path.read_text(encoding='utf-8')
+        required_snippets = [
+            f'Rows compared: {rows_compared}',
+            f'Raw agreement: {raw_agreement:.3f}',
+            f"Cohen's kappa: {kappa:.3f}",
+            f'Disagreements: {len(disagreements)}',
+            'formal pre-adjudication agreement',
+            'No adjudicated labels are claimed',
+        ]
+        missing_snippets = [snippet for snippet in required_snippets if snippet not in report_text]
+        missing_disagreement_ids = [core_id for core_id, *_ in disagreements if core_id not in report_text]
+        status('ERROR', not missing_snippets, 'formal report contains computed raw agreement, kappa, and pre-adjudication note')
+        if missing_snippets:
+            print('ERROR: formal report missing snippets:', '; '.join(missing_snippets))
+        status('ERROR', not missing_disagreement_ids, 'formal report lists computed disagreement rows')
+        if missing_disagreement_ids:
+            print('ERROR: formal report missing disagreement rows:', ', '.join(missing_disagreement_ids))
+
+
+def validate_second_coder_files(blind_rows, adjudication_rows, formal_rows=None, formal_results_rows=None):
     formal_rows = formal_rows or []
+    formal_results_rows = formal_results_rows or []
     blind_path = DATA / 'core31_second_coder_blind.csv'
     formal_path = DATA / 'core31_second_coder_formal_blind_template.csv'
+    formal_results_path = DATA / 'core31_second_coder_formal_results.csv'
     adjudication_path = DATA / 'core31_second_coder_adjudication_template.csv'
     pilot_dir = ROOT / 'archive' / 'pilot_second_coder_round_1'
     pilot_report = pilot_dir / 'SECOND_CODER_AGREEMENT_REPORT.md'
     pilot_results = pilot_dir / 'core31_second_coder_results.csv'
     status('ERROR', blind_path.exists(), 'core31_second_coder_blind.csv exists')
     status('ERROR', formal_path.exists(), 'core31_second_coder_formal_blind_template.csv exists')
+    status('ERROR', formal_results_path.exists(), 'core31_second_coder_formal_results.csv exists')
     status('ERROR', adjudication_path.exists(), 'core31_second_coder_adjudication_template.csv exists')
     if not blind_rows:
         return
@@ -458,6 +535,24 @@ def validate_second_coder_files(blind_rows, adjudication_rows, formal_rows=None)
     if formal_rows:
         check_blind_like(formal_rows, 'core31_second_coder_formal_blind_template.csv', require_blank=True)
 
+    if formal_results_rows:
+        check_blind_like(formal_results_rows, 'core31_second_coder_formal_results.csv', require_blank=False)
+        missing_formal_values = []
+        invalid_formal_values = []
+        for row in formal_results_rows:
+            for field in coder2_fields:
+                if not row.get(field, '').strip():
+                    missing_formal_values.append((row.get('core_id', '?'), field))
+            label = row.get('coder2_strongest_evidence_output', '').strip()
+            if label and label not in allowed_outputs:
+                invalid_formal_values.append((row.get('core_id', '?'), label))
+        status('ERROR', not missing_formal_values, 'formal results coder2 labels, rationale, and uncertainty notes are populated')
+        if missing_formal_values:
+            print('ERROR: missing formal results fields:', missing_formal_values[:10])
+        status('ERROR', not invalid_formal_values, 'formal results coder2 labels use approved evidence-output labels')
+        if invalid_formal_values:
+            print('ERROR: invalid formal results labels:', invalid_formal_values[:10])
+
     adjudication_fields = set(adjudication_rows[0].keys()) if adjudication_rows else set()
     required_adjudication_fields = {
         'boundary_role',
@@ -492,9 +587,11 @@ def validate_second_coder_files(blind_rows, adjudication_rows, formal_rows=None)
             for field in coder2_fields + ['disagreement_note', 'adjudication_result']:
                 if row.get(field, '').strip():
                     formal_filled.append((row.get('core_id', '?'), field))
-        status('ERROR', not formal_filled, 'adjudication template coder2/adjudication fields are blank before formal rerun')
+        status('ERROR', not formal_filled, 'adjudication template coder2/adjudication fields remain blank until adjudication is explicitly recorded')
         if formal_filled:
             print('ERROR: nonblank formal adjudication fields:', formal_filled[:10])
+
+    validate_formal_agreement_report(formal_results_rows, adjudication_rows, allowed_outputs)
 
     status('ERROR', pilot_dir.exists(), 'pilot second-coder calibration archive exists')
     status('ERROR', pilot_report.exists(), 'pilot agreement report is archived outside the formal report path')
@@ -504,7 +601,7 @@ def validate_second_coder_files(blind_rows, adjudication_rows, formal_rows=None)
     if pilot_readme.exists():
         archive_text = pilot_readme.read_text(encoding='utf-8')
         status('ERROR', 'formal intercoder reliability' in archive_text and 'should not be cited' in archive_text, 'pilot archive warns against formal reliability citation')
-    print('PILOT_SECOND_CODER_ARCHIVE: archived for calibration only; formal reliability check pending after codebook clarification')
+    print('PILOT_SECOND_CODER_ARCHIVE: archived for calibration only; formal reliability uses data/core31_second_coder_formal_results.csv and reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md')
 
 def validate_tracked_file_boundary():
     try:
@@ -552,13 +649,14 @@ ref = read_csv('reference_audit.csv')
 product_snapshot = read_csv('product_ecosystem_snapshot.csv')
 second_coder_blind = read_csv('core31_second_coder_blind.csv')
 second_coder_formal = read_csv('core31_second_coder_formal_blind_template.csv')
+second_coder_formal_results = read_csv('core31_second_coder_formal_results.csv')
 second_coder_adjudication = read_csv('core31_second_coder_adjudication_template.csv')
 record_classification = read_csv('record_classification_audit.csv')
 repro_audit = read_csv('core_reproducibility_audit.csv')
 repro_summary = read_csv('core_reproducibility_audit_summary.csv')
 
 validate_product_ecosystem_snapshot(product_snapshot)
-validate_second_coder_files(second_coder_blind, second_coder_adjudication, second_coder_formal)
+validate_second_coder_files(second_coder_blind, second_coder_adjudication, second_coder_formal, second_coder_formal_results)
 validate_tracked_file_boundary()
 
 expected_layers = {'Core': 31, 'Supporting': 66, 'Background': 95, 'Excluded': 20}

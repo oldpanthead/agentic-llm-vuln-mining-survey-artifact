@@ -35,7 +35,7 @@ The public artifact still includes legacy A-profile and E-level columns because 
 
 ## Second-Coder Status
 
-An initial pilot second-coder round has been archived for codebook calibration. It revealed ambiguity around `externally traceable material`; therefore, the formal second-coder reliability check will be rerun after the clarified codebook is frozen. Pilot files are stored under `archive/pilot_second_coder_round_1/` and should not be cited as the formal intercoder reliability result. The current formal blind template is `data/core31_second_coder_formal_blind_template.csv`; its coder2 fields are intentionally blank.
+After the pilot calibration round, the clarified codebook was used for a formal second-coder pass on the strongest-evidence-output field for all 31 Core studies. Formal results are stored in `data/core31_second_coder_formal_results.csv`, and agreement statistics are reported in `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md`. The pilot round remains archived for calibration only.
 
 ## Main Files
 
@@ -51,7 +51,7 @@ An initial pilot second-coder round has been archived for codebook calibration. 
 - `evidence_output_codebook.md`, `codebook.md`, and `data_dictionary.md`: current evidence-output labels, legacy coding definitions, and field descriptions.
 - `ZOTERO_PDF_RESOLUTION_REPORT.md`: path-redacted public Zotero/PDF resolution summary.
 
-Second-coder files include `data/core31_second_coder_formal_blind_template.csv` for the next formal 31-Core strongest-evidence-output coding pass and `data/core31_second_coder_adjudication_template.csv` for later comparison after new independent coding. The archived pilot files are under `archive/pilot_second_coder_round_1/`. Auxiliary sampled-review worksheets include `data/intercoder_sample_blind.csv`, `data/intercoder_check_template.csv`, and `data/disagreement_resolution_template.csv`.
+Second-coder files include `data/core31_second_coder_formal_blind_template.csv` as a blank template for future reruns, `data/core31_second_coder_formal_results.csv` as the completed formal second-coder pass, `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md` for pre-adjudication agreement statistics, and `data/core31_second_coder_adjudication_template.csv` for comparison/adjudication. The archived pilot files are under `archive/pilot_second_coder_round_1/` and remain calibration-only. Auxiliary sampled-review worksheets include `data/intercoder_sample_blind.csv`, `data/intercoder_check_template.csv`, and `data/disagreement_resolution_template.csv`.
 
 ## Security Boundary
 
@@ -65,7 +65,7 @@ Run from this directory:
 python reproduce_tables.py
 ```
 
-Expected result: all schema, corpus count, Core count, product-snapshot, formal second-coder-template, legacy A/E, classification, and reproducibility-audit checks pass. Missing DOI rows remain documented warnings.
+Expected result: all schema, corpus count, Core count, product-snapshot, formal second-coder template/results, formal agreement report, legacy A/E, classification, and reproducibility-audit checks pass. Missing DOI rows remain documented warnings.
 
 ## License
 

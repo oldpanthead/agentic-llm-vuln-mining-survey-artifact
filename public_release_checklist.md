@@ -9,7 +9,7 @@ This checklist prepares the minimal artifact for a future GitHub or Zenodo relea
 - [ ] Keep `intercoder_sample_key.csv` private until independent second-coder work is complete.
 - [ ] Confirm `data/core31_second_coder_blind.csv` does not expose original labels or answer-key fields.
 - [ ] Confirm `data/core31_second_coder_adjudication_template.csv` is not used before independent coding.
-- [ ] Report formal agreement statistics only after revised codebook freeze and new independent coding.
+- [x] Report formal agreement statistics only after revised codebook freeze and new independent coding.
 - [ ] Confirm that any public repository URL has author approval before replacing `[REPOSITORY URL]` in the manuscript.
 
 ## Data Files
@@ -19,6 +19,8 @@ This checklist prepares the minimal artifact for a future GitHub or Zenodo relea
 - [x] `data/reference_audit.csv` has DOI coverage improved from Zotero/local audit and leaves unresolved DOI cases as `NA`.
 - [x] `data/screening_summary.csv` marks unrecoverable intermediate counts as `NA`.
 - [x] `data/core31_second_coder_blind.csv` can be shared for independent 31-Core strongest-evidence-output coding.
+- [x] `data/core31_second_coder_formal_blind_template.csv` exists as a blank template for future reruns.
+- [x] `data/core31_second_coder_formal_results.csv` exists and contains the completed formal second-coder pass.
 - [x] `data/intercoder_sample_blind.csv` can be shared for optional sampled review.
 - [ ] Decide whether proposed/intermediate audit files should be included in public release or moved to a private working archive.
 - [ ] Decide whether `zotero_export_20260530.bib` should remain private because it reflects the local Zotero library export.
@@ -40,7 +42,9 @@ This checklist prepares the minimal artifact for a future GitHub or Zenodo relea
 - [x] Pilot second-coder round archived for codebook calibration.
 - [x] Pilot agreement/kappa must not be cited as formal reliability.
 - [x] Formal second-coder template is blank and hides original labels.
-- [ ] Add formal agreement report only after revised codebook freeze and new independent coding.
+- [x] Formal agreement report added after revised codebook freeze and new independent coding.
+- [x] Formal agreement report lists disagreement rows.
+- [x] Adjudication result is not claimed unless completed.
 - [ ] If disagreements are adjudicated, add `data/core31_second_coder_adjudicated.csv`; do not create it before adjudication.
 - [ ] Record the final corpus date and search cutoff date in the manuscript and artifact README.
 
