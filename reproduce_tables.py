@@ -137,6 +137,21 @@ CSV_REQUIRED_FIELDS = {
       'coder2_decision_reason',
       'coder2_uncertainty_note',
     ],
+    'core31_second_coder_capability_traceability_blind_template.csv': [
+      'core_id',
+      'record_id',
+      'system_alias',
+      'title',
+      'publication_status',
+      'boundary_role',
+      'materials_to_review',
+      'coder2_cross_stage_capability_label',
+      'coder2_capability_decision_reason',
+      'coder2_capability_uncertainty_note',
+      'coder2_external_traceability_label',
+      'coder2_external_traceability_decision_reason',
+      'coder2_external_traceability_uncertainty_note',
+    ],
     'core31_second_coder_adjudication_template.csv': [
       'core_id',
       'record_id',
@@ -163,6 +178,13 @@ CSV_REQUIRED_FIELDS = {
       'external_traceability',
       'update_required',
       'notes',
+    ],
+    'mapping_snapshot_counts.csv': [
+      'view',
+      'category',
+      'count',
+      'denominator',
+      'scope_note',
     ],
 }
 VALIDATED_CSVS = set()
@@ -218,6 +240,8 @@ def validate_csv_schema(name, reader, rows):
             'coder2_decision_reason',
             'coder2_uncertainty_note',
         }]
+    if name == 'core31_second_coder_capability_traceability_blind_template.csv':
+        required_non_empty = [field for field in required_non_empty if not field.startswith('coder2_')]
     width_errors = []
     required_errors = []
     for idx, row in enumerate(rows, start=2):
@@ -603,6 +627,36 @@ def validate_second_coder_files(blind_rows, adjudication_rows, formal_rows=None,
         status('ERROR', 'formal intercoder reliability' in archive_text and 'should not be cited' in archive_text, 'pilot archive warns against formal reliability citation')
     print('PILOT_SECOND_CODER_ARCHIVE: archived for calibration only; formal reliability uses data/core31_second_coder_formal_results.csv and reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md')
 
+
+def validate_second_coder_extension_template(rows):
+    path = DATA / 'core31_second_coder_capability_traceability_blind_template.csv'
+    results_path = DATA / 'core31_second_coder_capability_traceability_results.csv'
+    report_path = REPORTS / 'SECOND_CODER_CAPABILITY_TRACEABILITY_AGREEMENT_REPORT.md'
+    status('ERROR', path.exists(), 'capability/traceability second-coder blind template exists')
+    if not rows:
+        return
+    fields = set(rows[0].keys())
+    original_fields = sorted(field for field in fields if field.startswith('original_'))
+    coder2_fields = [field for field in fields if field.startswith('coder2_')]
+    status('ERROR', len(rows) == 31, f'capability/traceability blind template rows = {len(rows)}; expected 31')
+    status('ERROR', not original_fields, 'capability/traceability blind template exposes no original_* answer-key columns')
+    if original_fields:
+        print('ERROR: exposed original fields:', ', '.join(original_fields))
+    filled = []
+    for row in rows:
+        for field in coder2_fields:
+            if row.get(field, '').strip():
+                filled.append((row.get('core_id', '?'), field))
+    status('ERROR', not filled, 'capability/traceability blind template coder2 fields remain blank before real coding')
+    if filled:
+        print('ERROR: nonblank capability/traceability coder2 fields:', filled[:10])
+    if results_path.exists():
+        print('WARNING: capability/traceability results file exists; extend reproduce_tables.py with per-label/Jaccard agreement before citing results')
+    else:
+        print('SECOND_CODER_EXTENSION_PENDING: capability and external-traceability fields have a blind template, but no real coder2 results or agreement report are present')
+    if report_path.exists():
+        print('WARNING: capability/traceability agreement report exists; verify it is computed from real coder2 decisions and appropriate multi-label metrics')
+
 def validate_tracked_file_boundary():
     try:
         result = subprocess.run(['git', 'ls-files'], cwd=ROOT, check=True, capture_output=True, text=True)
@@ -650,6 +704,7 @@ product_snapshot = read_csv('product_ecosystem_snapshot.csv')
 second_coder_blind = read_csv('core31_second_coder_blind.csv')
 second_coder_formal = read_csv('core31_second_coder_formal_blind_template.csv')
 second_coder_formal_results = read_csv('core31_second_coder_formal_results.csv')
+second_coder_extension_template = read_csv('core31_second_coder_capability_traceability_blind_template.csv')
 second_coder_adjudication = read_csv('core31_second_coder_adjudication_template.csv')
 record_classification = read_csv('record_classification_audit.csv')
 repro_audit = read_csv('core_reproducibility_audit.csv')
@@ -657,6 +712,7 @@ repro_summary = read_csv('core_reproducibility_audit_summary.csv')
 
 validate_product_ecosystem_snapshot(product_snapshot)
 validate_second_coder_files(second_coder_blind, second_coder_adjudication, second_coder_formal, second_coder_formal_results)
+validate_second_coder_extension_template(second_coder_extension_template)
 validate_tracked_file_boundary()
 
 expected_layers = {'Core': 31, 'Supporting': 66, 'Background': 95, 'Excluded': 20}

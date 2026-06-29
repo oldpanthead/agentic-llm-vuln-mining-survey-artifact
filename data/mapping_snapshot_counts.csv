@@ -1,0 +1,15 @@
+﻿view,category,count,denominator,scope_note
+year_distribution,2023,12,212 candidate records,describes manuscript corpus only; not field-level prevalence
+year_distribution,2024,45,212 candidate records,describes manuscript corpus only; not field-level prevalence
+year_distribution,2025,118,212 candidate records,describes manuscript corpus only; not field-level prevalence
+year_distribution,2026,37,212 candidate records,describes manuscript corpus only; not field-level prevalence
+source_type_distribution,conference paper,81,212 candidate records,describes manuscript corpus only; not field-level prevalence
+source_type_distribution,preprint/arXiv,63,212 candidate records,describes manuscript corpus only; not field-level prevalence
+source_type_distribution,journal article,59,212 candidate records,describes manuscript corpus only; not field-level prevalence
+source_type_distribution,book/thesis/other,9,212 candidate records,describes manuscript corpus only; not field-level prevalence
+source_type_distribution,product/system boundary snapshot,23,independent product_ecosystem_snapshot layer,separate boundary layer; not included in 212/31/66/95/20 counts
+task_facet_distribution,candidate/tool-enhanced analysis,4,"30 vulnerability-mining Core studies, except governance boundary case C27",overlapping facets; describes Core deep-analysis set only; not field-level prevalence
+task_facet_distribution,fuzzing/input exploration,10,"30 vulnerability-mining Core studies, except governance boundary case C27",overlapping facets; describes Core deep-analysis set only; not field-level prevalence
+task_facet_distribution,PoC/PoV or validation,9,"30 vulnerability-mining Core studies, except governance boundary case C27",overlapping facets; describes Core deep-analysis set only; not field-level prevalence
+task_facet_distribution,automated pentest/CRS/long workflow,10,"30 vulnerability-mining Core studies, except governance boundary case C27",overlapping facets; describes Core deep-analysis set only; not field-level prevalence
+task_facet_distribution,governance boundary,1,31 Core studies,overlapping facets; describes Core deep-analysis set only; not field-level prevalence

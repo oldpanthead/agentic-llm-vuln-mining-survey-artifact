@@ -118,6 +118,19 @@ This report is generated from the author baseline in `data/core31_second_coder_a
 
 This archive preserves the first pilot second-coder round for codebook calibration. It contains the pilot results and pre-adjudication agreement report. These materials should not be cited as the formal intercoder reliability result.
 
+
+## `data/core31_second_coder_capability_traceability_blind_template.csv`
+
+This blank blind template prepares a future independent review of two auxiliary fields: Agent increment / cross-stage capability and external traceability / external audit material. It must not be treated as completed second-coder results. It contains 31 rows, hides all `original_*` fields, and leaves coder2 fields blank until a real independent coder fills them. If these fields are multi-label, future agreement should use per-label, Jaccard-style, or other suitable multi-label metrics rather than forcing a single-label Cohen's kappa.
+
+- `core_id`, `record_id`, `system_alias`, `title`, `publication_status`, `boundary_role`, `materials_to_review`: blind review identifiers and non-sensitive review instructions.
+- `coder2_cross_stage_capability_label`: blank future coder2 label for Agent increment / cross-stage capability.
+- `coder2_capability_decision_reason`: blank future rationale field.
+- `coder2_capability_uncertainty_note`: blank future uncertainty field.
+- `coder2_external_traceability_label`: blank future coder2 label for external traceability / external audit material.
+- `coder2_external_traceability_decision_reason`: blank future rationale field.
+- `coder2_external_traceability_uncertainty_note`: blank future uncertainty field.
+
 ## `data/core31_second_coder_adjudication_template.csv`
 
 This file is for comparison and adjudication after independent coding is complete. It may contain `original_*` fields and should not be used as second-coder input.
@@ -152,9 +165,20 @@ This file is for comparison and adjudication after independent coding is complet
 
 Manuscript citation count is not a corpus statistic. The 2026-06-19 reference-list expansion cited additional rows that were already present in `corpus.csv` and `reference_audit.csv`; those citations remain Supporting or Background material and do not alter the 212 candidate records, 31 Core studies, 66 Supporting studies, 95 Background references, or 20 Excluded records.
 
+
+## `data/mapping_snapshot_counts.csv`
+
+This file records descriptive mapping views used by the current manuscript. The counts describe the manuscript corpus and product boundary snapshot only; they are not field-level prevalence estimates.
+
+- `view`: mapping view, such as `year_distribution`, `source_type_distribution`, or `task_facet_distribution`.
+- `category`: category displayed in the manuscript mapping view.
+- `count`: count for the category.
+- `denominator`: counting scope, such as 212 candidate records, the independent product snapshot layer, or the Core deep-analysis set.
+- `scope_note`: boundary note explaining that the count is descriptive rather than a prevalence estimate.
+
 ## `data/product_ecosystem_snapshot.csv`
 
-This file is an independent product-ecosystem boundary data layer. Rows in this file are not part of `data/corpus.csv`, do not count toward the 212 candidate records, and do not alter Core aggregate statistics. Product materials that also support manuscript background or supporting discussion are represented separately in `data/reference_audit.csv`.
+This file is an independent product-ecosystem boundary data layer. Rows in this file are not part of `data/corpus.csv`, do not count toward the 212 candidate records, and do not alter Core aggregate statistics. Product materials that also support manuscript background or supporting discussion are represented separately in `data/reference_audit.csv`. Public vendor/project materials are recorded as source-limited ecosystem evidence and are not independently validated by this artifact.
 
 - `product_or_system`: public product, model, workflow, policy, or attempted source check.
 - `vendor`: vendor or organization associated with the material.
@@ -193,7 +217,7 @@ Rows already audited with DOI or official URL in `reference_audit.csv` are not d
 
 ## Intercoder Files
 
-`data/core31_second_coder_formal_blind_template.csv` is the blank formal second-coder input for future reruns. `data/core31_second_coder_formal_results.csv` contains the completed formal second-coder pass and no `original_*` fields. `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md` reports formal pre-adjudication agreement against `data/core31_second_coder_adjudication_template.csv`. `data/core31_second_coder_blind.csv` is also kept blank as a blind workflow template.
+`data/core31_second_coder_formal_blind_template.csv` is the blank formal second-coder input for future strongest-evidence-output reruns. `data/core31_second_coder_formal_results.csv` contains the completed formal strongest-evidence-output second-coder pass and no `original_*` fields. `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md` reports formal pre-adjudication agreement against `data/core31_second_coder_adjudication_template.csv`. `data/core31_second_coder_capability_traceability_blind_template.csv` is a blank extension template for future Agent-increment and external-traceability checks; agreement for those fields should not be cited until real coder2 decisions and a suitable agreement report are added. `data/core31_second_coder_blind.csv` is also kept blank as a blind workflow template.
 
 `archive/pilot_second_coder_round_1/` preserves the pilot round for calibration only; its raw agreement and kappa should not be cited as formal reliability. Formal reliability statistics are reported only in `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md`.
 

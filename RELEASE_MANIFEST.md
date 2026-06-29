@@ -14,12 +14,12 @@ The release includes only non-sensitive materials needed to review the survey ev
 - corpus metadata, corpus-layer audit, and screening summary;
 - 31-Core coding table, current evidence-output codebook, legacy A-profile codebook, and field dictionary;
 - boundary/high-relevance classification notes and literature-update decisions;
-- v13 synthesis statistics, benchmark-boundary notes, research-agenda outputs, and Core synthesis matrix;
+- v13 synthesis statistics, mapping-snapshot counts, benchmark-boundary notes, research-agenda outputs, and Core synthesis matrix;
 - public-material reproducibility audit and aggregate summary;
 - DOI/reference audit and DOI-not-applicable product-page notes;
 - citation-expansion audit note for the 2026-06-19 manuscript reference-list update;
-- product-ecosystem snapshot for public coding-agent and security-agent materials;
-- pilot second-coder round archived for calibration; formal second-coder pass completed after codebook clarification; formal agreement report included; adjudication status recorded separately;
+- product-ecosystem snapshot for public coding-agent and security-agent materials, including additional ecosystem-balancing background rows;
+- pilot second-coder round archived for calibration; formal strongest-evidence-output second-coder pass completed after codebook clarification; formal agreement report included; Agent-increment and external-traceability blind extension template prepared, with formal results pending real coder2 decisions; adjudication status recorded separately;
 - security boundary, release checklist, repository setup notes, licenses, and reproducibility script.
 
 ## Excluded
@@ -33,7 +33,7 @@ The release excludes:
 
 ## Evidence Boundary
 
-Product pages, help pages, official blogs, model pages, and disclosure policies are recorded as dated public materials. They support ecosystem and boundary discussion only; they do not automatically expand the 31-Core set and are not treated as independent reproduction evidence.
+Product pages, help pages, official blogs, model pages, project pages, and disclosure policies are recorded as dated public materials. They support ecosystem and boundary discussion only; they are not independently validated by this artifact, do not automatically expand the 31-Core set, and are not treated as independent reproduction evidence.
 
 The 2026-06-19 reference-list expansion increases manuscript citation density by citing already-audited Supporting and Background rows. It does not add candidate records, does not expand Core studies, and does not change the 212 / 31 / 66 / 95 / 20 corpus statistics. Reference-list size and corpus-record size are intentionally separate quantities.
 
@@ -41,7 +41,7 @@ The product-ecosystem snapshot is an independent boundary data layer and is not 
 
 Legacy A/E fields are retained for historical reproducibility and cross-version traceability. The current manuscript presents the synthesis primarily through natural-language workflow, capability, and evidence-output fields.
 
-The product ecosystem snapshot is date-bounded and should be refreshed before each manuscript release. Product changes do not automatically alter Core statistics.
+The product ecosystem snapshot is date-bounded and should be refreshed before each manuscript release. Product changes do not automatically alter Core statistics. The snapshot currently contains 23 boundary rows.
 
 The reproducibility audit separates repository presence, target version, environment, replay material, structured traces, author-reported external traces, publicly traceable external material, and claim-level alignment. `unknown_not_audited` is not counted as absence of material.
 
@@ -49,6 +49,8 @@ The reproducibility audit separates repository presence, target version, environ
 
 - Decide whether and when to archive on Zenodo.
 - Refresh fast-changing product materials before the next manuscript revision.
+- Complete real second-coder decisions for Agent-increment and external-traceability fields before reporting agreement for those fields.
+- Prepare an anonymized artifact package or anonymized repository link before anonymous peer review.
 
 
 
@@ -59,5 +61,6 @@ The reproducibility audit separates repository presence, target version, environ
 - `data/core31_second_coder_adjudication_template.csv`
 - `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md`
 - `archive/pilot_second_coder_round_1/`
+- `data/core31_second_coder_capability_traceability_blind_template.csv`
 
-Pilot agreement/kappa values in the archive are retained for codebook calibration only and must not be cited as formal intercoder reliability. Formal agreement statistics are reported in `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md`; adjudicated labels should be recorded separately if adjudication is performed.
+Pilot agreement/kappa values in the archive are retained for codebook calibration only and must not be cited as formal intercoder reliability. Formal agreement statistics currently apply only to strongest-evidence-output labels and are reported in `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md`; adjudicated labels should be recorded separately if adjudication is performed. Agent-increment and external-traceability agreement must not be cited until real coder2 decisions are added and checked with suitable metrics.
