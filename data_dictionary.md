@@ -1,6 +1,6 @@
 # Data Dictionary
 
-This dictionary describes the non-sensitive audit artifact used by the survey manuscript. It is intended to help reviewers inspect corpus construction, legacy A/E traceability fields, current evidence-output labels, bibliographic verification, pilot second-coder calibration materials, formal second-coder templates/results, agreement reports, and pending adjudication materials.
+This dictionary describes the non-sensitive audit artifact used by the survey manuscript. It is intended to help reviewers inspect corpus construction, legacy A/E traceability fields, current evidence-output labels, bibliographic verification, pilot second-coder calibration materials, formal second-coder templates/results, agreement reports, and pending adjudication materials. Files with `v13_` prefixes are retained filenames from the prior restructuring stage but are used by the current v14 manuscript synthesis unless superseded.
 
 ## Common Identifiers
 
@@ -121,7 +121,7 @@ This archive preserves the first pilot second-coder round for codebook calibrati
 
 ## `data/core31_second_coder_capability_traceability_blind_template.csv`
 
-This blank blind template prepares a future independent review of two auxiliary fields: Agent increment / cross-stage capability and external traceability / external audit material. It must not be treated as completed second-coder results. It contains 31 rows, hides all `original_*` fields, and leaves coder2 fields blank until a real independent coder fills them. If these fields are multi-label, future agreement should use per-label, Jaccard-style, or other suitable multi-label metrics rather than forcing a single-label Cohen's kappa.
+This blank blind template is retained for future reruns of the independent review of two auxiliary fields: Agent increment / cross-stage capability and external traceability / external audit material. It contains 31 rows, hides all `original_*` fields, and leaves coder2 fields blank. Because the capability field can be multi-label, agreement for completed results uses per-label, Jaccard-style, or other suitable multi-label metrics rather than forcing a single-label Cohen's kappa.
 
 - `core_id`, `record_id`, `system_alias`, `title`, `publication_status`, `boundary_role`, `materials_to_review`: blind review identifiers and non-sensitive review instructions.
 - `coder2_cross_stage_capability_label`: blank future coder2 label for Agent increment / cross-stage capability.
@@ -130,6 +130,14 @@ This blank blind template prepares a future independent review of two auxiliary 
 - `coder2_external_traceability_label`: blank future coder2 label for external traceability / external audit material.
 - `coder2_external_traceability_decision_reason`: blank future rationale field.
 - `coder2_external_traceability_uncertainty_note`: blank future uncertainty field.
+
+## `data/core31_second_coder_capability_traceability_results.csv`
+
+This file contains the completed formal second-coder results for Agent increment / cross-stage capability and external traceability / external audit material. It has 31 rows, contains no `original_*` fields, and preserves coder2 labels, rationales, and uncertainty notes.
+
+## `reports/SECOND_CODER_CAPABILITY_TRACEABILITY_AGREEMENT_REPORT.md`
+
+This report is generated from the author baseline in `data/v13_core_synthesis_matrix.csv` and the completed coder2 decisions in `data/core31_second_coder_capability_traceability_results.csv`. It reports row-level exact agreement, mean row Jaccard, micro precision/recall/F1 over label assignments, and per-label agreement/Jaccard. It does not use single-label Cohen's kappa for the multi-label capability field.
 
 ## `data/core31_second_coder_adjudication_template.csv`
 
@@ -182,14 +190,14 @@ This file is an independent product-ecosystem boundary data layer. Rows in this 
 
 - `product_or_system`: public product, model, workflow, policy, or attempted source check.
 - `vendor`: vendor or organization associated with the material.
-- `snapshot_date`: date on which the product snapshot was recorded.
+- `snapshot_date`: global product-ecosystem snapshot date, currently 2026-06-29.
 - `model_or_version`: public model, version, release, or availability detail when visible; `NA` if not applicable.
 - `public_capabilities`: high-level public capability description from official sources.
 - `security_workflow`: security-relevant workflow or boundary described by the source.
 - `public_evidence_type`: material type, such as product page, developer documentation, help page, vendor blog, model page, policy page, or excluded attempted source.
 - `source_url`: official public source URL; `NA` if no reliable official source was captured.
 - `publication_or_update_date`: publication, update, or explicit page date when available; otherwise a no-date note.
-- `access_date`: date the source was accessed for this snapshot.
+- `access_date`: date the individual source was accessed for this snapshot; row-level access dates can differ from the global snapshot date when a source was checked earlier in the same update cycle.
 - `manuscript_role`: analysis-use layer for the manuscript: `Background`, `Supporting`, `Emerging boundary case`, `Core candidate`, or `Excluded`.
 - `core_eligibility`: conservative Core-eligibility judgment. Vendor product materials do not automatically enter Core statistics.
 - `evidence_caveat`: source-limitation note, especially for vendor claims and non-independent evidence.
@@ -217,9 +225,9 @@ Rows already audited with DOI or official URL in `reference_audit.csv` are not d
 
 ## Intercoder Files
 
-`data/core31_second_coder_formal_blind_template.csv` is the blank formal second-coder input for future strongest-evidence-output reruns. `data/core31_second_coder_formal_results.csv` contains the completed formal strongest-evidence-output second-coder pass and no `original_*` fields. `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md` reports formal pre-adjudication agreement against `data/core31_second_coder_adjudication_template.csv`. `data/core31_second_coder_capability_traceability_blind_template.csv` is a blank extension template for future Agent-increment and external-traceability checks; agreement for those fields should not be cited until real coder2 decisions and a suitable agreement report are added. `data/core31_second_coder_blind.csv` is also kept blank as a blind workflow template.
+`data/core31_second_coder_formal_blind_template.csv` is the blank formal second-coder input for future strongest-evidence-output reruns. `data/core31_second_coder_formal_results.csv` contains the completed formal strongest-evidence-output second-coder pass and no `original_*` fields. `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md` reports formal pre-adjudication agreement against `data/core31_second_coder_adjudication_template.csv`. `data/core31_second_coder_capability_traceability_blind_template.csv` is a blank extension template for future Agent-increment and external-traceability reruns. `data/core31_second_coder_capability_traceability_results.csv` contains the completed extension second-coder results and no `original_*` fields. `reports/SECOND_CODER_CAPABILITY_TRACEABILITY_AGREEMENT_REPORT.md` reports set-style and per-label agreement for those fields. `data/core31_second_coder_blind.csv` is also kept blank as a blind workflow template.
 
-`archive/pilot_second_coder_round_1/` preserves the pilot round for calibration only; its raw agreement and kappa should not be cited as formal reliability. Formal reliability statistics are reported only in `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md`.
+`archive/pilot_second_coder_round_1/` preserves the pilot round for calibration only; its raw agreement and kappa should not be cited as formal reliability. Formal strongest-evidence-output reliability statistics are reported in `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md`; Agent-increment and external-traceability extension agreement is reported separately in `reports/SECOND_CODER_CAPABILITY_TRACEABILITY_AGREEMENT_REPORT.md`.
 
 `data/intercoder_sample_blind.csv` is an optional sampled-review worksheet. `data/intercoder_sample_key.csv` is private and not included in the public artifact.
 

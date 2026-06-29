@@ -4,7 +4,7 @@ Prepared for public review of the Agentic LLM vulnerability-mining survey artifa
 
 - Prepared date: 2026-06-19
 - Last incremental manuscript search date: 2026-05-20
-- Product-ecosystem snapshot date: 2026-06-13
+- Product-ecosystem snapshot date: 2026-06-29
 - Repository: `https://github.com/oldpanthead/agentic-llm-vuln-mining-survey-artifact`
 
 ## Included
@@ -15,11 +15,13 @@ The release includes only non-sensitive materials needed to review the survey ev
 - 31-Core coding table, current evidence-output codebook, legacy A-profile codebook, and field dictionary;
 - boundary/high-relevance classification notes and literature-update decisions;
 - v13 synthesis statistics, mapping-snapshot counts, benchmark-boundary notes, research-agenda outputs, and Core synthesis matrix;
+
+Files with `v13_` prefixes are retained filenames from the prior restructuring stage but are used by the current v14 manuscript synthesis unless superseded.
 - public-material reproducibility audit and aggregate summary;
 - DOI/reference audit and DOI-not-applicable product-page notes;
 - citation-expansion audit note for the 2026-06-19 manuscript reference-list update;
 - product-ecosystem snapshot for public coding-agent and security-agent materials, including additional ecosystem-balancing background rows;
-- pilot second-coder round archived for calibration; formal strongest-evidence-output second-coder pass completed after codebook clarification; formal agreement report included; Agent-increment and external-traceability blind extension template prepared, with formal results pending real coder2 decisions; adjudication status recorded separately;
+- pilot second-coder round archived for calibration; formal strongest-evidence-output second-coder pass completed after codebook clarification; formal agreement report included; Agent-increment and external-traceability second-coder extension completed with set-style agreement report; adjudication status recorded separately;
 - security boundary, release checklist, repository setup notes, licenses, and reproducibility script.
 
 ## Excluded
@@ -41,7 +43,7 @@ The product-ecosystem snapshot is an independent boundary data layer and is not 
 
 Legacy A/E fields are retained for historical reproducibility and cross-version traceability. The current manuscript presents the synthesis primarily through natural-language workflow, capability, and evidence-output fields.
 
-The product ecosystem snapshot is date-bounded and should be refreshed before each manuscript release. Product changes do not automatically alter Core statistics. The snapshot currently contains 23 boundary rows.
+The product ecosystem snapshot is date-bounded as of 2026-06-29 and should be refreshed before each manuscript release. Product changes do not automatically alter Core statistics. The snapshot currently contains 23 boundary rows; row-level `access_date` values record individual source checks.
 
 The reproducibility audit separates repository presence, target version, environment, replay material, structured traces, author-reported external traces, publicly traceable external material, and claim-level alignment. `unknown_not_audited` is not counted as absence of material.
 
@@ -49,7 +51,6 @@ The reproducibility audit separates repository presence, target version, environ
 
 - Decide whether and when to archive on Zenodo.
 - Refresh fast-changing product materials before the next manuscript revision.
-- Complete real second-coder decisions for Agent-increment and external-traceability fields before reporting agreement for those fields.
 - Prepare an anonymized artifact package or anonymized repository link before anonymous peer review.
 
 
@@ -62,5 +63,7 @@ The reproducibility audit separates repository presence, target version, environ
 - `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md`
 - `archive/pilot_second_coder_round_1/`
 - `data/core31_second_coder_capability_traceability_blind_template.csv`
+- `data/core31_second_coder_capability_traceability_results.csv`
+- `reports/SECOND_CODER_CAPABILITY_TRACEABILITY_AGREEMENT_REPORT.md`
 
-Pilot agreement/kappa values in the archive are retained for codebook calibration only and must not be cited as formal intercoder reliability. Formal agreement statistics currently apply only to strongest-evidence-output labels and are reported in `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md`; adjudicated labels should be recorded separately if adjudication is performed. Agent-increment and external-traceability agreement must not be cited until real coder2 decisions are added and checked with suitable metrics.
+Pilot agreement/kappa values in the archive are retained for codebook calibration only and must not be cited as formal intercoder reliability. Formal strongest-evidence-output agreement statistics are reported in `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md`; Agent-increment and external-traceability extension agreement is reported separately in `reports/SECOND_CODER_CAPABILITY_TRACEABILITY_AGREEMENT_REPORT.md` using set-style and per-label metrics. Adjudicated labels should be recorded separately if adjudication is performed.

@@ -11,7 +11,8 @@ This checklist prepares the minimal artifact for a future GitHub or Zenodo relea
 - [ ] Confirm `data/core31_second_coder_adjudication_template.csv` is not used before independent coding.
 - [x] Report formal agreement statistics only after revised codebook freeze and new independent coding.
 - [x] Confirm the Agent-increment / external-traceability extension template hides original labels and contains blank coder2 fields.
-- [ ] Do not report Agent-increment or external-traceability agreement until real coder2 decisions and suitable multi-label or per-label metrics are added.
+- [x] Confirm Agent-increment / external-traceability results exist after real coder2 decisions.
+- [x] Report Agent-increment / external-traceability agreement only with suitable set-style, Jaccard, or per-label metrics.
 - [ ] Confirm that any public repository URL has author approval before replacing `[REPOSITORY URL]` in the manuscript.
 
 ## Data Files
@@ -24,6 +25,7 @@ This checklist prepares the minimal artifact for a future GitHub or Zenodo relea
 - [x] `data/core31_second_coder_formal_blind_template.csv` exists as a blank template for future reruns.
 - [x] `data/core31_second_coder_formal_results.csv` exists and contains the completed formal strongest-evidence-output second-coder pass.
 - [x] `data/core31_second_coder_capability_traceability_blind_template.csv` exists as a blank extension template for Agent-increment and external-traceability checks.
+- [x] `data/core31_second_coder_capability_traceability_results.csv` exists and contains the completed extension second-coder results.
 - [x] `data/intercoder_sample_blind.csv` can be shared for optional sampled review.
 - [ ] Decide whether proposed/intermediate audit files should be included in public release or moved to a private working archive.
 - [ ] Decide whether `zotero_export_20260530.bib` should remain private because it reflects the local Zotero library export.
@@ -47,6 +49,7 @@ This checklist prepares the minimal artifact for a future GitHub or Zenodo relea
 - [x] Formal second-coder template is blank and hides original labels.
 - [x] Formal strongest-evidence-output agreement report added after revised codebook freeze and new independent coding.
 - [x] Formal agreement report lists disagreement rows.
+- [x] Capability/traceability extension agreement report exists and uses multi-label/set-style metrics.
 - [x] Adjudication result is not claimed unless completed.
 - [ ] If disagreements are adjudicated, add `data/core31_second_coder_adjudicated.csv`; do not create it before adjudication.
 - [ ] Record the final corpus date and search cutoff date in the manuscript and artifact README.
@@ -63,5 +66,6 @@ This checklist prepares the minimal artifact for a future GitHub or Zenodo relea
 - [x] Confirm `unknown_not_audited` is not counted as absence of material.
 - [x] Confirm `data/product_ecosystem_snapshot.csv` is an independent boundary layer and not counted in the 212 candidate records.
 - [x] Confirm product-page changes do not automatically alter Core statistics.
+- [x] Confirm product-ecosystem global snapshot date is consistent with `RELEASE_MANIFEST.md` and row-level access dates are retained.
 - [x] Confirm `data/mapping_snapshot_counts.csv` is descriptive only and not a field-level prevalence estimate.
 - [ ] For anonymous review, remove or replace personal GitHub/account URLs with an anonymized artifact link or package.

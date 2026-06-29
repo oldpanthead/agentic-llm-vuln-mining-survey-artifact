@@ -152,6 +152,21 @@ CSV_REQUIRED_FIELDS = {
       'coder2_external_traceability_decision_reason',
       'coder2_external_traceability_uncertainty_note',
     ],
+    'core31_second_coder_capability_traceability_results.csv': [
+      'core_id',
+      'record_id',
+      'system_alias',
+      'title',
+      'publication_status',
+      'boundary_role',
+      'materials_to_review',
+      'coder2_cross_stage_capability_label',
+      'coder2_capability_decision_reason',
+      'coder2_capability_uncertainty_note',
+      'coder2_external_traceability_label',
+      'coder2_external_traceability_decision_reason',
+      'coder2_external_traceability_uncertainty_note',
+    ],
     'core31_second_coder_adjudication_template.csv': [
       'core_id',
       'record_id',
@@ -425,6 +440,91 @@ def cohen_kappa(first, second):
         return 1.0 if observed == 1 else None
     return (observed - expected) / (1 - expected)
 
+def split_multilabel(value):
+    if not value:
+        return set()
+    return {item.strip() for item in value.replace('；', ';').split(';') if item.strip()}
+
+def set_agreement_metrics(baseline_rows, coder_rows, baseline_field, coder_field):
+    baseline_by_id = {row.get('core_id', ''): row for row in baseline_rows}
+    compared = []
+    missing = []
+    for row in coder_rows:
+        core_id = row.get('core_id', '')
+        if core_id not in baseline_by_id:
+            missing.append(core_id or '?')
+            continue
+        base_set = split_multilabel(baseline_by_id[core_id].get(baseline_field, ''))
+        coder_set = split_multilabel(row.get(coder_field, ''))
+        compared.append((core_id, row.get('system_alias', ''), base_set, coder_set))
+
+    if not compared:
+        return {
+            'missing': missing,
+            'rows': 0,
+            'exact': 0,
+            'row_exact': 0,
+            'mean_jaccard': 0,
+            'micro_precision': 0,
+            'micro_recall': 0,
+            'micro_f1': 0,
+            'per_label': [],
+            'disagreements': [],
+        }
+
+    exact = 0
+    jaccards = []
+    tp = fp = fn = 0
+    disagreements = []
+    all_labels = set()
+    for core_id, system_alias, base_set, coder_set in compared:
+        all_labels.update(base_set)
+        all_labels.update(coder_set)
+        if base_set == coder_set:
+            exact += 1
+        else:
+            disagreements.append((core_id, system_alias, base_set, coder_set))
+        union = base_set | coder_set
+        intersection = base_set & coder_set
+        jaccards.append(1.0 if not union else len(intersection) / len(union))
+        tp += len(intersection)
+        fp += len(coder_set - base_set)
+        fn += len(base_set - coder_set)
+
+    per_label = []
+    core_ids = [core_id for core_id, *_ in compared]
+    for label in sorted(all_labels):
+        baseline_positive = {core_id for core_id, _, base_set, _ in compared if label in base_set}
+        coder_positive = {core_id for core_id, _, _, coder_set in compared if label in coder_set}
+        label_tp = len(baseline_positive & coder_positive)
+        label_fp = len(coder_positive - baseline_positive)
+        label_fn = len(baseline_positive - coder_positive)
+        label_tn = len(core_ids) - label_tp - label_fp - label_fn
+        label_union = baseline_positive | coder_positive
+        per_label.append({
+            'label': label,
+            'baseline_rows': len(baseline_positive),
+            'coder2_rows': len(coder_positive),
+            'agreement': (label_tp + label_tn) / len(core_ids),
+            'jaccard': 1.0 if not label_union else label_tp / len(label_union),
+        })
+
+    precision = 1.0 if (tp + fp) == 0 else tp / (tp + fp)
+    recall = 1.0 if (tp + fn) == 0 else tp / (tp + fn)
+    f1 = 1.0 if (precision + recall) == 0 else 2 * precision * recall / (precision + recall)
+    return {
+        'missing': missing,
+        'rows': len(compared),
+        'exact': exact,
+        'row_exact': exact / len(compared),
+        'mean_jaccard': sum(jaccards) / len(jaccards),
+        'micro_precision': precision,
+        'micro_recall': recall,
+        'micro_f1': f1,
+        'per_label': per_label,
+        'disagreements': disagreements,
+    }
+
 def validate_formal_agreement_report(formal_results_rows, adjudication_rows, allowed_outputs):
     report_path = REPORTS / 'FORMAL_SECOND_CODER_AGREEMENT_REPORT.md'
     status('ERROR', report_path.exists(), 'formal second-coder agreement report exists')
@@ -628,13 +728,16 @@ def validate_second_coder_files(blind_rows, adjudication_rows, formal_rows=None,
     print('PILOT_SECOND_CODER_ARCHIVE: archived for calibration only; formal reliability uses data/core31_second_coder_formal_results.csv and reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md')
 
 
-def validate_second_coder_extension_template(rows):
+def validate_second_coder_extension_template(rows, results_rows, baseline_rows):
     path = DATA / 'core31_second_coder_capability_traceability_blind_template.csv'
     results_path = DATA / 'core31_second_coder_capability_traceability_results.csv'
     report_path = REPORTS / 'SECOND_CODER_CAPABILITY_TRACEABILITY_AGREEMENT_REPORT.md'
     status('ERROR', path.exists(), 'capability/traceability second-coder blind template exists')
+    status('ERROR', results_path.exists(), 'capability/traceability second-coder formal results file exists')
+    status('ERROR', report_path.exists(), 'capability/traceability second-coder agreement report exists')
     if not rows:
         return
+
     fields = set(rows[0].keys())
     original_fields = sorted(field for field in fields if field.startswith('original_'))
     coder2_fields = [field for field in fields if field.startswith('coder2_')]
@@ -647,15 +750,67 @@ def validate_second_coder_extension_template(rows):
         for field in coder2_fields:
             if row.get(field, '').strip():
                 filled.append((row.get('core_id', '?'), field))
-    status('ERROR', not filled, 'capability/traceability blind template coder2 fields remain blank before real coding')
+    status('ERROR', not filled, 'capability/traceability blind template coder2 fields remain blank for future reruns')
     if filled:
-        print('ERROR: nonblank capability/traceability coder2 fields:', filled[:10])
-    if results_path.exists():
-        print('WARNING: capability/traceability results file exists; extend reproduce_tables.py with per-label/Jaccard agreement before citing results')
-    else:
-        print('SECOND_CODER_EXTENSION_PENDING: capability and external-traceability fields have a blind template, but no real coder2 results or agreement report are present')
+        print('ERROR: nonblank capability/traceability coder2 template fields:', filled[:10])
+
+    if not results_rows or not baseline_rows:
+        return
+
+    result_fields = set(results_rows[0].keys())
+    result_original_fields = sorted(field for field in result_fields if field.startswith('original_'))
+    required_result_fields = {
+        'coder2_cross_stage_capability_label',
+        'coder2_capability_decision_reason',
+        'coder2_capability_uncertainty_note',
+        'coder2_external_traceability_label',
+        'coder2_external_traceability_decision_reason',
+        'coder2_external_traceability_uncertainty_note',
+    }
+    status('ERROR', len(results_rows) == 31, f'capability/traceability results rows = {len(results_rows)}; expected 31')
+    status('ERROR', not result_original_fields, 'capability/traceability results expose no original_* answer-key columns')
+    if result_original_fields:
+        print('ERROR: capability/traceability result original fields:', ', '.join(result_original_fields))
+    missing_values = []
+    for row in results_rows:
+        for field in required_result_fields:
+            if not row.get(field, '').strip():
+                missing_values.append((row.get('core_id', '?'), field))
+    status('ERROR', not missing_values, 'capability/traceability results coder2 labels, rationales, and uncertainty notes are populated')
+    if missing_values:
+        print('ERROR: missing capability/traceability result values:', missing_values[:10])
+
+    baseline_fields = set(baseline_rows[0].keys()) if baseline_rows else set()
+    status('ERROR', {'agent_capabilities', 'external_audit_materials'} <= baseline_fields, 'Core synthesis matrix contains capability and external-audit baseline fields')
+    cap = set_agreement_metrics(baseline_rows, results_rows, 'agent_capabilities', 'coder2_cross_stage_capability_label')
+    ext = set_agreement_metrics(baseline_rows, results_rows, 'external_audit_materials', 'coder2_external_traceability_label')
+    status('ERROR', not cap['missing'], 'capability results rows all have Core synthesis baselines')
+    status('ERROR', not ext['missing'], 'external-traceability results rows all have Core synthesis baselines')
+    status('ERROR', cap['rows'] == 31, f'capability agreement rows compared = {cap["rows"]}; expected 31')
+    status('ERROR', ext['rows'] == 31, f'external-traceability agreement rows compared = {ext["rows"]}; expected 31')
+    print(f'CAPABILITY_SECOND_CODER_AGREEMENT: rows={cap["rows"]} exact={cap["row_exact"]:.3f} mean_jaccard={cap["mean_jaccard"]:.3f} micro_f1={cap["micro_f1"]:.3f} disagreements={len(cap["disagreements"])}')
+    print(f'EXTERNAL_TRACEABILITY_SECOND_CODER_AGREEMENT: rows={ext["rows"]} exact={ext["row_exact"]:.3f} mean_jaccard={ext["mean_jaccard"]:.3f} micro_f1={ext["micro_f1"]:.3f} disagreements={len(ext["disagreements"])}')
+
     if report_path.exists():
-        print('WARNING: capability/traceability agreement report exists; verify it is computed from real coder2 decisions and appropriate multi-label metrics')
+        report_text = report_path.read_text(encoding='utf-8')
+        required_snippets = [
+            f'Rows compared: {cap["rows"]}',
+            f'Row-level exact agreement: {cap["exact"]} / {cap["rows"]} = {cap["row_exact"]:.3f}',
+            f'Mean row Jaccard: {cap["mean_jaccard"]:.3f}',
+            f'Rows compared: {ext["rows"]}',
+            f'Row-level exact agreement: {ext["exact"]} / {ext["rows"]} = {ext["row_exact"]:.3f}',
+            f'Mean row Jaccard: {ext["mean_jaccard"]:.3f}',
+            'does not use single-label Cohen',
+            'no adjudicated labels are claimed',
+        ]
+        missing_snippets = [snippet for snippet in required_snippets if snippet not in report_text]
+        status('ERROR', not missing_snippets, 'capability/traceability report contains computed Jaccard/per-label agreement and boundary notes')
+        if missing_snippets:
+            print('ERROR: capability/traceability report missing snippets:', '; '.join(missing_snippets))
+        missing_labels = [item['label'] for item in cap['per_label'] + ext['per_label'] if item['label'] not in report_text]
+        status('ERROR', not missing_labels, 'capability/traceability report lists computed per-label rows')
+        if missing_labels:
+            print('ERROR: capability/traceability report missing labels:', ', '.join(sorted(set(missing_labels))))
 
 def validate_tracked_file_boundary():
     try:
@@ -698,6 +853,7 @@ validate_all_csv_files()
 
 corpus = read_csv('corpus.csv')
 core = read_csv('core_coding.csv')
+core_synthesis = read_csv('v13_core_synthesis_matrix.csv')
 summary = read_csv('screening_summary.csv')
 ref = read_csv('reference_audit.csv')
 product_snapshot = read_csv('product_ecosystem_snapshot.csv')
@@ -705,6 +861,7 @@ second_coder_blind = read_csv('core31_second_coder_blind.csv')
 second_coder_formal = read_csv('core31_second_coder_formal_blind_template.csv')
 second_coder_formal_results = read_csv('core31_second_coder_formal_results.csv')
 second_coder_extension_template = read_csv('core31_second_coder_capability_traceability_blind_template.csv')
+second_coder_extension_results = read_csv('core31_second_coder_capability_traceability_results.csv')
 second_coder_adjudication = read_csv('core31_second_coder_adjudication_template.csv')
 record_classification = read_csv('record_classification_audit.csv')
 repro_audit = read_csv('core_reproducibility_audit.csv')
@@ -712,7 +869,7 @@ repro_summary = read_csv('core_reproducibility_audit_summary.csv')
 
 validate_product_ecosystem_snapshot(product_snapshot)
 validate_second_coder_files(second_coder_blind, second_coder_adjudication, second_coder_formal, second_coder_formal_results)
-validate_second_coder_extension_template(second_coder_extension_template)
+validate_second_coder_extension_template(second_coder_extension_template, second_coder_extension_results, core_synthesis)
 validate_tracked_file_boundary()
 
 expected_layers = {'Core': 31, 'Supporting': 66, 'Background': 95, 'Excluded': 20}
