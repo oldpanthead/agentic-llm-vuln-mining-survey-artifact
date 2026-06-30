@@ -754,8 +754,31 @@ def validate_second_coder_extension_template(rows, results_rows, baseline_rows):
     if filled:
         print('ERROR: nonblank capability/traceability coder2 template fields:', filled[:10])
 
+    def check_extension_materials(material_rows, label):
+        forbidden = []
+        missing_scope = []
+        for row in material_rows:
+            material = row.get('materials_to_review', '')
+            lower = material.lower()
+            if 'strongest evidence output' in lower:
+                forbidden.append(row.get('core_id', '?'))
+            has_capability = 'cross-stage capability labels' in lower or 'capability definitions' in lower
+            has_traceability = 'external traceability' in lower or 'external-audit-material' in lower or 'external audit material' in lower
+            if not (has_capability and has_traceability):
+                missing_scope.append(row.get('core_id', '?'))
+        status('ERROR', not forbidden, f'{label} materials_to_review does not mention strongest evidence output')
+        if forbidden:
+            print(f'ERROR: {label} rows with strongest evidence output wording:', ', '.join(forbidden[:20]))
+        status('ERROR', not missing_scope, f'{label} materials_to_review describes cross-stage capability labels and external traceability')
+        if missing_scope:
+            print(f'ERROR: {label} rows missing capability/traceability scope wording:', ', '.join(missing_scope[:20]))
+
+    check_extension_materials(rows, 'capability/traceability blind template')
+
     if not results_rows or not baseline_rows:
         return
+
+    check_extension_materials(results_rows, 'capability/traceability results')
 
     result_fields = set(results_rows[0].keys())
     result_original_fields = sorted(field for field in result_fields if field.startswith('original_'))
