@@ -22,6 +22,38 @@ This dictionary describes the non-sensitive audit artifact used by the survey ma
 - `exclusion_reason`: reason for exclusion, or `NA`.
 - `note`: local audit note.
 
+## `data/source_search_log.csv`
+
+This file records the source-specific search ledger for the current manuscript corpus. Counts are deduplicated records captured in the public screening ledger, not volatile web-search result totals.
+
+- `source_id`: compact source bucket identifier.
+- `source_name`: human-readable source bucket name.
+- `source_category`: source class, such as publisher platform, preprint index, conference platform, DOI lookup, or local library metadata.
+- `search_interface`: search or reconciliation mode used for the source bucket.
+- `query_string`: query family or metadata lookup rule used for the source bucket.
+- `date_searched`: date when the source-specific ledger was frozen.
+- `date_range`: publication or release-date range covered by the search ledger.
+- `records_captured_before_dedup`: records captured in the ledger for this source bucket.
+- `duplicates_or_variants_removed`: duplicate or superseded variants removed within the public ledger.
+- `unique_candidate_records_after_dedup`: deduplicated candidate records assigned to this source bucket.
+- `core_records`, `supporting_records`, `background_records`, `excluded_records`: final layer counts for records in this source bucket.
+- `zotero_metadata_used`: whether local Zotero metadata was used for source reconciliation.
+- `notes`: source-counting boundary notes.
+
+## `data/source_screening_audit.csv`
+
+This file records one source assignment and screening decision for each of the 212 deduplicated candidate records.
+
+- `record_id`: stable candidate record identifier linked to `data/corpus.csv`.
+- `title`, `year`: record title and year from corpus metadata.
+- `source_bucket`, `source_name`: source bucket assigned from DOI/URL, venue/source, source type, and Zotero/reference metadata.
+- `source_type`, `venue_or_source`, `doi_or_url`: corpus source fields copied for auditability.
+- `corpus_layer`: final analysis-use layer: `Core`, `Supporting`, `Background`, or `Excluded`.
+- `task_category`: coarse task family used during screening.
+- `screening_decision`: layer-oriented screening decision.
+- `deduplication_status`: deduplication status; `record_id` is the public candidate key.
+- `source_trace_note`: explanation of source assignment and deduplication policy.
+
 ## `data/core_coding.csv`
 
 - `core_id`: Core-study coding identifier.
@@ -155,8 +187,8 @@ This file is for comparison and adjudication after independent coding is complet
 ## `data/screening_summary.csv`
 
 - `stage`: corpus construction or screening stage.
-- `count`: count if recoverable; `NA` means not recoverable from local records.
-- `note`: explanation or boundary condition.
+- `count`: count for the current source-specific ledger or final corpus layer.
+- `note`: explanation, source boundary, or screening-stage condition.
 
 ## `data/reference_audit.csv`
 
@@ -251,3 +283,4 @@ Do not infer a missing value from surrounding rows without recording the source 
 ## data/core_reproducibility_audit.csv
 
 Per-Core public-material audit linked by `core_id`. Private Zotero paths are excluded. Status fields distinguish public artifact visibility, target version, environment, replay/PoC/PoV material, structured trace, author-reported external traces, publicly traceable external material, and claim-level alignment.
+

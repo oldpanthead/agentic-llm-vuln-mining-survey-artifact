@@ -6,9 +6,10 @@ This repository contains the non-sensitive public artifact for a Chinese mapping
 
 1. Run `python reproduce_tables.py`.
 2. Inspect `data/corpus.csv`, `data/core_coding.csv`, and `data/corpus_layer_audit.csv` for corpus layering and Core coding.
-3. Inspect `data/v13_synthesis_statistics.csv`, `data/v13_reproducibility_audit.csv`, and `data/mapping_snapshot_counts.csv` for manuscript-facing synthesis and mapping counts.
-4. Inspect `data/product_ecosystem_snapshot.csv` for the 2026-06-29 product-ecosystem boundary snapshot.
-5. Read `SECURITY_BOUNDARY.md` before using any security-related rows.
+3. Inspect `SEARCH_PROTOCOL.md`, `data/source_search_log.csv`, and `data/source_screening_audit.csv` for the source-specific search ledger.
+4. Inspect `data/v13_synthesis_statistics.csv`, `data/v13_reproducibility_audit.csv`, and `data/mapping_snapshot_counts.csv` for manuscript-facing synthesis and mapping counts.
+5. Inspect `data/product_ecosystem_snapshot.csv` for the 2026-06-29 product-ecosystem boundary snapshot.
+6. Read `SECURITY_BOUNDARY.md` before using any security-related rows.
 
 ## Scope
 
@@ -18,7 +19,7 @@ This repository contains the non-sensitive public artifact for a Chinese mapping
 - Background references: 95
 - Excluded records: 20
 - Product/system boundary snapshot rows: 23
-- Last incremental manuscript search date: 2026-05-20
+- Source-specific search ledger date: 2026-06-30
 
 The manuscript reference list may cite a subset of already-audited Supporting or Background rows more densely than earlier drafts. Reference-list size is therefore not the same as corpus-record size. The 2026-06-19 reference expansion drew only on rows already present in `data/corpus.csv` and `data/reference_audit.csv`; it did not change the 212 / 31 / 66 / 95 / 20 corpus statistics.
 
@@ -40,6 +41,9 @@ After the pilot calibration round, the clarified codebook was used for a formal 
 
 ## Main Files
 
+- `SEARCH_PROTOCOL.md`: source-specific search protocol for the current mapping-oriented scoping review corpus.
+- `data/source_search_log.csv`: source-level search ledger and post-deduplication candidate counts.
+- `data/source_screening_audit.csv`: record-level source assignment, screening decision, and layer outcome for all 212 candidate records.
 - `data/corpus.csv`: corpus metadata and analysis-use layers.
 - `data/core_coding.csv`: legacy A/E coding for the 31 Core studies, retained for historical traceability.
 - `data/corpus_layer_audit.csv`: layer audit fields for Core / Supporting / Background / Excluded records.
@@ -69,7 +73,7 @@ Run from this directory:
 python reproduce_tables.py
 ```
 
-Expected result: all schema, corpus count, Core count, product-snapshot, mapping-snapshot, formal strongest-evidence-output second-coder template/results, formal agreement report, capability/traceability extension template/results/report, legacy A/E, classification, and reproducibility-audit checks pass. Missing DOI rows remain documented warnings.
+Expected result: all schema, source-search ledger, corpus count, Core count, product-snapshot, mapping-snapshot, formal strongest-evidence-output second-coder template/results, formal agreement report, capability/traceability extension template/results/report, legacy A/E, classification, and reproducibility-audit checks pass. Missing DOI rows remain documented warnings.
 
 ## License
 
@@ -77,3 +81,5 @@ Expected result: all schema, corpus count, Core count, product-snapshot, mapping
 - Code scripts: MIT License, see `LICENSE-CODE`.
 
 The current public repository URL is `https://github.com/oldpanthead/agentic-llm-vuln-mining-survey-artifact`. An archival DOI is not yet assigned. For anonymous review, prepare a separate anonymized artifact package or anonymized repository link before submission.
+
+

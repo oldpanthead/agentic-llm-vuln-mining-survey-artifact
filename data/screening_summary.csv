@@ -1,14 +1,9 @@
 stage,count,note
-Database targeted search,NA,Not recoverable from current local records without manual audit of search logs.
-Seed papers,NA,Seed count not recorded as a separate recoverable number in current files.
-Snowball additions,NA,Snowball additions not recoverable as a separate count from current files.
-Benchmark/project official materials,NA,"Project and benchmark materials are present, but source-specific count is not separately recoverable."
-Merged records before deduplication,NA,Pre-deduplication merged count unavailable.
-Duplicates removed,NA,Deduplication count unavailable; do not infer from SourceID duplicates because CandidateID is the authoritative record identifier.
-Records after deduplication,NA,Post-deduplication count before final candidate pool unavailable.
-Topic screening,NA,Initial screening count unavailable as a separate stage.
-Candidate pool,212,Recoverable from current unified corpus metadata and literature update decisions.
-Core studies,31,Current evidence-focused Core studies used for A/E deep coding and main observations.
-Supporting studies,66,"Supporting studies used for task context, benchmarks, and technical background."
-Background references,95,"Background references, related surveys, Related Work items, and technical prehistory."
-Excluded records,20,Boundary records excluded from the argument and statistics.
+Source-specific search ledger,212,"Unified source-specific ledger in source_search_log.csv; record-level decisions in source_screening_audit.csv. Counts are deduplicated candidate records captured in the public screening ledger, not volatile web-search result totals."
+Duplicate and variant resolution,0,"CandidateID / record_id is the deduplicated key; superseded duplicates and less-informative versions are handled through the screening decision and exclusion notes."
+Records after deduplication,212,"Unique candidate records retained in data/corpus.csv."
+Core studies,31,"Current evidence-focused Core studies used for workflow, capability, evidence-output, and second-coder checks."
+Supporting studies,66,"Supporting studies used for task context, benchmarks, mechanisms, adjacent systems, and technical background."
+Background references,95,"Background references, related surveys, Related Work items, traditional-tool background, and technical prehistory."
+Excluded records,20,"Near-scope or duplicate/superseded records with exclusion reasons retained for audit; excluded records are outside later aggregate analysis."
+Product ecosystem snapshot,23,"Independent boundary layer in product_ecosystem_snapshot.csv; not part of the 212 candidate records or Core statistics."

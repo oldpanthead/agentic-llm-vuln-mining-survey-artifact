@@ -201,6 +201,39 @@ CSV_REQUIRED_FIELDS = {
       'denominator',
       'scope_note',
     ],
+    'source_search_log.csv': [
+      'source_id',
+      'source_name',
+      'source_category',
+      'search_interface',
+      'query_string',
+      'date_searched',
+      'date_range',
+      'records_captured_before_dedup',
+      'duplicates_or_variants_removed',
+      'unique_candidate_records_after_dedup',
+      'core_records',
+      'supporting_records',
+      'background_records',
+      'excluded_records',
+      'zotero_metadata_used',
+      'notes',
+    ],
+    'source_screening_audit.csv': [
+      'record_id',
+      'title',
+      'year',
+      'source_bucket',
+      'source_name',
+      'source_type',
+      'venue_or_source',
+      'doi_or_url',
+      'corpus_layer',
+      'task_category',
+      'screening_decision',
+      'deduplication_status',
+      'source_trace_note',
+    ],
 }
 VALIDATED_CSVS = set()
 ERROR_COUNT = 0
@@ -835,6 +868,53 @@ def validate_second_coder_extension_template(rows, results_rows, baseline_rows):
         if missing_labels:
             print('ERROR: capability/traceability report missing labels:', ', '.join(sorted(set(missing_labels))))
 
+def validate_source_search_audit(corpus, source_log, source_audit):
+    status('ERROR', bool(source_log), 'source_search_log.csv has at least one source row')
+    status('ERROR', bool(source_audit), 'source_screening_audit.csv has at least one record row')
+    if not corpus or not source_log or not source_audit:
+        return
+
+    corpus_ids = {row.get('record_id', '') for row in corpus}
+    audit_ids = [row.get('record_id', '') for row in source_audit]
+    status('ERROR', len(source_audit) == 212, f'source_screening_audit rows = {len(source_audit)}; expected 212')
+    status('ERROR', set(audit_ids) == corpus_ids, 'source_screening_audit covers exactly the corpus record_ids')
+    status('ERROR', len(audit_ids) == len(set(audit_ids)), 'source_screening_audit record_id values are unique')
+
+    audit_layer_counts = Counter(row.get('corpus_layer', 'NA') for row in source_audit)
+    expected_layers = {'Core': 31, 'Supporting': 66, 'Background': 95, 'Excluded': 20}
+    for layer, expected in expected_layers.items():
+        status('ERROR', audit_layer_counts.get(layer, 0) == expected, f'source_screening_audit {layer} = {audit_layer_counts.get(layer, 0)}; expected {expected}')
+
+    def to_int(row, field):
+        try:
+            return int(row.get(field, '0'))
+        except Exception:
+            return -999999
+
+    totals = {
+        'unique': sum(to_int(row, 'unique_candidate_records_after_dedup') for row in source_log),
+        'core': sum(to_int(row, 'core_records') for row in source_log),
+        'supporting': sum(to_int(row, 'supporting_records') for row in source_log),
+        'background': sum(to_int(row, 'background_records') for row in source_log),
+        'excluded': sum(to_int(row, 'excluded_records') for row in source_log),
+    }
+    status('ERROR', totals['unique'] == 212, f'source_search_log unique records = {totals["unique"]}; expected 212')
+    status('ERROR', totals['core'] == 31, f'source_search_log Core records = {totals["core"]}; expected 31')
+    status('ERROR', totals['supporting'] == 66, f'source_search_log Supporting records = {totals["supporting"]}; expected 66')
+    status('ERROR', totals['background'] == 95, f'source_search_log Background records = {totals["background"]}; expected 95')
+    status('ERROR', totals['excluded'] == 20, f'source_search_log Excluded records = {totals["excluded"]}; expected 20')
+
+    missing_trace = [row.get('record_id', '?') for row in source_audit if row.get('source_bucket', '') in ('', 'NA') or row.get('source_name', '') in ('', 'NA')]
+    status('ERROR', not missing_trace, 'all source_screening_audit rows include a source bucket and source name')
+    if missing_trace:
+        print('ERROR: source rows missing source bucket/name:', ', '.join(missing_trace[:20]))
+
+    volatile_hit_claims = [
+        row.get('source_id', '?') for row in source_log
+        if 'volatile web-search result totals' not in row.get('notes', '')
+    ]
+    status('ERROR', not volatile_hit_claims, 'source_search_log notes distinguish ledger counts from volatile web-search totals')
+
 def validate_tracked_file_boundary():
     try:
         result = subprocess.run(['git', 'ls-files'], cwd=ROOT, check=True, capture_output=True, text=True)
@@ -889,10 +969,13 @@ second_coder_adjudication = read_csv('core31_second_coder_adjudication_template.
 record_classification = read_csv('record_classification_audit.csv')
 repro_audit = read_csv('core_reproducibility_audit.csv')
 repro_summary = read_csv('core_reproducibility_audit_summary.csv')
+source_search_log = read_csv('source_search_log.csv')
+source_screening_audit = read_csv('source_screening_audit.csv')
 
 validate_product_ecosystem_snapshot(product_snapshot)
 validate_second_coder_files(second_coder_blind, second_coder_adjudication, second_coder_formal, second_coder_formal_results)
 validate_second_coder_extension_template(second_coder_extension_template, second_coder_extension_results, core_synthesis)
+validate_source_search_audit(corpus, source_search_log, source_screening_audit)
 validate_tracked_file_boundary()
 
 expected_layers = {'Core': 31, 'Supporting': 66, 'Background': 95, 'Excluded': 20}
@@ -994,3 +1077,6 @@ if ERROR_COUNT:
     sys.exit(1)
 
 print('DONE')
+
+
+

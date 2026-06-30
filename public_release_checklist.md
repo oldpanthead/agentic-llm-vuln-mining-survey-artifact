@@ -19,8 +19,9 @@ This checklist prepares the minimal artifact for a future GitHub or Zenodo relea
 
 - [x] `data/corpus.csv` contains only bibliographic/corpus-layer metadata.
 - [x] `data/core_coding.csv` contains coding rationales and caveats, not exploit payloads.
+- [x] `data/source_search_log.csv` and `data/source_screening_audit.csv` document the source-specific search ledger and record-level screening decisions.
 - [x] `data/reference_audit.csv` has DOI coverage improved from Zotero/local audit and leaves unresolved DOI cases as `NA`.
-- [x] `data/screening_summary.csv` marks unrecoverable intermediate counts as `NA`.
+- [x] `data/screening_summary.csv` summarizes the current source-specific ledger and final corpus layers.
 - [x] `data/core31_second_coder_blind.csv` can be shared for independent 31-Core strongest-evidence-output coding.
 - [x] `data/core31_second_coder_formal_blind_template.csv` exists as a blank template for future reruns.
 - [x] `data/core31_second_coder_formal_results.csv` exists and contains the completed formal strongest-evidence-output second-coder pass.
@@ -57,7 +58,7 @@ This checklist prepares the minimal artifact for a future GitHub or Zenodo relea
 ## Submission Notes
 
 - [ ] In the manuscript, describe the artifact as a non-sensitive audit package.
-- [ ] State that missing intermediate screening counts are `NA` because they were not recoverable from local logs.
+- [ ] State that the manuscript uses the current source-specific search ledger and record-level screening audit for corpus construction.
 - [ ] State that Zotero DOI merge improved metadata coverage but does not replace official landing-page verification for every record.
 - [ ] State that no exploit payloads or undisclosed vulnerability reproduction materials are released.
 
@@ -69,3 +70,4 @@ This checklist prepares the minimal artifact for a future GitHub or Zenodo relea
 - [x] Confirm product-ecosystem global snapshot date is consistent with `RELEASE_MANIFEST.md` and row-level access dates are retained.
 - [x] Confirm `data/mapping_snapshot_counts.csv` is descriptive only and not a field-level prevalence estimate.
 - [ ] For anonymous review, remove or replace personal GitHub/account URLs with an anonymized artifact link or package.
+
