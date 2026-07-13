@@ -12,6 +12,20 @@ REPORTS = ROOT / 'reports'
 
 CSV_REQUIRED_FIELDS = {
     'corpus.csv': ['record_id', 'corpus_layer'],
+    'extended_synthesis_audit.csv': [
+        'record_id',
+        'citation_key',
+        'title',
+        'material_type',
+        'primary_synthesis_role',
+        'secondary_synthesis_roles',
+        'rq_contribution',
+        'manuscript_section_use',
+        'extracted_contribution',
+        'reason_not_study_level_coded',
+        'public_material_basis',
+        'reviewer_note',
+    ],
     'core_coding.csv': ['core_id', 'record_id', 'a_level', 'e_level', 'evidence_object'],
     'screening_summary.csv': ['stage', 'count'],
     'reference_audit.csv': ['record_id', 'canonical_title'],
@@ -915,6 +929,64 @@ def validate_source_search_audit(corpus, source_log, source_audit):
     ]
     status('ERROR', not volatile_hit_claims, 'source_search_log notes distinguish ledger counts from volatile web-search totals')
 
+
+def validate_extended_synthesis_audit(corpus, extended):
+    status('ERROR', bool(extended), 'extended_synthesis_audit.csv has at least one row')
+    if not corpus or not extended:
+        return
+    supporting_ids = {row.get('record_id', '') for row in corpus if row.get('corpus_layer') == 'Supporting'}
+    extended_ids = {row.get('record_id', '') for row in extended}
+    status('ERROR', len(extended) == 66, f'extended_synthesis_audit rows = {len(extended)}; expected 66')
+    status('ERROR', extended_ids == supporting_ids, 'extended synthesis audit covers exactly the legacy Supporting records')
+    allowed_roles = {
+        'lower_level_primitive',
+        'adjacent_candidate_analysis',
+        'adjacent_fuzzing_or_testing',
+        'benchmark_or_evaluation',
+        'agent_orchestration',
+        'governance_or_safety',
+        'evidence_or_reproducibility',
+    }
+    allowed_rq = {'RQ1', 'RQ2_context', 'evaluation_agenda', 'governance_agenda'}
+    invalid_roles = []
+    invalid_secondary = []
+    invalid_rq = []
+    generic_contrib = []
+    for idx, row in enumerate(extended, start=2):
+        role = row.get('primary_synthesis_role', '')
+        if role not in allowed_roles:
+            invalid_roles.append((idx, row.get('record_id', '?'), role))
+        secondary = row.get('secondary_synthesis_roles', '')
+        if secondary and secondary != 'NA':
+            for item in secondary.split(';'):
+                if item and item not in allowed_roles:
+                    invalid_secondary.append((idx, row.get('record_id', '?'), item))
+        rq = row.get('rq_contribution', '')
+        if rq not in allowed_rq:
+            invalid_rq.append((idx, row.get('record_id', '?'), rq))
+        contrib = row.get('extracted_contribution', '').strip().lower()
+        if contrib in ('', 'provides context', 'context'):
+            generic_contrib.append((idx, row.get('record_id', '?')))
+    status('ERROR', not invalid_roles, 'extended synthesis primary roles use approved vocabulary')
+    if invalid_roles:
+        print('ERROR: invalid extended synthesis roles:', invalid_roles[:10])
+    status('ERROR', not invalid_secondary, 'extended synthesis secondary roles use approved vocabulary')
+    if invalid_secondary:
+        print('ERROR: invalid extended synthesis secondary roles:', invalid_secondary[:10])
+    status('ERROR', not invalid_rq, 'extended synthesis rq_contribution uses approved vocabulary')
+    if invalid_rq:
+        print('ERROR: invalid extended synthesis RQ values:', invalid_rq[:10])
+    status('ERROR', not generic_contrib, 'extended synthesis rows contain specific extracted_contribution values')
+    if generic_contrib:
+        print('ERROR: generic extended synthesis contribution rows:', generic_contrib[:10])
+    role_counts = Counter(row.get('primary_synthesis_role', 'NA') for row in extended)
+    rq_counts = Counter(row.get('rq_contribution', 'NA') for row in extended)
+    material_counts = Counter(row.get('material_type', 'NA') for row in extended)
+    print('EXTENDED_SYNTHESIS_AUDIT: rows=66 roles=' + str(dict(sorted(role_counts.items()))))
+    print('EXTENDED_SYNTHESIS_RQ_USE: ' + str(dict(sorted(rq_counts.items()))))
+    print('EXTENDED_SYNTHESIS_MATERIAL_TYPES: ' + str(dict(sorted(material_counts.items()))))
+
+
 def validate_tracked_file_boundary():
     try:
         result = subprocess.run(['git', 'ls-files'], cwd=ROOT, check=True, capture_output=True, text=True)
@@ -971,11 +1043,13 @@ repro_audit = read_csv('core_reproducibility_audit.csv')
 repro_summary = read_csv('core_reproducibility_audit_summary.csv')
 source_search_log = read_csv('source_search_log.csv')
 source_screening_audit = read_csv('source_screening_audit.csv')
+extended_synthesis = read_csv('extended_synthesis_audit.csv')
 
 validate_product_ecosystem_snapshot(product_snapshot)
 validate_second_coder_files(second_coder_blind, second_coder_adjudication, second_coder_formal, second_coder_formal_results)
 validate_second_coder_extension_template(second_coder_extension_template, second_coder_extension_results, core_synthesis)
 validate_source_search_audit(corpus, source_search_log, source_screening_audit)
+validate_extended_synthesis_audit(corpus, extended_synthesis)
 validate_tracked_file_boundary()
 
 expected_layers = {'Core': 31, 'Supporting': 66, 'Background': 95, 'Excluded': 20}
@@ -1077,6 +1151,7 @@ if ERROR_COUNT:
     sys.exit(1)
 
 print('DONE')
+
 
 
 

@@ -13,12 +13,12 @@ The release includes non-sensitive materials needed to review the survey evidenc
 
 - compact entry map: `ARTIFACT_INDEX.md`;
 - source-specific search protocol, source-level ledger, record-level screening audit, corpus metadata, corpus-layer audit, and screening summary;
-- 31-Core coding table, current evidence-output codebook, legacy A-profile codebook, field dictionary, and legacy-code crosswalk;
+- 31-record study-level coding table, `data/extended_synthesis_audit.csv`, extended synthesis audit report, corpus-stratification closure report, current evidence-output codebook, legacy A-profile codebook, field dictionary, and legacy-code crosswalk;
 - manuscript-facing synthesis matrix, synthesis statistics, mapping counts, benchmark-boundary notes, research-agenda outputs, and reproducibility audit files;
 - DOI/reference audit, DOI-status notes, Zotero/PDF resolution summary, and literature-update decisions;
 - product-ecosystem snapshot for public coding-agent and security-agent materials;
 - formal strongest-evidence-output second-coder results and agreement report;
-- formal Agent-increment / external-traceability extension results and set-style agreement report;
+- formal cross-stage capability / external-traceability extension results and set-style agreement report;
 - pilot second-coder calibration archive;
 - historical v13 restructuring audit archive;
 - security boundary, release checklist, repository setup notes, licenses, and reproducibility script.
@@ -36,7 +36,7 @@ The release excludes:
 
 ## Evidence Boundary
 
-Product pages, help pages, official blogs, model pages, project pages, and disclosure policies are recorded as dated public materials. They support ecosystem and boundary discussion only; they are not independently validated by this artifact and do not expand the 31-Core set.
+Product pages, help pages, official blogs, model pages, project pages, and disclosure policies are recorded as dated public materials. They support ecosystem and boundary discussion only; they are not independently validated by this artifact and do not expand the 31-record study-level coded set.
 
 The source-specific search ledger records the current manuscript corpus by source bucket, query family, record-level screening decision, and analysis layer. Reference-list size and corpus-record size are separate quantities. The current corpus statistics remain 212 / 31 / 66 / 95 / 20.
 
@@ -62,3 +62,10 @@ Pilot agreement/kappa values in the archive are retained for codebook calibratio
 - Decide whether and when to archive on Zenodo.
 - Refresh fast-changing product materials before the next manuscript revision.
 - Prepare an anonymized artifact package or anonymized repository link before anonymous peer review.
+
+## Extended synthesis terminology note
+
+The current manuscript describes the 31-record study-level coded set and the 66-study extended synthesis set. Legacy artifact values retain `Core` and `Supporting` for script compatibility: `Core` maps to study-level coded records, and `Supporting` maps to extended synthesis studies.
+
+
+

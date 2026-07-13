@@ -5,7 +5,7 @@ This index points reviewers to the public, non-sensitive files needed to audit t
 ## Fast Validation
 
 - `reproduce_tables.py`: schema, count, second-coder, product snapshot, source ledger, and safety-boundary checks.
-- Expected corpus counts: 212 candidate records; 31 Core; 66 Supporting; 95 Background; 20 Excluded.
+- Expected corpus counts: 212 candidate records; 31 study-level coded records (30 target-software studies plus 1 governance boundary case); 66 extended synthesis studies; 95 Background references; 20 Excluded records.
 - Product ecosystem snapshot: 23 rows, maintained as an independent boundary layer.
 
 ## Corpus Construction
@@ -16,10 +16,13 @@ This index points reviewers to the public, non-sensitive files needed to audit t
 - `data/corpus.csv`: candidate metadata and final analysis layer.
 - `data/screening_summary.csv`: compact count summary.
 
-## Core Coding And Synthesis
+## Study-Level Coding And Extended Synthesis
 
-- `data/v13_core_synthesis_matrix.csv`: current manuscript-facing Core synthesis matrix; filename retained from an earlier restructuring stage.
+- `data/v13_core_synthesis_matrix.csv`: current manuscript-facing study-level coded synthesis matrix; filename retained from an earlier restructuring stage.
 - `data/v13_synthesis_statistics.csv`: checked synthesis statistics used by the manuscript.
+- `data/extended_synthesis_audit.csv`: record-level synthesis-use audit for the 66-study extended synthesis set.
+- `EXTENDED_SYNTHESIS_AUDIT_REPORT.md`: summary of the extended synthesis audit.
+- `CORPUS_STRATIFICATION_CLOSURE_REPORT.md`: corpus-stratification closure report for the manuscript and artifact.
 - `data/mapping_snapshot_counts.csv`: descriptive mapping views for the manuscript corpus.
 - `data/core_coding.csv`: legacy A/E fields retained for historical traceability.
 - `evidence_output_codebook.md`: current evidence-output labels.
@@ -41,7 +44,7 @@ This index points reviewers to the public, non-sensitive files needed to audit t
 - `data/reference_audit.csv`: bibliographic audit table.
 - `data/doi_remaining_manual_status.csv`: DOI-not-found or DOI-not-applicable notes.
 - `data/product_ecosystem_snapshot.csv`: dated product-ecosystem boundary snapshot as of 2026-06-29.
-- `data/core_reproducibility_audit.csv`: public-material reproducibility audit for 30 vulnerability-mining Core studies.
+- `data/core_reproducibility_audit.csv`: public-material reproducibility audit for 30 target-software study-level coded studies.
 - `data/core_reproducibility_audit_summary.csv`: aggregate reproducibility audit summary.
 - `ZOTERO_PDF_RESOLUTION_REPORT.md`: path-redacted Zotero/PDF resolution summary.
 
@@ -54,3 +57,4 @@ This index points reviewers to the public, non-sensitive files needed to audit t
 ## Safety Boundary
 
 Read `SECURITY_BOUNDARY.md` before using security-related rows. The public artifact excludes undisclosed PoCs, exploit payloads, sensitive crash inputs, private targets, credentials, live reproduction steps, PDFs, Zotero databases, local paths, and private vendor or bug-bounty communication.
+

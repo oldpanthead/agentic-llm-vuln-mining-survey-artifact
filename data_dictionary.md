@@ -2,10 +2,15 @@
 
 This dictionary describes the non-sensitive audit artifact used by the survey manuscript. It is intended to help reviewers inspect corpus construction, legacy A/E traceability fields, current evidence-output labels, bibliographic verification, pilot second-coder calibration materials, formal second-coder templates/results, agreement reports, and pending adjudication materials. Files with `v13_` prefixes are retained filenames from the prior restructuring stage but are used by the current manuscript synthesis unless superseded.
 
+
+## Current Manuscript Layer Terminology
+
+Current manuscript terminology maps legacy artifact layer values as follows: `Core` means the 31-record study-level coded set (30 target-software studies plus one governance boundary case), and `Supporting` means the 66-study extended synthesis set. These legacy CSV values are retained for reproduction-script compatibility. The layer distinction records analytical depth and role rather than study importance or quality.
+
 ## Common Identifiers
 
 - `record_id`: stable identifier for one candidate record in the 212-record corpus.
-- `core_id`: stable identifier for one Core study in the 31-record deeply coded subset.
+- `core_id`: stable identifier for one legacy Core record in the 31-record study-level coded set.
 - `sample_id`: stable identifier for one record in the second-coder sample.
 
 ## `data/corpus.csv`
@@ -17,7 +22,7 @@ This dictionary describes the non-sensitive audit artifact used by the survey ma
 - `source_type`: local source type, such as `journalArticle`, `conferencePaper`, `preprint`, or `thesis`.
 - `venue_or_source`: local venue/source provenance.
 - `doi_or_url`: DOI, URL, ISBN URN, or other local locator.
-- `corpus_layer`: analysis-use layer: `Core`, `Supporting`, `Background`, or `Excluded`.
+- `corpus_layer`: legacy analysis-use layer: `Core`, `Supporting`, `Background`, or `Excluded`; in current manuscript terms, `Core` maps to study-level coded records and `Supporting` maps to extended synthesis studies.
 - `task_category`: coarse task family used during screening.
 - `exclusion_reason`: reason for exclusion, or `NA`.
 - `note`: local audit note.
@@ -36,7 +41,7 @@ This file records the source-specific search ledger for the current manuscript c
 - `records_captured_before_dedup`: records captured in the ledger for this source bucket.
 - `duplicates_or_variants_removed`: duplicate or superseded variants removed within the public ledger.
 - `unique_candidate_records_after_dedup`: deduplicated candidate records assigned to this source bucket.
-- `core_records`, `supporting_records`, `background_records`, `excluded_records`: final layer counts for records in this source bucket.
+- `core_records`, `supporting_records`, `background_records`, `excluded_records`: legacy final layer counts for records in this source bucket; `supporting_records` corresponds to extended synthesis records in the current manuscript terminology.
 - `zotero_metadata_used`: whether local Zotero metadata was used for source reconciliation.
 - `notes`: source-counting boundary notes.
 
@@ -48,7 +53,7 @@ This file records one source assignment and screening decision for each of the 2
 - `title`, `year`: record title and year from corpus metadata.
 - `source_bucket`, `source_name`: source bucket assigned from DOI/URL, venue/source, source type, and Zotero/reference metadata.
 - `source_type`, `venue_or_source`, `doi_or_url`: corpus source fields copied for auditability.
-- `corpus_layer`: final analysis-use layer: `Core`, `Supporting`, `Background`, or `Excluded`.
+- `corpus_layer`: legacy final analysis-use layer: `Core`, `Supporting`, `Background`, or `Excluded`; in current manuscript terms, `Core` maps to study-level coded records and `Supporting` maps to extended synthesis studies.
 - `task_category`: coarse task family used during screening.
 - `screening_decision`: layer-oriented screening decision.
 - `deduplication_status`: deduplication status; `record_id` is the public candidate key.
@@ -71,6 +76,28 @@ This file records one source assignment and screening decision for each of the 2
 - `environment_reported`: local note on environment reporting.
 - `external_confirmation_reported`: local note on independent/external confirmation.
 - `note`: boundary, caveat, or manual-check note.
+
+
+
+## `data/extended_synthesis_audit.csv`
+
+This file provides a lightweight, record-level synthesis-use audit for the 66-study extended synthesis set. It does not apply the full study-level workflow--capability--evidence coding used for the 31-record coded set.
+
+- `record_id`: stable identifier linked to `data/corpus.csv`.
+- `citation_key`: bibliography key extracted from the public reference audit when available; `NA` means no key was recorded in the source note.
+- `title`: record title.
+- `material_type`: normalized public material type, such as `conference_paper`, `journal_article`, or `preprint_or_arxiv`.
+- `primary_synthesis_role`: unique controlled role for the record. Allowed values are `lower_level_primitive`, `adjacent_candidate_analysis`, `adjacent_fuzzing_or_testing`, `benchmark_or_evaluation`, `agent_orchestration`, `governance_or_safety`, and `evidence_or_reproducibility`.
+- `secondary_synthesis_roles`: optional semicolon-separated supporting roles from the same vocabulary, or `NA`.
+- `rq_contribution`: main manuscript use: `RQ1`, `RQ2_context`, `evaluation_agenda`, or `governance_agenda`.
+- `manuscript_section_use`: section-level location where the record contributes to synthesis.
+- `extracted_contribution`: concise contribution extracted for thematic synthesis; it must be more specific than generic context.
+- `reason_not_study_level_coded`: why the record remains outside the full study-level coded set.
+- `public_material_basis`: public metadata, source, and locator supporting the audit row.
+- `reviewer_note`: boundary note explaining that this is lightweight synthesis-use audit rather than full coding.
+
+Positive examples: an LLM-guided fuzzing paper without full study-level trace fields can be `adjacent_fuzzing_or_testing`; a benchmark or empirical-evaluation paper can be `benchmark_or_evaluation`; a reproduction or patch-validation adjacent work can be `evidence_or_reproducibility`. Negative examples: a general scoping-review method paper, a traditional tool definition, or a product page that only supports ecosystem context should remain in the background/reference or product-ecosystem layer rather than this file.
+
 
 ## `data/corpus_layer_audit.csv`
 
@@ -127,7 +154,7 @@ This file records one source assignment and screening decision for each of the 2
 This file is retained as a blank blind template after the pilot round was archived. It intentionally hides original A/E labels, original evidence labels, original evidence objects, and other answer-key fields.
 
 - `core_id`, `record_id`, `system_alias`, `title`: Core-study identifiers.
-- `publication_status`: publication/material status only. Current allowed values in the 31-Core second-coder files include `not_publicly_available`, `preprint_or_arxiv_from_local_metadata`, `arXiv preprint`, `journal article`, `preprint/project page`, `verified_by_official_source`, and `peer_reviewed`. This field must not encode boundary role.
+- `publication_status`: publication/material status only. Current allowed values in the 31-record study-level coded second-coder files include `not_publicly_available`, `preprint_or_arxiv_from_local_metadata`, `arXiv preprint`, `journal article`, `preprint/project page`, `verified_by_official_source`, and `peer_reviewed`. This field must not encode boundary role.
 - `boundary_role`: analysis-boundary role for second-coder workflow; currently `standard_core_entry` or `governance_boundary_case`.
 - `materials_to_review`: non-sensitive instruction describing which public materials to inspect.
 - `coder2_strongest_evidence_output`: blank field for a future formal second-coder decision using the current manuscript evidence-output label.
@@ -153,10 +180,10 @@ This archive preserves the first pilot second-coder round for codebook calibrati
 
 ## `data/core31_second_coder_capability_traceability_blind_template.csv`
 
-This blank blind template is retained for future reruns of the independent review of two auxiliary fields: Agent increment / cross-stage capability and external traceability / external audit material. It contains 31 rows, hides all `original_*` fields, and leaves coder2 fields blank. Because the capability field can be multi-label, agreement for completed results uses per-label, Jaccard-style, or other suitable multi-label metrics rather than forcing a single-label Cohen's kappa.
+This blank blind template is retained for future reruns of the independent review of two auxiliary fields: cross-stage capability and external traceability / external audit material. It contains 31 rows, hides all `original_*` fields, and leaves coder2 fields blank. Because the capability field can be multi-label, agreement for completed results uses per-label, Jaccard-style, or other suitable multi-label metrics rather than forcing a single-label Cohen's kappa.
 
 - `core_id`, `record_id`, `system_alias`, `title`, `publication_status`, `boundary_role`, `materials_to_review`: blind review identifiers and non-sensitive review instructions.
-- `coder2_cross_stage_capability_label`: blank future coder2 label for Agent increment / cross-stage capability.
+- `coder2_cross_stage_capability_label`: blank future coder2 label for cross-stage capability.
 - `coder2_capability_decision_reason`: blank future rationale field.
 - `coder2_capability_uncertainty_note`: blank future uncertainty field.
 - `coder2_external_traceability_label`: blank future coder2 label for external traceability / external audit material.
@@ -165,7 +192,7 @@ This blank blind template is retained for future reruns of the independent revie
 
 ## `data/core31_second_coder_capability_traceability_results.csv`
 
-This file contains the completed formal second-coder results for Agent increment / cross-stage capability and external traceability / external audit material. It has 31 rows, contains no `original_*` fields, and preserves coder2 labels, rationales, and uncertainty notes.
+This file contains the completed formal second-coder results for cross-stage capability and external traceability / external audit material. It has 31 rows, contains no `original_*` fields, and preserves coder2 labels, rationales, and uncertainty notes.
 
 ## `reports/SECOND_CODER_CAPABILITY_TRACEABILITY_AGREEMENT_REPORT.md`
 
@@ -203,7 +230,7 @@ This file is for comparison and adjudication after independent coding is complet
 - `last_verified_date`: date of the latest local audit update for this row.
 - `note`: provenance, risk flags, and manual-check notes.
 
-Manuscript citation count is not a corpus statistic. The 2026-06-19 reference-list expansion cited additional rows that were already present in `corpus.csv` and `reference_audit.csv`; those citations remain Supporting or Background material and do not alter the 212 candidate records, 31 Core studies, 66 Supporting studies, 95 Background references, or 20 Excluded records.
+Manuscript citation count is not a corpus statistic. The 2026-06-19 reference-list expansion cited additional rows that were already present in `corpus.csv` and `reference_audit.csv`; those citations remain extended synthesis or background/reference material and do not alter the 212 candidate records, 31 study-level coded records, 66 extended synthesis studies, 95 Background references, or 20 Excluded records.
 
 
 ## `data/mapping_snapshot_counts.csv`
@@ -213,12 +240,12 @@ This file records descriptive mapping views used by the current manuscript. The 
 - `view`: mapping view, such as `year_distribution`, `source_type_distribution`, or `task_facet_distribution`.
 - `category`: category displayed in the manuscript mapping view.
 - `count`: count for the category.
-- `denominator`: counting scope, such as 212 candidate records, the independent product snapshot layer, or the Core deep-analysis set.
+- `denominator`: counting scope, such as 212 candidate records, the independent product snapshot layer, the 31-record study-level coded set, or the 66-study extended synthesis set.
 - `scope_note`: boundary note explaining that the count is descriptive rather than a prevalence estimate.
 
 ## `data/product_ecosystem_snapshot.csv`
 
-This file is an independent product-ecosystem boundary data layer. Rows in this file are not part of `data/corpus.csv`, do not count toward the 212 candidate records, and do not alter Core aggregate statistics. Product materials that also support manuscript background or supporting discussion are represented separately in `data/reference_audit.csv`. Public vendor/project materials are recorded as source-limited ecosystem evidence and are not independently validated by this artifact.
+This file is an independent product-ecosystem boundary data layer. Rows in this file are not part of `data/corpus.csv`, do not count toward the 212 candidate records, and do not alter study-level coded aggregate statistics. Product materials that also support manuscript background or extended-synthesis discussion are represented separately in `data/reference_audit.csv`. Public vendor/project materials are recorded as source-limited ecosystem evidence and are not independently validated by this artifact.
 
 - `product_or_system`: public product, model, workflow, policy, or attempted source check.
 - `vendor`: vendor or organization associated with the material.
@@ -257,9 +284,9 @@ Rows already audited with DOI or official URL in `reference_audit.csv` are not d
 
 ## Intercoder Files
 
-`data/core31_second_coder_formal_blind_template.csv` is the blank formal second-coder input for future strongest-evidence-output reruns. `data/core31_second_coder_formal_results.csv` contains the completed formal strongest-evidence-output second-coder pass and no `original_*` fields. `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md` reports formal pre-adjudication agreement against `data/core31_second_coder_adjudication_template.csv`. `data/core31_second_coder_capability_traceability_blind_template.csv` is a blank extension template for future Agent-increment and external-traceability reruns. `data/core31_second_coder_capability_traceability_results.csv` contains the completed extension second-coder results and no `original_*` fields. `reports/SECOND_CODER_CAPABILITY_TRACEABILITY_AGREEMENT_REPORT.md` reports set-style and per-label agreement for those fields. `data/core31_second_coder_blind.csv` is also kept blank as a blind workflow template.
+`data/core31_second_coder_formal_blind_template.csv` is the blank formal second-coder input for future strongest-evidence-output reruns. `data/core31_second_coder_formal_results.csv` contains the completed formal strongest-evidence-output second-coder pass and no `original_*` fields. `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md` reports formal pre-adjudication agreement against `data/core31_second_coder_adjudication_template.csv`. `data/core31_second_coder_capability_traceability_blind_template.csv` is a blank extension template for future cross-stage capability and external-traceability reruns. `data/core31_second_coder_capability_traceability_results.csv` contains the completed extension second-coder results and no `original_*` fields. `reports/SECOND_CODER_CAPABILITY_TRACEABILITY_AGREEMENT_REPORT.md` reports set-style and per-label agreement for those fields. `data/core31_second_coder_blind.csv` is also kept blank as a blind workflow template.
 
-`archive/pilot_second_coder_round_1/` preserves the pilot round for calibration only; its raw agreement and kappa should not be cited as formal reliability. Formal strongest-evidence-output reliability statistics are reported in `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md`; Agent-increment and external-traceability extension agreement is reported separately in `reports/SECOND_CODER_CAPABILITY_TRACEABILITY_AGREEMENT_REPORT.md`.
+`archive/pilot_second_coder_round_1/` preserves the pilot round for calibration only; its raw agreement and kappa should not be cited as formal reliability. Formal strongest-evidence-output reliability statistics are reported in `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md`; cross-stage capability and external-traceability extension agreement is reported separately in `reports/SECOND_CODER_CAPABILITY_TRACEABILITY_AGREEMENT_REPORT.md`.
 
 `data/intercoder_sample_blind.csv` is an optional sampled-review worksheet. `data/intercoder_sample_key.csv` is private and not included in the public artifact.
 
@@ -278,10 +305,15 @@ Do not infer a missing value from surrounding rows without recording the source 
 
 
 ## Record classification audit fields
-`final_decision`, `decision_reason`, and `stats_treatment` in `data/literature_update_decisions.csv` preserve the provenance of Core / Supporting / Background / Excluded decisions for the seven high-relevance records. The manuscript-facing classification summary is provided in `data/record_classification_audit.csv`, and these decisions are already reflected in the current 31-Core corpus statistics.
+`final_decision`, `decision_reason`, and `stats_treatment` in `data/literature_update_decisions.csv` preserve the provenance of Core / Supporting / Background / Excluded decisions (legacy artifact labels; Supporting corresponds to extended synthesis) for the seven high-relevance records. The manuscript-facing classification summary is provided in `data/record_classification_audit.csv`, and these decisions are already reflected in the current 31-record study-level coded corpus statistics.
 
 ## data/core_reproducibility_audit.csv
 
 Per-Core public-material audit linked by `core_id`. Private Zotero paths are excluded. Status fields distinguish public artifact visibility, target version, environment, replay/PoC/PoV material, structured trace, author-reported external traces, publicly traceable external material, and claim-level alignment.
+
+
+
+
+
 
 
