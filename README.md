@@ -1,21 +1,22 @@
 # Public Audit Artifact
 
-This repository contains the non-sensitive public artifact for a Chinese mapping-oriented scoping review on Agentic LLM systems for vulnerability mining. It supports reviewer audit of corpus construction, study-level coding, the extended synthesis layer, second-coder checks, mapping counts, reference verification, product-ecosystem boundary materials, and reproducibility notes. It is not an exploit-reproduction package.
+This repository contains the non-sensitive public artifact for a mapping-oriented scoping review on Agentic LLM systems for vulnerability mining. It supports reviewer audit of corpus construction, study-level coding, the extended synthesis layer, second-coder checks, mapping counts, reference verification, product-ecosystem boundary materials, and reproducibility notes. It is not an exploit-reproduction package.
 
 ## Start Here
 
 1. Read `SECURITY_BOUNDARY.md`.
-2. Run `D:\Anaconda3\python.exe reproduce_tables.py` on Windows, or `python reproduce_tables.py` with a working Python installation.
+2. Run `python reproduce_tables.py`. On Windows, `D:\Anaconda3\python.exe reproduce_tables.py` is an optional environment-specific example.
 3. Use `ARTIFACT_INDEX.md` as the compact file map.
 4. Use `data_dictionary.md` for field-level definitions.
 
 Expected validation highlights:
 
-- Candidate records: 212
+- Source records in screening ledger: 212
+- Canonical candidate studies after version deduplication: 207
 - Study-level coded records: 31 (30 target-software studies plus 1 governance boundary case)
-- Extended synthesis studies: 66
+- Extended synthesis studies: 62
 - Background references: 95
-- Excluded records: 20
+- Excluded near-neighbor studies: 19
 - Product/system boundary snapshot rows: 23
 - Source-specific search ledger date: 2026-06-30
 - Product-ecosystem snapshot date: 2026-06-29
@@ -23,17 +24,19 @@ Expected validation highlights:
 
 ## Terminology Compatibility Note
 
-The current manuscript refers to the 31-record study-level coded set and the 66-study extended synthesis set. Some CSV values and legacy filenames retain `Core` and `Supporting` for script compatibility: `Core` corresponds to the study-level coded records, and `Supporting` corresponds to the extended synthesis studies. The file `data/extended_synthesis_audit.csv` provides the current record-level synthesis-use audit for those 66 records. These retained labels do not imply study quality or a lower importance tier.
+The current manuscript refers to the 31-record study-level coded set and the 62-study extended synthesis set. Some CSV values and legacy filenames retain `Core` and `Supporting` for script compatibility: `Core` corresponds to the study-level coded records, and `Supporting` corresponds to the extended synthesis studies. The file `data/extended_synthesis_audit.csv` provides the current record-level synthesis-use audit for those 62 canonical studies. These retained labels do not imply study quality or a lower importance tier.
 
 ## Main Entry Points
 
 - `SEARCH_PROTOCOL.md`: source-specific search protocol.
 - `data/source_search_log.csv`: source-level search ledger.
-- `data/source_screening_audit.csv`: record-level screening audit for all 212 candidate records.
-- `data/corpus.csv`: corpus metadata and final analysis layer.
-- `data/extended_synthesis_audit.csv`: record-level synthesis-use audit for the 66-study extended synthesis set.
+- `data/source_screening_audit.csv`: record-level screening audit for all 212 source records.
+- `data/corpus.csv`: source-record metadata and legacy analysis layer.
+- `data/study_version_crosswalk.csv`: canonical study/version crosswalk used for analytical counts.
+- `data/extended_synthesis_audit.csv`: record-level synthesis-use audit for the 62-study extended synthesis set.
 - `EXTENDED_SYNTHESIS_AUDIT_REPORT.md`: summary of the extended synthesis audit.
 - `CORPUS_STRATIFICATION_CLOSURE_REPORT.md`: corpus-stratification closure report for the manuscript and artifact.
+- `DEDUP_AND_EXTENDED_SYNTHESIS_AUDIT_REPORT.md`: canonical deduplication and extended-synthesis substantiation report.
 - `data/v13_core_synthesis_matrix.csv`: current manuscript-facing study-level coded synthesis matrix; filename retained from a prior restructuring stage.
 - `data/v13_synthesis_statistics.csv`: checked synthesis statistics used by the manuscript.
 - `data/mapping_snapshot_counts.csv`: descriptive mapping views for the manuscript corpus.
@@ -52,7 +55,7 @@ The pilot second-coder round is archived under `archive/pilot_second_coder_round
 
 ## Evidence Boundary
 
-Product pages, help pages, official blogs, model pages, project pages, and disclosure policies are recorded as dated boundary materials. They support ecosystem discussion and do not expand the 31-record study-level coded set. The product ecosystem snapshot is independent of the 212 candidate records; row-level roles and caveats are recorded in `data/product_ecosystem_snapshot.csv` and `data/reference_audit.csv`.
+Product pages, help pages, official blogs, model pages, project pages, and disclosure policies are recorded as dated boundary materials. They support ecosystem discussion and do not expand the 31-record study-level coded set. The product ecosystem snapshot is independent of the 212 source records; row-level roles and caveats are recorded in `data/product_ecosystem_snapshot.csv` and `data/reference_audit.csv`.
 
 Legacy A/E fields are retained for historical traceability. The current manuscript synthesis uses natural-language workflow, capability, strongest evidence output, external audit material, and claim-boundary fields.
 
@@ -72,4 +75,5 @@ The public artifact excludes undisclosed PoCs, exploit payloads, sensitive crash
 - Code scripts: MIT License, see `LICENSE-CODE`.
 
 Current public repository URL: `https://github.com/oldpanthead/agentic-llm-vuln-mining-survey-artifact`. Prepare a separate anonymized artifact package or anonymized repository link before anonymous peer review.
+
 

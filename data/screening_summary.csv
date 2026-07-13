@@ -1,9 +1,9 @@
 stage,count,note
-Source-specific search ledger,212,"Unified source-specific ledger in source_search_log.csv; record-level decisions in source_screening_audit.csv. Counts are deduplicated candidate records captured in the public screening ledger, not volatile web-search result totals."
-Duplicate and variant resolution,0,"CandidateID / record_id is the deduplicated key; superseded duplicates and less-informative versions are handled through the screening decision and exclusion notes."
-Records after deduplication,212,"Unique candidate records retained in data/corpus.csv."
-Core studies,31,"Current evidence-focused Core studies used for workflow, capability, evidence-output, and second-coder checks."
-Supporting studies,66,"Supporting studies used for task context, benchmarks, mechanisms, adjacent systems, and technical background."
-Background references,95,"Background references, related surveys, Related Work items, traditional-tool background, and technical prehistory."
-Excluded records,20,"Near-scope or duplicate/superseded records with exclusion reasons retained for audit; excluded records are outside later aggregate analysis."
-Product ecosystem snapshot,23,"Independent boundary layer in product_ecosystem_snapshot.csv; not part of the 212 candidate records or Core statistics."
+Source-specific search ledger,212,Source records retained in corpus.csv and source_screening_audit.csv; versions remain traceable.
+Canonical study/version resolution,5,Five alternate or duplicate source records are linked to canonical studies in study_version_crosswalk.csv.
+Canonical candidate studies after version deduplication,207,Analytical study counts use canonical studies rather than source-record rows.
+Study-level coded records,31,30 target-software studies plus one governance boundary record; RFCAudit uses canonical conference record CP102 while preserving previous coding decisions.
+Extended synthesis studies,62,Canonical extended synthesis studies after removing alternate versions already represented by study-level coded or formal records.
+Background references,95,"Background/reference canonical records for primitives, concepts, tools, benchmarks, methods, and ecosystem context."
+Excluded near-neighbor studies,19,Canonical excluded near-neighbor studies after version deduplication; source-level excluded rows remain traceable.
+Product ecosystem snapshot,23,Independent boundary layer in product_ecosystem_snapshot.csv; not part of source-record or canonical-study counts.

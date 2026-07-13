@@ -1,12 +1,12 @@
 # Formal Second-Coder Agreement Report
 
-This report summarizes the formal pre-adjudication agreement between the author baseline and the completed second-coder pass for the strongest-evidence-output field across the 31 Core studies.
+This report summarizes the formal pre-adjudication agreement between the author baseline and the completed second-coder pass for the strongest-evidence-output field across the 31-record study-level coded set.
 
 ## Inputs
 
 - Baseline labels: `data/core31_second_coder_adjudication_template.csv` field `original_strongest_evidence_output`.
 - Second-coder labels: `data/core31_second_coder_formal_results.csv` field `coder2_strongest_evidence_output`.
-- Scope: 31 Core studies.
+- Scope: 31-record study-level coded set (30 target-software studies plus one governance boundary case).
 
 ## Agreement Statistics
 
@@ -30,3 +30,4 @@ These are formal pre-adjudication agreement statistics. If disagreements are lat
 
 - The archived pilot round remains a calibration artifact only and is not cited as formal intercoder reliability.
 - No adjudicated labels are claimed in this report.
+

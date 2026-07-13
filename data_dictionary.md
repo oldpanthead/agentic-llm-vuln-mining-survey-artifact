@@ -5,11 +5,11 @@ This dictionary describes the non-sensitive audit artifact used by the survey ma
 
 ## Current Manuscript Layer Terminology
 
-Current manuscript terminology maps legacy artifact layer values as follows: `Core` means the 31-record study-level coded set (30 target-software studies plus one governance boundary case), and `Supporting` means the 66-study extended synthesis set. These legacy CSV values are retained for reproduction-script compatibility. The layer distinction records analytical depth and role rather than study importance or quality.
+Current manuscript terminology maps legacy artifact layer values as follows: `Core` means the 31-record study-level coded set (30 target-software studies plus one governance boundary case), and `Supporting` means the legacy source-record layer from which the 62-study canonical extended synthesis set is derived. These legacy CSV values are retained for reproduction-script compatibility. The layer distinction records analytical depth and role rather than study importance or quality.
 
 ## Common Identifiers
 
-- `record_id`: stable identifier for one candidate record in the 212-record corpus.
+- `record_id`: stable identifier for one source record in the 212-record screening ledger.
 - `core_id`: stable identifier for one legacy Core record in the 31-record study-level coded set.
 - `sample_id`: stable identifier for one record in the second-coder sample.
 
@@ -40,14 +40,14 @@ This file records the source-specific search ledger for the current manuscript c
 - `date_range`: publication or release-date range covered by the search ledger.
 - `records_captured_before_dedup`: records captured in the ledger for this source bucket.
 - `duplicates_or_variants_removed`: duplicate or superseded variants removed within the public ledger.
-- `unique_candidate_records_after_dedup`: deduplicated candidate records assigned to this source bucket.
-- `core_records`, `supporting_records`, `background_records`, `excluded_records`: legacy final layer counts for records in this source bucket; `supporting_records` corresponds to extended synthesis records in the current manuscript terminology.
+- `unique_candidate_records_after_dedup`: source records assigned to this source bucket after source-bucket deduplication and before canonical study/version consolidation.
+- `core_records`, `supporting_records`, `background_records`, `excluded_records`: canonical analysis-use counts after study/version deduplication. Field names are retained for compatibility; in current manuscript terminology, `core_records` means study-level coded records and `supporting_records` means extended synthesis studies.
 - `zotero_metadata_used`: whether local Zotero metadata was used for source reconciliation.
 - `notes`: source-counting boundary notes.
 
 ## `data/source_screening_audit.csv`
 
-This file records one source assignment and screening decision for each of the 212 deduplicated candidate records.
+This file records one source assignment and screening decision for each of the 212 source records in the screening ledger.
 
 - `record_id`: stable candidate record identifier linked to `data/corpus.csv`.
 - `title`, `year`: record title and year from corpus metadata.
@@ -79,9 +79,27 @@ This file records one source assignment and screening decision for each of the 2
 
 
 
+
+## `data/study_version_crosswalk.csv`
+
+This file links the 212 source records to 207 canonical candidate studies. It preserves version history while preventing preprints, conference versions, exact duplicates, or source variants of the same study from being counted twice.
+
+- `record_id`: source-record identifier from `data/corpus.csv`.
+- `title`: source-record title.
+- `canonical_study_id`: stable canonical study identifier.
+- `canonical_record_id`: source record selected as the counted canonical record. Formal or official versions are preferred when available.
+- `version_type`: `preprint`, `conference_version`, `journal_version`, `project_report`, `exact_duplicate`, or `other`.
+- `source_version`: public source, DOI, URL, arXiv, or venue evidence used for version tracking.
+- `same_study_as`: canonical record for alternate versions, or `NA` for counted canonical records.
+- `dedup_basis`: title, DOI, arXiv ID, URL, or source-variant evidence used for linking versions.
+- `analytical_layer`: canonical analytical use: `study_level_coded`, `extended_synthesis`, `background_reference`, `excluded_near_neighbor`, or `alternate_version`.
+- `counting_status`: `canonical_counted`, `alternate_version_not_counted`, `exact_duplicate_removed`, `source_variant_not_counted`, or `needs_manual_review`.
+- `retained_reason`: reason the canonical version is counted or the alternate version is retained only for provenance.
+- `notes`: audit note.
+
 ## `data/extended_synthesis_audit.csv`
 
-This file provides a lightweight, record-level synthesis-use audit for the 66-study extended synthesis set. It does not apply the full study-level workflow--capability--evidence coding used for the 31-record coded set.
+This file provides a lightweight, record-level synthesis-use audit for the 62-study canonical extended synthesis set. It does not apply the full study-level workflow--capability--evidence coding used for the 31-record coded set.
 
 - `record_id`: stable identifier linked to `data/corpus.csv`.
 - `citation_key`: bibliography key extracted from the public reference audit when available; `NA` means no key was recorded in the source note.
@@ -109,7 +127,7 @@ Positive examples: an LLM-guided fuzzing paper without full study-level trace fi
 - `original_layer`: layer in the original public-minimal corpus.
 - `supplemental_layer`: supplemental analysis layer, including `Analytical Core`, `Supporting`, `Background Context`, and `Excluded`.
 - `task_category`: coarse task family used during screening.
-- `is_analytical_core`: whether the record is part of the 31-study deep analytical set.
+- `is_analytical_core`: whether the record is part of the 31-record study-level coded set.
 - `core_id`: Core identifier when applicable; otherwise `NA`.
 - `system_alias`: short system or benchmark name when applicable.
 - `a_level_original`: original A-profile code for Core records.
@@ -230,7 +248,7 @@ This file is for comparison and adjudication after independent coding is complet
 - `last_verified_date`: date of the latest local audit update for this row.
 - `note`: provenance, risk flags, and manual-check notes.
 
-Manuscript citation count is not a corpus statistic. The 2026-06-19 reference-list expansion cited additional rows that were already present in `corpus.csv` and `reference_audit.csv`; those citations remain extended synthesis or background/reference material and do not alter the 212 candidate records, 31 study-level coded records, 66 extended synthesis studies, 95 Background references, or 20 Excluded records.
+Manuscript citation count is not a corpus statistic. The 2026-06-19 reference-list expansion cited additional rows that were already present in `corpus.csv` and `reference_audit.csv`; those citations remain extended synthesis or background/reference material and do not alter the 212 source records, 207 canonical candidate studies, 31 study-level coded records, 62 extended synthesis studies, 95 Background references, or 19 Excluded near-neighbor studies.
 
 
 ## `data/mapping_snapshot_counts.csv`
@@ -240,12 +258,12 @@ This file records descriptive mapping views used by the current manuscript. The 
 - `view`: mapping view, such as `year_distribution`, `source_type_distribution`, or `task_facet_distribution`.
 - `category`: category displayed in the manuscript mapping view.
 - `count`: count for the category.
-- `denominator`: counting scope, such as 212 candidate records, the independent product snapshot layer, the 31-record study-level coded set, or the 66-study extended synthesis set.
+- `denominator`: counting scope, such as 212 source records, the independent product snapshot layer, the 31-record study-level coded set, or the 62-study extended synthesis set.
 - `scope_note`: boundary note explaining that the count is descriptive rather than a prevalence estimate.
 
 ## `data/product_ecosystem_snapshot.csv`
 
-This file is an independent product-ecosystem boundary data layer. Rows in this file are not part of `data/corpus.csv`, do not count toward the 212 candidate records, and do not alter study-level coded aggregate statistics. Product materials that also support manuscript background or extended-synthesis discussion are represented separately in `data/reference_audit.csv`. Public vendor/project materials are recorded as source-limited ecosystem evidence and are not independently validated by this artifact.
+This file is an independent product-ecosystem boundary data layer. Rows in this file are not part of `data/corpus.csv`, do not count toward the 212 source records, and do not alter study-level coded aggregate statistics. Product materials that also support manuscript background or extended-synthesis discussion are represented separately in `data/reference_audit.csv`. Public vendor/project materials are recorded as source-limited ecosystem evidence and are not independently validated by this artifact.
 
 - `product_or_system`: public product, model, workflow, policy, or attempted source check.
 - `vendor`: vendor or organization associated with the material.
@@ -278,7 +296,7 @@ This file is an independent product-ecosystem boundary data layer. Rows in this 
 
 `data/doi_remaining_manual_status.csv` documents records that remain DOI-less after the DOI merge and supplemental pass.
 
-Product and policy pages added for the product-ecosystem snapshot are also listed there when DOI is not applicable. These rows record `doi_not_applicable_product_page` or equivalent status and do not change manuscript corpus, the 212 candidate records, or Core counts.
+Product and policy pages added for the product-ecosystem snapshot are also listed there when DOI is not applicable. These rows record `doi_not_applicable_product_page` or equivalent status and do not change manuscript corpus, the 212 source records, or Core counts.
 
 Rows already audited with DOI or official URL in `reference_audit.csv` are not duplicated in `doi_remaining_manual_status.csv` merely because they are newly cited in a manuscript draft.
 
@@ -305,11 +323,13 @@ Do not infer a missing value from surrounding rows without recording the source 
 
 
 ## Record classification audit fields
-`final_decision`, `decision_reason`, and `stats_treatment` in `data/literature_update_decisions.csv` preserve the provenance of Core / Supporting / Background / Excluded decisions (legacy artifact labels; Supporting corresponds to extended synthesis) for the seven high-relevance records. The manuscript-facing classification summary is provided in `data/record_classification_audit.csv`, and these decisions are already reflected in the current 31-record study-level coded corpus statistics.
+`final_decision`, `decision_reason`, and `stats_treatment` in `data/literature_update_decisions.csv` preserve the provenance of Core / Supporting / Background / Excluded decisions (legacy artifact labels; Supporting corresponds to the source-record layer from which the canonical extended synthesis set is derived) for the seven high-relevance records. The manuscript-facing classification summary is provided in `data/record_classification_audit.csv`, and these decisions are reflected in the current canonical stratification through `data/study_version_crosswalk.csv`.
 
 ## data/core_reproducibility_audit.csv
 
 Per-Core public-material audit linked by `core_id`. Private Zotero paths are excluded. Status fields distinguish public artifact visibility, target version, environment, replay/PoC/PoV material, structured trace, author-reported external traces, publicly traceable external material, and claim-level alignment.
+
+
 
 
 

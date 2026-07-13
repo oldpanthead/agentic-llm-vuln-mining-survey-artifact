@@ -58,13 +58,9 @@ outside vulnerability mining, validation, benchmarking, or Agent governance.
 
 ## Counting Policy
 
-`record_id` is the deduplicated candidate-record key. The public artifact
-records 212 unique candidate records, divided into 31 Core studies, 66
-Supporting studies, 95 Background references, and 20 Excluded records. Source
-search counts in `data/source_search_log.csv` are counts of records captured in
-the public screening ledger after source reconciliation; they are not volatile
-web-search result totals.
+`record_id` is the source-record key in the public screening ledger. The artifact records 212 source records and uses `data/study_version_crosswalk.csv` to consolidate preprints, conference versions, exact duplicates, and source variants into 207 canonical candidate studies. Current canonical analysis-use counts are 31 study-level coded records, 62 extended synthesis studies, 95 background/reference records, and 19 excluded near-neighbor studies. Source search counts in `data/source_search_log.csv` are counts of records captured in the public screening ledger after source reconciliation; they are not volatile web-search result totals.
 
 Zotero metadata is used for title, source-type, DOI/URL, venue, and local
 bibliographic reconciliation. Local Zotero paths, PDFs, SQLite databases, and
 private working directories are excluded from the public artifact.
+

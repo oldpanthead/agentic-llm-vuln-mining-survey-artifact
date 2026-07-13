@@ -5,7 +5,7 @@ This artifact is designed for survey auditability, not for vulnerability reprodu
 ## Included
 
 - Corpus-layer metadata for candidate records.
-- A/E coding decisions and rationales for Core studies.
+- Legacy A/E coding decisions and rationales for the study-level coded records.
 - Bibliographic audit fields such as DOI, arXiv ID, official URL, venue, and publication status.
 - Reproducibility checks for corpus counts and coding distributions.
 - Templates for independent second-coder checking and disagreement resolution.
@@ -39,3 +39,4 @@ Before public release, authors should decide:
 The reproducibility audit does not publish Zotero PDFs, private paths, undisclosed PoC, exploit payloads, sensitive crash inputs, private targets, credentials, or vendor communications. Local review files are excluded through `.gitignore`.
 
 The product-ecosystem snapshot records only official public product, model, help, blog, and policy materials. It is an independent boundary data layer, not part of the 212 candidate-record corpus, and product changes do not automatically alter Core statistics.
+

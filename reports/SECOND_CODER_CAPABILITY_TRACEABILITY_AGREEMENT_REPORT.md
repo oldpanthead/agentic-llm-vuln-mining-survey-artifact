@@ -2,7 +2,7 @@
 
 This report covers the rerun formal pre-adjudication second-coder check for two auxiliary Core-study fields after the strongest-evidence-output codebook clarification.
 
-- Scope: 31 Core studies
+- Scope: 31-record study-level coded set (30 target-software studies plus one governance boundary case)
 - Coder2 input: `data/core31_second_coder_capability_traceability_blind_template.csv`
 - Completed coder2 results: `data/core31_second_coder_capability_traceability_results.csv`
 - Author baseline for comparison: `data/v13_core_synthesis_matrix.csv`
@@ -73,3 +73,4 @@ Because Agent-increment / cross-stage capability can be multi-label, this report
 ## Interpretation Boundary
 
 These metrics are formal pre-adjudication agreement for two auxiliary Core-study fields. They do not imply that every artifact field has been double-coded, and they do not replace the separate strongest-evidence-output report in `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md`. The pilot round remains archived for codebook calibration only. Disagreements should be adjudicated separately if the manuscript later reports adjudicated auxiliary labels.
+

@@ -1,6 +1,6 @@
 # Evidence Output Codebook
 
-This codebook defines the current manuscript's strongest-evidence-output labels for the 31 Core studies. These labels support the workflow--capability--evidence synthesis in the manuscript. Legacy A/E fields remain in the artifact for historical traceability, but they are not the current manuscript's main prose axis.
+This codebook defines the current manuscript's strongest-evidence-output labels for the 31-record study-level coded set (30 target-software studies plus one governance boundary case). These labels support the workflow--capability--evidence synthesis in the manuscript. Legacy A/E fields remain in the artifact for historical traceability, but they are not the current manuscript's main prose axis.
 
 ## Current Evidence-Output Labels
 
@@ -53,3 +53,4 @@ Code `strongest_evidence_output` as the highest evidence strength supported by t
 External materials such as CVE, CNVD, maintainer confirmation, bug bounty, vendor confirmation, or fix records do not automatically move the main label to `externally traceable material` when they appear only as aggregate author reports or cannot be checked item by item. Code `externally traceable material` only when the external material can be aligned with a concrete system output, target version, reproducibility material, and a public issue, advisory, CVE, PR, commit, vendor notice, or specific vulnerability claim.
 
 If the system provides PoC, PoV, replay, patch validation, or verified benchmark artifacts, but external confirmation appears only as an aggregate author-reported clue, keep the main label at `reproducible validation` and record the external clue in the rationale or uncertainty note.
+

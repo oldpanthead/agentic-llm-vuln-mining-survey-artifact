@@ -2,13 +2,13 @@
 
 ## Purpose
 
-This artifact supports an independent second-coder check. The first completed pass is archived as a pilot calibration round under `archive/pilot_second_coder_round_1/`; its agreement and kappa should not be cited as formal intercoder reliability. The formal second-coder reliability check should be rerun after the clarified evidence-output codebook is frozen.
+This artifact supports an independent second-coder check. The first completed pass is archived as a pilot calibration round under `archive/pilot_second_coder_round_1/`; its agreement and kappa should not be cited as formal intercoder reliability. The completed formal second-coder reliability files are included in `data/core31_second_coder_formal_results.csv` and `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md`; blank templates remain for future reruns if the codebook changes.
 
 ## Task Priority
 
 Primary task:
 
-- Independent full coding of the strongest evidence output for all 31 Core studies.
+- Independent full coding of the strongest evidence output for the 31-record study-level coded set.
 
 Optional task:
 
@@ -18,7 +18,7 @@ The primary task matches the current manuscript synthesis, which uses natural-la
 
 ## Independence Requirement
 
-The second coder must complete coding independently. For the 31-Core primary task, give the coder:
+The second coder must complete coding independently. For a future rerun of the 31-record primary task, give the coder:
 
 - `evidence_output_codebook.md`;
 - `data/core31_second_coder_formal_blind_template.csv`;
@@ -30,7 +30,7 @@ Agreement rates and Cohen's kappa require real second-coder decisions. They must
 
 ## Primary CSV Fields
 
-Fill `data/core31_second_coder_formal_blind_template.csv` during the future formal primary task. The current template is intentionally blank.
+Fill `data/core31_second_coder_formal_blind_template.csv` during a future formal primary-task rerun. The template is intentionally blank; completed formal results are stored separately.
 
 - `core_id`: stable Core-study identifier.
 - `record_id`: candidate record identifier from the artifact.
@@ -49,9 +49,9 @@ If reviewer time allows, the author may also ask for a sampled review of corpus 
 
 The sample may include:
 
-- 10--12 Core studies;
-- 8--10 Core / Supporting boundary records;
-- 5--8 Supporting studies.
+- 10--12 study-level coded records;
+- 8--10 study-level coded / extended-synthesis boundary records;
+- 5--8 extended synthesis studies.
 
 The optional task can inspect corpus layer, legacy A-profile, evidence object, and external-evidence profile. It should not be used to claim full-corpus agreement.
 
@@ -59,7 +59,7 @@ The optional task can inspect corpus layer, legacy A-profile, evidence object, a
 
 After independent coding is complete:
 
-1. After the future formal coding pass, copy `coder2_strongest_evidence_output`, `coder2_decision_reason`, and `coder2_uncertainty_note` into `data/core31_second_coder_adjudication_template.csv` or an equivalent adjudication sheet.
+1. After an independent formal coding pass, copy `coder2_strongest_evidence_output`, `coder2_decision_reason`, and `coder2_uncertainty_note` into `data/core31_second_coder_adjudication_template.csv` or an equivalent adjudication sheet.
 2. Compare coder2 decisions with `original_strongest_evidence_output`; legacy E-level fields are retained only for historical traceability or fallback.
 3. Mark disagreements in the disagreement fields.
 4. Discuss disagreements with reference to `evidence_output_codebook.md`, `codebook.md`, and the public materials.
@@ -78,3 +78,4 @@ Optional sampled review of corpus layer, legacy A-profile, evidence object, and 
 ## Security Boundary
 
 Do not include undisclosed PoCs, exploit payloads, private target details, sensitive crash inputs, private vendor communication, or vulnerability reproduction steps in any intercoder file. If a decision depends on sensitive material, record a non-sensitive reason and mark the source as restricted.
+

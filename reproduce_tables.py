@@ -2,7 +2,8 @@
 import csv
 import sys
 import subprocess
-from collections import Counter
+import re
+from collections import Counter, defaultdict
 from datetime import date
 from pathlib import Path
 
@@ -12,6 +13,20 @@ REPORTS = ROOT / 'reports'
 
 CSV_REQUIRED_FIELDS = {
     'corpus.csv': ['record_id', 'corpus_layer'],
+    'study_version_crosswalk.csv': [
+        'record_id',
+        'title',
+        'canonical_study_id',
+        'canonical_record_id',
+        'version_type',
+        'source_version',
+        'same_study_as',
+        'dedup_basis',
+        'analytical_layer',
+        'counting_status',
+        'retained_reason',
+        'notes',
+    ],
     'extended_synthesis_audit.csv': [
         'record_id',
         'citation_key',
@@ -906,17 +921,21 @@ def validate_source_search_audit(corpus, source_log, source_audit):
             return -999999
 
     totals = {
+        'captured': sum(to_int(row, 'records_captured_before_dedup') for row in source_log),
+        'variants_removed': sum(to_int(row, 'duplicates_or_variants_removed') for row in source_log),
         'unique': sum(to_int(row, 'unique_candidate_records_after_dedup') for row in source_log),
         'core': sum(to_int(row, 'core_records') for row in source_log),
         'supporting': sum(to_int(row, 'supporting_records') for row in source_log),
         'background': sum(to_int(row, 'background_records') for row in source_log),
         'excluded': sum(to_int(row, 'excluded_records') for row in source_log),
     }
-    status('ERROR', totals['unique'] == 212, f'source_search_log unique records = {totals["unique"]}; expected 212')
-    status('ERROR', totals['core'] == 31, f'source_search_log Core records = {totals["core"]}; expected 31')
-    status('ERROR', totals['supporting'] == 66, f'source_search_log Supporting records = {totals["supporting"]}; expected 66')
+    status('ERROR', totals['captured'] == 212, f'source_search_log source records = {totals["captured"]}; expected 212')
+    status('ERROR', totals['variants_removed'] == 5, f'source_search_log source variants removed from canonical counts = {totals["variants_removed"]}; expected 5')
+    status('ERROR', totals['unique'] == 207, f'source_search_log canonical candidate studies = {totals["unique"]}; expected 207')
+    status('ERROR', totals['core'] == 31, f'source_search_log study-level coded records = {totals["core"]}; expected 31')
+    status('ERROR', totals['supporting'] == 62, f'source_search_log extended synthesis studies = {totals["supporting"]}; expected 62')
     status('ERROR', totals['background'] == 95, f'source_search_log Background records = {totals["background"]}; expected 95')
-    status('ERROR', totals['excluded'] == 20, f'source_search_log Excluded records = {totals["excluded"]}; expected 20')
+    status('ERROR', totals['excluded'] == 19, f'source_search_log canonical Excluded records = {totals["excluded"]}; expected 19')
 
     missing_trace = [row.get('record_id', '?') for row in source_audit if row.get('source_bucket', '') in ('', 'NA') or row.get('source_name', '') in ('', 'NA')]
     status('ERROR', not missing_trace, 'all source_screening_audit rows include a source bucket and source name')
@@ -925,19 +944,126 @@ def validate_source_search_audit(corpus, source_log, source_audit):
 
     volatile_hit_claims = [
         row.get('source_id', '?') for row in source_log
-        if 'volatile web-search result totals' not in row.get('notes', '')
+        if 'source records from canonical study counts' not in row.get('notes', '') and 'source records' not in row.get('notes', '')
     ]
-    status('ERROR', not volatile_hit_claims, 'source_search_log notes distinguish ledger counts from volatile web-search totals')
+    status('ERROR', not volatile_hit_claims, 'source_search_log notes distinguish source records from canonical study counts')
 
 
-def validate_extended_synthesis_audit(corpus, extended):
-    status('ERROR', bool(extended), 'extended_synthesis_audit.csv has at least one row')
-    if not corpus or not extended:
+
+def norm_text(value):
+    value = (value or '').lower().replace('’', "'")
+    return re.sub(r'[^a-z0-9]+', ' ', value).strip()
+
+def normalize_locator(value):
+    return (value or '').strip().lower().rstrip('/')
+
+def arxiv_from_text(value):
+    match = re.search(r'(\d{4}\.\d{4,5})(v\d+)?', value or '', re.IGNORECASE)
+    return match.group(1).lower() if match else ''
+
+def validate_study_version_crosswalk(corpus, ref, crosswalk, mapping_rows):
+    status('ERROR', bool(crosswalk), 'study_version_crosswalk.csv has at least one row')
+    if not corpus or not crosswalk:
         return
-    supporting_ids = {row.get('record_id', '') for row in corpus if row.get('corpus_layer') == 'Supporting'}
+    corpus_ids = {row.get('record_id', '') for row in corpus}
+    cross_ids = {row.get('record_id', '') for row in crosswalk}
+    status('ERROR', cross_ids == corpus_ids, 'study_version_crosswalk covers exactly the 212 source records')
+    status('ERROR', len(crosswalk) == 212, f'study_version_crosswalk rows = {len(crosswalk)}; expected 212')
+
+    allowed_status = {'canonical_counted', 'alternate_version_not_counted', 'exact_duplicate_removed', 'source_variant_not_counted', 'needs_manual_review'}
+    allowed_layers = {'study_level_coded', 'extended_synthesis', 'background_reference', 'excluded_near_neighbor', 'alternate_version', 'needs_manual_review'}
+    allowed_version = {'preprint', 'conference_version', 'journal_version', 'project_report', 'exact_duplicate', 'other'}
+    invalid = []
+    for row in crosswalk:
+        if row.get('counting_status') not in allowed_status:
+            invalid.append((row.get('record_id'), 'counting_status', row.get('counting_status')))
+        if row.get('analytical_layer') not in allowed_layers:
+            invalid.append((row.get('record_id'), 'analytical_layer', row.get('analytical_layer')))
+        if row.get('version_type') not in allowed_version:
+            invalid.append((row.get('record_id'), 'version_type', row.get('version_type')))
+    status('ERROR', not invalid, 'study_version_crosswalk uses approved status/layer/version vocabularies')
+    if invalid:
+        print('ERROR: invalid crosswalk values:', invalid[:10])
+
+    counted = [row for row in crosswalk if row.get('counting_status') == 'canonical_counted']
+    status('ERROR', len(counted) == 207, f'canonical counted studies = {len(counted)}; expected 207')
+    layer_counts = Counter(row.get('analytical_layer') for row in counted)
+    expected_layers = {
+        'study_level_coded': 31,
+        'extended_synthesis': 62,
+        'background_reference': 95,
+        'excluded_near_neighbor': 19,
+    }
+    for layer, expected in expected_layers.items():
+        status('ERROR', layer_counts.get(layer, 0) == expected, f'canonical {layer} = {layer_counts.get(layer, 0)}; expected {expected}')
+    alt_count = sum(1 for row in crosswalk if row.get('counting_status') != 'canonical_counted')
+    status('ERROR', alt_count == 5, f'non-counted alternate/source-variant records = {alt_count}; expected 5')
+
+    layers_by_study = defaultdict(set)
+    counted_records_by_study = defaultdict(list)
+    for row in crosswalk:
+        sid = row.get('canonical_study_id')
+        if row.get('counting_status') == 'canonical_counted':
+            layers_by_study[sid].add(row.get('analytical_layer'))
+            counted_records_by_study[sid].append(row.get('record_id'))
+    multi_layer = {sid: layers for sid, layers in layers_by_study.items() if len(layers) > 1}
+    multi_counted = {sid: ids for sid, ids in counted_records_by_study.items() if len(ids) > 1}
+    status('ERROR', not multi_layer, 'each canonical study has one primary analytical layer')
+    status('ERROR', not multi_counted, 'each canonical study has one counted record')
+    if multi_layer:
+        print('ERROR: canonical studies with multiple layers:', dict(list(multi_layer.items())[:10]))
+    if multi_counted:
+        print('ERROR: canonical studies with multiple counted records:', dict(list(multi_counted.items())[:10]))
+
+    # duplicate keys among counted records
+    ref_by_id = {row.get('record_id'): row for row in ref}
+    corpus_by_id = {row.get('record_id'): row for row in corpus}
+    def key_values(record_id):
+        ref_row = ref_by_id.get(record_id, {})
+        corpus_row = corpus_by_id.get(record_id, {})
+        title = norm_text(ref_row.get('canonical_title') or corpus_row.get('title'))
+        doi = normalize_locator(ref_row.get('doi'))
+        if doi in {'', 'na', 'n/a'}:
+            doi = normalize_locator(corpus_row.get('doi_or_url')) if 'doi.org' in corpus_row.get('doi_or_url', '').lower() else ''
+        arxiv = normalize_locator(ref_row.get('arxiv_id'))
+        if arxiv in {'', 'na', 'n/a'}:
+            arxiv = arxiv_from_text((ref_row.get('official_url','') + ' ' + corpus_row.get('doi_or_url','')))
+        url = normalize_locator(ref_row.get('official_url') or corpus_row.get('doi_or_url'))
+        if url.startswith('#'):
+            url = ''
+        return title, doi, arxiv, url
+    for label, idx in [('normalized title',0), ('DOI',1), ('arXiv ID',2), ('URL',3)]:
+        groups = defaultdict(list)
+        for row in counted:
+            vals = key_values(row.get('record_id'))
+            v = vals[idx]
+            if v and v not in {'na','n/a'}:
+                groups[v].append(row.get('record_id'))
+        dup = {k:v for k,v in groups.items() if len(v)>1}
+        status('ERROR', not dup, f'no duplicate counted records by {label}')
+        if dup:
+            print(f'ERROR: duplicate counted {label} groups:', dict(list(dup.items())[:10]))
+
+    final_rows = [row for row in mapping_rows if row.get('view') == 'final_canonical_stratification']
+    final_total = sum(int(row.get('count', '0')) for row in final_rows)
+    status('ERROR', final_total == 207, f'mapping final canonical stratification total = {final_total}; expected 207')
+    print('CANONICAL_STUDY_COUNTS: ' + str(dict(sorted(layer_counts.items()))))
+
+def validate_extended_synthesis_audit(corpus, extended, crosswalk):
+    status('ERROR', bool(extended), 'extended_synthesis_audit.csv has at least one row')
+    if not corpus or not extended or not crosswalk:
+        return
+    counted_extended_ids = {row.get('record_id', '') for row in crosswalk if row.get('counting_status') == 'canonical_counted' and row.get('analytical_layer') == 'extended_synthesis'}
+    study_level_canonical_ids = {row.get('canonical_study_id', '') for row in crosswalk if row.get('counting_status') == 'canonical_counted' and row.get('analytical_layer') == 'study_level_coded'}
+    cross_by_record = {row.get('record_id'): row for row in crosswalk}
     extended_ids = {row.get('record_id', '') for row in extended}
-    status('ERROR', len(extended) == 66, f'extended_synthesis_audit rows = {len(extended)}; expected 66')
-    status('ERROR', extended_ids == supporting_ids, 'extended synthesis audit covers exactly the legacy Supporting records')
+    status('ERROR', len(extended) == 62, f'extended_synthesis_audit rows = {len(extended)}; expected 62')
+    status('ERROR', extended_ids == counted_extended_ids, 'extended synthesis audit covers exactly canonical counted extended synthesis studies')
+    overlap = [rid for rid in extended_ids if cross_by_record.get(rid, {}).get('canonical_study_id') in study_level_canonical_ids]
+    status('ERROR', not overlap, 'extended_synthesis_audit contains no study-level coded study alternate versions')
+    if overlap:
+        print('ERROR: extended synthesis rows overlapping study-level canonical studies:', ', '.join(overlap[:20]))
+
     allowed_roles = {
         'lower_level_primitive',
         'adjacent_candidate_analysis',
@@ -952,40 +1078,67 @@ def validate_extended_synthesis_audit(corpus, extended):
     invalid_secondary = []
     invalid_rq = []
     generic_contrib = []
+    generic_reason = []
+    invalid_locator = []
+    contribution_counter = Counter()
+    reason_counter = Counter()
+    unresolved = []
     for idx, row in enumerate(extended, start=2):
+        rid = row.get('record_id', '?')
         role = row.get('primary_synthesis_role', '')
         if role not in allowed_roles:
-            invalid_roles.append((idx, row.get('record_id', '?'), role))
+            invalid_roles.append((idx, rid, role))
         secondary = row.get('secondary_synthesis_roles', '')
         if secondary and secondary != 'NA':
             for item in secondary.split(';'):
                 if item and item not in allowed_roles:
-                    invalid_secondary.append((idx, row.get('record_id', '?'), item))
+                    invalid_secondary.append((idx, rid, item))
         rq = row.get('rq_contribution', '')
         if rq not in allowed_rq:
-            invalid_rq.append((idx, row.get('record_id', '?'), rq))
-        contrib = row.get('extracted_contribution', '').strip().lower()
-        if contrib in ('', 'provides context', 'context'):
-            generic_contrib.append((idx, row.get('record_id', '?')))
+            invalid_rq.append((idx, rid, rq))
+        contrib = row.get('extracted_contribution', '').strip()
+        reason = row.get('reason_not_study_level_coded', '').strip()
+        contribution_counter[contrib] += 1
+        reason_counter[reason] += 1
+        title_tokens = {tok for tok in norm_text(row.get('title','')).split() if len(tok) >= 5}
+        contrib_tokens = set(norm_text(contrib).split())
+        if contrib.lower() in ('', 'provides context', 'context') or len(title_tokens & contrib_tokens) < 1:
+            generic_contrib.append((idx, rid))
+        if 'Existing screening classified this record as Supporting' in reason or len(reason) < 40:
+            generic_reason.append((idx, rid))
+        basis = row.get('public_material_basis', '')
+        if '#item_' in basis or not re.search(r'(https?://|10\.\d{4,9}/|isbn|official)', basis, re.IGNORECASE):
+            invalid_locator.append((idx, rid, basis[:80]))
+        if 'manual_review' in row.get('reviewer_note','').lower() or 'needs_manual_review' in row.get('reviewer_note','').lower():
+            unresolved.append(rid)
+    duplicate_contribs = {k:v for k,v in contribution_counter.items() if v > 1}
+    duplicate_reasons = {k:v for k,v in reason_counter.items() if v > 1}
+    unique_ratio = len(contribution_counter) / len(extended) if extended else 0
     status('ERROR', not invalid_roles, 'extended synthesis primary roles use approved vocabulary')
-    if invalid_roles:
-        print('ERROR: invalid extended synthesis roles:', invalid_roles[:10])
     status('ERROR', not invalid_secondary, 'extended synthesis secondary roles use approved vocabulary')
-    if invalid_secondary:
-        print('ERROR: invalid extended synthesis secondary roles:', invalid_secondary[:10])
     status('ERROR', not invalid_rq, 'extended synthesis rq_contribution uses approved vocabulary')
-    if invalid_rq:
-        print('ERROR: invalid extended synthesis RQ values:', invalid_rq[:10])
-    status('ERROR', not generic_contrib, 'extended synthesis rows contain specific extracted_contribution values')
-    if generic_contrib:
-        print('ERROR: generic extended synthesis contribution rows:', generic_contrib[:10])
+    status('ERROR', not generic_contrib, 'extended synthesis extracted_contribution values contain study-specific terms')
+    status('ERROR', not duplicate_contribs, 'extended synthesis extracted_contribution values are unique')
+    status('ERROR', not generic_reason, 'extended synthesis reason_not_study_level_coded values are study-specific')
+    status('ERROR', not duplicate_reasons, 'extended synthesis reason_not_study_level_coded values are unique')
+    status('ERROR', unique_ratio >= 0.95, f'extended synthesis unique contribution ratio = {unique_ratio:.3f}; expected >= 0.950')
+    status('ERROR', not invalid_locator, 'extended synthesis public_material_basis contains public URL, DOI, ISBN, or official source and no local fragments')
+    if invalid_roles: print('ERROR: invalid extended synthesis roles:', invalid_roles[:10])
+    if invalid_secondary: print('ERROR: invalid secondary roles:', invalid_secondary[:10])
+    if invalid_rq: print('ERROR: invalid RQ values:', invalid_rq[:10])
+    if generic_contrib: print('ERROR: generic contribution rows:', generic_contrib[:10])
+    if duplicate_contribs: print('ERROR: duplicate contribution groups:', list(duplicate_contribs.items())[:5])
+    if generic_reason: print('ERROR: generic reason rows:', generic_reason[:10])
+    if duplicate_reasons: print('ERROR: duplicate reason groups:', list(duplicate_reasons.items())[:5])
+    if invalid_locator: print('ERROR: invalid locator rows:', invalid_locator[:10])
     role_counts = Counter(row.get('primary_synthesis_role', 'NA') for row in extended)
     rq_counts = Counter(row.get('rq_contribution', 'NA') for row in extended)
     material_counts = Counter(row.get('material_type', 'NA') for row in extended)
-    print('EXTENDED_SYNTHESIS_AUDIT: rows=66 roles=' + str(dict(sorted(role_counts.items()))))
+    print('EXTENDED_SYNTHESIS_AUDIT: rows=62 roles=' + str(dict(sorted(role_counts.items()))))
     print('EXTENDED_SYNTHESIS_RQ_USE: ' + str(dict(sorted(rq_counts.items()))))
     print('EXTENDED_SYNTHESIS_MATERIAL_TYPES: ' + str(dict(sorted(material_counts.items()))))
-
+    print(f'EXTENDED_SYNTHESIS_UNIQUE_CONTRIBUTION_RATIO: {unique_ratio:.3f}')
+    print('EXTENDED_SYNTHESIS_UNRESOLVED_ROWS: ' + (','.join(unresolved) if unresolved else 'none'))
 
 def validate_tracked_file_boundary():
     try:
@@ -1044,23 +1197,26 @@ repro_summary = read_csv('core_reproducibility_audit_summary.csv')
 source_search_log = read_csv('source_search_log.csv')
 source_screening_audit = read_csv('source_screening_audit.csv')
 extended_synthesis = read_csv('extended_synthesis_audit.csv')
+study_version_crosswalk = read_csv('study_version_crosswalk.csv')
+mapping_snapshot_counts = read_csv('mapping_snapshot_counts.csv')
 
 validate_product_ecosystem_snapshot(product_snapshot)
 validate_second_coder_files(second_coder_blind, second_coder_adjudication, second_coder_formal, second_coder_formal_results)
 validate_second_coder_extension_template(second_coder_extension_template, second_coder_extension_results, core_synthesis)
 validate_source_search_audit(corpus, source_search_log, source_screening_audit)
-validate_extended_synthesis_audit(corpus, extended_synthesis)
+validate_study_version_crosswalk(corpus, ref, study_version_crosswalk, mapping_snapshot_counts)
+validate_extended_synthesis_audit(corpus, extended_synthesis, study_version_crosswalk)
 validate_tracked_file_boundary()
 
 expected_layers = {'Core': 31, 'Supporting': 66, 'Background': 95, 'Excluded': 20}
 if corpus:
-    status('ERROR', len(corpus) == 212, f'candidate records = {len(corpus)}; expected 212')
+    status('ERROR', len(corpus) == 212, f'source records = {len(corpus)}; expected 212')
     layer_counts = Counter(r.get('corpus_layer', 'NA') for r in corpus)
     for layer, expected in expected_layers.items():
         status('ERROR', layer_counts.get(layer, 0) == expected, f'{layer} = {layer_counts.get(layer, 0)}; expected {expected}')
 
 if core:
-    status('ERROR', len(core) == 31, f'Core rows = {len(core)}; expected 31')
+    status('ERROR', len(core) == 31, f'study-level coding rows = {len(core)}; expected 31')
     core_ids = [r.get('core_id', '') for r in core]
     record_ids = [r.get('record_id', '') for r in core]
     status('ERROR', len(core_ids) == len(set(core_ids)), 'core_id values are unique')
