@@ -5,8 +5,27 @@ This dictionary describes the non-sensitive audit artifact used by the survey ma
 
 ## Current Manuscript Layer Terminology
 
-Current terminology maps legacy artifact values as follows: `Core` identifies study-level coded source records and `Supporting` identifies extended-synthesis source records. The current corpus contains 68 study-level coded records (67 target-software studies plus one governance boundary case) and 65 extended-synthesis studies. Legacy `core31` and `v13_` files preserve the frozen first coding round; update additions use current natural-language fields without imputed A/E labels.
+Current terminology maps legacy artifact values as follows: `Core` identifies study-level coded source records and `Supporting` identifies extended-synthesis source records. The current corpus contains 68 study-level coded records (67 target-software studies plus one governance boundary case) and 65 extended-synthesis studies. `data/current_study_level_coding_matrix.csv` is the unified current study-level view. Legacy `core31` and `v13_` files preserve the frozen first coding round; the additions file preserves update-round provenance without imputed A/E labels.
 
+## `data/current_study_level_coding_matrix.csv`
+
+This is the unified current matrix for all 68 study-level coded records. It combines the frozen initial round with the 37 author-confirmed update additions while preserving round-specific provenance and reliability scope. It does not contain legacy A/E fields.
+
+- `matrix_id`: stable row identifier inherited from the coding round (`C01`--`C31` or the applicable `U` identifier).
+- `record_id`, `canonical_study_id`: source-record and canonical-study links.
+- `system_alias`, `title`: system and publication identifiers.
+- `analytical_role`: `target_software_study` or `governance_boundary_case`.
+- `coding_round`: `initial_frozen_round` or `submission_update_20260715`.
+- `lifecycle_coverage`: current multi-label lifecycle coding.
+- `system_shape`: descriptive primary shape or preserved overlay labels; the governance row remains separate.
+- `agentic_capabilities`: current natural-language capability labels.
+- `strongest_evidence_output`: current evidence-output label.
+- `external_traceability`: reported external-trace category or note.
+- `claim_boundary`: current English claim-boundary wording.
+- `claim_boundary_original`: source-round wording retained for traceability; it may match `claim_boundary` for update rows.
+- `coding_status`: frozen initial-round or author-confirmed update status.
+- `reliability_scope`: fields independently checked in that row's coding round; it prevents reliability results from being generalized across fields or rounds.
+- `official_url`: public URL or ISBN locator.
 ## Common Identifiers
 
 - `record_id`: stable identifier for one source record in the 253-record screening ledger.

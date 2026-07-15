@@ -13,6 +13,25 @@ REPORTS = ROOT / 'reports'
 
 CSV_REQUIRED_FIELDS = {
     'corpus.csv': ['record_id', 'corpus_layer'],
+    'current_study_level_coding_matrix.csv': [
+        'matrix_id',
+        'record_id',
+        'canonical_study_id',
+        'system_alias',
+        'title',
+        'analytical_role',
+        'coding_round',
+        'lifecycle_coverage',
+        'system_shape',
+        'agentic_capabilities',
+        'strongest_evidence_output',
+        'external_traceability',
+        'claim_boundary',
+        'claim_boundary_original',
+        'coding_status',
+        'reliability_scope',
+        'official_url',
+    ],
     'submission_update_20260715_screening_audit.csv': [
       'arxiv_id',
       'title',
@@ -1515,6 +1534,59 @@ def validate_submission_update_finalization(adjudication_rows, final_rows, integ
     print('SUBMISSION_UPDATE_FINALIZATION: author-confirmed 37/4 resolution and pre-integration assessment preserved; current corpus integration is validated separately.')
 
 
+def validate_current_study_level_matrix(current_matrix, additions):
+    status('ERROR', len(current_matrix) == 68, f'current study-level matrix rows = {len(current_matrix)}; expected 68')
+    if not current_matrix:
+        return
+
+    matrix_ids = [row.get('matrix_id', '') for row in current_matrix]
+    record_ids = [row.get('record_id', '') for row in current_matrix]
+    canonical_ids = [row.get('canonical_study_id', '') for row in current_matrix]
+    status('ERROR', len(matrix_ids) == len(set(matrix_ids)), 'current matrix IDs are unique')
+    status('ERROR', len(record_ids) == len(set(record_ids)), 'current matrix record IDs are unique')
+    status('ERROR', len(canonical_ids) == len(set(canonical_ids)), 'current matrix canonical study IDs are unique')
+    status('ERROR', set(matrix_ids) == {f'C{i:02d}' for i in range(1, 32)} | {row.get('update_id', '') for row in additions}, 'current matrix covers the frozen 31 rows and all 37 update additions')
+
+    roles = Counter(row.get('analytical_role', '') for row in current_matrix)
+    rounds = Counter(row.get('coding_round', '') for row in current_matrix)
+    evidence = Counter(row.get('strongest_evidence_output', '') for row in current_matrix)
+    status('ERROR', roles == Counter({'target_software_study': 67, 'governance_boundary_case': 1}), 'current matrix uses the 67+1 analytical-role boundary')
+    status('ERROR', rounds == Counter({'initial_frozen_round': 31, 'submission_update_20260715': 37}), 'current matrix preserves the 31+37 coding-round provenance')
+    status('ERROR', evidence == Counter({'reproducible validation': 31, 'runtime safety signal': 13, 'controlled task completion': 13, 'candidate judgment': 6, 'externally traceable material': 4, 'governance boundary case': 1}), 'current matrix reproduces the combined strongest-evidence distribution')
+    status('ERROR', not any(field.startswith('a_level') or field.startswith('e_level') for field in current_matrix[0]), 'current matrix does not reintroduce legacy A/E fields')
+    status('ERROR', all(row.get('official_url', '').startswith(('http://', 'https://', 'urn:isbn:')) for row in current_matrix), 'current matrix rows contain public URLs or ISBN locators')
+    status('ERROR', all(row.get('claim_boundary', '').strip() and row.get('claim_boundary_original', '').strip() for row in current_matrix), 'current matrix retains current and original claim-boundary text')
+
+    by_id = {row.get('matrix_id', ''): row for row in current_matrix}
+    c27 = by_id.get('C27', {})
+    status('ERROR', c27.get('record_id') == 'CP114' and c27.get('canonical_study_id') == 'CS_CP114', 'C27 governance case resolves to canonical record CP114')
+    status('ERROR', c27.get('analytical_role') == 'governance_boundary_case', 'C27 remains outside the target-software denominator')
+
+    additions_by_id = {row.get('update_id', ''): row for row in additions}
+    comparable = {
+        'record_id': 'record_id',
+        'canonical_study_id': 'canonical_study_id',
+        'system_alias': 'system_alias',
+        'title': 'title',
+        'lifecycle_coverage': 'lifecycle_coverage',
+        'system_shape': 'primary_system_shape',
+        'agentic_capabilities': 'agentic_capabilities',
+        'strongest_evidence_output': 'strongest_evidence_output',
+        'external_traceability': 'external_traceability',
+        'claim_boundary': 'claim_boundary',
+        'official_url': 'official_url',
+    }
+    mismatches = []
+    for update_id, addition in additions_by_id.items():
+        row = by_id.get(update_id, {})
+        for matrix_field, addition_field in comparable.items():
+            if row.get(matrix_field) != addition.get(addition_field):
+                mismatches.append(f'{update_id}:{matrix_field}')
+    status('ERROR', not mismatches, 'current matrix update rows match the 37 author-confirmed additions field by field')
+    if mismatches:
+        print('ERROR: current matrix mismatches:', ', '.join(mismatches))
+    print('CURRENT_STUDY_LEVEL_MATRIX: rows=68 target=67 governance=1 initial_round=31 update_round=37')
+
 def validate_integrated_submission_update(corpus, crosswalk, extended, final_rows, additions, current_stats):
     status('ERROR', len(corpus) == 253, f'integrated corpus source rows = {len(corpus)}; expected 253')
     status('ERROR', len(crosswalk) == 253, f'integrated canonical crosswalk rows = {len(crosswalk)}; expected 253')
@@ -1641,6 +1713,7 @@ submission_update_adjudicated = read_csv('submission_update_20260715_adjudicated
 submission_update_integration = read_csv('submission_update_20260715_canonical_integration_crosswalk.csv')
 submission_update_additions = read_csv('submission_update_20260715_study_level_additions.csv')
 current_synthesis_statistics = read_csv('current_synthesis_statistics.csv')
+current_study_level_matrix = read_csv('current_study_level_coding_matrix.csv')
 
 validate_product_ecosystem_snapshot(product_snapshot)
 validate_second_coder_files(second_coder_blind, second_coder_adjudication, second_coder_formal, second_coder_formal_results)
@@ -1652,6 +1725,7 @@ validate_submission_update_screening(submission_update_screening)
 validate_submission_update_full_audit(submission_update_screening, submission_update_full_audit, submission_update_blind)
 validate_submission_update_second_coder(submission_update_full_audit, submission_update_blind, submission_update_results, submission_update_adjudication)
 validate_submission_update_finalization(submission_update_adjudication, submission_update_adjudicated, submission_update_integration)
+validate_current_study_level_matrix(current_study_level_matrix, submission_update_additions)
 validate_integrated_submission_update(corpus, study_version_crosswalk, extended_synthesis, submission_update_adjudicated, submission_update_additions, current_synthesis_statistics)
 validate_tracked_file_boundary()
 

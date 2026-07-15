@@ -23,6 +23,49 @@ METADATA_PATH = DATA / "submission_update_20260715_arxiv_results.csv"
 UPDATE_SOURCE_ID = "arxiv_update_20260715"
 UPDATE_RECORD_START = 213
 
+LIFECYCLE_LABELS = {
+    "候选发现与优先级排序": "candidate analysis",
+    "路径与输入探索": "path and input exploration",
+    "执行观察与异常解释": "execution observation",
+    "复现与验证": "reproduction and validation",
+    "修复验证": "patch validation",
+    "报告、审计与披露": "reporting and audit",
+}
+
+CAPABILITY_LABELS = {
+    "上下文聚合与规则提取": "context aggregation / rule extraction",
+    "工具选择与策略路由": "tool routing / strategy routing",
+    "反馈解释与闭环调整": "feedback interpretation / loop adjustment",
+    "验证组织与证据打包": "validation organization / evidence packaging",
+    "长程编排与状态管理": "long-horizon state management",
+    "失败归纳与策略更新": "failure reuse / strategy update",
+    "角色讨论或文本反思": "role discussion / textual reflection",
+}
+
+EVIDENCE_LABELS = {
+    "候选判断": "candidate judgment",
+    "受控任务完成": "controlled task completion",
+    "运行时安全信号": "runtime safety signal",
+    "可复现验证": "reproducible validation",
+    "治理风险": "governance boundary case",
+}
+
+EXTERNAL_TRACE_LABELS = {
+    "未报告": "no external trace reported",
+    "作者报告的外部线索": "author-reported external clue",
+    "benchmark ground truth / 公开材料": "benchmark ground truth / public material",
+}
+
+SYSTEM_SHAPE_LABELS = {
+    "工具增强型分析器": "candidate-analysis system",
+    "反馈驱动型 fuzzing Agent": "feedback-driven fuzzing agent",
+    "验证优先型 PoC / PoV Agent": "PoC/PoV validation agent",
+    "自动渗透测试、CRS 与多 Agent 工作流": "long-horizon pentest and CRS agent",
+    "多 Agent 编排": "multi-agent orchestration overlay",
+    "持续优化": "iterative optimization overlay",
+    "治理边界案例": "governance boundary case",
+}
+
 
 def read(name: str) -> list[dict[str, str]]:
     with (DATA / name).open(encoding="utf-8-sig", newline="") as handle:
@@ -50,6 +93,47 @@ def task_category(shape: str) -> str:
         "long-horizon pentest and CRS agent": "Pentest / CRS / long-horizon workflow",
     }[shape]
 
+
+def translate_labels(value: str, mapping: dict[str, str]) -> str:
+    labels = [item.strip() for item in value.split(";") if item.strip()]
+    missing = [label for label in labels if label not in mapping]
+    if missing:
+        raise SystemExit(f"Unmapped legacy labels: {missing}")
+    return ";".join(mapping[label] for label in labels)
+
+LEGACY_CLAIM_BOUNDARY_EN = {
+    "C01": "Claims should stay with coverage and detection evidence.",
+    "C02": "Public artifacts describe crash-to-exploit generation and validation material.",
+    "C03": "Coverage and vulnerability-signal feedback support exploration progress.",
+    "C04": "PoV and patch-validation workflow supports auditable CRS-style evidence.",
+    "C05": "Compiler crashes and hangs support bug-triggering evidence.",
+    "C06": "Known-vulnerability detection and behavior signals support runtime evaluation.",
+    "C07": "Assertion failures and directed fuzzing connect candidate bugs to PoC-style tests.",
+    "C08": "Device-side observations and LLM-guided semantic fuzzing support runtime bug evidence.",
+    "C09": "Confirmed or fixed reports are treated as aligned external audit traces when public material supports that link.",
+    "C10": "Supports filtered vulnerability reports and hypotheses rather than runtime confirmation.",
+    "C11": "Author-reported zero-day and CNVD statements are recorded as source-limited traces.",
+    "C12": "Test generation and execution artifacts support protocol-testing evidence.",
+    "C13": "PoV inputs and benchmark validation support known-vulnerability triggering.",
+    "C14": "Benchmark success supports bounded security-task performance.",
+    "C15": "Cyber-range and CTF results support task success under scoped environments.",
+    "C16": "Generated PoCs and execution oracles support validated exploit evidence.",
+    "C17": "Generated harnesses connect agents to executable vulnerability discovery material.",
+    "C18": "Evidence centers on benchmark completion and workflow efficiency.",
+    "C19": "Author-reported unknown-vulnerability and CVE/CNVD statements are recorded as source-limited external traces.",
+    "C20": "Fuzzing-assisted taint and PoC workflows support firmware validation.",
+    "C21": "Firmware execution signals are the main public evidence output.",
+    "C22": "Transfer-based reproduction identifies affected binary or software instances.",
+    "C23": "Supports cyber-task success rates under benchmark conditions.",
+    "C24": "Bounty-derived tasks provide realistic task background and scoped evaluation.",
+    "C25": "Benchmark artifacts support PoC, patch, and repair-oriented evaluation.",
+    "C26": "Generated tasks and artifacts connect cyber-range goals to replayable material.",
+    "C27": "Governance boundary case; retained to analyze risks introduced by high-privilege Agentic systems.",
+    "C28": "PoV and patch-validation material remains the main evidence output.",
+    "C29": "SEC-bench ground truth supports PoV and replay analysis.",
+    "C30": "CRS outputs are read through PoV, replay, and versioned artifact material.",
+    "C31": "Author-reported zero-day and confirmation traces are treated as source-linked audit material.",
+}
 
 EXTENDED_DETAILS = {
     "U19": {
@@ -237,6 +321,57 @@ def main() -> None:
     write("reference_audit.csv", reference, reference_fields)
     write("submission_update_20260715_study_level_additions.csv", additions, list(additions[0]))
 
+    # Build one current matrix while preserving each row's coding-round provenance.
+    corpus_by_id = {row["record_id"]: row for row in corpus}
+    crosswalk_by_id = {row["record_id"]: row for row in crosswalk}
+    reference_by_id = {row["record_id"]: row for row in reference}
+    core_record_ids = {row["core_id"]: row["record_id"] for row in read("core_coding.csv")}
+    core_record_ids["C27"] = "CP114"  # Stable canonical record for the legacy GB001 governance alias.
+    current_matrix: list[dict[str, str]] = []
+    for row in read("v13_core_synthesis_matrix.csv"):
+        record_id = core_record_ids[row["core_id"]]
+        is_governance = row["core_type"] == "governance boundary case"
+        current_matrix.append({
+            "matrix_id": row["core_id"],
+            "record_id": record_id,
+            "canonical_study_id": crosswalk_by_id[record_id]["canonical_study_id"],
+            "system_alias": row["system_alias"],
+            "title": corpus_by_id[record_id]["title"],
+            "analytical_role": "governance_boundary_case" if is_governance else "target_software_study",
+            "coding_round": "initial_frozen_round",
+            "lifecycle_coverage": translate_labels(row["lifecycle_coverage"], LIFECYCLE_LABELS),
+            "system_shape": translate_labels(row["system_archetype"], SYSTEM_SHAPE_LABELS),
+            "agentic_capabilities": translate_labels(row["agent_capabilities"], CAPABILITY_LABELS),
+            "strongest_evidence_output": EVIDENCE_LABELS[row["strongest_evidence_output"]],
+            "external_traceability": EXTERNAL_TRACE_LABELS[row["external_audit_materials"]],
+            "claim_boundary": LEGACY_CLAIM_BOUNDARY_EN[row["core_id"]],
+            "claim_boundary_original": row["main_claim_boundary"],
+            "coding_status": "frozen_initial_round",
+            "reliability_scope": "strongest evidence output;agentic capabilities;external traceability",
+            "official_url": reference_by_id[record_id]["official_url"],
+        })
+    for row in additions:
+        current_matrix.append({
+            "matrix_id": row["update_id"],
+            "record_id": row["record_id"],
+            "canonical_study_id": row["canonical_study_id"],
+            "system_alias": row["system_alias"],
+            "title": row["title"],
+            "analytical_role": "target_software_study",
+            "coding_round": "submission_update_20260715",
+            "lifecycle_coverage": row["lifecycle_coverage"],
+            "system_shape": row["primary_system_shape"],
+            "agentic_capabilities": row["agentic_capabilities"],
+            "strongest_evidence_output": row["strongest_evidence_output"],
+            "external_traceability": row["external_traceability"],
+            "claim_boundary": row["claim_boundary"],
+            "claim_boundary_original": row["claim_boundary"],
+            "coding_status": row["coding_status"],
+            "reliability_scope": "analytical layer;lifecycle coverage;primary system shape;agentic capabilities;strongest evidence output;external traceability",
+            "official_url": row["official_url"],
+        })
+    write("current_study_level_coding_matrix.csv", current_matrix, list(current_matrix[0]))
+
     log = [row for row in read("source_search_log.csv") if row["source_id"] != UPDATE_SOURCE_ID]
     log.append({
         "source_id": UPDATE_SOURCE_ID,
@@ -370,7 +505,7 @@ The current study-level coded set combines the frozen 30-target-study-plus-one-g
 ## Files Added or Expanded
 
 - corpus.csv, source_screening_audit.csv, study_version_crosswalk.csv, corpus_layer_audit.csv, and reference_audit.csv include CP213--CP253.
-- submission_update_20260715_study_level_additions.csv contains the 37 current-field study-level additions.
+- current_study_level_coding_matrix.csv is the unified 68-record current matrix; submission_update_20260715_study_level_additions.csv preserves the 37-row update view.
 - extended_synthesis_audit.csv contains the four confirmed update additions.
 - current_synthesis_statistics.csv reports combined descriptive lifecycle, capability, and evidence-output counts.
 - mapping_snapshot_counts.csv and screening_summary.csv use the integrated source and canonical denominators.
@@ -384,6 +519,7 @@ Analytical counts use canonical studies. The study-level denominator is 67 targe
     print(f"INTEGRATED_SOURCE_RECORDS {len(corpus)}")
     print(f"INTEGRATED_CANONICAL_STUDIES {sum(row['counting_status'] == 'canonical_counted' for row in crosswalk)}")
     print(f"STUDY_LEVEL_ADDITIONS {len(additions)}")
+    print(f"CURRENT_STUDY_LEVEL_MATRIX {len(current_matrix)}")
     print(f"EXTENDED_SYNTHESIS_TOTAL {len(extended)}")
 
 

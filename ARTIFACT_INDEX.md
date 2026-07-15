@@ -25,7 +25,8 @@ This index points reviewers to the public, non-sensitive files needed to audit t
 
 ## Study-Level Coding And Extended Synthesis
 
-- `data/v13_core_synthesis_matrix.csv`: current manuscript-facing study-level coded synthesis matrix; filename retained from an earlier restructuring stage.
+- `data/current_study_level_coding_matrix.csv`: unified current 68-record matrix with 67 target-software studies, one governance boundary case, and round-specific provenance fields.
+- `data/v13_core_synthesis_matrix.csv`: frozen initial-round 31-record matrix retained for historical traceability.
 - `data/v13_synthesis_statistics.csv`: checked synthesis statistics used by the manuscript.
 - `data/extended_synthesis_audit.csv`: record-level synthesis-use audit for the 65-study extended synthesis set.
 - `EXTENDED_SYNTHESIS_AUDIT_REPORT.md`: summary of the extended synthesis audit.
@@ -55,7 +56,7 @@ This index points reviewers to the public, non-sensitive files needed to audit t
 - `data/submission_update_20260715_canonical_integration_crosswalk.csv`: canonical-match assessment for U01-U41.
 - `SUBMISSION_UPDATE_CANONICAL_INTEGRATION_REPORT.md`: pre-integration canonical-match and projected-count assessment.
 - `SUBMISSION_UPDATE_CORPUS_INTEGRATION_REPORT.md`: completed integration report.
-- `data/submission_update_20260715_study_level_additions.csv`: 37 current-field study-level additions.
+- `data/submission_update_20260715_study_level_additions.csv`: 37-row update-round view retained alongside the unified current matrix.
 - `data/current_synthesis_statistics.csv`: combined current descriptive statistics.
 - `integrate_submission_update_corpus.py`: deterministic corpus-integration script.
 - `SUBMISSION_UPDATE_ADJUDICATION_SUMMARY.md`: operational rules and reviewed working-draft history.

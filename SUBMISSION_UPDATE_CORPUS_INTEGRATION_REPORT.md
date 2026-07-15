@@ -18,7 +18,7 @@ The current study-level coded set combines the frozen 30-target-study-plus-one-g
 ## Files Added or Expanded
 
 - corpus.csv, source_screening_audit.csv, study_version_crosswalk.csv, corpus_layer_audit.csv, and reference_audit.csv include CP213--CP253.
-- submission_update_20260715_study_level_additions.csv contains the 37 current-field study-level additions.
+- current_study_level_coding_matrix.csv is the unified 68-record current matrix; submission_update_20260715_study_level_additions.csv preserves the 37-row update view.
 - extended_synthesis_audit.csv contains the four confirmed update additions.
 - current_synthesis_statistics.csv reports combined descriptive lifecycle, capability, and evidence-output counts.
 - mapping_snapshot_counts.csv and screening_summary.csv use the integrated source and canonical denominators.

@@ -14,7 +14,7 @@ The release includes non-sensitive materials needed to review the survey evidenc
 
 - compact entry map: `ARTIFACT_INDEX.md`;
 - source-specific search protocol, source-level ledger, record-level screening audit, submission-time arXiv update export, screening audit, 41-record author full-text audit, blank update-search template, completed independent update coding, pre-adjudication agreement report, preserved working draft, author-confirmed adjudication, canonical-integration assessment, corpus metadata, canonical study/version crosswalk, corpus-layer audit, and screening summary;
-- frozen 31-record coding table, 37-record current-field additions, combined current statistics, `data/extended_synthesis_audit.csv`, extended synthesis audit report, corpus-stratification closure report, deduplication audit report, current evidence-output codebook, legacy A-profile codebook, field dictionary, and legacy-code crosswalk;
+- unified 68-record current coding matrix, frozen 31-record coding table, 37-record update-round view, combined current statistics, `data/extended_synthesis_audit.csv`, extended synthesis audit report, corpus-stratification closure report, deduplication audit report, current evidence-output codebook, legacy A-profile codebook, field dictionary, and legacy-code crosswalk;
 - manuscript-facing synthesis matrix, synthesis statistics, mapping counts, benchmark-boundary notes, research-agenda outputs, and reproducibility audit files;
 - DOI/reference audit, DOI-status notes, Zotero/PDF resolution summary, and literature-update decisions;
 - product-ecosystem snapshot for public coding-agent and security-agent materials;
@@ -70,6 +70,7 @@ Legacy A/E fields are retained for historical reproducibility and cross-version 
 - `prepare_submission_update_canonical_integration.py`
 - `integrate_submission_update_corpus.py`
 - `SUBMISSION_UPDATE_CORPUS_INTEGRATION_REPORT.md`
+- `data/current_study_level_coding_matrix.csv`
 - `data/submission_update_20260715_study_level_additions.csv`
 - `data/current_synthesis_statistics.csv`
 - `SUBMISSION_UPDATE_FULL_TEXT_AUDIT_REPORT.md`
@@ -85,4 +86,4 @@ Pilot agreement/kappa values in the archive are retained for codebook calibratio
 
 ## Extended synthesis terminology note
 
-The current artifact describes a 68-record study-level coded set and a 65-study extended synthesis set. Legacy `core31`, `Core`, `Supporting`, and `v13_` names remain for historical traceability and script compatibility; the 37 update studies are stored in a separate current-field additions table and are included in current aggregate views.
+The current artifact describes a 68-record study-level coded set and a 65-study extended synthesis set. `data/current_study_level_coding_matrix.csv` is the unified current matrix. Legacy `core31`, `Core`, `Supporting`, and `v13_` names remain for historical traceability and script compatibility; the 37-row additions table preserves update-round provenance rather than defining a separate analytical corpus.

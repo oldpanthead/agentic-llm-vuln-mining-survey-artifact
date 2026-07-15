@@ -27,7 +27,7 @@ Expected validation highlights:
 
 ## Terminology Compatibility Note
 
-The current corpus contains 68 study-level coded records (67 target-software studies plus one governance boundary case) and 65 extended-synthesis studies. Legacy files with `core31` or `v13` names retain the frozen first-round 31-record coding and its formal reliability results; the 37 update additions use current workflow--capability--evidence fields without imputed A/E labels. Source-layer values retain `Core` and `Supporting` for script compatibility and record analytical role rather than study quality.
+The current corpus contains 68 study-level coded records (67 target-software studies plus one governance boundary case) and 65 extended-synthesis studies. `data/current_study_level_coding_matrix.csv` is the unified current study-level view. Legacy files with `core31` or `v13` names retain the frozen first-round 31-record coding and its formal reliability results; the 37-row additions file preserves update-round provenance without imputed A/E labels. Source-layer values retain `Core` and `Supporting` for script compatibility and record analytical role rather than study quality.
 
 ## Main Entry Points
 
@@ -45,7 +45,8 @@ The current corpus contains 68 study-level coded records (67 target-software stu
 - `data/submission_update_20260715_canonical_integration_crosswalk.csv`: canonical-identity assessment against the frozen corpus.
 - `SUBMISSION_UPDATE_CANONICAL_INTEGRATION_REPORT.md`: pre-integration canonical-match and projected-count assessment.
 - `SUBMISSION_UPDATE_CORPUS_INTEGRATION_REPORT.md`: completed integration counts and cohort boundary.
-- `data/submission_update_20260715_study_level_additions.csv`: 37 current-field study-level additions.
+- `data/current_study_level_coding_matrix.csv`: unified current matrix for all 67 target-software studies plus the governance boundary case; `coding_round` and `reliability_scope` preserve round-specific provenance.
+- `data/submission_update_20260715_study_level_additions.csv`: 37-row update-round view retained for auditability.
 - `data/current_synthesis_statistics.csv`: combined descriptive lifecycle, capability, and evidence-output counts.
 - `SUBMISSION_UPDATE_ADJUDICATION_SUMMARY.md`: resolution rules and reviewed working-draft history.
 - `prepare_submission_update_adjudication.py`: reproducible generator for the working draft and update agreement reports.
@@ -59,7 +60,7 @@ The current corpus contains 68 study-level coded records (67 target-software stu
 - `EXTENDED_SYNTHESIS_AUDIT_REPORT.md`: summary of the extended synthesis audit.
 - `CORPUS_STRATIFICATION_CLOSURE_REPORT.md`: corpus-stratification closure report for the manuscript and artifact.
 - `DEDUP_AND_EXTENDED_SYNTHESIS_AUDIT_REPORT.md`: canonical deduplication and extended-synthesis substantiation report.
-- `data/v13_core_synthesis_matrix.csv`: current manuscript-facing study-level coded synthesis matrix; filename retained from a prior restructuring stage.
+- `data/v13_core_synthesis_matrix.csv`: frozen initial-round 31-record matrix retained for historical traceability; it is not the current combined matrix.
 - `data/v13_synthesis_statistics.csv`: checked synthesis statistics used by the manuscript.
 - `data/mapping_snapshot_counts.csv`: descriptive mapping views for the manuscript corpus.
 - `data/product_ecosystem_snapshot.csv`: product-ecosystem boundary snapshot, maintained outside the 253-record corpus.
@@ -69,7 +70,7 @@ The current corpus contains 68 study-level coded records (67 target-software stu
 
 ## Second-Coder Status
 
-The formal strongest-evidence-output second-coder pass covers all 31 study-level coded records (legacy `Core` files). Results are in `data/core31_second_coder_formal_results.csv`, with agreement reported in `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md`.
+The formal strongest-evidence-output second-coder pass covers the 31 records in the frozen initial round. Results are in `data/core31_second_coder_formal_results.csv`, with agreement reported in `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md`. The separate 41-record update-round pass and its author-confirmed 37/4 resolution remain documented in the submission-update files; reliability is reported by round.
 
 A separate extension check covers cross-stage capability and external traceability. Results are in `data/core31_second_coder_capability_traceability_results.csv`, with set-style agreement reported in `reports/SECOND_CODER_CAPABILITY_TRACEABILITY_AGREEMENT_REPORT.md`.
 
