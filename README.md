@@ -11,31 +11,31 @@ This repository contains the non-sensitive public artifact for a mapping-oriente
 
 Expected validation highlights:
 
-- Source records in screening ledger: 212
-- Canonical candidate studies after version deduplication: 207
-- Study-level coded records: 31 (30 target-software studies plus 1 governance boundary case)
-- Source-layer Supporting records: 65
-- Canonical extended synthesis studies: 61
+- Source records in screening ledger: 253
+- Canonical candidate studies after version deduplication: 248
+- Study-level coded records: 68 (67 target-software studies plus 1 governance boundary case)
+- Source-layer Supporting records: 69
+- Canonical extended synthesis studies: 65
 - Background references: 95
 - Source-layer Excluded records: 21
 - Canonical excluded studies: 20
 - Product/system boundary snapshot rows: 23
 - Source-specific search ledger date: 2026-06-30
-- Submission-time arXiv sensitivity-search date: 2026-07-15 (41-record independent blind pass and author-confirmed 37/4 analytical-layer resolution complete; canonical integration assessed separately)
+- Submission-time arXiv sensitivity-search date: 2026-07-15 (41-record independent pass, author-confirmed 37/4 resolution, and canonical integration complete)
 - Product-ecosystem snapshot date: 2026-06-29
 
 
 ## Terminology Compatibility Note
 
-The current manuscript refers to the 31-record study-level coded set and the 61-study extended synthesis set. Some CSV values and legacy filenames retain `Core` and `Supporting` for script compatibility: source records labeled `Core` resolve to the 31 canonical study-level coded records, while the 65 source records labeled `Supporting` resolve to 61 canonical extended synthesis studies after version deduplication. The file `data/extended_synthesis_audit.csv` provides the current record-level synthesis-use audit for those 61 canonical studies. These retained labels do not imply study quality or a lower importance tier.
+The current corpus contains 68 study-level coded records (67 target-software studies plus one governance boundary case) and 65 extended-synthesis studies. Legacy files with `core31` or `v13` names retain the frozen first-round 31-record coding and its formal reliability results; the 37 update additions use current workflow--capability--evidence fields without imputed A/E labels. Source-layer values retain `Core` and `Supporting` for script compatibility and record analytical role rather than study quality.
 
 ## Main Entry Points
 
 - `SEARCH_PROTOCOL.md`: source-specific search protocol.
 - `data/source_search_log.csv`: source-level search ledger.
-- `data/source_screening_audit.csv`: record-level screening audit for all 212 source records.
+- `data/source_screening_audit.csv`: record-level screening audit for all 253 source records.
 - `data/submission_update_20260715_screening_audit.csv`: submission-time arXiv sensitivity-search decisions.
-- `data/submission_update_20260715_full_coding_audit.csv`: author full-text workflow--capability--evidence audit of the 41 potentially eligible records; labels remain provisional.
+- `data/submission_update_20260715_full_coding_audit.csv`: frozen pre-adjudication author full-text workflow--capability--evidence audit of the 41 potentially eligible records.
 - `data/submission_update_20260715_second_coder_blind_template.csv`: blank independent-review sheet for the 41 update records; it exposes no author labels.
 - `data/submission_update_20260715_second_coder_results.csv`: completed independent 41-record coder2 decisions, reasons, and uncertainty notes.
 - `reports/SUBMISSION_UPDATE_SECOND_CODER_PRE_ADJUDICATION_REPORT.md`: computed agreement before disagreement resolution.
@@ -43,7 +43,10 @@ The current manuscript refers to the 31-record study-level coded set and the 61-
 - `data/submission_update_20260715_adjudicated.csv`: author-confirmed 37/4 field resolution preserving author and coder2 inputs.
 - `reports/SUBMISSION_UPDATE_ADJUDICATION_REPORT.md`: confirmation scope, final layer outcome, and consensus boundary.
 - `data/submission_update_20260715_canonical_integration_crosswalk.csv`: canonical-identity assessment against the frozen corpus.
-- `SUBMISSION_UPDATE_CANONICAL_INTEGRATION_REPORT.md`: projected integration counts and manuscript-update boundary.
+- `SUBMISSION_UPDATE_CANONICAL_INTEGRATION_REPORT.md`: pre-integration canonical-match and projected-count assessment.
+- `SUBMISSION_UPDATE_CORPUS_INTEGRATION_REPORT.md`: completed integration counts and cohort boundary.
+- `data/submission_update_20260715_study_level_additions.csv`: 37 current-field study-level additions.
+- `data/current_synthesis_statistics.csv`: combined descriptive lifecycle, capability, and evidence-output counts.
 - `SUBMISSION_UPDATE_ADJUDICATION_SUMMARY.md`: resolution rules and reviewed working-draft history.
 - `prepare_submission_update_adjudication.py`: reproducible generator for the working draft and update agreement reports.
 - `finalize_submission_update_adjudication.py`: deterministic promotion of the author-confirmed resolution.
@@ -52,14 +55,14 @@ The current manuscript refers to the 31-record study-level coded set and the 61-
 - `SUBMISSION_UPDATE_AUDIT_REPORT.md`: scope, counts, and methodological implication of the update search.
 - `data/corpus.csv`: source-record metadata and legacy analysis layer.
 - `data/study_version_crosswalk.csv`: canonical study/version crosswalk used for analytical counts.
-- `data/extended_synthesis_audit.csv`: record-level synthesis-use audit for the 61-study extended synthesis set.
+- `data/extended_synthesis_audit.csv`: record-level synthesis-use audit for the 65-study extended synthesis set.
 - `EXTENDED_SYNTHESIS_AUDIT_REPORT.md`: summary of the extended synthesis audit.
 - `CORPUS_STRATIFICATION_CLOSURE_REPORT.md`: corpus-stratification closure report for the manuscript and artifact.
 - `DEDUP_AND_EXTENDED_SYNTHESIS_AUDIT_REPORT.md`: canonical deduplication and extended-synthesis substantiation report.
 - `data/v13_core_synthesis_matrix.csv`: current manuscript-facing study-level coded synthesis matrix; filename retained from a prior restructuring stage.
 - `data/v13_synthesis_statistics.csv`: checked synthesis statistics used by the manuscript.
 - `data/mapping_snapshot_counts.csv`: descriptive mapping views for the manuscript corpus.
-- `data/product_ecosystem_snapshot.csv`: product-ecosystem boundary snapshot, maintained outside the 212-record corpus.
+- `data/product_ecosystem_snapshot.csv`: product-ecosystem boundary snapshot, maintained outside the 253-record corpus.
 - `evidence_output_codebook.md`: current evidence-output label definitions.
 - `data_dictionary.md`: complete field dictionary.
 - `reproduce_tables.py`: validation and count-check script.
@@ -72,11 +75,11 @@ A separate extension check covers cross-stage capability and external traceabili
 
 The pilot second-coder round is archived under `archive/pilot_second_coder_round_1/` for codebook calibration only and should not be cited as formal reliability.
 
-The 2026-07-15 update-search blind pass is complete for all 41 records. Pre-adjudication agreement is reported separately for the update fields. The author accepted the evidence-based 37/4 resolution, with U24 (SynthFix) assigned to extended synthesis under the observable-workflow rule. Canonical matching found 41 new studies and projects a 67-target-study-plus-one-governance coded set after coordinated integration. The frozen manuscript and corpus denominators remain unchanged until that larger release updates the coding matrices, distributions, and text together.
+The 2026-07-15 update-search blind pass is complete for all 41 records. The author-confirmed resolution assigns 37 records to study-level coding and four to extended synthesis. Canonical integration is complete: the current corpus contains 253 source records, 248 canonical studies, 67 target-software coded studies plus one governance boundary case, and 65 extended-synthesis studies. Reliability remains reported by coding round rather than as a synthetic combined kappa.
 
 ## Evidence Boundary
 
-Product pages, help pages, official blogs, model pages, project pages, and disclosure policies are recorded as dated boundary materials. They support ecosystem discussion and do not expand the 31-record study-level coded set. The product ecosystem snapshot is independent of the 212 source records; row-level roles and caveats are recorded in `data/product_ecosystem_snapshot.csv` and `data/reference_audit.csv`.
+Product pages, help pages, official blogs, model pages, project pages, and disclosure policies are recorded as dated boundary materials. They support ecosystem discussion outside the 68-record study-level coded set. The 23-row product snapshot is independent of the 253 source records; row-level roles and caveats are recorded in `data/product_ecosystem_snapshot.csv` and `data/reference_audit.csv`.
 
 Legacy A/E fields are retained for historical traceability. The current manuscript synthesis uses natural-language workflow, capability, strongest evidence output, external audit material, and claim-boundary fields.
 

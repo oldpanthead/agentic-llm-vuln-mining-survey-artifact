@@ -6,9 +6,9 @@ This report documents the canonical study deduplication and extended-synthesis s
 
 Source-record layer counts retained in `data/corpus.csv` and `data/source_screening_audit.csv`:
 
-- Source records in screening ledger: 212
-- Legacy Core source records: 31
-- Legacy Supporting source records: 65
+- Source records in screening ledger: 253
+- Legacy Core source records: 68
+- Legacy Supporting source records: 69
 - Background source records: 95
 - Excluded source records: 21
 
@@ -18,10 +18,10 @@ Analytical counts now use canonical studies from `data/study_version_crosswalk.c
 
 - `background_reference`: 95
 - `excluded_near_neighbor`: 20
-- `extended_synthesis`: 61
-- `study_level_coded`: 31
+- `extended_synthesis`: 65
+- `study_level_coded`: 68
 
-Total canonical candidate studies: 207.
+Total canonical candidate studies: 248.
 
 ## 3. Merged Record Groups
 
@@ -48,32 +48,32 @@ The pass identified and resolved Core/Supporting cross-layer duplicates for RFCA
 
 ## 7. Figure 2 and Manuscript Number Changes
 
-Figure 2 now separates 212 source-record year/source distributions from the final canonical analysis-use allocation: 30 target-software study-level coded studies, one governance boundary coded record, 61 extended synthesis studies, 95 background/reference records, and 20 excluded near-neighbor studies. The analytical corpus is 92 canonical studies: 31 study-level coded records plus 61 extended synthesis studies.
+The current mapping view separates 253 source-record year/source distributions from the canonical allocation: 67 target-software study-level coded studies, one governance boundary record, 65 extended synthesis studies, 95 background/reference studies, and 20 excluded near-neighbor studies.
 
 ## 8. Extended Synthesis Contribution Substantiation
 
-The extended synthesis audit now contains 61 canonical studies. Template contribution and reason fields were replaced with study-specific mechanism summaries checked against public title/abstract metadata. CP189 was removed after review showed that it is a machine-translation study.
+The extended synthesis audit now contains 65 canonical studies. Template contribution and reason fields were replaced with study-specific mechanism summaries checked against public title/abstract metadata. CP189 was removed after review showed that it is a machine-translation study.
 
 Primary roles:
 
-- `adjacent_candidate_analysis`: 4
+- `adjacent_candidate_analysis`: 7
 - `adjacent_fuzzing_or_testing`: 29
 - `agent_orchestration`: 7
 - `benchmark_or_evaluation`: 14
-- `evidence_or_reproducibility`: 7
+- `evidence_or_reproducibility`: 8
 
 Material types:
 
 - `conference_paper`: 25
 - `journal_article`: 15
-- `preprint_or_arxiv`: 21
+- `preprint_or_arxiv`: 25
 
 ## 9. RQ Mapping
 
 RQ contribution values after audit:
 
-- `RQ2_context`: 47
-- `evaluation_agenda`: 14
+- `RQ2_context`: 49
+- `evaluation_agenda`: 16
 
 The extended synthesis set primarily supports contextual RQ2 synthesis and the evaluation agenda. RQ1 draws additionally on the background/reference literature about traditional security primitives rather than being inferred from the extended synthesis CSV alone.
 
@@ -83,8 +83,12 @@ CP189 was manually reviewed and reclassified as excluded. All retained extended-
 
 ## 11. Script Validation
 
-`python reproduce_tables.py` was run after the pass. It checks that canonical counted studies total 207, one canonical study has one counted record and one primary analytical layer, counted records have no duplicate normalized title/DOI/arXiv/URL, the extended synthesis audit has 61 canonical rows, and public material locators do not use local fragments.
+`python reproduce_tables.py` was run after the pass. It checks that canonical counted studies total 248, one canonical study has one counted record and one primary analytical layer, counted records have no duplicate normalized title/DOI/arXiv/URL, the extended synthesis audit has 65 canonical rows, and public material locators do not use local fragments.
 
-## 12. Closure Statement
+## 12. Submission-Update Integration
+
+The 2026-07-15 update added 41 new canonical studies after exact-identifier, normalized-title, and version matching: 37 study-level records and four extended-synthesis records. They are assigned CP213--CP253. The legacy 31-record coding files remain frozen for reproducibility, while the additions and combined descriptive statistics are stored separately.
+
+## 13. Closure Statement
 
 One canonical study is counted once. Source records remain available for provenance, version history, and search transparency, but analytical denominators use `data/study_version_crosswalk.csv`.

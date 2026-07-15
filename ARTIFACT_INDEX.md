@@ -5,14 +5,14 @@ This index points reviewers to the public, non-sensitive files needed to audit t
 ## Fast Validation
 
 - `reproduce_tables.py`: schema, count, second-coder, product snapshot, source ledger, and safety-boundary checks.
-- Expected corpus counts: 212 source records; 207 canonical candidate studies; 31 study-level coded records (30 target-software studies plus 1 governance boundary case); 61 extended synthesis studies; 95 Background references; 20 Excluded near-neighbor studies.
+- Expected corpus counts: 253 source records; 248 canonical candidate studies; 68 study-level coded records (67 target-software studies plus 1 governance boundary case); 65 extended synthesis studies; 95 Background references; 20 Excluded near-neighbor studies.
 - Product ecosystem snapshot: 23 rows, maintained as an independent boundary layer.
 
 ## Corpus Construction
 
 - `SEARCH_PROTOCOL.md`: source-specific search protocol.
 - `data/source_search_log.csv`: source-level search ledger frozen on 2026-06-30.
-- `data/source_screening_audit.csv`: record-level screening audit for all 212 source records.
+- `data/source_screening_audit.csv`: record-level screening audit for all 253 source records.
 - `data/submission_update_20260715_arxiv_results.csv`: normalized raw-hit export for the 2026-07-15 arXiv update search.
 - `data/submission_update_20260715_screening_audit.csv`: record-level update-search decisions.
 - `data/submission_update_20260715_full_coding_audit.csv`: author full-text audit of the 41 potentially eligible update records.
@@ -27,7 +27,7 @@ This index points reviewers to the public, non-sensitive files needed to audit t
 
 - `data/v13_core_synthesis_matrix.csv`: current manuscript-facing study-level coded synthesis matrix; filename retained from an earlier restructuring stage.
 - `data/v13_synthesis_statistics.csv`: checked synthesis statistics used by the manuscript.
-- `data/extended_synthesis_audit.csv`: record-level synthesis-use audit for the 61-study extended synthesis set.
+- `data/extended_synthesis_audit.csv`: record-level synthesis-use audit for the 65-study extended synthesis set.
 - `EXTENDED_SYNTHESIS_AUDIT_REPORT.md`: summary of the extended synthesis audit.
 - `CORPUS_STRATIFICATION_CLOSURE_REPORT.md`: corpus-stratification closure report for the manuscript and artifact.
 - `DEDUP_AND_EXTENDED_SYNTHESIS_AUDIT_REPORT.md`: canonical deduplication and extended-synthesis substantiation report.
@@ -53,7 +53,11 @@ This index points reviewers to the public, non-sensitive files needed to audit t
 - `data/submission_update_20260715_adjudicated.csv`: author-confirmed 37/4 resolution.
 - `reports/SUBMISSION_UPDATE_ADJUDICATION_REPORT.md`: finalization scope and consensus boundary.
 - `data/submission_update_20260715_canonical_integration_crosswalk.csv`: canonical-match assessment for U01-U41.
-- `SUBMISSION_UPDATE_CANONICAL_INTEGRATION_REPORT.md`: projected corpus impact; frozen counts remain unchanged.
+- `SUBMISSION_UPDATE_CANONICAL_INTEGRATION_REPORT.md`: pre-integration canonical-match and projected-count assessment.
+- `SUBMISSION_UPDATE_CORPUS_INTEGRATION_REPORT.md`: completed integration report.
+- `data/submission_update_20260715_study_level_additions.csv`: 37 current-field study-level additions.
+- `data/current_synthesis_statistics.csv`: combined current descriptive statistics.
+- `integrate_submission_update_corpus.py`: deterministic corpus-integration script.
 - `SUBMISSION_UPDATE_ADJUDICATION_SUMMARY.md`: operational rules and reviewed working-draft history.
 - `prepare_submission_update_adjudication.py`: reproducible update-adjudication generator.
 - `finalize_submission_update_adjudication.py`: deterministic author-confirmation finalizer.

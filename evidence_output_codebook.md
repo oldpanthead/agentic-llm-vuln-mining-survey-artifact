@@ -1,6 +1,6 @@
 # Evidence Output Codebook
 
-This codebook defines the current manuscript's strongest-evidence-output labels for the 31-record study-level coded set (30 target-software studies plus one governance boundary case). These labels support the workflow--capability--evidence synthesis in the manuscript. Legacy A/E fields remain in the artifact for historical traceability, but they are not the current manuscript's main prose axis.
+This codebook defines the current manuscript's strongest-evidence-output labels for the study-level coded set. The same labels are used for the frozen initial round (30 target-software studies plus one governance boundary case) and the 37 target-software additions from the submission update. Legacy A/E fields remain in the artifact for historical traceability, but they are not the current manuscript's main prose axis.
 
 ## Current Evidence-Output Labels
 

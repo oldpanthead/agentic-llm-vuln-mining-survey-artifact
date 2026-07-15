@@ -5,11 +5,11 @@ This dictionary describes the non-sensitive audit artifact used by the survey ma
 
 ## Current Manuscript Layer Terminology
 
-Current manuscript terminology maps legacy artifact layer values as follows: `Core` means the 31-record study-level coded set (30 target-software studies plus one governance boundary case), and `Supporting` means the legacy source-record layer from which the 61-study canonical extended synthesis set is derived. These legacy CSV values are retained for reproduction-script compatibility. The layer distinction records analytical depth and role rather than study importance or quality.
+Current terminology maps legacy artifact values as follows: `Core` identifies study-level coded source records and `Supporting` identifies extended-synthesis source records. The current corpus contains 68 study-level coded records (67 target-software studies plus one governance boundary case) and 65 extended-synthesis studies. Legacy `core31` and `v13_` files preserve the frozen first coding round; update additions use current natural-language fields without imputed A/E labels.
 
 ## Common Identifiers
 
-- `record_id`: stable identifier for one source record in the 212-record screening ledger.
+- `record_id`: stable identifier for one source record in the 253-record screening ledger.
 - `core_id`: stable identifier for one legacy Core record in the 31-record study-level coded set.
 - `sample_id`: stable identifier for one record in the second-coder sample.
 
@@ -47,7 +47,7 @@ This file records the source-specific search ledger for the current manuscript c
 
 ## `data/source_screening_audit.csv`
 
-This file records one source assignment and screening decision for each of the 212 source records in the screening ledger.
+This file records one source assignment and screening decision for each of the 253 source records in the screening ledger.
 
 - `record_id`: stable candidate record identifier linked to `data/corpus.csv`.
 - `title`, `year`: record title and year from corpus metadata.
@@ -68,7 +68,7 @@ This file records the submission-time arXiv sensitivity-search decisions without
 - `screening_status`: existing match, outside date window, potentially eligible update record, contextual/background update, or title/abstract exclusion.
 - `screening_level`: identity, date, title/abstract, abstract-plus-metadata, or full-text review.
 - `decision_reason`: record-level rationale.
-- `analytical_implication`: whether the record changes the current analysis. Author and independent coding, author-confirmed adjudication, and canonical matching are complete; coordinated corpus/manuscript integration remains pending.
+- `analytical_implication`: whether the record changes the current analysis. Author and independent coding, author-confirmed adjudication, canonical matching, and corpus integration are complete; manuscript alignment is tracked separately.
 
 ## `data/submission_update_20260715_full_coding_audit.csv`
 
@@ -134,6 +134,18 @@ The report states the confirmation scope, 37/4 analytical-layer outcome, preserv
 
 The report records the exact-identifier/title comparison and projected corpus impact. All 41 update records are new canonical studies under the current matching rules, yielding projected totals of 253 source records and 248 canonical studies. These projections remain separate from the frozen manuscript counts until the coding matrices, distributions, and text are updated together.
 
+## `data/submission_update_20260715_study_level_additions.csv`
+
+This file contains the 37 update studies added to the current study-level set. It uses current workflow, system-shape, capability, evidence-output, external-traceability, and claim-boundary fields. Legacy A/E fields are not created for these studies.
+
+## `data/current_synthesis_statistics.csv`
+
+This file reports combined descriptive counts for 67 target-software studies across lifecycle coverage, agentic capabilities, and strongest evidence output. The governance boundary case is included only in the evidence-output total where explicitly labeled. `baseline_count` and `update_addition_count` preserve the two-cohort arithmetic.
+
+## `SUBMISSION_UPDATE_CORPUS_INTEGRATION_REPORT.md` and `integrate_submission_update_corpus.py`
+
+The report records the completed 253-source-record / 248-canonical-study integration and the 67+1 denominator policy. The deterministic script expands the source ledger, canonical crosswalk, reference audit, current-field additions, extended synthesis, mapping views, and current descriptive statistics while preserving the legacy 31-record coding files and both rounds of reliability results.
+
 ## `data/core_coding.csv`
 
 - `core_id`: Core-study coding identifier.
@@ -157,7 +169,7 @@ The report records the exact-identifier/title comparison and projected corpus im
 
 ## `data/study_version_crosswalk.csv`
 
-This file links the 212 source records to 207 canonical candidate studies. It preserves version history while preventing preprints, conference versions, exact duplicates, or source variants of the same study from being counted twice.
+This file links the 253 source records to 248 canonical studies. It preserves version history while preventing preprints, conference versions, exact duplicates, or source variants of the same study from being counted twice.
 
 - `record_id`: source-record identifier from `data/corpus.csv`.
 - `title`: source-record title.
@@ -174,7 +186,7 @@ This file links the 212 source records to 207 canonical candidate studies. It pr
 
 ## `data/extended_synthesis_audit.csv`
 
-This file provides a lightweight, record-level synthesis-use audit for the 61-study canonical extended synthesis set. It does not apply the full study-level workflow--capability--evidence coding used for the 31-record coded set.
+This file provides a lightweight, record-level synthesis-use audit for the 65-study canonical extended synthesis set. It complements the study-level workflow--capability--evidence coding used for 67 target-software studies plus one governance boundary case.
 
 - `record_id`: stable identifier linked to `data/corpus.csv`.
 - `citation_key`: bibliography key extracted from the public reference audit when available; `NA` means no key was recorded in the source note.
@@ -202,7 +214,7 @@ Positive examples: an LLM-guided fuzzing paper without full study-level trace fi
 - `original_layer`: layer in the original public-minimal corpus.
 - `supplemental_layer`: supplemental analysis layer, including `Analytical Core`, `Supporting`, `Background Context`, and `Excluded`.
 - `task_category`: coarse task family used during screening.
-- `is_analytical_core`: whether the record is part of the 31-record study-level coded set.
+- `is_analytical_core`: whether the record is part of the current 68-record study-level coded set.
 - `core_id`: Core identifier when applicable; otherwise `NA`.
 - `system_alias`: short system or benchmark name when applicable.
 - `a_level_original`: original A-profile code for Core records.
@@ -323,7 +335,7 @@ This file is for comparison and adjudication after independent coding is complet
 - `last_verified_date`: date of the latest local audit update for this row.
 - `note`: provenance, risk flags, and manual-check notes.
 
-Manuscript citation count is not a corpus statistic. The 2026-06-19 reference-list expansion cited additional rows that were already present in `corpus.csv` and `reference_audit.csv`; those citations remain extended synthesis or background/reference material and do not alter the 212 source records, 207 canonical candidate studies, 31 study-level coded records, 61 extended synthesis studies, 95 Background references, or 20 Excluded near-neighbor studies.
+Manuscript citation count is not a corpus statistic. The earlier reference-list expansion cited rows already present in the corpus; the 2026-07-15 update is instead recorded as a separate, fully screened and coded integration. Current totals are 253 source records, 248 canonical studies, 68 study-level coded records, 65 extended synthesis studies, 95 Background references, and 20 Excluded near-neighbor studies.
 
 
 ## `data/mapping_snapshot_counts.csv`
@@ -333,12 +345,12 @@ This file records descriptive mapping views used by the current manuscript. The 
 - `view`: mapping view, such as `year_distribution`, `source_type_distribution`, or `task_facet_distribution`.
 - `category`: category displayed in the manuscript mapping view.
 - `count`: count for the category.
-- `denominator`: counting scope, such as 212 source records, the independent product snapshot layer, the 31-record study-level coded set, or the 61-study extended synthesis set.
+- `denominator`: counting scope, such as 253 source records, the independent product snapshot layer, 67 target-software studies, the 68-record coded set including the governance boundary case, or the 65-study extended synthesis set.
 - `scope_note`: boundary note explaining that the count is descriptive rather than a prevalence estimate.
 
 ## `data/product_ecosystem_snapshot.csv`
 
-This file is an independent product-ecosystem boundary data layer. Rows in this file are not part of `data/corpus.csv`, do not count toward the 212 source records, and do not alter study-level coded aggregate statistics. Product materials that also support manuscript background or extended-synthesis discussion are represented separately in `data/reference_audit.csv`. Public vendor/project materials are recorded as source-limited ecosystem evidence and are not independently validated by this artifact.
+This file is an independent product-ecosystem boundary data layer. Rows in this file are not part of `data/corpus.csv`, do not count toward the 253 source records, and do not alter study-level coded aggregate statistics. Product materials that also support manuscript background or extended-synthesis discussion are represented separately in `data/reference_audit.csv`. Public vendor/project materials are recorded as source-limited ecosystem evidence and are not independently validated by this artifact.
 
 - `product_or_system`: public product, model, workflow, policy, or attempted source check.
 - `vendor`: vendor or organization associated with the material.
@@ -371,7 +383,7 @@ This file is an independent product-ecosystem boundary data layer. Rows in this 
 
 `data/doi_remaining_manual_status.csv` documents records that remain DOI-less after the DOI merge and supplemental pass.
 
-Product and policy pages added for the product-ecosystem snapshot are also listed there when DOI is not applicable. These rows record `doi_not_applicable_product_page` or equivalent status and do not change manuscript corpus, the 212 source records, or Core counts.
+Product and policy pages added for the product-ecosystem snapshot are also listed there when DOI is not applicable. These rows record `doi_not_applicable_product_page` or equivalent status and do not change the 253-record research corpus or the 68-record study-level coded set.
 
 Rows already audited with DOI or official URL in `reference_audit.csv` are not duplicated in `doi_remaining_manual_status.csv` merely because they are newly cited in a manuscript draft.
 

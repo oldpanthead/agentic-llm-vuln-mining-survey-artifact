@@ -1,39 +1,35 @@
 # Extended Synthesis Audit Report
 
-This report documents the record-level audit for the 61-study canonical extended synthesis set used by the current ACM CSUR manuscript.
+This report documents the record-level audit for the current 65-study canonical extended synthesis set.
 
 ## Scope
 
 - Audited file: data/extended_synthesis_audit.csv
-- Rows: 61
-- Corpus relationship: these rows correspond exactly to canonical counted records with analytical_layer=extended_synthesis in data/study_version_crosswalk.csv.
-- Coding depth: these records use predefined thematic-use fields for adjacent mechanisms, evaluation context, and evidence-boundary discussion rather than the full study-level matrix.
+- Rows: 65
+- Corpus relationship: rows correspond exactly to canonical-counted records with analytical_layer=extended_synthesis in data/study_version_crosswalk.csv.
+- Coding depth: predefined thematic-use fields for adjacent mechanisms, evaluation context, and evidence-boundary discussion.
 
 ## Material Types
 
 - conference_paper: 25
 - journal_article: 15
-- preprint_or_arxiv: 21
+- preprint_or_arxiv: 25
 
 ## Primary Synthesis Roles
 
-- adjacent_candidate_analysis: 4
+- adjacent_candidate_analysis: 7
 - adjacent_fuzzing_or_testing: 29
 - agent_orchestration: 7
 - benchmark_or_evaluation: 14
-- evidence_or_reproducibility: 7
+- evidence_or_reproducibility: 8
 
 ## RQ Contribution
 
-- RQ2_context: 47
-- evaluation_agenda: 14
+- RQ2_context: 49
+- evaluation_agenda: 16
 
-## Study-Specific Extraction Closure
+## Extraction Closure
 
-All 61 extracted_contribution values and all 61 reason_not_study_level_coded values are unique. Each contribution names a concrete mechanism, tool/environment, feedback type, validation object, or evaluation distinction. Rows were checked against public title/abstract metadata on 2026-07-15.
+All extracted_contribution and reason_not_study_level_coded values are study-specific and unique. Each row names a concrete mechanism, tool or environment, feedback type, validation object, or evaluation distinction. The four update additions were checked through the 2026-07-15 full-text coding and resolution workflow.
 
-CP189 was removed from this layer after manual review showed that it concerns in-house machine translation rather than software security or vulnerability mining.
-
-## Closure Statement
-
-The audit gives each canonical extended-synthesis study a traceable material basis, synthesis role, RQ use, manuscript location, study-specific contribution, and coding-depth rationale. It does not alter the existing 31 study-level evidence decisions or second-coder results.
+The audit supplies a traceable material basis, synthesis role, RQ use, manuscript location, contribution, and coding-depth rationale for each canonical extended-synthesis study. It does not overwrite the study-level evidence decisions or either round of second-coder results.

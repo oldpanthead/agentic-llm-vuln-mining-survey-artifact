@@ -1,9 +1,9 @@
 stage,count,note
-Source-specific search ledger,212,Source records retained in corpus.csv and source_screening_audit.csv; versions remain traceable.
+Source-specific search ledger,253,Source records retained in corpus.csv and source_screening_audit.csv; versions remain traceable.
 Canonical study/version resolution,5,Alternate or duplicate source records are linked to canonical studies in study_version_crosswalk.csv.
-Canonical candidate studies after version deduplication,207,Analytical study counts use canonical studies rather than source-record rows.
-Study-level coded records,31,30 target-software studies plus one governance boundary record; existing coding and second-coder decisions are unchanged.
-Extended synthesis studies,61,Canonical extended-synthesis studies after removing alternate versions and the CP189 false-positive source match.
+Canonical candidate studies after version deduplication,248,Analytical study counts use canonical studies rather than source-record rows.
+Study-level coded records,68,67 target-software studies plus one governance boundary record; reliability is reported separately for the frozen 31-record and 41-record update rounds.
+Extended synthesis studies,65,Canonical extended-synthesis studies after version resolution and submission-update integration.
 Background references,95,"Background/reference canonical records for primitives, concepts, tools, benchmarks, methods, and ecosystem context."
 Excluded near-neighbor studies,20,Canonical excluded studies after version deduplication; source-level excluded rows remain traceable.
 Product ecosystem snapshot,23,Independent boundary layer in product_ecosystem_snapshot.csv; not part of source-record or canonical-study counts.

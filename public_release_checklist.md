@@ -29,7 +29,8 @@ This checklist prepares the minimal artifact for a future GitHub or Zenodo relea
 - [x] Preserve the proposed update adjudication working draft as the reviewed pre-confirmation record.
 - [x] Record the author-confirmed 37/4 update resolution without claiming two-human consensus.
 - [x] Run canonical matching for all 41 adjudicated records and preserve the projected 253-source-record / 248-canonical-study impact separately from the frozen manuscript counts.
-- [ ] Integrate the update cohort into the corpus and manuscript only as a coordinated release with updated matrices, distributions, and denominator statements.
+- [x] Integrate the update cohort into the corpus with current-field additions, updated mappings, and preserved round-specific reliability.
+- [ ] Update and compile the manuscript against the integrated 253 / 248 / 67+1 / 65 corpus counts.
 - [x] `data/reference_audit.csv` has DOI coverage improved from Zotero/local audit and leaves unresolved DOI cases as `NA`.
 - [x] `data/screening_summary.csv` summarizes the current source-specific ledger and final corpus layers.
 - [x] `data/core31_second_coder_blind.csv` can be shared for independent 31-Core strongest-evidence-output coding.
@@ -75,7 +76,7 @@ This checklist prepares the minimal artifact for a future GitHub or Zenodo relea
 - [x] Confirm `local_private_working/`, `.pdf`, and `.sqlite` files are not tracked.
 - [x] Confirm `core_reproducibility_audit.csv` contains no private Zotero paths.
 - [x] Confirm `unknown_not_audited` is not counted as absence of material.
-- [x] Confirm `data/product_ecosystem_snapshot.csv` is an independent boundary layer and not counted in the 212 source records.
+- [x] Confirm `data/product_ecosystem_snapshot.csv` is an independent boundary layer and not counted in the 253 source records.
 - [x] Confirm product-page changes do not automatically alter Core statistics.
 - [x] Confirm product-ecosystem global snapshot date is consistent with `RELEASE_MANIFEST.md` and row-level access dates are retained.
 - [x] Confirm `data/mapping_snapshot_counts.csv` is descriptive only and not a field-level prevalence estimate.

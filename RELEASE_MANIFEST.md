@@ -14,7 +14,7 @@ The release includes non-sensitive materials needed to review the survey evidenc
 
 - compact entry map: `ARTIFACT_INDEX.md`;
 - source-specific search protocol, source-level ledger, record-level screening audit, submission-time arXiv update export, screening audit, 41-record author full-text audit, blank update-search template, completed independent update coding, pre-adjudication agreement report, preserved working draft, author-confirmed adjudication, canonical-integration assessment, corpus metadata, canonical study/version crosswalk, corpus-layer audit, and screening summary;
-- 31-record study-level coding table, `data/extended_synthesis_audit.csv`, extended synthesis audit report, corpus-stratification closure report, deduplication audit report, current evidence-output codebook, legacy A-profile codebook, field dictionary, and legacy-code crosswalk;
+- frozen 31-record coding table, 37-record current-field additions, combined current statistics, `data/extended_synthesis_audit.csv`, extended synthesis audit report, corpus-stratification closure report, deduplication audit report, current evidence-output codebook, legacy A-profile codebook, field dictionary, and legacy-code crosswalk;
 - manuscript-facing synthesis matrix, synthesis statistics, mapping counts, benchmark-boundary notes, research-agenda outputs, and reproducibility audit files;
 - DOI/reference audit, DOI-status notes, Zotero/PDF resolution summary, and literature-update decisions;
 - product-ecosystem snapshot for public coding-agent and security-agent materials;
@@ -37,11 +37,11 @@ The release excludes:
 
 ## Evidence Boundary
 
-Product pages, help pages, official blogs, model pages, project pages, and disclosure policies are recorded as dated public materials. They support ecosystem and boundary discussion only; they are not independently validated by this artifact and do not expand the 31-record study-level coded set.
+Product pages, help pages, official blogs, model pages, project pages, and disclosure policies are recorded as dated public materials. They support ecosystem and boundary discussion only; they are not independently validated by this artifact and remain outside the current 68-record study-level coded set.
 
-The source-specific search ledger records the current manuscript corpus by source bucket, query family, record-level screening decision, and analysis layer. Reference-list size and corpus-record size are separate quantities. The current source-record statistics remain 212 source records. Canonical analytical counts are 207 candidate studies: 31 study-level coded records, 61 extended synthesis studies, 95 background/reference records, and 20 excluded near-neighbor studies.
+The source-specific ledger and submission-time update record the current corpus by source bucket, query family, screening decision, and analysis layer. Reference-list size and corpus-record size are separate quantities. Current counts are 253 source records and 248 canonical studies: 68 study-level coded records (67 target-software studies plus one governance boundary case), 65 extended synthesis studies, 95 background/reference records, and 20 excluded near-neighbor studies.
 
-The product-ecosystem snapshot is an independent boundary layer with 23 rows. It is not counted in the 212 source records or 207 canonical candidate studies. Row-level `access_date`, `manuscript_role`, and `evidence_caveat` fields record source timing and use.
+The product-ecosystem snapshot is an independent boundary layer with 23 rows. It is not counted in the 253 source records or 248 canonical studies. Row-level `access_date`, `manuscript_role`, and `evidence_caveat` fields record source timing and use.
 
 Legacy A/E fields are retained for historical reproducibility and cross-version traceability. The current manuscript presents the synthesis primarily through natural-language workflow, capability, evidence-output, external-audit, and claim-boundary fields.
 
@@ -68,6 +68,10 @@ Legacy A/E fields are retained for historical reproducibility and cross-version 
 - `prepare_submission_update_adjudication.py`
 - `finalize_submission_update_adjudication.py`
 - `prepare_submission_update_canonical_integration.py`
+- `integrate_submission_update_corpus.py`
+- `SUBMISSION_UPDATE_CORPUS_INTEGRATION_REPORT.md`
+- `data/submission_update_20260715_study_level_additions.csv`
+- `data/current_synthesis_statistics.csv`
 - `SUBMISSION_UPDATE_FULL_TEXT_AUDIT_REPORT.md`
 
 Pilot agreement/kappa values in the archive are retained for codebook calibration only and must not be cited as formal intercoder reliability. Formal strongest-evidence-output agreement and capability/traceability extension agreement are reported separately. The update-search report contains pre-adjudication agreement from a completed independent pass. The separate final record documents an author-confirmed evidence-based resolution and does not claim two-human consensus or a post-adjudication agreement statistic.
@@ -76,9 +80,9 @@ Pilot agreement/kappa values in the archive are retained for codebook calibratio
 
 - Decide whether and when to archive on Zenodo.
 - Refresh fast-changing product materials before the next manuscript revision.
-- Integrate the author-confirmed 37/4 update cohort only through a coordinated corpus/manuscript release. Canonical matching found 41 new studies and projects 253 source records, 248 canonical studies, 67 target-software coded studies plus one governance boundary case, and 65 extended-synthesis studies.
+- Refresh fast-changing update and product materials before final submission; the author-confirmed 37/4 update cohort is integrated and current corpus counts are validated.
 - Prepare an anonymized artifact package or anonymized repository link before anonymous peer review.
 
 ## Extended synthesis terminology note
 
-The current manuscript describes the 31-record study-level coded set and the 61-study extended synthesis set. Legacy artifact values retain `Core` and `Supporting` for script compatibility: source records labeled `Core` resolve to the 31 canonical study-level coded records, while the 65 source records labeled `Supporting` resolve to 61 canonical extended synthesis studies after version deduplication.
+The current artifact describes a 68-record study-level coded set and a 65-study extended synthesis set. Legacy `core31`, `Core`, `Supporting`, and `v13_` names remain for historical traceability and script compatibility; the 37 update studies are stored in a separate current-field additions table and are included in current aggregate views.

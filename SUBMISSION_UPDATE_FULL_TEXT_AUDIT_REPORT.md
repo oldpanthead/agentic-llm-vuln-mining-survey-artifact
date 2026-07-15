@@ -1,5 +1,7 @@
 # Submission-Update Full-Text Audit (2026-07-15)
 
+> **Status note.** This report preserves the pre-adjudication full-text audit. The accepted resolution and current corpus integration are documented separately.
+
 ## Scope
 
 The submission-time arXiv sensitivity search identified 41 records that required full-text review after title/abstract screening. The author reviewed the public full text and metadata for all 41 records and applied the manuscript's operational inclusion rules. The detailed, study-specific decisions are in `data/submission_update_20260715_full_coding_audit.csv`.

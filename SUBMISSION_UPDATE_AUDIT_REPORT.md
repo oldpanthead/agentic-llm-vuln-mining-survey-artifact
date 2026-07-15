@@ -1,5 +1,7 @@
 # Submission-Time Literature Update Audit (2026-07-15)
 
+> **Status note.** This report preserves the update-search state before final author confirmation and corpus integration. The current 37/4 resolution and integrated counts are recorded in `reports/SUBMISSION_UPDATE_ADJUDICATION_REPORT.md` and `SUBMISSION_UPDATE_CORPUS_INTEGRATION_REPORT.md`.
+
 ## Purpose
 
 This audit is a reproducible sensitivity and currency check conducted after the reconciled 212-source-record corpus had been frozen. It does not silently change the existing study-level coding or second-coder decisions.

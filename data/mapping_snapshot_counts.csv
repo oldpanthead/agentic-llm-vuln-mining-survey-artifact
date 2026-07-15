@@ -1,20 +1,20 @@
 view,category,count,denominator,scope_note
-year_distribution,2023,12,212 source records in screening ledger,describes source-record corpus only; not canonical study prevalence
-year_distribution,2024,45,212 source records in screening ledger,describes source-record corpus only; not canonical study prevalence
-year_distribution,2025,118,212 source records in screening ledger,describes source-record corpus only; not canonical study prevalence
-year_distribution,2026,37,212 source records in screening ledger,describes source-record corpus only; not canonical study prevalence
-source_type_distribution,conference paper,81,212 source records in screening ledger,describes source-record corpus only; not canonical study prevalence
-source_type_distribution,preprint/arXiv,63,212 source records in screening ledger,describes source-record corpus only; not canonical study prevalence
-source_type_distribution,journal article,59,212 source records in screening ledger,describes source-record corpus only; not canonical study prevalence
-source_type_distribution,book/thesis/other,9,212 source records in screening ledger,describes source-record corpus only; not canonical study prevalence
+year_distribution,2023,12,253 source records in screening ledger,describes source-record corpus only; not canonical study prevalence
+year_distribution,2024,45,253 source records in screening ledger,describes source-record corpus only; not canonical study prevalence
+year_distribution,2025,118,253 source records in screening ledger,describes source-record corpus only; not canonical study prevalence
+year_distribution,2026,78,253 source records in screening ledger,describes source-record corpus only; not canonical study prevalence
+source_type_distribution,conference paper,81,253 source records in screening ledger,describes source-record corpus only; not canonical study prevalence
+source_type_distribution,preprint/arXiv,104,253 source records in screening ledger,describes source-record corpus only; not canonical study prevalence
+source_type_distribution,journal article,59,253 source records in screening ledger,describes source-record corpus only; not canonical study prevalence
+source_type_distribution,book/thesis/other,9,253 source records in screening ledger,describes source-record corpus only; not canonical study prevalence
 source_type_distribution,product/system boundary snapshot,23,independent product_ecosystem_snapshot layer,separate boundary layer; not included in source-record or canonical-study counts
-task_facet_distribution,candidate/tool-enhanced analysis,4,30 target-software study-level coded studies,overlapping facets; describes study-level coded set only; not field-level prevalence
-task_facet_distribution,fuzzing/input exploration,10,30 target-software study-level coded studies,overlapping facets; describes study-level coded set only; not field-level prevalence
-task_facet_distribution,PoC/PoV or validation,9,30 target-software study-level coded studies,overlapping facets; describes study-level coded set only; not field-level prevalence
-task_facet_distribution,automated pentest/CRS/long workflow,10,30 target-software study-level coded studies,overlapping facets; describes study-level coded set only; not field-level prevalence
-task_facet_distribution,governance boundary,1,31-record study-level coded set,overlapping facets; describes study-level coded set only; not field-level prevalence
-final_canonical_stratification,target-software study-level coded studies,30,207 canonical candidate studies,describes canonical analysis-use allocation after version deduplication; product snapshot excluded
-final_canonical_stratification,governance boundary coded record,1,207 canonical candidate studies,describes canonical analysis-use allocation after version deduplication; product snapshot excluded
-final_canonical_stratification,extended synthesis studies,61,207 canonical candidate studies,describes canonical analysis-use allocation after version deduplication; product snapshot excluded
-final_canonical_stratification,background/reference records,95,207 canonical candidate studies,describes canonical analysis-use allocation after version deduplication; product snapshot excluded
-final_canonical_stratification,excluded near-neighbor studies,20,207 canonical candidate studies,describes canonical analysis-use allocation after version deduplication; product snapshot excluded
+task_facet_distribution,candidate/tool-enhanced analysis,16,67 target-software study-level coded studies,overlapping facets; describes study-level coded set only; not field-level prevalence
+task_facet_distribution,fuzzing/input exploration,18,67 target-software study-level coded studies,overlapping facets; describes study-level coded set only; not field-level prevalence
+task_facet_distribution,PoC/PoV or validation,21,67 target-software study-level coded studies,overlapping facets; describes study-level coded set only; not field-level prevalence
+task_facet_distribution,automated pentest/CRS/long workflow,15,67 target-software study-level coded studies,overlapping facets; describes study-level coded set only; not field-level prevalence
+task_facet_distribution,governance boundary,1,68-record study-level coded set,overlapping facets; describes study-level coded set only; not field-level prevalence
+final_canonical_stratification,target-software study-level coded studies,67,248 canonical candidate studies,describes canonical analysis-use allocation after version deduplication; product snapshot excluded
+final_canonical_stratification,governance boundary coded record,1,248 canonical candidate studies,describes canonical analysis-use allocation after version deduplication; product snapshot excluded
+final_canonical_stratification,extended synthesis studies,65,248 canonical candidate studies,describes canonical analysis-use allocation after version deduplication; product snapshot excluded
+final_canonical_stratification,background/reference records,95,248 canonical candidate studies,describes canonical analysis-use allocation after version deduplication; product snapshot excluded
+final_canonical_stratification,excluded near-neighbor studies,20,248 canonical candidate studies,describes canonical analysis-use allocation after version deduplication; product snapshot excluded

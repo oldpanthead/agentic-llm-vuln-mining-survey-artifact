@@ -80,7 +80,7 @@ The assistant prepared an evidence-based field resolution from the frozen author
 - Strongest-evidence distribution: {dict(sorted(evidence.items()))}
 - External-traceability distribution: {dict(sorted(traceability.items()))}
 
-These are adjudicated labels for the 41-record update set. They do not replace or alter the previously reported pre-adjudication agreement statistics. Canonical matching against the existing corpus is reported separately; coordinated corpus and manuscript integration remains required before any denominator is changed.
+These are adjudicated labels for the 41-record update set. They do not replace or alter the previously reported pre-adjudication agreement statistics. Canonical matching and corpus integration are recorded in `data/submission_update_20260715_canonical_integration_crosswalk.csv` and `SUBMISSION_UPDATE_CORPUS_INTEGRATION_REPORT.md`; current descriptive denominators use the integrated author-confirmed labels.
 
 ## Preservation Boundary
 

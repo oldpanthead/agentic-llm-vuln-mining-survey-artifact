@@ -1005,12 +1005,12 @@ def validate_source_search_audit(corpus, source_log, source_audit):
 
     corpus_ids = {row.get('record_id', '') for row in corpus}
     audit_ids = [row.get('record_id', '') for row in source_audit]
-    status('ERROR', len(source_audit) == 212, f'source_screening_audit rows = {len(source_audit)}; expected 212')
+    status('ERROR', len(source_audit) == 253, f'source_screening_audit rows = {len(source_audit)}; expected 253')
     status('ERROR', set(audit_ids) == corpus_ids, 'source_screening_audit covers exactly the corpus record_ids')
     status('ERROR', len(audit_ids) == len(set(audit_ids)), 'source_screening_audit record_id values are unique')
 
     audit_layer_counts = Counter(row.get('corpus_layer', 'NA') for row in source_audit)
-    expected_layers = {'Core': 31, 'Supporting': 65, 'Background': 95, 'Excluded': 21}
+    expected_layers = {'Core': 68, 'Supporting': 69, 'Background': 95, 'Excluded': 21}
     for layer, expected in expected_layers.items():
         status('ERROR', audit_layer_counts.get(layer, 0) == expected, f'source_screening_audit {layer} = {audit_layer_counts.get(layer, 0)}; expected {expected}')
 
@@ -1029,11 +1029,11 @@ def validate_source_search_audit(corpus, source_log, source_audit):
         'background': sum(to_int(row, 'background_records') for row in source_log),
         'excluded': sum(to_int(row, 'excluded_records') for row in source_log),
     }
-    status('ERROR', totals['captured'] == 212, f'source_search_log source records = {totals["captured"]}; expected 212')
+    status('ERROR', totals['captured'] == 253, f'source_search_log source records = {totals["captured"]}; expected 253')
     status('ERROR', totals['variants_removed'] == 5, f'source_search_log source variants removed from canonical counts = {totals["variants_removed"]}; expected 5')
-    status('ERROR', totals['unique'] == 207, f'source_search_log canonical candidate studies = {totals["unique"]}; expected 207')
-    status('ERROR', totals['core'] == 31, f'source_search_log study-level coded records = {totals["core"]}; expected 31')
-    status('ERROR', totals['supporting'] == 61, f'source_search_log extended synthesis studies = {totals["supporting"]}; expected 61')
+    status('ERROR', totals['unique'] == 248, f'source_search_log canonical candidate studies = {totals["unique"]}; expected 248')
+    status('ERROR', totals['core'] == 68, f'source_search_log study-level coded records = {totals["core"]}; expected 68')
+    status('ERROR', totals['supporting'] == 65, f'source_search_log extended synthesis studies = {totals["supporting"]}; expected 65')
     status('ERROR', totals['background'] == 95, f'source_search_log Background records = {totals["background"]}; expected 95')
     status('ERROR', totals['excluded'] == 20, f'source_search_log canonical Excluded records = {totals["excluded"]}; expected 20')
 
@@ -1067,8 +1067,8 @@ def validate_study_version_crosswalk(corpus, ref, crosswalk, mapping_rows):
         return
     corpus_ids = {row.get('record_id', '') for row in corpus}
     cross_ids = {row.get('record_id', '') for row in crosswalk}
-    status('ERROR', cross_ids == corpus_ids, 'study_version_crosswalk covers exactly the 212 source records')
-    status('ERROR', len(crosswalk) == 212, f'study_version_crosswalk rows = {len(crosswalk)}; expected 212')
+    status('ERROR', cross_ids == corpus_ids, 'study_version_crosswalk covers exactly the 253 source records')
+    status('ERROR', len(crosswalk) == 253, f'study_version_crosswalk rows = {len(crosswalk)}; expected 253')
 
     allowed_status = {'canonical_counted', 'alternate_version_not_counted', 'exact_duplicate_removed', 'source_variant_not_counted', 'needs_manual_review'}
     allowed_layers = {'study_level_coded', 'extended_synthesis', 'background_reference', 'excluded_near_neighbor', 'alternate_version', 'needs_manual_review'}
@@ -1086,11 +1086,11 @@ def validate_study_version_crosswalk(corpus, ref, crosswalk, mapping_rows):
         print('ERROR: invalid crosswalk values:', invalid[:10])
 
     counted = [row for row in crosswalk if row.get('counting_status') == 'canonical_counted']
-    status('ERROR', len(counted) == 207, f'canonical counted studies = {len(counted)}; expected 207')
+    status('ERROR', len(counted) == 248, f'canonical counted studies = {len(counted)}; expected 248')
     layer_counts = Counter(row.get('analytical_layer') for row in counted)
     expected_layers = {
-        'study_level_coded': 31,
-        'extended_synthesis': 61,
+        'study_level_coded': 68,
+        'extended_synthesis': 65,
         'background_reference': 95,
         'excluded_near_neighbor': 20,
     }
@@ -1146,7 +1146,7 @@ def validate_study_version_crosswalk(corpus, ref, crosswalk, mapping_rows):
 
     final_rows = [row for row in mapping_rows if row.get('view') == 'final_canonical_stratification']
     final_total = sum(int(row.get('count', '0')) for row in final_rows)
-    status('ERROR', final_total == 207, f'mapping final canonical stratification total = {final_total}; expected 207')
+    status('ERROR', final_total == 248, f'mapping final canonical stratification total = {final_total}; expected 248')
     print('CANONICAL_STUDY_COUNTS: ' + str(dict(sorted(layer_counts.items()))))
 
 def validate_extended_synthesis_audit(corpus, extended, crosswalk):
@@ -1157,7 +1157,7 @@ def validate_extended_synthesis_audit(corpus, extended, crosswalk):
     study_level_canonical_ids = {row.get('canonical_study_id', '') for row in crosswalk if row.get('counting_status') == 'canonical_counted' and row.get('analytical_layer') == 'study_level_coded'}
     cross_by_record = {row.get('record_id'): row for row in crosswalk}
     extended_ids = {row.get('record_id', '') for row in extended}
-    status('ERROR', len(extended) == 61, f'extended_synthesis_audit rows = {len(extended)}; expected 61')
+    status('ERROR', len(extended) == 65, f'extended_synthesis_audit rows = {len(extended)}; expected 65')
     status('ERROR', extended_ids == counted_extended_ids, 'extended synthesis audit covers exactly canonical counted extended synthesis studies')
     overlap = [rid for rid in extended_ids if cross_by_record.get(rid, {}).get('canonical_study_id') in study_level_canonical_ids]
     status('ERROR', not overlap, 'extended_synthesis_audit contains no study-level coded study alternate versions')
@@ -1234,7 +1234,7 @@ def validate_extended_synthesis_audit(corpus, extended, crosswalk):
     role_counts = Counter(row.get('primary_synthesis_role', 'NA') for row in extended)
     rq_counts = Counter(row.get('rq_contribution', 'NA') for row in extended)
     material_counts = Counter(row.get('material_type', 'NA') for row in extended)
-    print('EXTENDED_SYNTHESIS_AUDIT: rows=61 roles=' + str(dict(sorted(role_counts.items()))))
+    print(f'EXTENDED_SYNTHESIS_AUDIT: rows={len(extended)} roles=' + str(dict(sorted(role_counts.items()))))
     print('EXTENDED_SYNTHESIS_RQ_USE: ' + str(dict(sorted(rq_counts.items()))))
     print('EXTENDED_SYNTHESIS_MATERIAL_TYPES: ' + str(dict(sorted(material_counts.items()))))
     print(f'EXTENDED_SYNTHESIS_UNIQUE_CONTRIBUTION_RATIO: {unique_ratio:.3f}')
@@ -1268,7 +1268,7 @@ def validate_submission_update_screening(rows):
     }
     status('ERROR', counts == Counter(expected), 'submission update screening counts match the frozen audit')
     print('SUBMISSION_UPDATE_SCREENING: ' + str(dict(sorted(counts.items()))))
-    print('SUBMISSION_UPDATE_METHOD_NOTE: the 41 potentially eligible records have author and independent coding plus an author-confirmed resolution; coordinated corpus/manuscript integration remains required before any denominator change.')
+    print('SUBMISSION_UPDATE_METHOD_NOTE: the 41 potentially eligible records have author and independent coding plus an author-confirmed resolution; corpus integration is complete, and manuscript alignment is validated separately.')
 def validate_submission_update_full_audit(screening_rows, audit_rows, blind_rows):
     potential_ids = {
         row.get('arxiv_id', '')
@@ -1512,7 +1512,65 @@ def validate_submission_update_finalization(adjudication_rows, final_rows, integ
         report_text = integration_report.read_text(encoding='utf-8')
         required = ['Source records | 212 | 253', 'Canonical candidate studies | 207 | 248', '67 target-software studies plus the existing governance boundary case']
         status('ERROR', all(item in report_text for item in required), 'canonical-integration report records projected counts without changing the frozen corpus')
-    print('SUBMISSION_UPDATE_FINALIZATION: author-confirmed 37/4 resolution; 41 new canonical studies; frozen corpus and manuscript denominators remain unchanged pending a coordinated integration release.')
+    print('SUBMISSION_UPDATE_FINALIZATION: author-confirmed 37/4 resolution and pre-integration assessment preserved; current corpus integration is validated separately.')
+
+
+def validate_integrated_submission_update(corpus, crosswalk, extended, final_rows, additions, current_stats):
+    status('ERROR', len(corpus) == 253, f'integrated corpus source rows = {len(corpus)}; expected 253')
+    status('ERROR', len(crosswalk) == 253, f'integrated canonical crosswalk rows = {len(crosswalk)}; expected 253')
+    status('ERROR', len(additions) == 37, f'current-field update study-level additions = {len(additions)}; expected 37')
+    status('ERROR', len(extended) == 65, f'integrated extended-synthesis rows = {len(extended)}; expected 65')
+    if not final_rows or not additions:
+        return
+
+    final_study_ids = {row.get('update_id', '') for row in final_rows if row.get('proposed_analysis_layer') == 'study_level_candidate'}
+    addition_ids = {row.get('update_id', '') for row in additions}
+    status('ERROR', addition_ids == final_study_ids, 'study-level additions match the 37 author-confirmed update records')
+    status('ERROR', not any(field.startswith('a_level') or field.startswith('e_level') for field in additions[0]), 'update additions do not impute legacy A/E fields')
+    status('ERROR', all(row.get('coding_status') == 'author_confirmed_adjudicated' for row in additions), 'update additions retain author-confirmed coding status')
+
+    update_record_ids = {f'CP{i:03d}' for i in range(213, 254)}
+    corpus_ids = {row.get('record_id', '') for row in corpus}
+    cross_by_id = {row.get('record_id', ''): row for row in crosswalk}
+    status('ERROR', update_record_ids <= corpus_ids, 'integrated corpus contains CP213-CP253')
+    status('ERROR', update_record_ids <= set(cross_by_id), 'canonical crosswalk contains CP213-CP253')
+    update_layers = Counter(cross_by_id[rid].get('analytical_layer', '') for rid in update_record_ids)
+    status('ERROR', update_layers == Counter({'study_level_coded': 37, 'extended_synthesis': 4}), 'integrated update canonical layers reproduce the confirmed 37/4 resolution')
+    status('ERROR', all(cross_by_id[rid].get('counting_status') == 'canonical_counted' for rid in update_record_ids), 'all integrated update records count once as canonical studies')
+
+    expected = {
+        ('lifecycle_coverage', 'candidate analysis'): 41,
+        ('lifecycle_coverage', 'path and input exploration'): 46,
+        ('lifecycle_coverage', 'execution observation'): 50,
+        ('lifecycle_coverage', 'reproduction and validation'): 36,
+        ('lifecycle_coverage', 'patch validation'): 12,
+        ('lifecycle_coverage', 'reporting and audit'): 23,
+        ('agentic_capabilities', 'context aggregation / rule extraction'): 34,
+        ('agentic_capabilities', 'tool routing / strategy routing'): 30,
+        ('agentic_capabilities', 'feedback interpretation / loop adjustment'): 50,
+        ('agentic_capabilities', 'validation organization / evidence packaging'): 50,
+        ('agentic_capabilities', 'long-horizon state management'): 29,
+        ('agentic_capabilities', 'failure reuse / strategy update'): 15,
+        ('agentic_capabilities', 'governance / human gates / disclosure control'): 4,
+        ('strongest_evidence_output', 'candidate judgment'): 6,
+        ('strongest_evidence_output', 'controlled task completion'): 13,
+        ('strongest_evidence_output', 'runtime safety signal'): 13,
+        ('strongest_evidence_output', 'reproducible validation'): 31,
+        ('strongest_evidence_output', 'externally traceable material'): 4,
+        ('strongest_evidence_output', 'governance boundary case'): 1,
+    }
+    actual = {(row.get('dimension', ''), row.get('category', '')): int(row.get('count', '-1')) for row in current_stats}
+    status('ERROR', actual == expected, 'current synthesis statistics reproduce the integrated lifecycle, capability, and evidence-output counts')
+
+    report = ROOT / 'SUBMISSION_UPDATE_CORPUS_INTEGRATION_REPORT.md'
+    integrator = ROOT / 'integrate_submission_update_corpus.py'
+    status('ERROR', report.exists(), 'submission update corpus integration report exists')
+    status('ERROR', integrator.exists(), 'submission update corpus integration script exists')
+    if report.exists():
+        report_text = report.read_text(encoding='utf-8')
+        required = ['Source records: 253', 'Canonical candidate studies: 248', 'Target-software study-level coded studies: 67', 'Extended-synthesis studies: 65', "No combined Cohen's kappa is inferred"]
+        status('ERROR', all(item in report_text for item in required), 'corpus integration report records current counts and the two-round reliability boundary')
+    print('SUBMISSION_UPDATE_CORPUS_INTEGRATION: source=253 canonical=248 target_studies=67 governance=1 extended=65 background=95 excluded=20')
 
 
 def validate_tracked_file_boundary():
@@ -1581,6 +1639,8 @@ submission_update_results = read_csv('submission_update_20260715_second_coder_re
 submission_update_adjudication = read_csv('submission_update_20260715_adjudication_working_draft.csv')
 submission_update_adjudicated = read_csv('submission_update_20260715_adjudicated.csv')
 submission_update_integration = read_csv('submission_update_20260715_canonical_integration_crosswalk.csv')
+submission_update_additions = read_csv('submission_update_20260715_study_level_additions.csv')
+current_synthesis_statistics = read_csv('current_synthesis_statistics.csv')
 
 validate_product_ecosystem_snapshot(product_snapshot)
 validate_second_coder_files(second_coder_blind, second_coder_adjudication, second_coder_formal, second_coder_formal_results)
@@ -1592,11 +1652,12 @@ validate_submission_update_screening(submission_update_screening)
 validate_submission_update_full_audit(submission_update_screening, submission_update_full_audit, submission_update_blind)
 validate_submission_update_second_coder(submission_update_full_audit, submission_update_blind, submission_update_results, submission_update_adjudication)
 validate_submission_update_finalization(submission_update_adjudication, submission_update_adjudicated, submission_update_integration)
+validate_integrated_submission_update(corpus, study_version_crosswalk, extended_synthesis, submission_update_adjudicated, submission_update_additions, current_synthesis_statistics)
 validate_tracked_file_boundary()
 
-expected_layers = {'Core': 31, 'Supporting': 65, 'Background': 95, 'Excluded': 21}
+expected_layers = {'Core': 68, 'Supporting': 69, 'Background': 95, 'Excluded': 21}
 if corpus:
-    status('ERROR', len(corpus) == 212, f'source records = {len(corpus)}; expected 212')
+    status('ERROR', len(corpus) == 253, f'source records = {len(corpus)}; expected 253')
     layer_counts = Counter(r.get('corpus_layer', 'NA') for r in corpus)
     for layer, expected in expected_layers.items():
         status('ERROR', layer_counts.get(layer, 0) == expected, f'{layer} = {layer_counts.get(layer, 0)}; expected {expected}')
