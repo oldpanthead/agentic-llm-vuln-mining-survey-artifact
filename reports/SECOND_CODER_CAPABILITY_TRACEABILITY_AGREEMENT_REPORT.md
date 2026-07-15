@@ -10,7 +10,7 @@ This report covers the rerun formal pre-adjudication second-coder check for two 
 - Review materials: Zotero library records and available indexed/full-text attachments, supplemented by non-sensitive public artifact notes where Zotero full text was unavailable
 - Adjudication status: no adjudicated labels are claimed in this report
 
-Because Agent-increment / cross-stage capability can be multi-label, this report does not use single-label Cohen's kappa for that field. Agreement is reported with row-level exact match, mean row Jaccard, micro precision/recall/F1 over label assignments, and per-label agreement/Jaccard. The external-traceability field is reported with the same set-style metrics for consistency.
+Because cross-stage capability can be multi-label, this report does not use single-label Cohen's kappa for that field. Agreement is reported with row-level exact match, mean row Jaccard, micro precision/recall/F1 over label assignments, and per-label agreement/Jaccard. The external-traceability field is reported with the same set-style metrics for consistency.
 
 ## Agent-Increment / Cross-Stage Capability
 

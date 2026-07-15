@@ -1,11 +1,11 @@
 # Data Dictionary
 
-This dictionary describes the non-sensitive audit artifact used by the survey manuscript. It is intended to help reviewers inspect corpus construction, legacy A/E traceability fields, current evidence-output labels, bibliographic verification, pilot second-coder calibration materials, formal second-coder templates/results, agreement reports, and pending adjudication materials. Files with `v13_` prefixes are retained filenames from the prior restructuring stage but are used by the current manuscript synthesis unless superseded.
+This dictionary describes the non-sensitive audit artifact used by the survey manuscript. It is intended to help reviewers inspect corpus construction, legacy A/E traceability fields, current evidence-output labels, bibliographic verification, pilot second-coder calibration materials, formal second-coder templates/results, agreement reports, and submission-update adjudication materials. Files with `v13_` prefixes are retained filenames from the prior restructuring stage but are used by the current manuscript synthesis unless superseded.
 
 
 ## Current Manuscript Layer Terminology
 
-Current manuscript terminology maps legacy artifact layer values as follows: `Core` means the 31-record study-level coded set (30 target-software studies plus one governance boundary case), and `Supporting` means the legacy source-record layer from which the 62-study canonical extended synthesis set is derived. These legacy CSV values are retained for reproduction-script compatibility. The layer distinction records analytical depth and role rather than study importance or quality.
+Current manuscript terminology maps legacy artifact layer values as follows: `Core` means the 31-record study-level coded set (30 target-software studies plus one governance boundary case), and `Supporting` means the legacy source-record layer from which the 61-study canonical extended synthesis set is derived. These legacy CSV values are retained for reproduction-script compatibility. The layer distinction records analytical depth and role rather than study importance or quality.
 
 ## Common Identifiers
 
@@ -59,6 +59,81 @@ This file records one source assignment and screening decision for each of the 2
 - `deduplication_status`: deduplication status; `record_id` is the public candidate key.
 - `source_trace_note`: explanation of source assignment and deduplication policy.
 
+## `data/submission_update_20260715_screening_audit.csv`
+
+This file records the submission-time arXiv sensitivity-search decisions without changing the frozen coded denominators.
+
+- `arxiv_id`, `title`, `published`, `official_url`, `query_ids`: normalized public arXiv metadata.
+- `existing_record_id`: matching corpus record, or `NA`.
+- `screening_status`: existing match, outside date window, potentially eligible update record, contextual/background update, or title/abstract exclusion.
+- `screening_level`: identity, date, title/abstract, abstract-plus-metadata, or full-text review.
+- `decision_reason`: record-level rationale.
+- `analytical_implication`: whether the record changes the current analysis. Author and independent coding, author-confirmed adjudication, and canonical matching are complete; coordinated corpus/manuscript integration remains pending.
+
+## `data/submission_update_20260715_full_coding_audit.csv`
+
+This file records the frozen author full-text audit of the 41 potentially eligible update-search records. It preserves the pre-review baseline used for agreement calculation.
+
+- `arxiv_id`, `title`, `official_url`, `published`: public study identity and date.
+- `review_material`, `full_text_status`: material and review level used for the author decision.
+- `author_analysis_layer`: provisional study-level candidate pending independent review, or extended synthesis.
+- `inclusion_rule_applied`: operational rule used to distinguish an observable Agentic workflow from adjacent static-analysis, management, or ecosystem material.
+- `target_domain`, `lifecycle_coverage`, `primary_system_shape`: descriptive mapping fields.
+- `agentic_capabilities`: multi-label capability coding using the current manuscript definitions.
+- `strongest_evidence_output`: current evidence-output codebook label.
+- `external_traceability`: external-audit-material profile.
+- `claim_boundary`, `author_decision_reason`, `uncertainty_note`: study-specific rationale and interpretation boundary.
+- `formal_second_coder_status`: frozen pre-review status retained to document that this author file preceded the independent pass; current completion status is recorded in the results and agreement report.
+
+## `data/submission_update_20260715_second_coder_blind_template.csv`
+
+This file is the blank independent-review input for the 41 update records. It contains public identity fields and review instructions, but no `author_*`, original-label, agreement, or adjudication fields. All `coder2_*` fields remain blank so the workflow can be rerun.
+
+- `update_id`, `arxiv_id`, `title`, `publication_status`: public record identity.
+- `materials_to_review`: independent-review instruction and public material locator.
+- `coder2_analysis_layer_decision`, `coder2_inclusion_reason`: independent screening decision and rationale.
+- `coder2_lifecycle_coverage`, `coder2_primary_system_shape`: descriptive workflow coding.
+- `coder2_cross_stage_capability_label`: independent multi-label capability coding.
+- `coder2_strongest_evidence_output`: independent evidence-output label.
+- `coder2_external_traceability_label`: independent external-traceability profile.
+- `coder2_claim_boundary`, `coder2_uncertainty_note`: independent boundary rationale and uncertainty.
+
+## `data/submission_update_20260715_second_coder_results.csv`
+
+This file contains the completed independent 41-record update-search pass. Its schema matches the blind template, contains no `author_*` or `original_*` fields, and preserves coder2 labels, reasons, claim boundaries, and uncertainty notes.
+
+## `reports/SUBMISSION_UPDATE_SECOND_CODER_PRE_ADJUDICATION_REPORT.md`
+
+This report compares the frozen author audit with the completed independent pass. It reports single-label raw agreement and Cohen's kappa, plus row-level exact agreement, mean row Jaccard, micro F1, and per-label agreement for the multi-label fields. It reports no post-adjudication statistic.
+
+## `data/submission_update_20260715_adjudication_working_draft.csv`
+
+This file retains author, coder2, and proposed values side by side for analytical layer, lifecycle coverage, primary system shape, agentic capabilities, strongest evidence output, external traceability, and claim boundary. `field_resolution_trace` records whether the proposal retains one input or applies an operational-rule harmonization. Every row is marked `assistant_proposed_pending_author_confirmation`; the file is not a completed human consensus record.
+
+## `SUBMISSION_UPDATE_ADJUDICATION_SUMMARY.md` and `prepare_submission_update_adjudication.py`
+
+The summary records the resolution rules and proposed 37/4 analytical-layer outcome. The script reproduces the working draft and pre-adjudication report from the frozen author and coder2 inputs. Neither file changes the canonical corpus or manuscript denominator.
+
+## `data/submission_update_20260715_adjudicated.csv`
+
+This file preserves the author and coder2 inputs while recording the author-confirmed evidence-based resolution for all 41 update records. `adjudication_status` is `author_confirmed_evidence_based_resolution`. The finalization does not claim a discussion between two human coders, a third-coder decision, or a post-adjudication agreement statistic.
+
+## `reports/SUBMISSION_UPDATE_ADJUDICATION_REPORT.md` and `finalize_submission_update_adjudication.py`
+
+The report states the confirmation scope, 37/4 analytical-layer outcome, preservation boundary, and consensus limitation. The script deterministically promotes the reviewed working draft while leaving the author audit, coder2 result, and pre-adjudication report unchanged.
+
+## `data/submission_update_20260715_canonical_integration_crosswalk.csv`
+
+- `update_id`, `arxiv_id`, `title`, `authors`, `official_url`, `doi`: public update-study identity.
+- `adjudicated_analytical_layer`: confirmed study-level or extended-synthesis assignment.
+- `matched_existing_record_id`, `match_basis`, `best_existing_title`: canonical identity evidence against the frozen corpus.
+- `proposed_canonical_study_id`, `integration_status`, `counted_after_integration`: projected integration decision.
+- `integration_note`: reminder that this assessment does not itself rewrite the frozen corpus.
+
+## `SUBMISSION_UPDATE_CANONICAL_INTEGRATION_REPORT.md` and `prepare_submission_update_canonical_integration.py`
+
+The report records the exact-identifier/title comparison and projected corpus impact. All 41 update records are new canonical studies under the current matching rules, yielding projected totals of 253 source records and 248 canonical studies. These projections remain separate from the frozen manuscript counts until the coding matrices, distributions, and text are updated together.
+
 ## `data/core_coding.csv`
 
 - `core_id`: Core-study coding identifier.
@@ -99,7 +174,7 @@ This file links the 212 source records to 207 canonical candidate studies. It pr
 
 ## `data/extended_synthesis_audit.csv`
 
-This file provides a lightweight, record-level synthesis-use audit for the 62-study canonical extended synthesis set. It does not apply the full study-level workflow--capability--evidence coding used for the 31-record coded set.
+This file provides a lightweight, record-level synthesis-use audit for the 61-study canonical extended synthesis set. It does not apply the full study-level workflow--capability--evidence coding used for the 31-record coded set.
 
 - `record_id`: stable identifier linked to `data/corpus.csv`.
 - `citation_key`: bibliography key extracted from the public reference audit when available; `NA` means no key was recorded in the source note.
@@ -248,7 +323,7 @@ This file is for comparison and adjudication after independent coding is complet
 - `last_verified_date`: date of the latest local audit update for this row.
 - `note`: provenance, risk flags, and manual-check notes.
 
-Manuscript citation count is not a corpus statistic. The 2026-06-19 reference-list expansion cited additional rows that were already present in `corpus.csv` and `reference_audit.csv`; those citations remain extended synthesis or background/reference material and do not alter the 212 source records, 207 canonical candidate studies, 31 study-level coded records, 62 extended synthesis studies, 95 Background references, or 19 Excluded near-neighbor studies.
+Manuscript citation count is not a corpus statistic. The 2026-06-19 reference-list expansion cited additional rows that were already present in `corpus.csv` and `reference_audit.csv`; those citations remain extended synthesis or background/reference material and do not alter the 212 source records, 207 canonical candidate studies, 31 study-level coded records, 61 extended synthesis studies, 95 Background references, or 20 Excluded near-neighbor studies.
 
 
 ## `data/mapping_snapshot_counts.csv`
@@ -258,7 +333,7 @@ This file records descriptive mapping views used by the current manuscript. The 
 - `view`: mapping view, such as `year_distribution`, `source_type_distribution`, or `task_facet_distribution`.
 - `category`: category displayed in the manuscript mapping view.
 - `count`: count for the category.
-- `denominator`: counting scope, such as 212 source records, the independent product snapshot layer, the 31-record study-level coded set, or the 62-study extended synthesis set.
+- `denominator`: counting scope, such as 212 source records, the independent product snapshot layer, the 31-record study-level coded set, or the 61-study extended synthesis set.
 - `scope_note`: boundary note explaining that the count is descriptive rather than a prevalence estimate.
 
 ## `data/product_ecosystem_snapshot.csv`
@@ -328,12 +403,4 @@ Do not infer a missing value from surrounding rows without recording the source 
 ## data/core_reproducibility_audit.csv
 
 Per-Core public-material audit linked by `core_id`. Private Zotero paths are excluded. Status fields distinguish public artifact visibility, target version, environment, replay/PoC/PoV material, structured trace, author-reported external traces, publicly traceable external material, and claim-level alignment.
-
-
-
-
-
-
-
-
 

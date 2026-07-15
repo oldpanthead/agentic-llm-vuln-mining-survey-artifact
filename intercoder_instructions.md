@@ -55,6 +55,12 @@ The sample may include:
 
 The optional task can inspect corpus layer, legacy A-profile, evidence object, and external-evidence profile. It should not be used to claim full-corpus agreement.
 
+## Submission-Update Independent Review
+
+The 2026-07-15 sensitivity search has a separate 41-row blind template: `data/submission_update_20260715_second_coder_blind_template.csv`. Use it to independently decide the analytical layer before coding lifecycle coverage, primary system shape, cross-stage capabilities, strongest evidence output, external traceability, and claim boundary. Do not inspect `data/submission_update_20260715_full_coding_audit.csv` before completing the pass because that file contains the author decisions.
+
+The blank update template remains available for reruns. The completed independent decisions are in `data/submission_update_20260715_second_coder_results.csv`, and their pre-adjudication agreement is reported in `reports/SUBMISSION_UPDATE_SECOND_CODER_PRE_ADJUDICATION_REPORT.md`. The existing 31-record agreement results do not apply to these update-search records. The assistant-prepared working draft preserves both inputs; the author-confirmed resolution is stored separately in `data/submission_update_20260715_adjudicated.csv`. This finalization records author acceptance of an evidence-based resolution and is not described as two-human consensus or third-coder adjudication.
+
 ## Adjudication Workflow
 
 After independent coding is complete:
@@ -63,7 +69,7 @@ After independent coding is complete:
 2. Compare coder2 decisions with `original_strongest_evidence_output`; legacy E-level fields are retained only for historical traceability or fallback.
 3. Mark disagreements in the disagreement fields.
 4. Discuss disagreements with reference to `evidence_output_codebook.md`, `codebook.md`, and the public materials.
-5. Record final adjudicated decisions only after review.
+5. Record final adjudicated decisions only after author review; an assistant-prepared working draft is a proposal, not human consensus.
 6. Preserve the original coder2 decision, reason, uncertainty note, disagreement note, and adjudicated result.
 
 ## Agreement Calculation

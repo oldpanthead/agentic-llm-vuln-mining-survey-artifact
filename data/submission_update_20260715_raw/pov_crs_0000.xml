@@ -1,0 +1,1522 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/5wsPf9dYQ2KBeRrXUIy3uerAxAc</id>
+  <title>arXiv Query: search_query=submittedDate:"202601010000 TO 202607152359" AND (all:"proof of vulnerability" OR all:PoV OR all:"cyber reasoning system" OR all:CRS) AND (all:LLM OR all:agent)&amp;id_list=&amp;start=0&amp;max_results=100</title>
+  <updated>2026-07-15T10:29:18Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=submittedDate:%22202601010000+TO+202607152359%22+AND+((all:%22proof+of+vulnerability%22+OR+(all:PoV+OR+(all:%22cyber+reasoning+system%22+OR+all:CRS)))+AND+(all:LLM+OR+all:agent))&amp;start=0&amp;max_results=100&amp;id_list=" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>100</opensearch:itemsPerPage>
+  <opensearch:totalResults>53</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2607.11327v2</id>
+    <title>PRISM Edit: One Vector for All Temporal Answers</title>
+    <updated>2026-07-14T02:41:11Z</updated>
+    <link href="https://arxiv.org/abs/2607.11327v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2607.11327v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Model editing keeps large language models (LLMs) up to date without retraining, but temporal facts expose a limitation of the prevailing locate-and-edit paradigm: an update is not always a replacement. When a fact changes, the new answer should become current while the old answer may remain correct in historical time contexts. Building on this insight, we use causal tracing to show that LLMs already support this distinction via a two-stage internal computation: early MLP layers retrieve a time-agnostic subject representation, and later layers modulate it with temporal context to yield the time-correct answer. Motivated by this finding, we introduce PRISM Edit, which optimizes a single polysemous representation across temporal contexts and leverages the model's inherent modulation pathway to route it to temporally correct predictions, without any architectural modification. We evaluate on TimeConflict, a new temporal editing benchmark we introduce, and on temporally augmented CounterFact. PRISM Edit improves over the best baseline by +23.3 Temporal Consistency (TC) and +33.7 Current Relative-time Score (CRS) on average while being more than 2x faster. Code and data are publicly available at https://github.com/AnonymousStudy972/PRISM-Edit.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-07-13T09:46:57Z</published>
+    <arxiv:comment>Chen Huang and Qi Zheng contributed equally. Corresponding authors: Long Zeng, Yuantong Xu</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Chen Huang</name>
+    </author>
+    <author>
+      <name>Qi Zheng</name>
+    </author>
+    <author>
+      <name>Ruiqin Zheng</name>
+    </author>
+    <author>
+      <name>Long Zeng</name>
+    </author>
+    <author>
+      <name>Yuantong Xu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2607.08971v1</id>
+    <title>Stochastic Linear Bandits with Partially Observed Actions</title>
+    <updated>2026-07-09T22:23:17Z</updated>
+    <link href="https://arxiv.org/abs/2607.08971v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2607.08971v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>The stochastic linear bandit, where actions are represented as vectors and rewards are linear, is a central paradigm for sequential decision making. We study a partially observed variant of this problem in which the learning agent only sees a random subset of coordinates for each action. Such partial observability arises naturally in settings like recommendation and healthcare, where full action descriptions can be expensive or even impossible to obtain. In general, this makes sublinear regret information-theoretically impossible. However, we show that this barrier can be overcome when the action vectors have low intrinsic dimension. We propose an algorithm, TOFU-POV, that estimates the latent action subspace using the masked actions, imputes current actions using an epoch-wise frozen representation, and runs OFUL in the resulting low-dimensional coordinates. Our theory shows that TOFU-POV enjoys a $\sqrt{T}$ regret that scales with the intrinsic action subspace dimension as opposed to the ambient dimension and quantifies the interaction between these quantities and the missingness, decision set size, and subspace conditioning. We also devise a rank-adaptive algorithm that does not require the knowledge of the intrinsic dimension. We complement these guarantees with a lower bound based on a novel product construction that separates usual reward-learning uncertainty from a missingness-dependent cost intrinsic to partial observation. Synthetic and real data experiments support our theory and show that TOFU-POV can substantially improve upon natural baselines in this challenging problem.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="math.ST" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="stat.ML" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-07-09T22:23:17Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Gautam Dasarathy</name>
+    </author>
+    <author>
+      <name>Vineet Gattani</name>
+    </author>
+    <author>
+      <name>Lalit Jain</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2606.22803v2</id>
+    <title>Towards Fast Domain Adaptation and Fine-Grained User Simulation for Evaluating Conversational Recommender Systems</title>
+    <updated>2026-06-23T02:56:13Z</updated>
+    <link href="https://arxiv.org/abs/2606.22803v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2606.22803v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Conversational Recommender Systems (CRSs) enhance user experience through multi-turn interactions, yet evaluating their performance remains challenging. While Large Language Model (LLM) based user simulators are effective, they suffer from three key limitations: (1) Lack of Domain Adaptability: Reliance on fixed prompts and predefined action spaces hinders transfer to novel domains; (2) Limited User Modeling: Inability to accurately replicate subtle linguistic styles and dynamic preferences; (3) Insufficient Evaluation Validity: Existing simulators fail to adequately assess fundamental capabilities and system robustness. To overcome these, we propose AdaptSim, an Adaptive domain and automatic prompt tuning User Simulator. AdaptSim offers an efficient framework for evaluating CRSs by enabling realistic behavior modeling and diverse style generation. It leverages automatic prompt generation and an open action mechanism to reduce manual effort and improve cross-domain flexibility. For response generation, we employ controlled text generation with a "think-then-respond" strategy for fine-grained control over language style. For CRS evaluation, AdaptSim incorporates a novel Breadth-First Search (BFS)-based, turn-level pairwise comparison framework for comprehensive assessment. Extensive experiments across three domains and four LLMs demonstrate that AdaptSim generates realistic dialogues, enabling a highly effective and reliable evaluation of CRS capabilities and robustness.</summary>
+    <category term="cs.IR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-06-22T03:26:08Z</published>
+    <arxiv:primary_category term="cs.IR"/>
+    <author>
+      <name>Yuanzi Li</name>
+    </author>
+    <author>
+      <name>Quanyu Dai</name>
+    </author>
+    <author>
+      <name>Xueyang Feng</name>
+    </author>
+    <author>
+      <name>Zihang Tian</name>
+    </author>
+    <author>
+      <name>Junhao Wang</name>
+    </author>
+    <author>
+      <name>Xu Chen</name>
+    </author>
+    <author>
+      <name>Zhenhua Dong</name>
+    </author>
+    <author>
+      <name>Huifeng Guo</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2606.22793v1</id>
+    <title>A Formula-Driven Survey and Research Agenda for On-Policy Distillation</title>
+    <updated>2026-06-22T03:09:21Z</updated>
+    <link href="https://arxiv.org/abs/2606.22793v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2606.22793v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>On-policy distillation (OPD) trains an LLM on states induced by the current or recent student policy: the student generates complete or partial rollouts, a teacher or self-teacher scores the resulting tokens under their generated contexts, and dense log-probability, logit, or distributional signals are converted into post-training updates. This survey studies OPD as a feedback-to-update problem rather than a single loss family. We develop a formula-driven taxonomy from two routes -- direct distributional losses and policy-gradient-style log-ratio updates -- and use it to organize core methods, verifier- or outcome-guided hybrids, industrial reports, framework implementations, failure modes, and stabilization recipes under explicit evidence boundaries. The taxonomy shows that OPD effectiveness depends not only on KL direction or teacher access, but also on state compatibility, support construction, temporal credit, vocabulary-level probability routing, gates and weights, and regularization. We further separate two mechanisms often conflated in sampled-token OPD stability discussions. Temporal credit asks how teacher-student log-ratio returns should weight sampled actions across a rollout; vocabulary routing asks where probability mass should move when negative feedback suppresses a sampled token. This distinction yields bias boundaries for immediate, return-to-go, discounted, and baseline-corrected estimators, motivates GAE-OPD as a value-based hypothesis for log-ratio returns, and motivates Counterfactual Routed OPD (CR-OPD) for routing probability mass toward teacher-supported, student-reachable alternatives. We close by mapping actionability diagnostics, failure mechanisms, case studies, open problems, and a reporting checklist onto the same feedback-to-update variables.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-06-22T03:09:21Z</published>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Bowen Zhang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2606.22263v1</id>
+    <title>Revelio: Cost-Efficient Agentic Memory Safety Vulnerability Detection For Repository-Scale Codebases</title>
+    <updated>2026-06-20T23:17:23Z</updated>
+    <link href="https://arxiv.org/abs/2606.22263v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2606.22263v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Memory safety vulnerabilities remain a significant threat even for projects with extensive fuzzing and manual auditing. Recent results suggest that large language models hold great promise for detecting such vulnerabilities, but they are unreliable, at risk of hallucination, and challenging to scale to repository-size codebases. This paper presents Revelio, a cost-efficient end-to-end agentic framework for memory-safety vulnerability discovery. Revelio addresses the problem of hallucination by generating an executable Proof-of-Vulnerability, which is checked with a deterministic sanitizer. It reduces cost using inexpensive LLMs and lightweight static analysis to help generate and rank vulnerability hypotheses, reporting vulnerabilities only when they can be reproduced and confirmed by a sanitizer. We evaluated Revelio on seven production-quality projects that had been continuously fuzzed for five to eight years, as well as on 100 randomly selected Arvo projects from the CyberGym benchmark. With around one hour per project and a total cost of $300, Revelio discovered 19 previously unknown memory-safety vulnerabilities. On benchmarks, Revelio outperformed frontier coding agents across diverse backbone models at comparable token costs. Our results suggest that Revelio enables scalable and trustworthy end-to-end LLM-based memory-safety vulnerability detection.</summary>
+    <category term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.SE" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-06-20T23:17:23Z</published>
+    <arxiv:primary_category term="cs.CR"/>
+    <author>
+      <name>Yiwei Hou</name>
+    </author>
+    <author>
+      <name>Hao Wang</name>
+    </author>
+    <author>
+      <name>Muxi Lyu</name>
+    </author>
+    <author>
+      <name>Marius Momeu</name>
+    </author>
+    <author>
+      <name>Eric Nguyen</name>
+    </author>
+    <author>
+      <name>Taige Yang</name>
+    </author>
+    <author>
+      <name>Koushik Sen</name>
+    </author>
+    <author>
+      <name>Dawn Song</name>
+    </author>
+    <author>
+      <name>David Wagner</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2606.03739v1</id>
+    <title>Entropy Gate: Entropy Quenching for Near-Lossless Token Compression in LLM Pipelines</title>
+    <updated>2026-06-02T14:55:02Z</updated>
+    <link href="https://arxiv.org/abs/2606.03739v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2606.03739v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>LLM pipelines waste substantial token budgets on low-information content: repeated context, verbose responses, and redundant boilerplate. We introduce Entropy Gate, a token compression framework applying entropy quenching $-$ a thermodynamic process that progressively freezes out low-energy tokens while preserving semantic fidelity. Each token receives a multi-factor information energy $E(t)$ combining statistical, structural, and positional components. An adaptive quenching schedule $T(τ) = T_0 / (1 + ατ)$ removes tokens whose Boltzmann survival probability $p_i = \exp(-E_i / kT)$ falls below threshold, with a fidelity gate halting compression when energy-weighted similarity drops below $θ$. We prove token selection by descending $E(t)$ maximizes expected semantic preservation, that quenching produces nested survival sets, and that achievable compression approaches the information-theoretic limit $\text{CR} \to 1 - I(P; T)/H(P)$. A Phase 1 heuristic achieves 40-60% compression across five prompt categories while maintaining $S_E &gt; 0.80$, with energy-squared amplification $E \to E^2$ adding 10-25 percentage points. Context deduplication adds 50-70% savings on repeated blocks. Output-side quenching, motivated by findings that brevity improves accuracy, further reduces response overhead. Combined with external memory, reduction composes multiplicatively to 88-96% for agentic workloads. The framework is stateless, model-agnostic, and deploys as an OpenAI-compatible HTTP proxy.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.IT" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-06-02T14:55:02Z</published>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Justice Owusu Agyemang</name>
+    </author>
+    <author>
+      <name>Jerry John Kponyo</name>
+    </author>
+    <author>
+      <name>Kwame Opuni-Boachie Obour Agyekum</name>
+    </author>
+    <author>
+      <name>Francisca Adoma Acheampong</name>
+    </author>
+    <author>
+      <name>Kwame Agyeman-Prempeh Agyekum</name>
+    </author>
+    <author>
+      <name>James Dzisi Gadze</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.31149v1</id>
+    <title>Developing a UXR Point of View for Cognitive Accessibility in Mobile Learning with Generative AI</title>
+    <updated>2026-05-29T11:00:11Z</updated>
+    <link href="https://arxiv.org/abs/2605.31149v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.31149v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>This study investigates how UX research (UXR) principles, combined with Large Language Model (LLM)-supported analysis, can be used to improve the quality of requirements for mobile learning systems designed for learners with cognitive disabilities. Using the UXR Point-of-View (PoV) pyramid as a methodological framework, the study progressed through four stages: foundational structuring of psychological, behavioral, and design layers; structured validation using the DeLone and McLean Information Systems Success Model and Quality Function Deployment (QFD); insight consolidation through the development of nine Cognitive Accessibility UXR Play Cards; and stakeholder-specific PoV articulation to support interdisciplinary communication. LLM-supported synthesis was integrated to assist in theme clustering, requirement refinement, and hypothesis formulation under human oversight. Findings suggest that many usability and engagement challenges in mobile learning originate from ambiguous or under-specified requirements rather than interface design alone. By embedding cognitive accessibility principles into measurable and technically traceable requirements, the proposed Cognitive Accessibility UXR Playbook provides a structured pathway for aligning theory, system architecture, and stakeholder strategy.</summary>
+    <category term="cs.HC" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-29T11:00:11Z</published>
+    <arxiv:primary_category term="cs.HC"/>
+    <author>
+      <name>Fatima Ahmad Muazu</name>
+    </author>
+    <author>
+      <name>Festus Adedoyin</name>
+    </author>
+    <author>
+      <name>Huseyin Dogan</name>
+    </author>
+    <author>
+      <name>Abiodun Adedeji</name>
+    </author>
+    <author>
+      <name>Melike Akca</name>
+    </author>
+    <author>
+      <name>Olumuyiwa Ayorinde</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.31104v1</id>
+    <title>Extending the UXR Point of View Playbook: Triangulating Insights in Complex Developer Domains</title>
+    <updated>2026-05-29T10:15:54Z</updated>
+    <link href="https://arxiv.org/abs/2605.31104v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.31104v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>As User Experience Research (UXR) matures, practitioners face the challenge of moving beyond data collection toward establishing a compelling Point of View (POV) that drives strategic impact. This paper proposes an extension to the UXR POV Playbook, specifically focusing on the transition from the "Insight Generation" layer to the "POV" layer. Drawing on extensive multi-method research in Cloud Developer Tools, spanning AI Agents, Command Line Interfaces (CLI), and Error Messages, we demonstrate how triangulating qualitative and quantitative data facilitates the creation of high-confidence POVs. We introduce three new "Playbook Cards" derived from this research: The Paradigm Shift, Explainability as Trust, and The Cost of Friction. These cards provide a structured mechanism for researchers to translate complex technical findings into irrefutable business narratives.</summary>
+    <category term="cs.HC" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-29T10:15:54Z</published>
+    <arxiv:primary_category term="cs.HC"/>
+    <author>
+      <name>Sarah Kianfar</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.27546v1</id>
+    <title>Keyphrase Generative Representation of Youth Crisis Conversations Beyond Static Taxonomies</title>
+    <updated>2026-05-26T18:16:29Z</updated>
+    <link href="https://arxiv.org/abs/2605.27546v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.27546v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Crisis Responders (CRs) rapidly assess thousands of youth SMS conversations each year to identify mental health concerns and guide support. Yet youth distress is increasingly expressed through evolving and context-specific language that often does not fit fixed-label taxonomies. This work analyzed 703,975 de-identified Kids Help Phone conversations (2018-2023) and expanded KHP's 19-label issue taxonomy into a 39-label hierarchical schema. We then introduce Keyphrase Generative Representation (KGR), a constrained LLM generating concise, conversation-specific keyphrases, evaluated across 129 conversations and 387 expert annotations. The expanded taxonomy achieved expert consensus reliability, with an accuracy of 0.96, and expert review found that 81% of keyphrases accurately reflected content and 74% improved clarity. KGR surfaced identity-linked themes absent from the fixed taxonomy, including immigration problems and caregiver burden, and supported a topic-retrieval workflow that increased accuracy from 0.25 to 0.70 (+0.45) over the manual analyst process. KGR marks a shift toward hybrid, interpretable generative representations that extend crisis response beyond static taxonomies to surface emerging and culturally grounded patterns of youth distress.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.HC" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-26T18:16:29Z</published>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Abeer Badawi</name>
+    </author>
+    <author>
+      <name>Will Aitken</name>
+    </author>
+    <author>
+      <name>Lydia Sequeira</name>
+    </author>
+    <author>
+      <name>Jocelyn Rankin</name>
+    </author>
+    <author>
+      <name>Maia Norman</name>
+    </author>
+    <author>
+      <name>Elham Dolatabadi</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.26823v1</id>
+    <title>Generating Logically Consistent Synthetic Supply Chain Data with LLM-Driven Knowledge Graph Reasoning</title>
+    <updated>2026-05-26T10:41:37Z</updated>
+    <link href="https://arxiv.org/abs/2605.26823v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.26823v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Synthetic data offers a promising solution to two persistent barriers in supply chain analytics: data scarcity and data privacy. However, for synthetic data to support operational simulation and decision-making, it must do more than reproduce the statistical distributions of real records, and also preserve the \emph{operational logic} that governs supply chain processes, including the temporal orderings, mathematical dependencies, hierarchical taxonomies, and conditional rules that make a record operationally plausible. We consider this logic as the ``physics'' of supply chain data. Existing tabular generative models are primarily optimized for distributional fidelity and downstream predictive utility, and therefore often generate records that appear statistically realistic but violate fundamental operational constraints. This paper introduces \textbf{\textit{TabKG}}, a knowledge-graph-guided framework for logically consistent synthetic supply chain tabular data generation. TabKG constructs a \textbf{\textit{Column Relationship Knowledge Graph (CR-KG)}} to represent data operational dependencies. It uses a multi-LLM ensemble with majority voting to propose candidate relationships from column metadata, validates these relationships against real data to remove hallucinated or unsupported edges, and then uses the validated CR-KG to guide generation. Specifically, TabKG compresses the original table into independent columns, generates these columns using a latent diffusion model, and deterministically reconstructs dependent columns according to the validated relationships, enforcing logical consistency by construction with respect to the discovered operational rules.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-26T10:41:37Z</published>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Yunbo Long</name>
+    </author>
+    <author>
+      <name>Ge Zheng</name>
+    </author>
+    <author>
+      <name>Liming Xu</name>
+    </author>
+    <author>
+      <name>Alexandra Brintrup</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.25338v1</id>
+    <title>CausalFlow: Causal Attribution and Counterfactual Repair for LLM Agent Failures</title>
+    <updated>2026-05-25T01:47:01Z</updated>
+    <link href="https://arxiv.org/abs/2605.25338v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.25338v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Large language model (LLM) agents frequently fail on multi-step tasks involving reasoning, tool use, and environment interaction. While such failures are typically logged or retried heuristically, they contain structured signals about where execution broke down. We introduce CausalFlow, an interventional framework that converts failed agent traces into minimal counterfactual repairs and reusable supervision. CausalFlow models execution traces as sequential chains of dependent steps and computes Causal Responsibility Scores(CRS) via step-level counterfactual intervention to identify failure-inducing steps. For these steps, we generate minimally edited repairs that flip the final outcome to success, producing validated contrastive pairs of the form (wrong step, corrected step). CausalFlow supports two complementary uses: targeted test-time repair that recovers from failures with minimal behavioral drift, and training-time supervision suitable for offline preference optimization or reward modeling. Across four benchmarks spanning mathematical reasoning, code generation, question answering, and medical browsing, CausalFlow converts failed executions into validated minimal repairs with high minimality and causal-consensus scores, and demonstrates that causal attribution is necessary for reliable improvement across diverse agent tasks, outperforming heuristic refinement in complex retrieval settings while producing more localized repairs throughout. These results demonstrate that interventional analysis over structured execution traces provides a principled and scalable mechanism for transforming agent failures into reliability gains and learning-ready supervision.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-25T01:47:01Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Akash Bonagiri</name>
+    </author>
+    <author>
+      <name>Devang Borkar</name>
+    </author>
+    <author>
+      <name>Gerard Janno Anderias</name>
+    </author>
+    <author>
+      <name>Setareh Rafatirad</name>
+    </author>
+    <author>
+      <name>Houman Homayoun</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.24490v1</id>
+    <title>Market Regime Council for Dynamic Credit Assignment in Multi-Agent LLM Decision Systems</title>
+    <updated>2026-05-23T09:41:52Z</updated>
+    <link href="https://arxiv.org/abs/2605.24490v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.24490v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Multi-agent LLM decision systems for portfolio management still lack a principled way to assign credit across specialist agents, remain vulnerable to cold-start dominance under regime shifts, and offer limited transparency into how final allocations are formed. We propose Market Regime Council (MRC), a cooperative multi-agent decision system that computes exact Shapley credits across all single, pairwise, and Grand-coalition outputs for online agent weighting. Instantiated with N=3 specialist agents, at each trading period, MRC recomputes coalition-based Shapley weights from exponentially weighted performance histories, uses a Bayesian adaptive mixture to stabilize early periods, applies regime-dependent multipliers to adjust agent authority, and records each rebalance through a five-layer causal trace. Over 1,037 trading days across 13 crypto assets and five seeds, MRC achieves a Sharpe ratio of 1.51 and a cumulative return of 440.1%, ranking first on CR, SR, and IR among active baselines and attaining the lowest MDD among active methods. Ablation results show that the gains come from Shapley-weighted integration across coalition outputs rather than from any single stage in isolation. Code and demo data are included in the supplementary material.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="q-fin.PM" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-23T09:41:52Z</published>
+    <arxiv:comment>35 pages, 13 figures, preprint</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Yunhua Pei</name>
+    </author>
+    <author>
+      <name>Zerui Ge</name>
+    </author>
+    <author>
+      <name>Jin Zheng</name>
+    </author>
+    <author>
+      <name>John Cartlidge</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.22306v1</id>
+    <title>ACCoRD: Actor-Critic Conflict Resolution with Deep learning for O-RAN xApps</title>
+    <updated>2026-05-21T10:54:57Z</updated>
+    <link href="https://arxiv.org/abs/2605.22306v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.22306v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Conflict Mitigation (ConMit) is a crucial part of intelligent network control in Open Radio Access Networks (O-RAN). In this paper, we propose a method named ACCoRD to resolve detected control conflicts in Near-Real Time RAN Intelligent Controller using a Conflict Resolution (CR) Agent with an Artificial Neural Network (ANN) trained with a reinforcement learning algorithm PPO-Clip. The implemented ANN analyzes data about the network and conflicting control decisions to infer optimal CR actions. The CR Agent gathers feedback from the network after each resolved conflict to assess its efficiency and adjust the ANN's weights during batch training. The evaluation of the proposed approach is based on simulation data. A new methodology for evaluating CR solutions is proposed. Results show that the proposed ANN-based method improves on the efficiency of rule-based approaches by significantly reducing negative network events caused by conflicting control decisions in medium and high traffic scenarios.</summary>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-21T10:54:57Z</published>
+    <arxiv:primary_category term="cs.MA"/>
+    <author>
+      <name>Cezary Adamczyk</name>
+    </author>
+    <author>
+      <name>Adrian Kliks</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.22109v1</id>
+    <title>Perception or Prejudice: Can MLLMs Go Beyond First Impressions of Personality?</title>
+    <updated>2026-05-21T07:42:47Z</updated>
+    <link href="https://arxiv.org/abs/2605.22109v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.22109v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Multimodal Large Language Models (MLLMs) are increasingly deployed in human-facing roles where personality perception is critical, yet existing benchmarks evaluate this capability solely on numerical Big Five score prediction, leaving open whether models truly perceive personality through behavioral understanding or merely prejudge through superficial pattern matching. We address this gap with three contributions. (i) A new task: we formalize Grounded Personality Reasoning (GPR), which requires MLLMs to anchor each Big Five rating in observable evidence through a chain of rating, reasoning, and grounding. (ii) A new dataset: we release MM-OCEAN (1,104 videos, 5,320 MCQs), produced by a multi-agent pipeline with human verification, with timestamped behavioral observations, evidence-grounded trait analyses, and seven categories of cue-grounding MCQs. (iii) Benchmark and analysis: we design a three-tier evaluation (rating, reasoning, grounding) plus four sample-level failure-mode metrics: Prejudice Rate (PR), Confabulation Rate (CR), Integration-failure Rate (IR), and Holistic-grounding Rate (HR), and benchmark 27 MLLMs (13 closed, 14 open). The analysis uncovers a striking Prejudice Gap: across the field, 51% of correct ratings are not grounded in retrieved cues, and the Holistic-Grounding Rate spans only 0-33.5%. These findings expose a disconnect between getting the right score and reasoning for the right reason, charting a roadmap for grounded social cognition in MLLMs.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CY" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-21T07:42:47Z</published>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Caixin Kang</name>
+    </author>
+    <author>
+      <name>Tianyu Yan</name>
+    </author>
+    <author>
+      <name>Sitong Gong</name>
+    </author>
+    <author>
+      <name>Mingfang Zhang</name>
+    </author>
+    <author>
+      <name>Liangyang Ouyang</name>
+    </author>
+    <author>
+      <name>Ruicong Liu</name>
+    </author>
+    <author>
+      <name>Bo Zheng</name>
+    </author>
+    <author>
+      <name>Huchuan Lu</name>
+    </author>
+    <author>
+      <name>Kaipeng Zhang</name>
+    </author>
+    <author>
+      <name>Yoichi Sato</name>
+    </author>
+    <author>
+      <name>Yifei Huang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.22099v1</id>
+    <title>A Comparative Study of Language Models for Khmer Retrieval-Augmented Question Answering</title>
+    <updated>2026-05-21T07:36:01Z</updated>
+    <link href="https://arxiv.org/abs/2605.22099v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.22099v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Retrieval-Augmented Generation (RAG) has emerged as a promising paradigm for grounding large language model (LLM) outputs in retrieved evidence, thereby reducing hallucination and improving factual accuracy. Its efficacy, however, remains largely unexamined for low-resource, non-Latin-script languages such as Khmer. In this paper, we present a RAG-based question answering system for Khmer-language telecom-domain documents. We conduct a two-phase comparative evaluation. First, we benchmark three embedding models: BGE-M3 (567M), Jina-Embeddings-v3 (570M), and Qwen3-Embedding (597M), for dense retrieval over Khmer documents. BGE-M3 consistently performs best, achieving a Hit Rate@3 of 0.285, File Hit Rate@3 of 0.700, MRR@3 of 0.221, and Precision@3 of 0.112, substantially outperforming the other retrievers. Second, using BGE-M3 as the selected retriever, we evaluate five generator backends: Qwen3 (8B), Qwen3.5 (9B), Sailor2-8B-Chat, SeaLLMs-v3-7B-Chat, and Llama-SEA-LION-v2-8B-IT, on a curated golden dataset of 200 Khmer question-answer pairs. To quantify system performance, we apply six RAGAS-inspired metrics: faithfulness, answer relevance, context relevance, factual correctness, answer similarity, and answer correctness. The results show no single model dominates across all metrics: Qwen3.5-9B achieves the highest faithfulness (0.859) and context relevance (0.726), Qwen3-8B attains the highest factual correctness (0.380), and SeaLLMs-v3-7B-Chat performs best on answer relevance (0.867), answer similarity (0.836), and answer correctness (0.599). These findings highlight that retriever choice remains a major bottleneck for Khmer RAG, while generator strengths vary depending on whether the priority is grounding, factual precision, or semantic similarity.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-21T07:36:01Z</published>
+    <arxiv:comment>14 pages, 1 figure,</arxiv:comment>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Sereiwathna Ros</name>
+    </author>
+    <author>
+      <name>Phannet Pov</name>
+    </author>
+    <author>
+      <name>Ratanaktepi Chhor</name>
+    </author>
+    <author>
+      <name>Kimleang Ly</name>
+    </author>
+    <author>
+      <name>Wan-Sup Cho</name>
+    </author>
+    <author>
+      <name>Saksonita Khoeurn</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.17976v1</id>
+    <title>Unleashing LLMs in Bayesian Optimization: Preference-Guided Framework for Scientific Discovery</title>
+    <updated>2026-05-18T07:30:25Z</updated>
+    <link href="https://arxiv.org/abs/2605.17976v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.17976v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Scientific discovery is increasingly constrained by costly experiments and limited resources, underscoring the need for efficient optimization in AI for science. Bayesian Optimization (BO), though widely adopted for balancing exploration and exploitation, often exhibits slow cold-start performance and poor scalability in high-dimensional settings, limiting its applicability in real-world scientific problems. To overcome these challenges, we propose LLM-Guided Bayesian Optimization (LGBO), the first LLM preference-guided BO framework that continuously integrates the semantic reasoning of large language models (LLMs) into the optimization loop. Unlike prior works that use LLMs only for warm-start initialization or candidate generation, LGBO introduces a region-lifted preference mechanism that embeds LLM-driven preferences into every iteration, shifting the surrogate mean in a stable and controllable way. Theoretically, we prove that LGBO does not perform significantly worse than standard BO in the worst case, while achieving significantly faster convergence when preferences align with the objective. Empirically, LGBO consistently outperforms existing methods across diverse dry benchmarks in physics, chemistry, biology, and materials science. Most notably, in a new wet-lab optimization of Fe-Cr battery electrolytes, LGBO attains \textbf{90\% of the best observed value within 6 iterations}, whereas standard BO and existing LLM-augmented baselines require more than 10. Together, these results suggest that LGBO offers a promising direction for integrating LLMs into scientific optimization workflows.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="math.OC" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-18T07:30:25Z</published>
+    <arxiv:comment>Published as a conference paper at ICLR 2026. 10 pages main paper, 21 pages appendix, 26 figures</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <arxiv:journal_ref>International Conference on Learning Representations (ICLR), 2026</arxiv:journal_ref>
+    <author>
+      <name>Xinzhe Yuan</name>
+    </author>
+    <author>
+      <name>Zhuo Chen</name>
+    </author>
+    <author>
+      <name>Jianshu Zhang</name>
+    </author>
+    <author>
+      <name>Huan Xiong</name>
+    </author>
+    <author>
+      <name>Nanyang Ye</name>
+    </author>
+    <author>
+      <name>Yuqiang Li</name>
+    </author>
+    <author>
+      <name>Qinying Gu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.13053v2</id>
+    <title>A Standardized Re-evaluation of Conversational Recommender Systems on the ReDial Dataset</title>
+    <updated>2026-05-20T09:14:55Z</updated>
+    <link href="https://arxiv.org/abs/2605.13053v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.13053v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Recent years have seen a surge of research into conversational recommender systems (CRS). Among existing datasets, ReDial is the most widely used benchmark, cited in hundreds of studies. However, variations in how the dataset is preprocessed and used in experiments, particularly in the definition of ground-truth items, make it difficult to compare results across studies. These comparisons are further complicated by confounding factors such as the choice of the underlying large language model (LLM) and the use of external data sources. In this work, we revisit seven prominent CRS methods across three architectural families and evaluate them under standardized conditions. Our reproducibility study reveals a ``granularity gap,'' where fine-grained ranking (Recall@1) is highly sensitive to implementation details, while our replicability analysis shows that nearly 50% of reported accuracy stems from ``repetition shortcuts'' that are absent in novelty-focused evaluation. Furthermore, we find that performance gains are often driven more by the capacity of the LLM backbone than by specific architectural innovations. Finally, by applying user-centric utility metrics, we demonstrate that traditional recall frequently overstates a system's actual conversational effectiveness. This work establishes a transparent, controlled baseline and promotes evaluation practices that prioritize novelty and interaction efficiency.</summary>
+    <category term="cs.IR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-13T06:20:43Z</published>
+    <arxiv:comment>Accepted to Proceedings of the 49th International ACM SIGIR Conference on Research and Development in Information Retrieval (SIGIR '26), July 20--24, 2026, Melbourne, VIC, Australia</arxiv:comment>
+    <arxiv:primary_category term="cs.IR"/>
+    <author>
+      <name>Ivica Kostric</name>
+    </author>
+    <author>
+      <name>Krisztian Balog</name>
+    </author>
+    <arxiv:doi>10.1145/3805712.3808573</arxiv:doi>
+    <link rel="related" href="https://doi.org/10.1145/3805712.3808573" title="doi"/>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.12001v1</id>
+    <title>CR^2: Cost-Aware Risk-Controlled Routing for Wireless Device-Edge LLM Inference</title>
+    <updated>2026-05-12T11:50:15Z</updated>
+    <link href="https://arxiv.org/abs/2605.12001v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.12001v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>As large language models (LLMs) move from centralized clouds to mobile edge environments, efficient serving must balance latency, energy consumption, and accuracy under constrained device-edge resources. Query-level routing between lightweight on-device models and stronger edge models provides a flexible mechanism to navigate this trade-off. However, existing routers are designed for centralized cloud settings and optimize token-level costs, failing to capture the dynamic latency and energy overheads in wireless edge deployments. In this paper, we formulate mobile edge LLM routing as a deployment-constrained, cost-aware decision problem, and propose CR^2, a two-stage device-edge routing framework. CR^2 decouples a lightweight on-device margin gate from an edge-side utility selector for deferred queries. The margin gate operates on frozen query embeddings and a user-specified cost weight to predict whether local execution is utility-optimal relative to the best edge alternative under the target operating point. We further introduce a conformal risk control (CRC) calibration procedure that maps each operating point to an acceptance threshold, enabling explicit control of the marginal false-acceptance risk under the full-information utility reference. Experiments on the routing task show that CR^2 closely matches a full-information reference router using only device-side signals before deferral. Compared with strong query-level baselines, CR^2 consistently improves the deployable accuracy-cost Pareto frontier and reduces normalized deployment cost by up to 16.9% at matched accuracy.</summary>
+    <category term="cs.IT" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-12T11:50:15Z</published>
+    <arxiv:comment>submitted to IEEE Journal</arxiv:comment>
+    <arxiv:primary_category term="cs.IT"/>
+    <author>
+      <name>Nan Xue</name>
+    </author>
+    <author>
+      <name>Shengkang Chen</name>
+    </author>
+    <author>
+      <name>Zhiyong Chen</name>
+    </author>
+    <author>
+      <name>Jiangchao Yao</name>
+    </author>
+    <author>
+      <name>Yaping Sun</name>
+    </author>
+    <author>
+      <name>Zixia Hu</name>
+    </author>
+    <author>
+      <name>Meixia Tao</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.09929v1</id>
+    <title>TeleResilienceBench: Quantifying Resilience for LLM Reasoning in Telecommunications</title>
+    <updated>2026-05-11T03:28:21Z</updated>
+    <link href="https://arxiv.org/abs/2605.09929v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.09929v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Deploying large language models in telecommunications requires more than task accuracy. In realistic workflows, a model may inherit partially completed reasoning from a prior step, an upstream agent, or its own earlier generation, and must continue that reasoning even when it is already going wrong. We introduce TeleResilienceBench, a benchmark that quantifies this capability, which we term reasoning resilience, across seven telecom sub-domains drawn from the GSMA Open-Telco LLM suite. Instances are constructed by collecting failures from a weak generator model, truncating the flawed reasoning trace at its midpoint, and asking a target model to continue and correct it. We propose the Correct Flip Rate (CFR) as a direct measure of successful recovery and evaluate eight models spanning the Qwen3.5, Gemma4, and Nemotron-3 families. Our results show that even the strongest model achieves a macro-average CFR of only 29.1%, and scale does not reliably improve resilience within families. Nemotron-3-nano 4b outperforms all Qwen3.5 variants including the 27b model and leads the auxiliary TeleMath numerical evaluation at 23.4% CR%, offering the best resilience-to-cost ratio in the set. A difficulty-stratified analysis further reveals that existing telecom benchmark difficulty labels reflect factual specificity rather than reasoning depth, suggesting that current evaluations measure knowledge coverage more than reasoning ability.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.SE" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-11T03:28:21Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Pranshav Gajjar</name>
+    </author>
+    <author>
+      <name>Emmanuel Ojo</name>
+    </author>
+    <author>
+      <name>Vijay K Shah</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.09844v1</id>
+    <title>The Metacognitive Probe: Five Behavioural Calibration Diagnostics for LLMs</title>
+    <updated>2026-05-11T00:55:31Z</updated>
+    <link href="https://arxiv.org/abs/2605.09844v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.09844v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>The Metacognitive Probe is an exploratory five-task, 15-slot diagnostic that decomposes an LLM's confidence behaviour into five behaviourally-distinct dimensions: confidence calibration (T1-CC), epistemic vigilance (T2-EV), knowledge boundary (T3-KB), calibration range (T4-CR), and reasoning-chain validation (T5-RCV). It is evaluated on N=8 frontier models and N=69 humans. The instrument is motivated by Flavell (1979) and Nelson and Narens (1990) but operates on observable confidence-correctness alignment; it is not a validated cross-species metacognition scale, and the pre-specified human developmental hypothesis was falsified.
+  Composite benchmarks (MMLU, BIG-Bench, HELM, GPQA) ask whether a model produces a correct response. They are silent on whether the model knows when its response is wrong. A model can score 80 on a composite calibration benchmark and still be wildly overconfident in narrow pockets the aggregate cannot surface. The Metacognitive Probe surfaces those pockets.
+  Our headline is a 47-point within-model dissociation in Gemini 2.5 Flash: panel-best within-task calibration (T1-CC = 88; Spearman rho = +0.551, 95% CI [+0.14, +0.80], p = 0.005) and panel-worst cross-task difficulty prediction (T4-CR = 41; sigma_conf = 1.4 across twelve factoids).</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-11T00:55:31Z</published>
+    <arxiv:comment>27 pages, 13 tables. Code, data, prompts, and rubrics released with the paper. OSF deposit pending; DOI in v2</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Rafael C. T. Oliveira</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.07677v1</id>
+    <title>TRACE: Tourism Recommendation with Accountable Citation Evidence</title>
+    <updated>2026-05-08T12:47:39Z</updated>
+    <link href="https://arxiv.org/abs/2605.07677v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.07677v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Tourism is a high-stakes setting for conversational recommender systems (CRS): a plausible-sounding suggestion can waste real money and trip time once a traveler acts on it. Existing CRS benchmarks primarily evaluate systems with a single Recall@k score over entity mentions, and tourism-specific resources add spatial or knowledge-graph context, yet none of them couple multi-turn recommendation with verbatim review-span evidence and rejection recovery. This leaves an evaluation gap for tourism recommendation that is simultaneously trustworthy, verifiable, and adaptive: recommend the right point of interest (POI) for multi-aspect preferences (such as cuisine, price, atmosphere, walking distance), justify each suggestion with verifiable evidence from prior visitors so the traveler can act without trial and error, and recover when the first recommendation is rejected mid-dialogue. We introduce TRACE, where each item is a multi-turn tourism recommendation dialogue with review-span citations and explicit rejection turns: 10,000 dialogues over 2,400 Yelp POIs and 34,208 reviews across eight U.S. cities, paired with 14 retrieval, planning, and LLM baselines, along with 25 metrics organized under Accuracy, Grounding, and Recovery. Across these baselines, TRACE reveals the Three-Competency Gap: LLM Zero-Shot leads in closed-set Recall@1 and rejection recovery but cites less densely than retrievers; non-LLM retrievers achieve surface-verbatim grounding but with low accuracy; Multi-Review Synthesis fails at recovery. The Grounding Score agrees with human citation precision (Spearman rho=+0.80, p&lt;10^-20), and paired t-tests reproduce the per-baseline ranking (p&lt;0.01 on the dominant contrasts). TRACE reframes accountable tourism recommendation as a joint target (right POI, verifiable evidence, adaptive repair) rather than a single-axis leaderboard.</summary>
+    <category term="cs.IR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-08T12:47:39Z</published>
+    <arxiv:primary_category term="cs.IR"/>
+    <author>
+      <name>Zixu Zhao</name>
+    </author>
+    <author>
+      <name>Sijin Wang</name>
+    </author>
+    <author>
+      <name>Yu Hou</name>
+    </author>
+    <author>
+      <name>Yuanyuan Xu</name>
+    </author>
+    <author>
+      <name>Yufan Sheng</name>
+    </author>
+    <author>
+      <name>Xike Xie</name>
+    </author>
+    <author>
+      <name>Wenjie Zhang</name>
+    </author>
+    <author>
+      <name>Won-Yong Shin</name>
+    </author>
+    <author>
+      <name>Xin Cao</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2607.00010v1</id>
+    <title>Prompt Optimization for User Simulation in Conversational Recommender Systems: A Multi-Objective Framework</title>
+    <updated>2026-05-08T07:19:27Z</updated>
+    <link href="https://arxiv.org/abs/2607.00010v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2607.00010v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Conversational recommender systems (CRSs) are a core component of next-generation intelligent recommender systems because they enable users to actively elicit preferences, clarify intentions, and adapt recommendations in real time. However, there are two key obstacles in the CRS domain: evaluation and access to training data. Evaluating CRSs through real human studies is more critical than for traditional recommender systems, yet such studies are both costly and time-consuming. Moreover, CRS interaction data are often difficult to obtain for model training due to privacy concerns. Large language model (LLM)-based user simulators have shown promise in addressing both challenges by generating synthetic user interactions for evaluation and training. However, existing approaches suffer from systematic positive bias, data leakage, and limited behavioral diversity, and they rely on brittle manual prompt engineering that requires extensive domain expertise. In this paper, we propose a framework to automatically optimize prompts for LLM-based user simulators in CRSs, simultaneously mitigating these issues. Experimental results demonstrate that the proposed framework achieves improved behavioral alignment with human interaction patterns compared to baseline methods across diverse prompt settings.</summary>
+    <category term="cs.IR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-08T07:19:27Z</published>
+    <arxiv:comment>to be published in 2026 IEEE 42nd International Conference on Data Engineering Workshops (ICDEW)</arxiv:comment>
+    <arxiv:primary_category term="cs.IR"/>
+    <author>
+      <name>Nipun B Nair</name>
+    </author>
+    <author>
+      <name>Tongtong Wu</name>
+    </author>
+    <author>
+      <name>Weiqing Wang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.04401v1</id>
+    <title>Existence, uniqueness, stability, and monotonicity of traveling waves for repulsion/attraction chemotaxis models with logistic type source</title>
+    <updated>2026-05-06T01:44:34Z</updated>
+    <link href="https://arxiv.org/abs/2605.04401v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.04401v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>This paper is devoted to the study of existence, uniqueness, stability, and monotonicity of traveling wave solutions to the following parabolic-elliptic chemotaxis system with logistic type source \begin{equation}\label{E:main-abstract-eq}\tag{CM} \begin{cases} u_t=u_{xx}-χ(u^m v_x)_x +u(1-u^α),\quad &amp;x\in\mathbb{R}\cr 0=v_{xx}-v+u^γ,\quad&amp;x\in\mathbb{R}, \end{cases} \end{equation} where $m,α,γ\ge 1$ and $χ\in\mathbb{R}$. System (CM) can be used to describe the evolution of a biological species influenced by a chemical substance produced by the species itself. In this context, the function $u$ denotes the population density of the biological species, and $v$ denotes the concentration of the chemical agent. Traveling wave solutions of (CM) connecting the two constant solutions $(1,1)$ and $(0,0)$ are among important types of solutions, which characterize the front propagation phenomena in (CM). The existence of such traveling wave solutions to (CM) with $m=α=γ=1$ has been studied in several papers. However, there is little study on the uniqueness, stability, and monotonicity of traveling wave solutions of (CM) in literature and there is also no study on the existence of traveling wave solutions of (CM) connecting $(1,1)$ and $(0,0)$ for general $m,α,γ\ge 1$. In the current paper, we prove the existence of traveling wave solutions of (CM) connecting $(1,1)$ and $(0,0)$ for any $χ\le 0$ with speed $c$ large than some number $c^*_{χ,m,γ}$, or for $0&lt;χ&lt;1/2$ with any speed $c&gt;2$. We prove that the traveling wave solutions are monotone when $χ\le 0$. We also prove the uniqueness and stability of traveling wave solutions of (CM) connecting $(1,1)$ and $(0,0)$ when the speed $c$ is larger than some number $c^{**}_{χ,m,α, γ}(\ge c^*_{χ,m,γ})$.</summary>
+    <category term="math.AP" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-06T01:44:34Z</published>
+    <arxiv:primary_category term="math.AP"/>
+    <author>
+      <name>Wenxian Shen</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.03956v1</id>
+    <title>Generating Proof-of-Vulnerability Tests to Help Enhance the Security of Complex Software</title>
+    <updated>2026-05-05T16:39:29Z</updated>
+    <link href="https://arxiv.org/abs/2605.03956v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.03956v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Developers create modern software applications (Apps) on top of third-party libraries (Libs). When library vulnerabilities are reachable through application code, the applications can be vulnerable to software supply chain attacks. Prior work shows that developers often require concrete and executable evidence, i.e., proof-of-vulnerability (PoV) tests, to decide whether a reported dependency vulnerability poses a practical security risk to their application. However, manually crafting such tests is challenging, and existing tool support is insufficient to automate the procedure. To streamline test generation, we created PoVSmith -- a new approach that combines call path analysis, exemplar test, code context, and feedback into multiple prompts to guide a coding agent (i.e., Codex) and a large language model (i.e., GPT) for test generation, execution, and assessment. We evaluated PoVSmith on 33 $\langle$App, Lib$\rangle$ Java program pairs, where each App depends on a vulnerable Lib. PoVSmith revealed 158 unique application-level entry points (i.e., public methods) calling vulnerable library APIs; 152 (96\%) of them were correctly found, together with the call paths properly recognized. With such method call information, PoVSmith generated 152 tests, 84 (55\%) of which demonstrated feasible ways of attacking Apps by exploiting Lib vulnerabilities. PoVSmith substantially outperforms the state-of-the-art LLM-based approach, as it reduces human involvement while dramatically improving test quality. Our work contributes (1) a novel approach of agent-based test generation, (2) an iterative code refinement process driven by execution feedback, and (3) LLM-based quality assessment grounded in both the test context and execution logs.</summary>
+    <category term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.SE" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-05T16:39:29Z</published>
+    <arxiv:primary_category term="cs.CR"/>
+    <author>
+      <name>Shravya Kanchi</name>
+    </author>
+    <author>
+      <name>Xiaoyan Zang</name>
+    </author>
+    <author>
+      <name>Ying Zhang</name>
+    </author>
+    <author>
+      <name>Danfeng Yao</name>
+    </author>
+    <author>
+      <name>Na Meng</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.05250v1</id>
+    <title>Decision-aware User Simulation Agent for Evaluating Conversational Recommender Systems</title>
+    <updated>2026-05-05T15:11:05Z</updated>
+    <link href="https://arxiv.org/abs/2605.05250v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.05250v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Conversational recommender systems (CRS) increasingly rely on user simulators for automated evaluation of sales agents. A key requirement for such simulators is the ability to model human decision-making. However, most existing simulation frameworks do not explicitly model the internal decision process, and LLM-based simulators often exhibit unrealistically strong information-processing capabilities, rarely exhibit the hesitation or decision deferral commonly observed in real consumer behavior, resulting in overly high acceptance probabilities. To address this limitation, we propose Hesitator, a theory-grounded user simulation framework that explicitly models human decision-making under choice overload. The framework introduces a modular Decision Module that separates utility-based item selection from overload-aware commitment decisions. Experiments across multiple user simulation frameworks, domains, sales modes, and LLM backbones show that integrating our module consistently mitigates unrealistic behaviors under increasing overload conditions. Furthermore, Hesitator reproduces established behavioral patterns from psychological economics, demonstrating its ability to model human decision behavior.</summary>
+    <category term="cs.IR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-05T15:11:05Z</published>
+    <arxiv:primary_category term="cs.IR"/>
+    <author>
+      <name>Yuan-Chi Li</name>
+    </author>
+    <author>
+      <name>Li-Chi Chen</name>
+    </author>
+    <author>
+      <name>Sung-Yi Wu</name>
+    </author>
+    <author>
+      <name>Yu-Che Tsai</name>
+    </author>
+    <author>
+      <name>Shou-De Lin</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.00782v1</id>
+    <title>GeoContra: From Fluent GIS Code to Verifiable Spatial Analysis with Geography-Grounded Repair</title>
+    <updated>2026-05-01T16:58:24Z</updated>
+    <link href="https://arxiv.org/abs/2605.00782v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.00782v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Reliable spatial analysis in GIScience requires preserving coordinate semantics, topology, units, and geographic plausibility. Current LLM-based GIS systems generate fluent scripts but rarely enforce these geographic rules at scale. We present GeoContra, a verification and repair framework for LLM-driven Python GIS workflows. It represents each task as an executable geospatial contract-including natural-language questions, schemas, CRS metadata, expected outputs, spatial predicates, topology, metrics, required operations, and forbidden shortcuts. Generated programs undergo static rule inspection, runtime validation, and semantic verification, with violations fed back into a bounded repair loop. Evaluated on 7,079 real geospatial tasks across 15 Boston-area zones, 9 task families, and 11 open-source models (600 runs each), GeoContra improves spatial correctness on closed models from 47.6% to 77.5% for DeepSeek-V4 and from 57.7% to 81.5% for Kimi-K2.5. Across 11 open models, average correctness rises by 26.6%. GeoContra turns fluent code production into verifiable spatial analysis, catching negative travel times, CRS/field-schema violations, missing predicates, and brittle output casts that otherwise yield executable but geographically invalid results.</summary>
+    <category term="cs.SE" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-01T16:58:24Z</published>
+    <arxiv:primary_category term="cs.SE"/>
+    <author>
+      <name>Yinhao Xiao</name>
+    </author>
+    <author>
+      <name>Rongbo Xiao</name>
+    </author>
+    <author>
+      <name>Yihan Zhang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.27945v1</id>
+    <title>CRS-LLM: Cooperative Beam Prediction with a GPT-Style Backbone and Switch-Gated Fusion</title>
+    <updated>2026-04-30T14:43:25Z</updated>
+    <link href="https://arxiv.org/abs/2604.27945v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.27945v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Millimeter-wave (mmWave) communication depends on highly directional beamforming, while fast mobility, blockage, and rapid geometry changes in vehicle-to-everything (V2X) scenarios make beam tracking challenging. In cooperative multi-base-station (BS) systems, conventional hierarchical methods usually separate BS selection and beam selection, which may cause error propagation when beam states change abruptly. To address this issue, this paper proposes Cooperative Radio Sensing with Large Language Models (CRS-LLM), a cooperative beam prediction framework for next-step joint BS-beam prediction. CRS-LLM formulates beam tracking as a single classification problem over the joint BS-beam space, avoiding cascaded decision errors. To adapt channel state information (CSI) to large language models, a dual-view CSI tokenizer extracts frequency-domain and delay-domain channel features through a lightweight CNN front-end and temporal tokenization module. A truncated GPT-style backbone is then used for temporal modeling with parameter-efficient adaptation. In addition, a transition-aware switch-gated predictor combines a stable branch, a residual flip branch, and a low-rank transition prior to capture both smooth evolution and abrupt changes. Simulation results show that CRS-LLM outperforms CSI-Transformer, Hierarchical BS-Beam, and representative CNN- and recurrent-neural-network baselines in Top-1 accuracy and normalized beam gain under different SNR conditions, while also showing strong few-shot performance and promising zero-shot transferability.</summary>
+    <category term="eess.SP" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-30T14:43:25Z</published>
+    <arxiv:primary_category term="eess.SP"/>
+    <author>
+      <name>Fangzhi Li</name>
+    </author>
+    <author>
+      <name>Cunhua Pan</name>
+    </author>
+    <author>
+      <name>Hong Ren</name>
+    </author>
+    <author>
+      <name>Dongming Wang</name>
+    </author>
+    <author>
+      <name>Jiangzhou Wang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.27819v1</id>
+    <title>MCPHunt: An Evaluation Framework for Cross-Boundary Data Propagation in Multi-Server MCP Agents</title>
+    <updated>2026-04-30T13:01:03Z</updated>
+    <link href="https://arxiv.org/abs/2604.27819v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.27819v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Multi-server MCP agents create an information-flow control problem: faithful tool composition can turn individually benign read/write permissions into cross-boundary credential propagation -- a structural side effect of workflow topology, not necessarily malicious model behavior. We present MCPHunt, to our knowledge the first controlled benchmark that isolates non-adversarial, verbatim credential propagation across multi-server MCP trust boundaries, with three methodological contributions: (1) canary-based taint tracking that reduces propagation detection to objective string matching; (2) an environment-controlled coverage design with risky, benign, and hard-negative conditions that validates pipeline soundness and controls for credential-format confounds; (3) CRS stratification that disentangles task-mandated propagation (faithful execution of verbatim-transfer instructions) from policy-violating propagation (credentials included despite the option to redact). Across 3,615 main-benchmark traces from 5 models spanning 147 tasks and 9 mechanism families, policy-violating propagation rates reach 11.5--41.3% across all models. This propagation is pathway-specific (25x cross-mechanism range) and concentrated in browser-mediated data flows; hard-negative controls provide evidence that production-format credentials are not necessary -- prompt-directed cross-boundary data flow is sufficient. A prompt-mitigation study across 3 models reduces policy-violating propagation by up to 97% while preserving 80.5% utility, but effectiveness varies with instruction-following capability -- suggesting that prompt-level defenses alone may not suffice. Code, traces, and labeling pipeline are released under MIT and CC BY 4.0.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-30T13:01:03Z</published>
+    <arxiv:comment>21 pages, 1 figure, 16 tables. Code: https://github.com/lihaonan0716/MCPHunt Data: https://huggingface.co/datasets/lihaonan0716/mcphunt-agent-traces</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Haonan Li</name>
+    </author>
+    <author>
+      <name>Tianjun Sun</name>
+    </author>
+    <author>
+      <name>Yongqing Wang</name>
+    </author>
+    <author>
+      <name>Qisheng Zhang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.26887v1</id>
+    <title>Resolving growth-induced off-stoichiometry in AgCrSe$_2$ single crystals</title>
+    <updated>2026-04-29T16:56:33Z</updated>
+    <link href="https://arxiv.org/abs/2604.26887v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.26887v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>The layered delafossite-like antiferromagnet AgCrSe$_2$ is a superionic conductor at high temperatures and has been reported to exhibit anomalous Hall behavior and Kondo physics at low temperatures. These extraordinary transport properties have been established almost exclusively on single crystals grown by chemical vapor transport, raising questions about the role of growth-induced off-stoichiometry. Using elemental analysis, single-crystal X-ray diffraction, and magnetization measurements, we show that such crystals are indeed systematically off-stoichiometric, with a general composition of Ag$_{1-x}$Cr(Se$_{2-y}$Cl$_y$) ($x \approx y \approx 0.08$) arising from the use of CrCl$_3$ as a transport agent. This off-stoichiometry manifests in altered magnetic properties, most notably a suppressed Néel temperature of 46\,K compared to 58\,K in stoichiometric polycrystalline samples prepared by solid-state synthesis. By optimizing an Ag/Se self-flux growth method, we obtained large single crystals of AgCrSe$_2$ that recover the magnetic transition temperature and saturation field of stoichiometric powder samples. These results establish self-flux growth as a route to high-quality stoichiometric AgCrSe$_2$ single crystals and provide a reliable platform for reassessing whether the reported anomalous transport phenomena are intrinsic or arise from off-stoichiometry.</summary>
+    <category term="cond-mat.mtrl-sci" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-29T16:56:33Z</published>
+    <arxiv:primary_category term="cond-mat.mtrl-sci"/>
+    <author>
+      <name>Felix Eder</name>
+    </author>
+    <author>
+      <name>Zeno Maesen</name>
+    </author>
+    <author>
+      <name>Yurii Skourski</name>
+    </author>
+    <author>
+      <name>Enrico Giannini</name>
+    </author>
+    <author>
+      <name>Oksana Zaharko</name>
+    </author>
+    <author>
+      <name>Fabian O. von Rohr</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.17108v1</id>
+    <title>Beyond Word Boundaries: A Hebrew Coreference Benchmark and an Evaluation Protocol for Morphologically Complex Text</title>
+    <updated>2026-04-18T18:49:48Z</updated>
+    <link href="https://arxiv.org/abs/2604.17108v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.17108v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Coreference Resolution (CR) is a fundamental NLP task critical for long-form tasks as information extraction, summarization, and many business applications. However, CR methods originally designed for English struggle with Morphologically Rich Languages (MRLs), where mention boundaries do not necessarily align with word boundaries, and a single token may consist of multiple anaphors. CR modeling and evaluation protocols standardly assume that, as in English, words and mentions mostly align. However, this assumption breaks down in MRLs, particularly in the context of LLMs' raw-text processing and end-to-end tasks. To assess and address this challenge, we introduce {\em KibutzR}, the first comprehensive CR dataset for Modern Hebrew, an MRL rich with complex words and pronominal clitics. We deliver an annotated dataset that identifies mentions at word, sub-word and multi-word levels, and propose an evaluation protocol that directly addresses word/morpheme boundary discrepancies. Our experiments show that contemporary LLMs perform significantly worse on Hebrew than on English, and that performance degrades on raw unsegmented text. Crucially, we show an inverse performance-trend in Hebrew relative to English, where smaller encoders perform far better than contemporary decoder models, leaving ample space for investigation and improvement. We deliver a new benchmark for Hebrew coreference resolution and a segmentation-aware evaluation protocol to inform future work on other MRLs.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-18T18:49:48Z</published>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Refael Shaked Greenfeld</name>
+    </author>
+    <author>
+      <name>Reut Tsarfaty</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.11665v6</id>
+    <title>Beyond LLMs, Sparse Distributed Memory, and Neuromorphics &lt;A Hyper-Dimensional SRAM-CAM "VaCoAl" for Ultra-High Speed, Ultra-Low Power, and Low Cost&gt;</title>
+    <updated>2026-05-28T17:04:36Z</updated>
+    <link href="https://arxiv.org/abs/2604.11665v6" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.11665v6" rel="related" type="application/pdf" title="pdf"/>
+    <summary>This paper reports an unexpected finding: in a deterministic hyperdimensional computing (HDC) architecture **that inverts the conventional role of Galois-field algebra -- employing it not for error correction toward a unique answer but as an engine for relative similarity and path-quality ranking -- **a path-dependent semantic selection mechanism emerges, equivalent to spike-timing-dependent plasticity (STDP), with magnitude predictable a priori from a closed-form expression matching measured values. Addressing catastrophic forgetting, learning stagnation, and the Binding Problem at an algebraic level, we propose VaCoAl (Vague Coincident Algorithm) and its Python implementation PyVaCoAl on ultra-high-dimensional SRAM/DRAM-CAM. Rooted in Sparse Distributed Memory, it resolves orthogonalisation and retrieval in high-dimensional binary spaces via Galois-field diffusion, enabling low-load deployment. Crucially, VaCoAl embeds a cognitive bound -- the Frontier Size -- into its architecture, ranking candidates by path-integral confidence (CR2) to achieve compositional generalisation; this bounded-rationality design produces STDP-like selection that error-correction paradigms structurally cannot attain. We evaluated multi-hop reasoning on about 470k mentor-student relations from Wikidata, tracing up to 57 generations (over 25.5M paths). HDC bundling and unbinding with CR-based denoising quantify concept propagation over DAGs. Results show a reinterpretation of the Newton-Leibniz dispute and a phase transition from sparse convergence to a post-Leibniz "superhighway", with structural indicators supporting a Kuhnian paradigm shift. VaCoAl thus defines a third paradigm, HDC-AI, complementing LLMs with reversible, auditable multi-hop reasoning.</summary>
+    <category term="cs.NE" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-13T16:13:17Z</published>
+    <arxiv:comment>57 pages, 4 figure, 18 tables</arxiv:comment>
+    <arxiv:primary_category term="cs.NE"/>
+    <author>
+      <name>Hiroyuki Chuma</name>
+    </author>
+    <author>
+      <name>Kanji Otsuka</name>
+    </author>
+    <author>
+      <name>Yoichi Sato</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.23913v1</id>
+    <title>Can LoRA Fusion Support Cross-Domain Tasks in Cloud-Edge Collaboration?</title>
+    <updated>2026-04-09T03:33:08Z</updated>
+    <link href="https://arxiv.org/abs/2605.23913v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.23913v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Cloud-hosted large language models (LLMs) commonly rely on LoRA for domain adaptation, yet domain data are distributed across multiple edge devices and cannot be uploaded due to privacy constraints. This raises a fundamental question: how can knowledge from multiple private edges be integrated into a cloud LLM for cross-domain problem solving? A natural solution is to train LoRA adapters locally and fuse them in the cloud; however, existing pipelines rely on unrealistic assumptions that edge devices can host cloud-scale LLMs and are evaluated mainly on single-domain tasks. To address these limitations, we propose a prune-train-recover framework that enables local LoRA training on pruned models and privacy-preserving cloud integration. We further introduce MMLU-CD, a cross-domain benchmark that composes multiple domain samples into a single instance, enabling explicit evaluation of cross-domain problem solving. This allows us to ask a concrete question: Can existing LoRA fusion methods support cross-domain tasks in cloud-edge collaboration? Our empirical answer is negative. Existing LoRA fusion methods perform poorly on MMLU-CD, often underperforming the base LLM, revealing their inability to support cross-domain problem solving. We attribute this failure to parameter conflicts among LoRA adapters and propose a simple conflict-resolution module, LoRA-CR, which mitigates conflicting updates and improves LoRA fusion performance by up to 3.8%. These results identify conflict mitigation as a critical yet largely overlooked factor in cloud-edge LoRA fusion, warranting further investigation in future research.</summary>
+    <category term="cs.DC" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-09T03:33:08Z</published>
+    <arxiv:comment>16 pages, 6 figures</arxiv:comment>
+    <arxiv:primary_category term="cs.DC"/>
+    <author>
+      <name>Yatong Wang</name>
+    </author>
+    <author>
+      <name>Fali Wang</name>
+    </author>
+    <author>
+      <name>Naibin Gu</name>
+    </author>
+    <author>
+      <name>Zheng Lin</name>
+    </author>
+    <author>
+      <name>Zhengxiao Liu</name>
+    </author>
+    <author>
+      <name>Dingyu Yao</name>
+    </author>
+    <author>
+      <name>Zhiwei Zhang</name>
+    </author>
+    <author>
+      <name>Jianxin Shi</name>
+    </author>
+    <author>
+      <name>Weiping Wang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.09698v2</id>
+    <title>Evaluating Scene-based In-Situ Item Labeling for Immersive Conversational Recommendation</title>
+    <updated>2026-06-24T16:30:51Z</updated>
+    <link href="https://arxiv.org/abs/2604.09698v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.09698v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>The growing ubiquity of Extended Reality (XR) is driving Conversational Recommendation Systems (CRS) toward visually immersive experiences. We formalize this paradigm as Immersive CRS (ICRS), where recommended items are highlighted directly in the user's scene-based visual environment and augmented with in-situ labels. While item recommendation has been widely studied, the problem of how to select and evaluate which information to present as immersive labels remains an open problem. To this end, we introduce a principled categorization of information needs into explicit intent satisfaction and proactive information needs and use these to define novel evaluation metrics for item label selection. We benchmark IR-, LLM-, and VLM-based methods across three datasets and ICRS scenarios: fashion, movie recommendation, and retail shopping. Our evaluation reveals three important limitations of existing methods: (1) they fail to leverage scenario-specific information modalities (e.g., visual cues for fashion, meta-data for retail), (2) they present redundant information that is visually inferable, and (3) they poorly anticipate users' proactive information needs from explicit dialogue alone. In summary, this work provides both a novel evaluation paradigm for in-situ item labeling in ICRS and highlights key challenges for future work.</summary>
+    <category term="cs.IR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-06T23:52:35Z</published>
+    <arxiv:primary_category term="cs.IR"/>
+    <author>
+      <name>Jiazhou Liang</name>
+    </author>
+    <author>
+      <name>Yifan Simon Liu</name>
+    </author>
+    <author>
+      <name>David Guo</name>
+    </author>
+    <author>
+      <name>Minqi Sun</name>
+    </author>
+    <author>
+      <name>Yilun Jiang</name>
+    </author>
+    <author>
+      <name>Scott Sanner</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.04457v2</id>
+    <title>Retrieval Augmented Conversational Recommendation with Reinforcement Learning</title>
+    <updated>2026-04-13T04:14:27Z</updated>
+    <link href="https://arxiv.org/abs/2604.04457v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.04457v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Large language models (LLMs) exhibit enhanced capabilities in language understanding and generation. By utilizing their embedded knowledge, LLMs are increasingly used as conversational recommender systems (CRS), achieving improved performance across diverse scenarios. However, existing LLM-based methods rely on pretrained knowledge without external retrieval mechanisms for novel items. Additionally, the lack of a unified corpus poses challenges for integrating retrieval augmentation into CRS. Motivated by these challenges, we present RAR, a novel two-stage retrieval augmented conversational recommendation framework that aligns retrieval and generation to enhance both performance and factuality. To support this framework and provide a unified corpus, we construct a large-scale movie corpus, comprising over 300k movies with rich metadata, such as titles, casts and plot summaries. Leveraging this data, our primary contribution is RAR, the first framework to departs from standard two-stage CRS by dynamically bridging retrieval and generation. First, a retriever model generates candidate items based on user history; in the subsequent stage, an LLM refines the recommendations by incorporating conversational context with retrieved results. In addition, we introduce a novel reinforcement learning (RL) method that leverages LLM feedback to iteratively update the retriever. By creating a collaborative feedback loop that reinforces sampled candidate sets with higher ranking metrics, RAR effectively mitigates the misalignment between the retrieval and generation stages. Furthermore, grounding the LLM in factual metadata allows our RL-driven approach to capture subtle user intentions and generate context-aware recommendations with reduced hallucinations. We validate our approach through extensive experiments on multiple benchmarks, where RAR consistently outperforms state-of-the-art baseline methods.</summary>
+    <category term="cs.IR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-06T06:08:03Z</published>
+    <arxiv:primary_category term="cs.IR"/>
+    <author>
+      <name>Zhenrui Yue</name>
+    </author>
+    <author>
+      <name>Honglei Zhuang</name>
+    </author>
+    <author>
+      <name>Zhen Qin</name>
+    </author>
+    <author>
+      <name>Zhankui He</name>
+    </author>
+    <author>
+      <name>Huimin Zeng</name>
+    </author>
+    <author>
+      <name>Julian McAuley</name>
+    </author>
+    <author>
+      <name>Dong Wang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.01645v3</id>
+    <title>Contextualizing Sink Knowledge for Java Vulnerability Discovery</title>
+    <updated>2026-04-19T01:22:53Z</updated>
+    <link href="https://arxiv.org/abs/2604.01645v3" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.01645v3" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Java applications are prone to vulnerabilities stemming from the insecure use of security-sensitive APIs, such as file operations enabling path traversal or deserialization routines allowing remote code execution. These sink APIs encode critical information for vulnerability discovery: the program-specific constraints required to reach them and the exploitation conditions necessary to trigger security flaws. Despite this, existing fuzzers largely overlook such vulnerability-specific knowledge, limiting their effectiveness.
+  We present GONDAR, a sink-centric fuzzing framework that systematically leverages sink API semantics for targeted vulnerability discovery. GONDAR first identifies reachable and exploitable sink call sites through CWE-specific scanning combined with LLM-assisted static filtering. It then deploys two specialized agents that work collaboratively with a coverage-guided fuzzer: an exploration agent generates inputs to reach target call sites by iteratively solving path constraints, while an exploitation agent synthesizes proof-of-concept exploits by reasoning about and satisfying vulnerability-triggering conditions. The agents and fuzzer continuously exchange seeds and runtime feedback, complementing each other. We evaluated GONDAR on real-world Java benchmarks, where it discovers four times more vulnerabilities than Jazzer, the state-of-the-art Java fuzzer. Notably, an earlier GONDAR version contributed to Team Atlanta's first-place CRS in the DARPA AI Cyber Challenge, and is integrated into OSS-CRS, a sandbox project in The Linux Foundation's OpenSSF, to analyze open-source Java projects, where it has already uncovered a zero-day vulnerability.</summary>
+    <category term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-02T05:43:25Z</published>
+    <arxiv:primary_category term="cs.CR"/>
+    <author>
+      <name>Fabian Fleischer</name>
+    </author>
+    <author>
+      <name>Cen Zhang</name>
+    </author>
+    <author>
+      <name>Joonun Jang</name>
+    </author>
+    <author>
+      <name>Jeongin Cho</name>
+    </author>
+    <author>
+      <name>Meng Xu</name>
+    </author>
+    <author>
+      <name>Taesoo Kim</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2603.28813v1</id>
+    <title>The impact of multi-agent debate protocols on debate quality: a controlled case study</title>
+    <updated>2026-03-28T11:36:56Z</updated>
+    <link href="https://arxiv.org/abs/2603.28813v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2603.28813v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>In multi-agent debate (MAD) systems, performance gains are often reported; however, because the debate protocol (e.g., number of agents, rounds, and aggregation rule) is typically held fixed while model-related factors vary, it is difficult to disentangle protocol effects from model effects. To isolate these effects, we compare three main protocols, Within-Round (WR; agents see only current-round contributions), Cross-Round (CR; full prior-round context), and novel Rank-Adaptive Cross-Round (RA-CR; dynamically reorders agents and silences one per round via an external judge model), against a No-Interaction baseline (NI; independent responses without peer visibility). In a controlled macroeconomic case study (20 diverse events, five random seeds, matched prompts/decoding), RA-CR achieves faster convergence than CR, WR shows higher peer-referencing, and NI maximizes Argument Diversity (unaffected across the main protocols). These results reveal a trade-off between interaction (peer-referencing rate) and convergence (consensus formation), confirming protocol design matters. When consensus is prioritized, RA-CR outperforms the others.</summary>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-03-28T11:36:56Z</published>
+    <arxiv:comment>16 pages, 3 figures</arxiv:comment>
+    <arxiv:primary_category term="cs.MA"/>
+    <author>
+      <name>Ramtin Zargari Marandi</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2603.24329v2</id>
+    <title>GameplayQA: A Benchmarking Framework for Decision-Dense POV-Synced Multi-Video Understanding of 3D Virtual Agents</title>
+    <updated>2026-04-12T23:43:39Z</updated>
+    <link href="https://arxiv.org/abs/2603.24329v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2603.24329v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Multimodal LLMs are increasingly deployed as perceptual backbones for autonomous agents in 3D environments, from robotics to virtual worlds. These applications require agents to perceive rapid state changes, attribute actions to the correct entities, and reason about concurrent multi-agent behaviors from a first-person perspective, capabilities that existing benchmarks do not adequately evaluate. We introduce GameplayQA, a framework for evaluating agentic-centric perception and reasoning through video understanding. Specifically, we densely annotate multiplayer 3D gameplay videos at 1.22 labels/second, with time-synced, concurrent captions of states, actions, and events structured around a triadic system of Self, Other Agents, and the World, a natural decomposition for multi-agent environments. From these annotations, we refined 2.4K diagnostic QA pairs organized into three levels of cognitive complexity, accompanied by a structured distractor taxonomy that enables fine-grained analysis of where models hallucinate. Evaluation of frontier MLLMs reveals a substantial gap from human performance, with common failures in temporal and cross-video grounding, agent-role attribution, and handling the decision density of the game. We hope GameplayQA stimulates future research at the intersection of embodied AI, agentic perception, and world modeling.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-03-25T14:10:45Z</published>
+    <arxiv:comment>Accepted to the Annual Meeting of the Association for Computational Linguistics (ACL 2026)</arxiv:comment>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Yunzhe Wang</name>
+    </author>
+    <author>
+      <name>Runhui Xu</name>
+    </author>
+    <author>
+      <name>Kexin Zheng</name>
+    </author>
+    <author>
+      <name>Tianyi Zhang</name>
+    </author>
+    <author>
+      <name>Jayavibhav Niranjan Kogundi</name>
+    </author>
+    <author>
+      <name>Soham Hans</name>
+    </author>
+    <author>
+      <name>Volkan Ustun</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2603.22577v1</id>
+    <title>STRIATUM-CTF: A Protocol-Driven Agentic Framework for General-Purpose CTF Solving</title>
+    <updated>2026-03-23T21:17:26Z</updated>
+    <link href="https://arxiv.org/abs/2603.22577v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2603.22577v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Large Language Models (LLMs) have demonstrated potential in code generation, yet they struggle with the multi-step, stateful reasoning required for offensive cybersecurity operations. Existing research often relies on static benchmarks that fail to capture the dynamic nature of real-world vulnerabilities. In this work, we introduce STRIATUM-CTF (A Search-based Test-time Reasoning Inference Agent for Tactical Utility Maximization in Cybersecurity), a modular agentic framework built upon the Model Context Protocol (MCP). By standardizing tool interfaces for system introspection, decompilation, and runtime debugging, STRIATUM-CTF enables the agent to maintain a coherent context window across extended exploit trajectories.
+  We validate this approach not merely on synthetic datasets, but in a live competitive environment. Our system participated in a university-hosted Capture-the-Flag (CTF) competition in late 2025, where it operated autonomously to identify and exploit vulnerabilities in real-time. STRIATUM-CTF secured First Place, outperforming 21 human teams and demonstrating strong adaptability in a dynamic problem-solving setting. We analyze the agent's decision-making logs to show how MCP-based tool abstraction significantly reduces hallucination compared to naive prompting strategies. These results suggest that standardized context protocols are a critical path toward robust autonomous cyber-reasoning systems.</summary>
+    <category term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-03-23T21:17:26Z</published>
+    <arxiv:comment>8 pages, 7 pages</arxiv:comment>
+    <arxiv:primary_category term="cs.CR"/>
+    <author>
+      <name>James Hugglestone</name>
+    </author>
+    <author>
+      <name>Samuel Jacob Chacko</name>
+    </author>
+    <author>
+      <name>Dawson Stoller</name>
+    </author>
+    <author>
+      <name>Ryan Schmidt</name>
+    </author>
+    <author>
+      <name>Xiuwen Liu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2603.18573v1</id>
+    <title>Interplay: Training Independent Simulators for Reference-Free Conversational Recommendation</title>
+    <updated>2026-03-19T07:33:50Z</updated>
+    <link href="https://arxiv.org/abs/2603.18573v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2603.18573v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Training conversational recommender systems (CRS) requires extensive dialogue data, which is challenging to collect at scale. To address this, researchers have used simulated user-recommender conversations. Traditional simulation approaches often utilize a single large language model (LLM) that generates entire conversations with prior knowledge of the target items, leading to scripted and artificial dialogues. We propose a reference-free simulation framework that trains two independent LLMs, one as the user and one as the conversational recommender. These models interact in real-time without access to predetermined target items, but preference summaries and target attributes, enabling the recommender to genuinely infer user preferences through dialogue. This approach produces more realistic and diverse conversations that closely mirror authentic human-AI interactions. Our reference-free simulators match or exceed existing methods in quality, while offering a scalable solution for generating high-quality conversational recommendation data without constraining conversations to pre-defined target items. We conduct both quantitative and human evaluations to confirm the effectiveness of our reference-free approach.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.IR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-03-19T07:33:50Z</published>
+    <arxiv:comment>Accepted at ECIR 2026</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Jerome Ramos</name>
+    </author>
+    <author>
+      <name>Feng Xia</name>
+    </author>
+    <author>
+      <name>Xi Wang</name>
+    </author>
+    <author>
+      <name>Shubham Chatterjee</name>
+    </author>
+    <author>
+      <name>Xiao Fu</name>
+    </author>
+    <author>
+      <name>Hossein A. Rahmani</name>
+    </author>
+    <author>
+      <name>Aldo Lipani</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2603.17974v1</id>
+    <title>Toward Scalable Automated Repository-Level Datasets for Software Vulnerability Detection</title>
+    <updated>2026-03-18T17:38:35Z</updated>
+    <link href="https://arxiv.org/abs/2603.17974v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2603.17974v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Software vulnerabilities continue to grow in volume and remain difficult to detect in practice. Although learning-based vulnerability detection has progressed, existing benchmarks are largely function-centric and fail to capture realistic, executable, interprocedural settings. Recent repo-level security benchmarks demonstrate the importance of realistic environments, but their manual curation limits scale. This doctoral research proposes an automated benchmark generator that injects realistic vulnerabilities into real-world repositories and synthesizes reproducible proof-of-vulnerability (PoV) exploits, enabling precisely labeled datasets for training and evaluating repo-level vulnerability detection agents. We further investigate an adversarial co-evolution loop between injection and detection agents to improve robustness under realistic constraints.</summary>
+    <category term="cs.SE" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-03-18T17:38:35Z</published>
+    <arxiv:comment>Supervisor: Prof. Massih-Reza Amini</arxiv:comment>
+    <arxiv:primary_category term="cs.SE"/>
+    <author>
+      <name>Amine Lbath</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2603.11689v3</id>
+    <title>Explicit Logic Channel for Validation and Enhancement of MLLMs on Zero-Shot Tasks</title>
+    <updated>2026-07-01T08:11:59Z</updated>
+    <link href="https://arxiv.org/abs/2603.11689v3" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2603.11689v3" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Frontier Multimodal Large Language Models (MLLMs) exhibit remarkable capabilities in Visual-Language Comprehension (VLC) tasks. However, they are often deployed as zero-shot solution to new tasks in a black-box manner. Validating and understanding the behavior of these models become important for application to new task. We propose an Explicit Logic Channel, in parallel with the black-box model channel, to perform explicit logical reasoning for model validation, selection and enhancement. The frontier MLLM, encapsulating latent vision-language knowledge, can be considered as an Implicit Logic Channel. The proposed Explicit Logic Channel, mimicking human logical reasoning, incorporates a LLM, a VFM, and logical reasoning with probabilistic inference for factual, counterfactual, and relational reasoning over the explicit visual evidence. A Consistency Rate (CR) is proposed for cross-channel validation and model selection, even without ground-truth annotations. Additionally, cross-channel integration further improves performance in zero-shot tasks over MLLMs, grounded with explicit visual evidence to enhance trustworthiness. Comprehensive experiments conducted for two representative VLC tasks, i.e., MC-VQA and HC-REC, on three challenging benchmarks, with 11 recent open-source MLLMs from 4 frontier families. Our systematic evaluations demonstrate the effectiveness of proposed ELC and CR for model validation, selection and improvement on MLLMs with enhanced explainability and trustworthiness.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-03-12T08:56:14Z</published>
+    <arxiv:comment>Accepted to ECCV 2026</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Mei Chee Leong</name>
+    </author>
+    <author>
+      <name>Ying Gu</name>
+    </author>
+    <author>
+      <name>Hui Li Tan</name>
+    </author>
+    <author>
+      <name>Liyuan Li</name>
+    </author>
+    <author>
+      <name>Nancy Chen</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2603.11078v1</id>
+    <title>CR-Bench: Evaluating the Real-World Utility of AI Code Review Agents</title>
+    <updated>2026-03-10T21:29:42Z</updated>
+    <link href="https://arxiv.org/abs/2603.11078v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2603.11078v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Recent advances in frontier large language models have enabled code review agents that operate in open-ended, reasoning-intensive settings. However, the lack of standardized benchmarks and granular evaluation protocols makes it difficult to assess behavior of code review agents beyond coarse success metrics, particularly for tasks where false positives are costly. To address this gap, we introduce CR-Bench, a benchmarking dataset, and CR-Evaluator, a fine-grained evaluation pipeline for code review agents. Using these tools, we conduct a preliminary study evaluating both a single-shot agent and a Reflexion-based agent across two frontier models. We find that code review agents can exhibit a low signal-to-noise ratio when designed to identify all hidden issues, obscuring true progress and developer productivity when measured solely by resolution rates. Our analysis identifies the hidden trade-off between issue resolution and spurious findings, revealing a frontier that constrains effective agent design. Together, CR-Bench and CR-Evaluator provide a timely foundation for studying and developing code review agents as LLM-based systems transition from controlled benchmarks to real-world software engineering workflows.</summary>
+    <category term="cs.SE" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-03-10T21:29:42Z</published>
+    <arxiv:primary_category term="cs.SE"/>
+    <author>
+      <name>Kristen Pereira</name>
+    </author>
+    <author>
+      <name>Neelabh Sinha</name>
+    </author>
+    <author>
+      <name>Rajat Ghosh</name>
+    </author>
+    <author>
+      <name>Debojyoti Dutta</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2603.10072v1</id>
+    <title>Why LLMs Fail: A Failure Analysis and Partial Success Measurement for Automated Security Patch Generation</title>
+    <updated>2026-03-10T05:34:56Z</updated>
+    <link href="https://arxiv.org/abs/2603.10072v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2603.10072v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Large Language Models (LLMs) show promise for Automated Program Repair (APR), yet their effectiveness on security vulnerabilities remains poorly characterized. This study analyzes 319 LLM-generated security patchesacross 64 Java vulnerabilities from the Vul4J benchmark. Using tri-axis evaluation (compilation, security via PoV tests, functionality via test suites), the analysis reveals that only 24.8% of patches achieve full correctness, while 51.4% fail both security and functionality. The dominant failure mode is semantic misunderstanding: LLMs produce syntactically valid code but apply incorrect repair strategies. The proposed Security Repair Score (SRS) quantifies this gap, showing LLMs preserve functionality (mean 0.832) but struggle with security (mean 0.251). Vulnerability type strongly predicts difficulty, with fix rates ranging from 0% (input validation) to 45% (infinite loop). These findings demonstrate that LLM security patches require rigorous validation before deployment.</summary>
+    <category term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-03-10T05:34:56Z</published>
+    <arxiv:primary_category term="cs.CR"/>
+    <author>
+      <name>Amir Al-Maamari</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2603.03536v1</id>
+    <title>SafeCRS: Personalized Safety Alignment for LLM-Based Conversational Recommender Systems</title>
+    <updated>2026-03-03T21:46:53Z</updated>
+    <link href="https://arxiv.org/abs/2603.03536v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2603.03536v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Current LLM-based conversational recommender systems (CRS) primarily optimize recommendation accuracy and user satisfaction. We identify an underexplored vulnerability in which recommendation outputs may negatively impact users by violating personalized safety constraints, when individualized safety sensitivities -- such as trauma triggers, self-harm history, or phobias -- are implicitly inferred from the conversation but not respected during recommendation. We formalize this challenge as personalized CRS safety and introduce SafeRec, a new benchmark dataset designed to systematically evaluate safety risks in LLM-based CRS under user-specific constraints. To further address this problem, we propose SafeCRS, a safety-aware training framework that integrates Safe Supervised Fine-Tuning (Safe-SFT) with Safe Group reward-Decoupled Normalization Policy Optimization (Safe-GDPO) to jointly optimize recommendation quality and personalized safety alignment. Extensive experiments on SafeRec demonstrate that SafeCRS reduces safety violation rates by up to 96.5% relative to the strongest recommendation-quality baseline while maintaining competitive recommendation quality. Warning: This paper contains potentially harmful and offensive content.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.IR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-03-03T21:46:53Z</published>
+    <arxiv:comment>14 pages, 4 figures</arxiv:comment>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Haochang Hao</name>
+    </author>
+    <author>
+      <name>Yifan Xu</name>
+    </author>
+    <author>
+      <name>Xinzhuo Li</name>
+    </author>
+    <author>
+      <name>Yingqiang Ge</name>
+    </author>
+    <author>
+      <name>Lu Cheng</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2602.17264v1</id>
+    <title>On the Reliability of User-Centric Evaluation of Conversational Recommender Systems</title>
+    <updated>2026-02-19T11:10:11Z</updated>
+    <link href="https://arxiv.org/abs/2602.17264v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2602.17264v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>User-centric evaluation has become a key paradigm for assessing Conversational Recommender Systems (CRS), aiming to capture subjective qualities such as satisfaction, trust, and rapport. To enable scalable evaluation, recent work increasingly relies on third-party annotations of static dialogue logs by crowd workers or large language models. However, the reliability of this practice remains largely unexamined. In this paper, we present a large-scale empirical study investigating the reliability and structure of user-centric CRS evaluation on static dialogue transcripts. We collected 1,053 annotations from 124 crowd workers on 200 ReDial dialogues using the 18-dimensional CRS-Que framework. Using random-effects reliability models and correlation analysis, we quantify the stability of individual dimensions and their interdependencies. Our results show that utilitarian and outcome-oriented dimensions such as accuracy, usefulness, and satisfaction achieve moderate reliability under aggregation, whereas socially grounded constructs such as humanness and rapport are substantially less reliable. Furthermore, many dimensions collapse into a single global quality signal, revealing a strong halo effect in third-party judgments. These findings challenge the validity of single-annotator and LLM-based evaluation protocols and motivate the need for multi-rater aggregation and dimension reduction in offline CRS evaluation.</summary>
+    <category term="cs.IR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-02-19T11:10:11Z</published>
+    <arxiv:comment>5 pages, 2 figures. Submitted to UMAP 2026. Code available at https://github.com/michael-mue/reliable-crs-eval</arxiv:comment>
+    <arxiv:primary_category term="cs.IR"/>
+    <author>
+      <name>Michael Müller</name>
+    </author>
+    <author>
+      <name>Amir Reza Mohammadi</name>
+    </author>
+    <author>
+      <name>Andreas Peintner</name>
+    </author>
+    <author>
+      <name>Beatriz Barroso Gstrein</name>
+    </author>
+    <author>
+      <name>Günther Specht</name>
+    </author>
+    <author>
+      <name>Eva Zangerle</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2602.13574v1</id>
+    <title>Execution-State-Aware LLM Reasoning for Automated Proof-of-Vulnerability Generation</title>
+    <updated>2026-02-14T03:17:27Z</updated>
+    <link href="https://arxiv.org/abs/2602.13574v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2602.13574v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Proof-of-Vulnerability (PoV) generation is a critical task in software security, serving as a cornerstone for vulnerability validation, false positive reduction, and patch verification. While directed fuzzing effectively drives path exploration, satisfying complex semantic constraints remains a persistent bottleneck in automated exploit generation. Large Language Models (LLMs) offer a promising alternative with their semantic reasoning capabilities; however, existing LLM-based approaches lack sufficient grounding in concrete execution behavior, limiting their ability to generate precise PoVs.
+  In this paper, we present DrillAgent, an agentic framework that reformulates PoV generation as an iterative hypothesis-verification-refinement process. To bridge the gap between static reasoning and dynamic execution, DrillAgent synergizes LLM-based semantic inference with feedback from concrete program states. The agent analyzes the target code to hypothesize inputs, observes execution behavior, and employs a novel mechanism to translate low-level execution traces into source-level constraints. This closed-loop design enables the agent to incrementally align its input generation with the precise requirements of the vulnerability. We evaluate DrillAgent on SEC-bench, a large-scale benchmark of real-world C/C++ vulnerabilities. Experimental results show that DrillAgent substantially outperforms state-of-the-art LLM agent baselines under fixed budget constraints, solving up to 52.8% more CVE tasks than the best-performing baseline. These results highlight the necessity of execution-state-aware reasoning for reliable PoV generation in complex software systems.</summary>
+    <category term="cs.SE" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-02-14T03:17:27Z</published>
+    <arxiv:comment>Version 1.0 (13 pages, 7 figures)</arxiv:comment>
+    <arxiv:primary_category term="cs.SE"/>
+    <author>
+      <name>Haoyu Li</name>
+    </author>
+    <author>
+      <name>Xijia Che</name>
+    </author>
+    <author>
+      <name>Yanhao Wang</name>
+    </author>
+    <author>
+      <name>Xiaojing Liao</name>
+    </author>
+    <author>
+      <name>Luyi Xing</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2602.13292v1</id>
+    <title>Mirror: A Multi-Agent System for AI-Assisted Ethics Review</title>
+    <updated>2026-02-09T03:38:55Z</updated>
+    <link href="https://arxiv.org/abs/2602.13292v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2602.13292v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Ethics review is a foundational mechanism of modern research governance, yet contemporary systems face increasing strain as ethical risks arise as structural consequences of large-scale, interdisciplinary scientific practice. The demand for consistent and defensible decisions under heterogeneous risk profiles exposes limitations in institutional review capacity rather than in the legitimacy of ethics oversight. Recent advances in large language models (LLMs) offer new opportunities to support ethics review, but their direct application remains limited by insufficient ethical reasoning capability, weak integration with regulatory structures, and strict privacy constraints on authentic review materials. In this work, we introduce Mirror, an agentic framework for AI-assisted ethical review that integrates ethical reasoning, structured rule interpretation, and multi-agent deliberation within a unified architecture. At its core is EthicsLLM, a foundational model fine-tuned on EthicsQA, a specialized dataset of 41K question-chain-of-thought-answer triples distilled from authoritative ethics and regulatory corpora. EthicsLLM provides detailed normative and regulatory understanding, enabling Mirror to operate in two complementary modes. Mirror-ER (expedited Review) automates expedited review through an executable rule base that supports efficient and transparent compliance checks for minimal-risk studies. Mirror-CR (Committee Review) simulates full-board deliberation through coordinated interactions among expert agents, an ethics secretary agent, and a principal investigator agent, producing structured, committee-level assessments across ten ethical dimensions. Empirical evaluations demonstrate that Mirror significantly improves the quality, consistency, and professionalism of ethics assessments compared with strong generalist LLMs.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-02-09T03:38:55Z</published>
+    <arxiv:comment>4 figures, 3 tables</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Yifan Ding</name>
+    </author>
+    <author>
+      <name>Yuhui Shi</name>
+    </author>
+    <author>
+      <name>Zhiyan Li</name>
+    </author>
+    <author>
+      <name>Zilong Wang</name>
+    </author>
+    <author>
+      <name>Yifeng Gao</name>
+    </author>
+    <author>
+      <name>Yajun Yang</name>
+    </author>
+    <author>
+      <name>Mengjie Yang</name>
+    </author>
+    <author>
+      <name>Yixiu Liang</name>
+    </author>
+    <author>
+      <name>Xipeng Qiu</name>
+    </author>
+    <author>
+      <name>Xuanjing Huang</name>
+    </author>
+    <author>
+      <name>Xingjun Ma</name>
+    </author>
+    <author>
+      <name>Yu-Gang Jiang</name>
+    </author>
+    <author>
+      <name>Guoyu Wang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2602.07666v4</id>
+    <title>SoK: DARPA's AI Cyber Challenge (AIxCC): Competition Design, Architectures, and Lessons Learned</title>
+    <updated>2026-05-29T22:32:29Z</updated>
+    <link href="https://arxiv.org/abs/2602.07666v4" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2602.07666v4" rel="related" type="application/pdf" title="pdf"/>
+    <summary>DARPA's AI Cyber Challenge (AIxCC, 2023--2025) is the largest competition to date for building fully autonomous cyber reasoning systems (CRSs) that leverage recent advances in AI -- particularly large language models (LLMs) -- to discover and remediate vulnerabilities in real-world open-source software. This paper presents the first systematic analysis of AIxCC. Drawing on design documents, source code, execution traces, and discussions with organizers and competing teams, we examine the competition's structure and key design decisions, characterize the architectural approaches of finalist CRSs, and analyze competition results beyond the final scoreboard. Our analysis reveals the factors that truly drove CRS performance, identifies genuine technical advances achieved by teams, and exposes limitations that remain open for future research. We conclude with lessons for organizing future competitions and broader insights toward deploying autonomous CRSs in practice.</summary>
+    <category term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-02-07T19:21:27Z</published>
+    <arxiv:comment>Camera ready version, systematization of Knowledge and post-competition analysis of DARPA AIxCC (2023-2025)</arxiv:comment>
+    <arxiv:primary_category term="cs.CR"/>
+    <arxiv:journal_ref>USENIX Security 2026</arxiv:journal_ref>
+    <author>
+      <name>Cen Zhang</name>
+    </author>
+    <author>
+      <name>Younggi Park</name>
+    </author>
+    <author>
+      <name>Fabian Fleischer</name>
+    </author>
+    <author>
+      <name>Yu-Fu Fu</name>
+    </author>
+    <author>
+      <name>Jiho Kim</name>
+    </author>
+    <author>
+      <name>Dongkwan Kim</name>
+    </author>
+    <author>
+      <name>Youngjoon Kim</name>
+    </author>
+    <author>
+      <name>Qingxiao Xu</name>
+    </author>
+    <author>
+      <name>Andrew Chin</name>
+    </author>
+    <author>
+      <name>Ze Sheng</name>
+    </author>
+    <author>
+      <name>Hanqing Zhao</name>
+    </author>
+    <author>
+      <name>Michael Pelican</name>
+    </author>
+    <author>
+      <name>David J. Musliner</name>
+    </author>
+    <author>
+      <name>Jeff Huang</name>
+    </author>
+    <author>
+      <name>Jon Silliman</name>
+    </author>
+    <author>
+      <name>Mikel Mcdaniel</name>
+    </author>
+    <author>
+      <name>Jefferson Casavant</name>
+    </author>
+    <author>
+      <name>Isaac Goldthwaite</name>
+    </author>
+    <author>
+      <name>Nicholas Vidovich</name>
+    </author>
+    <author>
+      <name>Matthew Lehman</name>
+    </author>
+    <author>
+      <name>Taesoo Kim</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2602.00305v2</id>
+    <title>Syntax- and Compilation-Preserving Evasion of LLM Vulnerability Detectors</title>
+    <updated>2026-05-06T04:27:10Z</updated>
+    <link href="https://arxiv.org/abs/2602.00305v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2602.00305v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>LLM-based vulnerability detectors are increasingly deployed in CI/CD security gating, yet their resilience to evasion under syntax- and compilation-preserving edits remains poorly understood. We evaluate five attack variants spanning four carrier families of behavior-preserving code transformations on a unified C/C++ benchmark ($N=5000$) and introduce Complete Resistance (CR), measuring the fraction of correctly detected vulnerabilities that withstand all attack variants. Our findings reveal a significant robustness gap: models achieving 70\%+ clean recall exhibit CR as low as 0.12\%, meaning over 87\% of detected vulnerabilities can be evaded by at least one syntax-preserving edit. Universal adversarial strings optimized on a 14B surrogate transfer effectively to black-box APIs including GPT-4o, while on-target optimization further amplifies evasion (up to 92.5\% ASR). These results indicate that clean benchmark accuracy alone is insufficient as a security guarantee for deployed vulnerability detectors.</summary>
+    <category term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-01-30T20:54:27Z</published>
+    <arxiv:primary_category term="cs.CR"/>
+    <author>
+      <name>Luze Sun</name>
+    </author>
+    <author>
+      <name>Alina Oprea</name>
+    </author>
+    <author>
+      <name>Eric Wong</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2601.18197v2</id>
+    <title>GAIA: A Data Flywheel System for Training GUI Test-Time Scaling Critic Models</title>
+    <updated>2026-06-26T07:19:55Z</updated>
+    <link href="https://arxiv.org/abs/2601.18197v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2601.18197v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>While Large Vision-Language Models (LVLMs) have significantly advanced GUI agents' capabilities in parsing textual instructions, interpreting screen content, and executing tasks, a critical challenge persists: the irreversibility of agent operations-where a single erroneous action can trigger catastrophic deviations. To address this, we propose the \textbf{G}UI \textbf{A}ction Cr\textbf{i}tic's Dat\textbf{a} Flywheel System (GAIA), a training framework that enables the models to have iterative critic capabilities, which are used to improve the Test-Time Scaling (TTS) of basic GUI agents' performance. Specifically, we train an \textbf{Intuitive Critic Model} (ICM) using positive and negative action examples from a base agent first. This critic evaluates the immediate correctness of the agent's intended actions, thereby selecting operations with higher success probability. Then, the initial critic guides agent actions to collect refined positive/negative samples, initiating the self-improving cycle. The augmented data then trains a second-round critic with enhanced discernment capability. We conduct experiments on various datasets and demonstrate that the proposed ICM can improve the test-time performance of various closed-source and open-source models, and the performance can be gradually improved as the data is recycled. The code, dataset, and accompanying datasheet will be publicly released at https://github.com/SeerRay-Lab/GAIA.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-01-26T06:29:41Z</published>
+    <arxiv:comment>Accepted by ECCV 2026</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Shaokang Wang</name>
+    </author>
+    <author>
+      <name>Pei Fu</name>
+    </author>
+    <author>
+      <name>Ruoceng Zhang</name>
+    </author>
+    <author>
+      <name>Shaojie Zhang</name>
+    </author>
+    <author>
+      <name>Xiuwen Xi</name>
+    </author>
+    <author>
+      <name>Jiahui Yang</name>
+    </author>
+    <author>
+      <name>Bin Qin</name>
+    </author>
+    <author>
+      <name>Ying Huang</name>
+    </author>
+    <author>
+      <name>Zhenbo Luo</name>
+    </author>
+    <author>
+      <name>Jian Luan</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2601.17218v2</id>
+    <title>Evaluation on Entity Matching in Recommender Systems</title>
+    <updated>2026-02-01T22:05:28Z</updated>
+    <link href="https://arxiv.org/abs/2601.17218v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2601.17218v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Entity matching is a crucial component in various recommender systems, including conversational recommender systems (CRS) and knowledge-based recommender systems. However, the lack of rigorous evaluation frameworks for cross-dataset entity matching impedes progress in areas such as LLM-driven conversational recommendations and knowledge-grounded dataset construction.
+  In this paper, we introduce Reddit-Amazon-EM, a novel dataset comprising naturally occurring items from Reddit and the Amazon '23 dataset. Through careful manual annotation, we identify corresponding movies across Reddit-Movies and Amazon'23, two existing recommender system datasets with inherently overlapping catalogs. Leveraging Reddit-Amazon-EM, we conduct a comprehensive evaluation of state-of-the-art entity matching methods, including rule-based, graph-based, lexical-based, embedding-based, and LLM-based approaches.
+  For reproducible research, we release our manually annotated entity matching gold set and provide the mapping between the two datasets using the best-performing method from our experiments. This serves as a valuable resource for advancing future work on entity matching in recommender systems.Data and Code are accessible at: https://github.com/huang-zihan/Reddit-Amazon-Entity-Matching.</summary>
+    <category term="cs.IR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-01-23T23:05:46Z</published>
+    <arxiv:primary_category term="cs.IR"/>
+    <author>
+      <name>Zihan Huang</name>
+    </author>
+    <author>
+      <name>Rohan Surana</name>
+    </author>
+    <author>
+      <name>Zhouhang Xie</name>
+    </author>
+    <author>
+      <name>Junda Wu</name>
+    </author>
+    <author>
+      <name>Yu Xia</name>
+    </author>
+    <author>
+      <name>Julian McAuley</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2601.16400v1</id>
+    <title>Clarify or Answer: Reinforcement Learning for Agentic VQA with Context Under-specification</title>
+    <updated>2026-01-23T02:12:33Z</updated>
+    <link href="https://arxiv.org/abs/2601.16400v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2601.16400v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Real-world visual question answering (VQA) is often context-dependent: an image-question pair may be under-specified, such that the correct answer depends on external information that is not observable in the image. In such cases, directly answering can lead to confident but incorrect predictions. We propose CoA(Clarify-or-Answer), an ask-or-answer agent that separately models the decision to ask or answer, and what to ask if needed. CoA first determines whether clarification is necessary; if so, it asks a single focused question and then incorporates the response to produce the final answer. We introduce CONTEXTCLARIFY with a set of ambiguous VQA questions and the contrast set that is non-ambiguous. We further introduce GRPO-CR (Clarification Reasoning), a reinforcement learning approach that optimizes clarification question generation with multiple reward signals encouraging well-formed, focused, non-trivial questions that resolve ambiguity. Across three VLLMs and three datasets, CoA achieves consistent improvements at both the module and system levels, improving end-to-end VQA accuracy by an average of +15.3 points (83%) over prompting-based baselines</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-01-23T02:12:33Z</published>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Zongwan Cao</name>
+    </author>
+    <author>
+      <name>Bingbing Wen</name>
+    </author>
+    <author>
+      <name>Lucy Lu Wang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2601.09387v1</id>
+    <title>New Estimate for the Cosmic Ray-Induced $\rm H_2$ Photodissociation Rate in the Interstellar Medium</title>
+    <updated>2026-01-14T11:27:30Z</updated>
+    <link href="https://arxiv.org/abs/2601.09387v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2601.09387v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>In the interstellar medium, cosmic rays (CRs) generate a field of ultraviolet (UV) photons via the excitation and subsequent radiative decay of $\rm H_2$ molecules. This UV field is a major agent of ionization and dissociation in the inner regions of molecular clouds that are shielded from the effects of the interstellar radiation field. In particular, the dissociation of $\rm H_2$, by far the most abundant molecule in interstellar clouds, leads to the production of atomic hydrogen which then takes part in the production of a multitude of molecules, in particular complex organics on the surfaces of interstellar dust grains. Precise knowledge of the rates of CR-induced dissociation processes is thus crucial for constructing reliable chemical models. For the present paper, we have derived a new value of $k_{\rm diss, CR}(\mbox{$\rm H_2$})=0.831ζ$ for the rate of $\rm H_2$ dissociation, where $ζ$ is the CR ionization rate of $\rm H_2$. This prediction contrasts a previous value from the Leiden database which overestimated the rate due to an inconsistent treatment of the $\rm H_2$ abundances and photodissociation cross sections. By running a series of chemical models, we show that the overestimated dissociation rate has a large effect on the results of chemical simulations, with the abundance of methanol being overestimated by over one order of magnitude. Hence, we strongly recommend the adoption of our new estimate $k_{\rm diss, CR}(\mbox{$\rm H_2$})=0.831ζ$ in all chemical models that include this process. Our newly derived value corresponds to $\rm H_2$ being purely in the para form ($J^{\prime\prime} = 0$). However, in the interiors of molecular clouds the $\rm H_2$ ortho-to-para ratio is low and using the rate for para-$\rm H_2$ is an adequate approximation.</summary>
+    <category term="astro-ph.GA" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-01-14T11:27:30Z</published>
+    <arxiv:comment>Accepted to ACS Earth &amp; Space Chemistry "Eric Herbst Festschrift" Special Issue</arxiv:comment>
+    <arxiv:primary_category term="astro-ph.GA"/>
+    <author>
+      <name>O. Sipilä</name>
+    </author>
+    <author>
+      <name>P. Caselli</name>
+    </author>
+    <author>
+      <name>M. Padovani</name>
+    </author>
+    <author>
+      <name>D. Galli</name>
+    </author>
+    <author>
+      <name>T. Grassi</name>
+    </author>
+    <author>
+      <name>H. R. Hrodmarsson</name>
+    </author>
+    <author>
+      <name>S. S. Jensen</name>
+    </author>
+    <author>
+      <name>E. Roueff</name>
+    </author>
+  </entry>
+</feed>

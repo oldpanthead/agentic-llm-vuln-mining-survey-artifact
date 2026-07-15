@@ -5,7 +5,7 @@ current manuscript artifact. The protocol is designed for auditability of the
 mapping-oriented scoping review corpus, not for claiming a PRISMA-complete
 systematic review.
 
-## Search Date And Scope
+## Reconciled Ledger Date And Scope
 
 - Search ledger date: 2026-06-30
 - Date range covered: 2023-01-01 to 2026-06-30
@@ -56,11 +56,15 @@ without a security task, commentary without an identifiable source object,
 duplicates superseded by a later version, inaccessible records, or materials
 outside vulnerability mining, validation, benchmarking, or Agent governance.
 
+## Submission-Time Update Search
+
+A separate arXiv update/sensitivity search was run on 2026-07-15 with four broader query groups defined in `submission_update_search.py`. Unlike the reconciled historical ledger, this search preserves raw Atom responses, query timestamps, pagination, and SHA-256 hashes. It returned 432 unique records: 12 matched the existing corpus, 26 were first submitted after the analytical cutoff, 41 advanced to full-text author review, 30 were retained as contextual/background update candidates, and 323 were excluded at title/abstract screening. Record-level screening decisions are in `data/submission_update_20260715_screening_audit.csv`.
+
+The author full-text audit in `data/submission_update_20260715_full_coding_audit.csv` identifies 38 provisional study-level candidates and 3 extended-synthesis records. They are not silently added to the frozen coding matrix: a denominator change still requires the independent pass prepared in `data/submission_update_20260715_second_coder_blind_template.csv`. The update therefore remains a documented coverage-sensitivity result and a concrete pre-submission methodology blocker.
 ## Counting Policy
 
-`record_id` is the source-record key in the public screening ledger. The artifact records 212 source records and uses `data/study_version_crosswalk.csv` to consolidate preprints, conference versions, exact duplicates, and source variants into 207 canonical candidate studies. Current canonical analysis-use counts are 31 study-level coded records, 62 extended synthesis studies, 95 background/reference records, and 19 excluded near-neighbor studies. Source search counts in `data/source_search_log.csv` are counts of records captured in the public screening ledger after source reconciliation; they are not volatile web-search result totals.
+`record_id` is the source-record key in the public screening ledger. The artifact records 212 source records and uses `data/study_version_crosswalk.csv` to consolidate preprints, conference versions, exact duplicates, and source variants into 207 canonical candidate studies. Current canonical analysis-use counts are 31 study-level coded records, 61 extended synthesis studies, 95 background/reference records, and 20 excluded near-neighbor studies. Source search counts in `data/source_search_log.csv` are counts of records captured in the public screening ledger after source reconciliation; they are not volatile web-search result totals.
 
 Zotero metadata is used for title, source-type, DOI/URL, venue, and local
 bibliographic reconciliation. Local Zotero paths, PDFs, SQLite databases, and
 private working directories are excluded from the public artifact.
-

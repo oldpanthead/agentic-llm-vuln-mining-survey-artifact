@@ -13,7 +13,103 @@ REPORTS = ROOT / 'reports'
 
 CSV_REQUIRED_FIELDS = {
     'corpus.csv': ['record_id', 'corpus_layer'],
-    'study_version_crosswalk.csv': [
+    'submission_update_20260715_screening_audit.csv': [
+      'arxiv_id',
+      'title',
+      'published',
+      'existing_record_id',
+      'screening_status',
+      'screening_level',
+      'decision_reason',
+      'analytical_implication',
+      'official_url',
+      'query_ids',
+    ],
+    'submission_update_20260715_full_coding_audit.csv': [
+      'arxiv_id',
+      'title',
+      'official_url',
+      'published',
+      'review_material',
+      'full_text_status',
+      'author_analysis_layer',
+      'inclusion_rule_applied',
+      'target_domain',
+      'lifecycle_coverage',
+      'agentic_capabilities',
+      'strongest_evidence_output',
+      'external_traceability',
+      'primary_system_shape',
+      'claim_boundary',
+      'author_decision_reason',
+      'uncertainty_note',
+      'formal_second_coder_status',
+    ],
+    'submission_update_20260715_second_coder_blind_template.csv': [
+      'update_id',
+      'arxiv_id',
+      'title',
+      'publication_status',
+      'materials_to_review',
+      'coder2_analysis_layer_decision',
+      'coder2_inclusion_reason',
+      'coder2_lifecycle_coverage',
+      'coder2_primary_system_shape',
+      'coder2_cross_stage_capability_label',
+      'coder2_strongest_evidence_output',
+      'coder2_external_traceability_label',
+      'coder2_claim_boundary',
+      'coder2_uncertainty_note',
+    ],
+    'submission_update_20260715_second_coder_results.csv': [
+      'update_id',
+      'arxiv_id',
+      'title',
+      'publication_status',
+      'materials_to_review',
+      'coder2_analysis_layer_decision',
+      'coder2_inclusion_reason',
+      'coder2_lifecycle_coverage',
+      'coder2_primary_system_shape',
+      'coder2_cross_stage_capability_label',
+      'coder2_strongest_evidence_output',
+      'coder2_external_traceability_label',
+      'coder2_claim_boundary',
+      'coder2_uncertainty_note',
+    ],
+    'submission_update_20260715_adjudication_working_draft.csv': [
+      'update_id',
+      'arxiv_id',
+      'title',
+      'publication_status',
+      'author_analysis_layer',
+      'coder2_analysis_layer_decision',
+      'proposed_analysis_layer',
+      'author_lifecycle_coverage',
+      'coder2_lifecycle_coverage',
+      'proposed_lifecycle_coverage',
+      'author_primary_system_shape',
+      'coder2_primary_system_shape',
+      'proposed_primary_system_shape',
+      'author_agentic_capabilities',
+      'coder2_agentic_capabilities',
+      'proposed_agentic_capabilities',
+      'author_strongest_evidence_output',
+      'coder2_strongest_evidence_output',
+      'proposed_strongest_evidence_output',
+      'author_external_traceability',
+      'coder2_external_traceability',
+      'proposed_external_traceability',
+      'author_claim_boundary',
+      'coder2_claim_boundary',
+      'proposed_claim_boundary',
+      'author_decision_reason',
+      'coder2_inclusion_reason',
+      'coder2_uncertainty_note',
+      'adjudication_basis',
+      'field_resolution_trace',
+      'adjudication_status',
+    ],    'study_version_crosswalk.csv': [
         'record_id',
         'title',
         'canonical_study_id',
@@ -318,6 +414,10 @@ def validate_csv_schema(name, reader, rows):
             'coder2_uncertainty_note',
         }]
     if name == 'core31_second_coder_capability_traceability_blind_template.csv':
+        required_non_empty = [field for field in required_non_empty if not field.startswith('coder2_')]
+    if name == 'submission_update_20260715_full_coding_audit.csv':
+        required_non_empty = [field for field in required_non_empty if field != 'uncertainty_note']
+    if name == 'submission_update_20260715_second_coder_blind_template.csv':
         required_non_empty = [field for field in required_non_empty if not field.startswith('coder2_')]
     width_errors = []
     required_errors = []
@@ -910,7 +1010,7 @@ def validate_source_search_audit(corpus, source_log, source_audit):
     status('ERROR', len(audit_ids) == len(set(audit_ids)), 'source_screening_audit record_id values are unique')
 
     audit_layer_counts = Counter(row.get('corpus_layer', 'NA') for row in source_audit)
-    expected_layers = {'Core': 31, 'Supporting': 66, 'Background': 95, 'Excluded': 20}
+    expected_layers = {'Core': 31, 'Supporting': 65, 'Background': 95, 'Excluded': 21}
     for layer, expected in expected_layers.items():
         status('ERROR', audit_layer_counts.get(layer, 0) == expected, f'source_screening_audit {layer} = {audit_layer_counts.get(layer, 0)}; expected {expected}')
 
@@ -933,9 +1033,9 @@ def validate_source_search_audit(corpus, source_log, source_audit):
     status('ERROR', totals['variants_removed'] == 5, f'source_search_log source variants removed from canonical counts = {totals["variants_removed"]}; expected 5')
     status('ERROR', totals['unique'] == 207, f'source_search_log canonical candidate studies = {totals["unique"]}; expected 207')
     status('ERROR', totals['core'] == 31, f'source_search_log study-level coded records = {totals["core"]}; expected 31')
-    status('ERROR', totals['supporting'] == 62, f'source_search_log extended synthesis studies = {totals["supporting"]}; expected 62')
+    status('ERROR', totals['supporting'] == 61, f'source_search_log extended synthesis studies = {totals["supporting"]}; expected 61')
     status('ERROR', totals['background'] == 95, f'source_search_log Background records = {totals["background"]}; expected 95')
-    status('ERROR', totals['excluded'] == 19, f'source_search_log canonical Excluded records = {totals["excluded"]}; expected 19')
+    status('ERROR', totals['excluded'] == 20, f'source_search_log canonical Excluded records = {totals["excluded"]}; expected 20')
 
     missing_trace = [row.get('record_id', '?') for row in source_audit if row.get('source_bucket', '') in ('', 'NA') or row.get('source_name', '') in ('', 'NA')]
     status('ERROR', not missing_trace, 'all source_screening_audit rows include a source bucket and source name')
@@ -990,9 +1090,9 @@ def validate_study_version_crosswalk(corpus, ref, crosswalk, mapping_rows):
     layer_counts = Counter(row.get('analytical_layer') for row in counted)
     expected_layers = {
         'study_level_coded': 31,
-        'extended_synthesis': 62,
+        'extended_synthesis': 61,
         'background_reference': 95,
-        'excluded_near_neighbor': 19,
+        'excluded_near_neighbor': 20,
     }
     for layer, expected in expected_layers.items():
         status('ERROR', layer_counts.get(layer, 0) == expected, f'canonical {layer} = {layer_counts.get(layer, 0)}; expected {expected}')
@@ -1057,7 +1157,7 @@ def validate_extended_synthesis_audit(corpus, extended, crosswalk):
     study_level_canonical_ids = {row.get('canonical_study_id', '') for row in crosswalk if row.get('counting_status') == 'canonical_counted' and row.get('analytical_layer') == 'study_level_coded'}
     cross_by_record = {row.get('record_id'): row for row in crosswalk}
     extended_ids = {row.get('record_id', '') for row in extended}
-    status('ERROR', len(extended) == 62, f'extended_synthesis_audit rows = {len(extended)}; expected 62')
+    status('ERROR', len(extended) == 61, f'extended_synthesis_audit rows = {len(extended)}; expected 61')
     status('ERROR', extended_ids == counted_extended_ids, 'extended synthesis audit covers exactly canonical counted extended synthesis studies')
     overlap = [rid for rid in extended_ids if cross_by_record.get(rid, {}).get('canonical_study_id') in study_level_canonical_ids]
     status('ERROR', not overlap, 'extended_synthesis_audit contains no study-level coded study alternate versions')
@@ -1134,11 +1234,286 @@ def validate_extended_synthesis_audit(corpus, extended, crosswalk):
     role_counts = Counter(row.get('primary_synthesis_role', 'NA') for row in extended)
     rq_counts = Counter(row.get('rq_contribution', 'NA') for row in extended)
     material_counts = Counter(row.get('material_type', 'NA') for row in extended)
-    print('EXTENDED_SYNTHESIS_AUDIT: rows=62 roles=' + str(dict(sorted(role_counts.items()))))
+    print('EXTENDED_SYNTHESIS_AUDIT: rows=61 roles=' + str(dict(sorted(role_counts.items()))))
     print('EXTENDED_SYNTHESIS_RQ_USE: ' + str(dict(sorted(rq_counts.items()))))
     print('EXTENDED_SYNTHESIS_MATERIAL_TYPES: ' + str(dict(sorted(material_counts.items()))))
     print(f'EXTENDED_SYNTHESIS_UNIQUE_CONTRIBUTION_RATIO: {unique_ratio:.3f}')
     print('EXTENDED_SYNTHESIS_UNRESOLVED_ROWS: ' + (','.join(unresolved) if unresolved else 'none'))
+
+
+def validate_submission_update_screening(rows):
+    status('ERROR', len(rows) == 432, f'submission update screening rows = {len(rows)}; expected 432')
+    if not rows:
+        return
+    ids = [row.get('arxiv_id', '') for row in rows]
+    status('ERROR', len(ids) == len(set(ids)), 'submission update arXiv identifiers are unique')
+    allowed = {
+        'existing_corpus_match',
+        'outside_date_window',
+        'potentially_eligible_update_record',
+        'contextual_or_background_update',
+        'excluded_at_title_abstract_update',
+    }
+    invalid = [row.get('arxiv_id', '?') for row in rows if row.get('screening_status') not in allowed]
+    status('ERROR', not invalid, 'submission update screening statuses use the approved vocabulary')
+    missing_reason = [row.get('arxiv_id', '?') for row in rows if len(row.get('decision_reason', '').strip()) < 30]
+    status('ERROR', not missing_reason, 'submission update rows contain explicit decision reasons')
+    counts = Counter(row.get('screening_status', 'NA') for row in rows)
+    expected = {
+        'existing_corpus_match': 12,
+        'outside_date_window': 26,
+        'potentially_eligible_update_record': 41,
+        'contextual_or_background_update': 30,
+        'excluded_at_title_abstract_update': 323,
+    }
+    status('ERROR', counts == Counter(expected), 'submission update screening counts match the frozen audit')
+    print('SUBMISSION_UPDATE_SCREENING: ' + str(dict(sorted(counts.items()))))
+    print('SUBMISSION_UPDATE_METHOD_NOTE: the 41 potentially eligible records have author and independent coding plus an author-confirmed resolution; coordinated corpus/manuscript integration remains required before any denominator change.')
+def validate_submission_update_full_audit(screening_rows, audit_rows, blind_rows):
+    potential_ids = {
+        row.get('arxiv_id', '')
+        for row in screening_rows
+        if row.get('screening_status') == 'potentially_eligible_update_record'
+    }
+    audit_ids = [row.get('arxiv_id', '') for row in audit_rows]
+    blind_ids = [row.get('arxiv_id', '') for row in blind_rows]
+    status('ERROR', len(audit_rows) == 41, f'submission update full-text audit rows = {len(audit_rows)}; expected 41')
+    status('ERROR', len(blind_rows) == 41, f'submission update blind-review rows = {len(blind_rows)}; expected 41')
+    status('ERROR', set(audit_ids) == potential_ids and len(audit_ids) == len(set(audit_ids)), 'full-text audit covers each potentially eligible update record exactly once')
+    status('ERROR', set(blind_ids) == potential_ids and len(blind_ids) == len(set(blind_ids)), 'blind-review template covers each potentially eligible update record exactly once')
+
+    allowed_layers = {
+        'provisional_study_level_candidate_pending_independent_review',
+        'extended_synthesis',
+    }
+    invalid_layers = [row.get('arxiv_id', '?') for row in audit_rows if row.get('author_analysis_layer') not in allowed_layers]
+    status('ERROR', not invalid_layers, 'author full-text audit uses the approved provisional layer vocabulary')
+    layer_counts = Counter(row.get('author_analysis_layer', 'NA') for row in audit_rows)
+    expected_layers = Counter({
+        'provisional_study_level_candidate_pending_independent_review': 38,
+        'extended_synthesis': 3,
+    })
+    status('ERROR', layer_counts == expected_layers, 'author full-text audit has 38 provisional study-level candidates and 3 extended-synthesis records')
+
+    allowed_outputs = {
+        'candidate judgment',
+        'controlled task completion',
+        'runtime safety signal',
+        'reproducible validation',
+        'externally traceable material',
+        'claim-level audit material',
+        'governance boundary case',
+    }
+    invalid_outputs = [row.get('arxiv_id', '?') for row in audit_rows if row.get('strongest_evidence_output') not in allowed_outputs]
+    status('ERROR', not invalid_outputs, 'author update audit uses approved evidence-output labels')
+    status('ERROR', all(row.get('full_text_status') == 'full_text_reviewed' for row in audit_rows), 'all 41 update candidates have full-text author review')
+    status('ERROR', all(row.get('formal_second_coder_status') == 'pending_independent_blind_review' for row in audit_rows), 'author update audit preserves its pre-review freeze status')
+
+    blind_columns = set(blind_rows[0].keys()) if blind_rows else set()
+    leaked_author_columns = sorted(column for column in blind_columns if column.startswith('author_'))
+    status('ERROR', not leaked_author_columns, 'submission update blind template contains no author_* columns')
+    coder2_fields = sorted(column for column in blind_columns if column.startswith('coder2_'))
+    populated = [
+        (row.get('update_id', '?'), field)
+        for row in blind_rows
+        for field in coder2_fields
+        if row.get(field, '').strip()
+    ]
+    status('ERROR', not populated, 'submission update blind template coder2 fields are blank')
+    safe_instructions = all(
+        'independently decide' in row.get('materials_to_review', '').lower()
+        and 'do not consult' in row.get('materials_to_review', '').lower()
+        for row in blind_rows
+    )
+    status('ERROR', safe_instructions, 'submission update blind instructions require independent coding and hide the author audit')
+
+    results_path = DATA / 'submission_update_20260715_second_coder_results.csv'
+    if results_path.exists():
+        print('SUBMISSION_UPDATE_METHOD_NOTE: the independent second-coder pass is complete; pre-adjudication agreement and the preserved working draft are validated below.')
+    else:
+        print('WARNING: submission update independent second-coder pass is pending; no agreement statistic or expanded manuscript denominator is reported.')
+    print('SUBMISSION_UPDATE_FULL_AUDIT: ' + str(dict(sorted(layer_counts.items()))))
+
+def validate_submission_update_second_coder(audit_rows, blind_rows, result_rows, adjudication_rows):
+    status('ERROR', len(result_rows) == 41, f'submission update coder2 result rows = {len(result_rows)}; expected 41')
+    status('ERROR', len(adjudication_rows) == 41, f'submission update adjudication working-draft rows = {len(adjudication_rows)}; expected 41')
+    if not result_rows or not adjudication_rows:
+        return
+
+    audit_by_arxiv = {row.get('arxiv_id', ''): row for row in audit_rows}
+    blind_by_arxiv = {row.get('arxiv_id', ''): row for row in blind_rows}
+    result_ids = [row.get('arxiv_id', '') for row in result_rows]
+    update_ids = [row.get('update_id', '') for row in result_rows]
+    status('ERROR', len(result_ids) == len(set(result_ids)) == 41, 'submission update coder2 arXiv identifiers are unique')
+    status('ERROR', set(result_ids) == set(audit_by_arxiv) == set(blind_by_arxiv), 'submission update coder2 results cover the frozen 41-record audit')
+    status('ERROR', set(update_ids) == {f'U{i:02d}' for i in range(1, 42)}, 'submission update coder2 results use U01-U41 exactly once')
+
+    leaked = sorted(field for field in result_rows[0] if field.startswith('author_') or field.startswith('original_'))
+    status('ERROR', not leaked, 'submission update coder2 results expose no author_* or original_* fields')
+    fixed_fields = ['update_id', 'arxiv_id', 'title', 'publication_status', 'materials_to_review']
+    fixed_mismatches = []
+    for row in result_rows:
+        blind = blind_by_arxiv.get(row.get('arxiv_id', ''), {})
+        if any(row.get(field, '') != blind.get(field, '') for field in fixed_fields):
+            fixed_mismatches.append(row.get('update_id', '?'))
+    status('ERROR', not fixed_mismatches, 'submission update coder2 fixed fields match the blind template')
+
+    coder_fields = [
+        'coder2_analysis_layer_decision', 'coder2_inclusion_reason', 'coder2_lifecycle_coverage',
+        'coder2_primary_system_shape', 'coder2_cross_stage_capability_label',
+        'coder2_strongest_evidence_output', 'coder2_external_traceability_label',
+        'coder2_claim_boundary', 'coder2_uncertainty_note',
+    ]
+    incomplete = [row.get('update_id', '?') for row in result_rows if any(not row.get(field, '').strip() for field in coder_fields)]
+    status('ERROR', not incomplete, 'all 41 submission update coder2 decisions, reasons, and uncertainty notes are populated')
+
+    allowed_layers = {'study_level_candidate', 'extended_synthesis'}
+    allowed_shapes = {
+        'candidate-analysis system', 'feedback-driven fuzzing agent',
+        'PoC/PoV validation agent', 'long-horizon pentest and CRS agent',
+    }
+    allowed_outputs = {
+        'candidate judgment', 'controlled task completion', 'runtime safety signal',
+        'reproducible validation', 'externally traceable material',
+        'claim-level audit material', 'governance boundary case',
+    }
+    allowed_trace = {
+        'not reported', 'benchmark ground truth / public material',
+        'author-reported external clue', 'publicly aligned external trace',
+    }
+    status('ERROR', all(row.get('coder2_analysis_layer_decision') in allowed_layers for row in result_rows), 'submission update coder2 layer labels use the approved vocabulary')
+    status('ERROR', all(row.get('coder2_primary_system_shape') in allowed_shapes for row in result_rows), 'submission update coder2 system-shape labels use the approved vocabulary')
+    status('ERROR', all(row.get('coder2_strongest_evidence_output') in allowed_outputs for row in result_rows), 'submission update coder2 evidence-output labels use the approved vocabulary')
+    status('ERROR', all(row.get('coder2_external_traceability_label') in allowed_trace for row in result_rows), 'submission update coder2 traceability labels use the approved vocabulary')
+
+    def author_layer(value):
+        return value.removeprefix('provisional_').removesuffix('_pending_independent_review')
+
+    def normalized_set(value, lifecycle=False):
+        labels = split_multilabel(value)
+        if lifecycle and 'path exploration' in labels:
+            labels.remove('path exploration')
+            labels.add('path and input exploration')
+        return labels
+
+    def update_set_metrics(author_field, coder_field, lifecycle=False):
+        compared = []
+        for row in result_rows:
+            author = audit_by_arxiv[row.get('arxiv_id', '')]
+            compared.append((
+                normalized_set(author.get(author_field, ''), lifecycle=lifecycle),
+                normalized_set(row.get(coder_field, ''), lifecycle=lifecycle),
+            ))
+        exact = sum(a == b for a, b in compared)
+        jaccards = [1.0 if not (a | b) else len(a & b) / len(a | b) for a, b in compared]
+        tp = sum(len(a & b) for a, b in compared)
+        fp = sum(len(b - a) for a, b in compared)
+        fn = sum(len(a - b) for a, b in compared)
+        f1 = 1.0 if 2 * tp + fp + fn == 0 else 2 * tp / (2 * tp + fp + fn)
+        return exact, exact / len(compared), sum(jaccards) / len(jaccards), f1
+
+    author_layers = [author_layer(audit_by_arxiv[row['arxiv_id']].get('author_analysis_layer', '')) for row in result_rows]
+    coder_layers = [row.get('coder2_analysis_layer_decision', '') for row in result_rows]
+    author_shapes = [audit_by_arxiv[row['arxiv_id']].get('primary_system_shape', '') for row in result_rows]
+    coder_shapes = [row.get('coder2_primary_system_shape', '') for row in result_rows]
+    author_outputs = [audit_by_arxiv[row['arxiv_id']].get('strongest_evidence_output', '') for row in result_rows]
+    coder_outputs = [row.get('coder2_strongest_evidence_output', '') for row in result_rows]
+    author_trace = [audit_by_arxiv[row['arxiv_id']].get('external_traceability', '') for row in result_rows]
+    coder_trace = [row.get('coder2_external_traceability_label', '') for row in result_rows]
+
+    layer_agree = sum(a == b for a, b in zip(author_layers, coder_layers))
+    shape_agree = sum(a == b for a, b in zip(author_shapes, coder_shapes))
+    output_agree = sum(a == b for a, b in zip(author_outputs, coder_outputs))
+    trace_agree = sum(a == b for a, b in zip(author_trace, coder_trace))
+    layer_kappa = cohen_kappa(author_layers, coder_layers)
+    shape_kappa = cohen_kappa(author_shapes, coder_shapes)
+    output_kappa = cohen_kappa(author_outputs, coder_outputs)
+    trace_kappa = cohen_kappa(author_trace, coder_trace)
+    life = update_set_metrics('lifecycle_coverage', 'coder2_lifecycle_coverage', lifecycle=True)
+    cap = update_set_metrics('agentic_capabilities', 'coder2_cross_stage_capability_label')
+
+    status('ERROR', layer_agree == 40 and abs(layer_kappa - 0.844) < 0.001, 'submission update layer agreement reproduces 40/41 and kappa 0.844')
+    status('ERROR', shape_agree == 27 and abs(shape_kappa - 0.514) < 0.001, 'submission update system-shape agreement reproduces 27/41 and kappa 0.514')
+    status('ERROR', output_agree == 28 and abs(output_kappa - 0.566) < 0.001, 'submission update evidence-output agreement reproduces 28/41 and kappa 0.566')
+    status('ERROR', trace_agree == 25 and abs(trace_kappa - 0.320) < 0.001, 'submission update traceability agreement reproduces 25/41 and kappa 0.320')
+    status('ERROR', life[0] == 4 and abs(life[2] - 0.667) < 0.001 and abs(life[3] - 0.794) < 0.001, 'submission update lifecycle agreement reproduces exact 4/41, Jaccard 0.667, and micro F1 0.794')
+    status('ERROR', cap[0] == 9 and abs(cap[2] - 0.760) < 0.001 and abs(cap[3] - 0.865) < 0.001, 'submission update capability agreement reproduces exact 9/41, Jaccard 0.760, and micro F1 0.865')
+    print(f'SUBMISSION_UPDATE_SECOND_CODER: layer={layer_agree}/41 kappa={layer_kappa:.3f}; shape={shape_agree}/41 kappa={shape_kappa:.3f}; evidence={output_agree}/41 kappa={output_kappa:.3f}; trace={trace_agree}/41 kappa={trace_kappa:.3f}')
+    print(f'SUBMISSION_UPDATE_MULTILABEL: lifecycle exact={life[0]}/41 jaccard={life[2]:.3f} micro_f1={life[3]:.3f}; capabilities exact={cap[0]}/41 jaccard={cap[2]:.3f} micro_f1={cap[3]:.3f}')
+
+    report_path = REPORTS / 'SUBMISSION_UPDATE_SECOND_CODER_PRE_ADJUDICATION_REPORT.md'
+    summary_path = ROOT / 'SUBMISSION_UPDATE_ADJUDICATION_SUMMARY.md'
+    generator_path = ROOT / 'prepare_submission_update_adjudication.py'
+    status('ERROR', report_path.exists(), 'submission update pre-adjudication agreement report exists')
+    status('ERROR', summary_path.exists(), 'submission update adjudication summary exists')
+    status('ERROR', generator_path.exists(), 'submission update adjudication generator exists')
+    if report_path.exists():
+        report_text = report_path.read_text(encoding='utf-8')
+        required = ['40 / 41', '0.844', '27 / 41', '0.514', '28 / 41', '0.566', '25 / 41', '0.320', 'No adjudicated labels or post-adjudication agreement statistic are claimed']
+        status('ERROR', all(item in report_text for item in required), 'submission update agreement report contains computed metrics and preserves pre-adjudication scope')
+
+    draft_ids = [row.get('update_id', '') for row in adjudication_rows]
+    status('ERROR', set(draft_ids) == set(update_ids) and len(draft_ids) == len(set(draft_ids)), 'adjudication working draft covers U01-U41 exactly once')
+    status('ERROR', all(row.get('adjudication_status') == 'assistant_proposed_pending_author_confirmation' for row in adjudication_rows), 'adjudication working draft remains pending author confirmation')
+    proposed_layers = Counter(row.get('proposed_analysis_layer', '') for row in adjudication_rows)
+    status('ERROR', proposed_layers == Counter({'study_level_candidate': 37, 'extended_synthesis': 4}), 'proposed update layer counts are 37 study-level candidates and 4 extended-synthesis records')
+    u24 = next((row for row in adjudication_rows if row.get('update_id') == 'U24'), {})
+    status('ERROR', u24.get('proposed_analysis_layer') == 'extended_synthesis', 'U24 SynthFix is proposed as extended synthesis under the observable-workflow rule')
+    print('SUBMISSION_UPDATE_WORKING_DRAFT: the assistant-prepared proposal remains preserved; author confirmation is validated separately.')
+
+
+def validate_submission_update_finalization(adjudication_rows, final_rows, integration_rows):
+    status('ERROR', len(final_rows) == 41, f'author-confirmed submission update adjudication rows = {len(final_rows)}; expected 41')
+    status('ERROR', len(integration_rows) == 41, f'submission update canonical-integration rows = {len(integration_rows)}; expected 41')
+    if not final_rows or not integration_rows:
+        return
+
+    final_ids = [row.get('update_id', '') for row in final_rows]
+    integration_ids = [row.get('update_id', '') for row in integration_rows]
+    expected_ids = {f'U{i:02d}' for i in range(1, 42)}
+    status('ERROR', set(final_ids) == expected_ids and len(final_ids) == len(set(final_ids)), 'author-confirmed adjudication covers U01-U41 exactly once')
+    status('ERROR', set(integration_ids) == expected_ids and len(integration_ids) == len(set(integration_ids)), 'canonical-integration crosswalk covers U01-U41 exactly once')
+    status('ERROR', all(row.get('adjudication_status') == 'author_confirmed_evidence_based_resolution' for row in final_rows), 'submission update adjudication is marked author-confirmed without claiming human consensus')
+
+    draft_by_id = {row.get('update_id', ''): row for row in adjudication_rows}
+    comparison_fields = [
+        'proposed_analysis_layer', 'proposed_lifecycle_coverage', 'proposed_primary_system_shape',
+        'proposed_agentic_capabilities', 'proposed_strongest_evidence_output',
+        'proposed_external_traceability', 'proposed_claim_boundary',
+    ]
+    mismatches = []
+    for row in final_rows:
+        draft = draft_by_id.get(row.get('update_id', ''), {})
+        if any(row.get(field, '') != draft.get(field, '') for field in comparison_fields):
+            mismatches.append(row.get('update_id', '?'))
+    status('ERROR', not mismatches, 'author-confirmed adjudication preserves the reviewed working-draft labels')
+
+    final_layers = Counter(row.get('proposed_analysis_layer', '') for row in final_rows)
+    status('ERROR', final_layers == Counter({'study_level_candidate': 37, 'extended_synthesis': 4}), 'author-confirmed update layer counts are 37 study-level candidates and 4 extended-synthesis records')
+    status('ERROR', all(row.get('integration_status') == 'new_canonical_study' for row in integration_rows), 'canonical integration finds all 41 update records to be new canonical studies')
+    status('ERROR', all(row.get('counted_after_integration') == 'yes' for row in integration_rows), 'all update records are countable after canonical integration')
+
+    final_report = REPORTS / 'SUBMISSION_UPDATE_ADJUDICATION_REPORT.md'
+    integration_report = ROOT / 'SUBMISSION_UPDATE_CANONICAL_INTEGRATION_REPORT.md'
+    finalizer = ROOT / 'finalize_submission_update_adjudication.py'
+    integration_generator = ROOT / 'prepare_submission_update_canonical_integration.py'
+    for path, description in [
+        (final_report, 'author-confirmed update adjudication report exists'),
+        (integration_report, 'submission update canonical-integration report exists'),
+        (finalizer, 'submission update finalization script exists'),
+        (integration_generator, 'submission update canonical-integration generator exists'),
+    ]:
+        status('ERROR', path.exists(), description)
+    if final_report.exists():
+        report_text = final_report.read_text(encoding='utf-8')
+        required = ['author-confirmed analytical decision', 'not represented as a discussion between two human coders', 'No post-adjudication agreement statistic is reported']
+        status('ERROR', all(item in report_text for item in required), 'final adjudication report states the confirmation and consensus boundary accurately')
+    if integration_report.exists():
+        report_text = integration_report.read_text(encoding='utf-8')
+        required = ['Source records | 212 | 253', 'Canonical candidate studies | 207 | 248', '67 target-software studies plus the existing governance boundary case']
+        status('ERROR', all(item in report_text for item in required), 'canonical-integration report records projected counts without changing the frozen corpus')
+    print('SUBMISSION_UPDATE_FINALIZATION: author-confirmed 37/4 resolution; 41 new canonical studies; frozen corpus and manuscript denominators remain unchanged pending a coordinated integration release.')
+
 
 def validate_tracked_file_boundary():
     try:
@@ -1199,6 +1574,13 @@ source_screening_audit = read_csv('source_screening_audit.csv')
 extended_synthesis = read_csv('extended_synthesis_audit.csv')
 study_version_crosswalk = read_csv('study_version_crosswalk.csv')
 mapping_snapshot_counts = read_csv('mapping_snapshot_counts.csv')
+submission_update_screening = read_csv('submission_update_20260715_screening_audit.csv')
+submission_update_full_audit = read_csv('submission_update_20260715_full_coding_audit.csv')
+submission_update_blind = read_csv('submission_update_20260715_second_coder_blind_template.csv')
+submission_update_results = read_csv('submission_update_20260715_second_coder_results.csv')
+submission_update_adjudication = read_csv('submission_update_20260715_adjudication_working_draft.csv')
+submission_update_adjudicated = read_csv('submission_update_20260715_adjudicated.csv')
+submission_update_integration = read_csv('submission_update_20260715_canonical_integration_crosswalk.csv')
 
 validate_product_ecosystem_snapshot(product_snapshot)
 validate_second_coder_files(second_coder_blind, second_coder_adjudication, second_coder_formal, second_coder_formal_results)
@@ -1206,9 +1588,13 @@ validate_second_coder_extension_template(second_coder_extension_template, second
 validate_source_search_audit(corpus, source_search_log, source_screening_audit)
 validate_study_version_crosswalk(corpus, ref, study_version_crosswalk, mapping_snapshot_counts)
 validate_extended_synthesis_audit(corpus, extended_synthesis, study_version_crosswalk)
+validate_submission_update_screening(submission_update_screening)
+validate_submission_update_full_audit(submission_update_screening, submission_update_full_audit, submission_update_blind)
+validate_submission_update_second_coder(submission_update_full_audit, submission_update_blind, submission_update_results, submission_update_adjudication)
+validate_submission_update_finalization(submission_update_adjudication, submission_update_adjudicated, submission_update_integration)
 validate_tracked_file_boundary()
 
-expected_layers = {'Core': 31, 'Supporting': 66, 'Background': 95, 'Excluded': 20}
+expected_layers = {'Core': 31, 'Supporting': 65, 'Background': 95, 'Excluded': 21}
 if corpus:
     status('ERROR', len(corpus) == 212, f'source records = {len(corpus)}; expected 212')
     layer_counts = Counter(r.get('corpus_layer', 'NA') for r in corpus)
@@ -1307,7 +1693,3 @@ if ERROR_COUNT:
     sys.exit(1)
 
 print('DONE')
-
-
-
-

@@ -10,22 +10,32 @@ This checklist prepares the minimal artifact for a future GitHub or Zenodo relea
 - [ ] Confirm `data/core31_second_coder_blind.csv` does not expose original labels or answer-key fields.
 - [ ] Confirm `data/core31_second_coder_adjudication_template.csv` is not used before independent coding.
 - [x] Report formal agreement statistics only after revised codebook freeze and new independent coding.
-- [x] Confirm the Agent-increment / external-traceability extension template hides original labels and contains blank coder2 fields.
-- [x] Confirm Agent-increment / external-traceability results exist after real coder2 decisions.
-- [x] Report Agent-increment / external-traceability agreement only with suitable set-style, Jaccard, or per-label metrics.
+- [x] Confirm the cross-stage capability / external-traceability extension template hides original labels and contains blank coder2 fields.
+- [x] Confirm cross-stage capability / external-traceability results exist after real coder2 decisions.
+- [x] Report cross-stage capability / external-traceability agreement only with suitable set-style, Jaccard, or per-label metrics.
 - [ ] Confirm that any public repository URL has author approval before replacing `[REPOSITORY URL]` in the manuscript.
 
 ## Data Files
 
 - [x] `data/corpus.csv` contains only bibliographic/corpus-layer metadata.
 - [x] `data/core_coding.csv` contains coding rationales and caveats, not exploit payloads.
-- [x] `data/source_search_log.csv` and `data/source_screening_audit.csv` document the source-specific search ledger and record-level screening decisions.
+- [x] data/source_search_log.csv and data/source_screening_audit.csv document the source-specific search ledger and record-level screening decisions.
+- [x] The submission-time arXiv update export, manifest, and record-level screening audit are included.
+- [x] All 41 potentially eligible update-search records received an author full-text workflow--capability--evidence audit.
+- [x] The 41-row update-search blind template hides all author labels and keeps every coder2 field blank.
+- [x] Complete a real independent update-search second-coder pass before any denominator change or update agreement report.
+- [x] Verify the 41-record update results contain complete decisions and no author/original answer-key fields.
+- [x] Recompute update-search pre-adjudication agreement from the frozen author and coder2 files.
+- [x] Preserve the proposed update adjudication working draft as the reviewed pre-confirmation record.
+- [x] Record the author-confirmed 37/4 update resolution without claiming two-human consensus.
+- [x] Run canonical matching for all 41 adjudicated records and preserve the projected 253-source-record / 248-canonical-study impact separately from the frozen manuscript counts.
+- [ ] Integrate the update cohort into the corpus and manuscript only as a coordinated release with updated matrices, distributions, and denominator statements.
 - [x] `data/reference_audit.csv` has DOI coverage improved from Zotero/local audit and leaves unresolved DOI cases as `NA`.
 - [x] `data/screening_summary.csv` summarizes the current source-specific ledger and final corpus layers.
 - [x] `data/core31_second_coder_blind.csv` can be shared for independent 31-Core strongest-evidence-output coding.
 - [x] `data/core31_second_coder_formal_blind_template.csv` exists as a blank template for future reruns.
 - [x] `data/core31_second_coder_formal_results.csv` exists and contains the completed formal strongest-evidence-output second-coder pass.
-- [x] `data/core31_second_coder_capability_traceability_blind_template.csv` exists as a blank extension template for Agent-increment and external-traceability checks.
+- [x] `data/core31_second_coder_capability_traceability_blind_template.csv` exists as a blank extension template for cross-stage capability and external-traceability checks.
 - [x] `data/core31_second_coder_capability_traceability_results.csv` exists and contains the completed extension second-coder results.
 - [x] `data/intercoder_sample_blind.csv` can be shared for optional sampled review.
 - [ ] Decide whether proposed/intermediate audit files should be included in public release or moved to a private working archive.
