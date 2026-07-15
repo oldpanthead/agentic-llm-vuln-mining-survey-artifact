@@ -1,10 +1,10 @@
-# Submission-Time Literature Update Audit (2026-07-15)
+# Submission-Time arXiv Sensitivity and Recall-Recovery Search Audit (2026-07-15)
 
-> **Status note.** This report preserves the update-search state before final author confirmation and corpus integration. The current 37/4 resolution and integrated counts are recorded in `reports/SUBMISSION_UPDATE_ADJUDICATION_REPORT.md` and `SUBMISSION_UPDATE_CORPUS_INTEGRATION_REPORT.md`.
+> **Status note.** This report preserves the July 15 recall-recovery search state and links it to the completed author-confirmed 37/4 resolution and corpus integration.
 
 ## Purpose
 
-This audit is a reproducible sensitivity and currency check conducted after the reconciled 212-source-record corpus had been frozen. It does not silently change the existing study-level coding or second-coder decisions.
+This audit documents a deliberately broader arXiv-only sensitivity and recall-recovery search conducted after the narrower multi-source historical ledger had been frozen. It exposed a recall limitation while preserving the original and update rounds as separate audit trails.
 
 ## Search material
 
@@ -20,7 +20,7 @@ This audit is a reproducible sensitivity and currency check conducted after the 
 - Blank independent-review input: `data/submission_update_20260715_second_coder_blind_template.csv`.
 - Completed independent decisions: `data/submission_update_20260715_second_coder_results.csv`.
 - Pre-adjudication agreement: `reports/SUBMISSION_UPDATE_SECOND_CODER_PRE_ADJUDICATION_REPORT.md`.
-- Proposed resolution pending author confirmation: `data/submission_update_20260715_adjudication_working_draft.csv`.
+- Preserved pre-confirmation AI-assisted resolution working draft: `data/submission_update_20260715_adjudication_working_draft.csv`.
 - Full-text audit report: `SUBMISSION_UPDATE_FULL_TEXT_AUDIT_REPORT.md`.
 
 ## Screening result
@@ -29,7 +29,7 @@ This audit is a reproducible sensitivity and currency check conducted after the 
 |---|---:|---|
 | Existing corpus match | 12 | Matches a retained source/canonical record by normalized title or arXiv identifier; no new count. |
 | Outside date window | 26 | First arXiv submission after 2026-06-30; retained only in the update ledger. |
-| Potentially eligible update record | 41 | These records received author and independent full-text coding. The proposed resolution identifies 37 study-level candidates and 4 extended-synthesis records, pending author confirmation and canonical integration. |
+| Potentially eligible update record | 41 | These records received author and independent full-text coding. The author-confirmed resolution places 37 in study-level coding and four in extended synthesis; canonical integration is complete. |
 | Contextual/background update | 30 | Relevant to adjacent mechanisms, benchmarks, evaluation, repair, or governance context, but not selected as a new target-software coded record in this audit. |
 | Excluded at title/abstract update | 323 | Did not meet the operational target-software Agentic workflow criterion for the coded set. |
 

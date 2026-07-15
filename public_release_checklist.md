@@ -31,6 +31,8 @@ This checklist prepares the minimal artifact for a future GitHub or Zenodo relea
 - [x] Run canonical matching for all 41 adjudicated records and preserve the projected 253-source-record / 248-canonical-study impact separately from the frozen manuscript counts.
 - [x] Integrate the update cohort into the corpus with current-field additions, updated mappings, and preserved round-specific reliability.
 - [x] Generate and validate `data/current_study_level_coding_matrix.csv` as the unified 68-record current matrix while retaining round-specific provenance.
+- [x] Preserve that file as the pre-harmonization view and publish the author-confirmed controlled-schema matrix in `data/current_study_level_coding_matrix_harmonized.csv`.
+- [x] Publish the field-level coding-round harmonization audit and round-specific statistics without constructing a synthetic combined kappa.
 - [x] Update and compile the manuscript against the integrated 253 / 248 / 67+1 / 65 corpus counts.
 - [x] `data/reference_audit.csv` has DOI coverage improved from Zotero/local audit and leaves unresolved DOI cases as `NA`.
 - [x] `data/screening_summary.csv` summarizes the current source-specific ledger and final corpus layers.

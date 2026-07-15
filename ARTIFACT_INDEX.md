@@ -25,7 +25,11 @@ This index points reviewers to the public, non-sensitive files needed to audit t
 
 ## Study-Level Coding And Extended Synthesis
 
-- `data/current_study_level_coding_matrix.csv`: unified current 68-record matrix with 67 target-software studies, one governance boundary case, and round-specific provenance fields.
+- `data/current_study_level_coding_matrix_harmonized.csv`: author-confirmed current 68-record matrix with 67 target-software studies, one governance boundary case, controlled primary shapes, overlays, and cross-stage capabilities.
+- `data/current_study_level_coding_matrix.csv`: pre-harmonization combined 68-record matrix retained for provenance.
+- `data/coding_round_harmonization_audit.csv`: field-level original values, current-codebook candidates, evidence bases, uncertainty notes, author-review status, and final author-confirmed labels.
+- `data/current_synthesis_statistics_by_round.csv`: initial-round, submission-update-round, and combined harmonized descriptive distributions.
+- `CODING_ROUND_HARMONIZATION_REPORT.md`: coding-drift findings, accepted changes, residual round differences, taxonomy stability, and AI-assisted resolution boundary.
 - `data/v13_core_synthesis_matrix.csv`: frozen initial-round 31-record matrix retained for historical traceability.
 - `data/v13_synthesis_statistics.csv`: checked synthesis statistics used by the manuscript.
 - `data/extended_synthesis_audit.csv`: record-level synthesis-use audit for the 65-study extended synthesis set.
@@ -50,7 +54,7 @@ This index points reviewers to the public, non-sensitive files needed to audit t
 - `data/submission_update_20260715_second_coder_blind_template.csv`: blank update-search template with no author labels.
 - `data/submission_update_20260715_second_coder_results.csv`: completed 41-record independent pass.
 - `reports/SUBMISSION_UPDATE_SECOND_CODER_PRE_ADJUDICATION_REPORT.md`: computed pre-adjudication agreement.
-- `data/submission_update_20260715_adjudication_working_draft.csv`: preserved assistant-prepared resolution reviewed by the author.
+- `data/submission_update_20260715_adjudication_working_draft.csv`: preserved candidate-resolution working draft reviewed by the author.
 - `data/submission_update_20260715_adjudicated.csv`: author-confirmed 37/4 resolution.
 - `reports/SUBMISSION_UPDATE_ADJUDICATION_REPORT.md`: finalization scope and consensus boundary.
 - `data/submission_update_20260715_canonical_integration_crosswalk.csv`: canonical-match assessment for U01-U41.

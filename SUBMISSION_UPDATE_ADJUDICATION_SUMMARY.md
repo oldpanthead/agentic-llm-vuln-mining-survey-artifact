@@ -2,7 +2,7 @@
 
 ## Status
 
-`data/submission_update_20260715_adjudication_working_draft.csv` is an evidence-based proposed resolution of the completed 41-record blind pass. It preserves author and coder2 labels side by side and marks every row `assistant_proposed_pending_author_confirmation`. It does not represent a discussion between two human coders or a completed consensus round.
+`data/submission_update_20260715_adjudication_working_draft.csv` is an evidence-based proposed resolution of the completed 41-record blind pass. It preserves author and coder2 labels side by side and marks every row `assistant_proposed_pending_author_confirmation`. The proposal was prepared with AI-assisted tools to organize disagreements and evidence-linked candidate resolutions. It does not represent a discussion between two human coders, an independent human coding decision, or a completed consensus round.
 
 ## Operational Resolution Rules
 

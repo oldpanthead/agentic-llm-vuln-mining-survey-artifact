@@ -1611,17 +1611,17 @@ def validate_integrated_submission_update(corpus, crosswalk, extended, final_row
     status('ERROR', all(cross_by_id[rid].get('counting_status') == 'canonical_counted' for rid in update_record_ids), 'all integrated update records count once as canonical studies')
 
     expected = {
-        ('lifecycle_coverage', 'candidate analysis'): 41,
+        ('lifecycle_coverage', 'candidate analysis'): 48,
         ('lifecycle_coverage', 'path and input exploration'): 46,
-        ('lifecycle_coverage', 'execution observation'): 50,
+        ('lifecycle_coverage', 'execution observation'): 56,
         ('lifecycle_coverage', 'reproduction and validation'): 36,
         ('lifecycle_coverage', 'patch validation'): 12,
-        ('lifecycle_coverage', 'reporting and audit'): 23,
-        ('agentic_capabilities', 'context aggregation / rule extraction'): 34,
-        ('agentic_capabilities', 'tool routing / strategy routing'): 30,
-        ('agentic_capabilities', 'feedback interpretation / loop adjustment'): 50,
-        ('agentic_capabilities', 'validation organization / evidence packaging'): 50,
-        ('agentic_capabilities', 'long-horizon state management'): 29,
+        ('lifecycle_coverage', 'reporting and audit'): 24,
+        ('agentic_capabilities', 'context aggregation / rule extraction'): 51,
+        ('agentic_capabilities', 'tool routing / strategy routing'): 44,
+        ('agentic_capabilities', 'feedback interpretation / loop adjustment'): 58,
+        ('agentic_capabilities', 'validation organization / evidence packaging'): 55,
+        ('agentic_capabilities', 'long-horizon state management'): 30,
         ('agentic_capabilities', 'failure reuse / strategy update'): 15,
         ('agentic_capabilities', 'governance / human gates / disclosure control'): 4,
         ('strongest_evidence_output', 'candidate judgment'): 6,
@@ -1630,6 +1630,10 @@ def validate_integrated_submission_update(corpus, crosswalk, extended, final_row
         ('strongest_evidence_output', 'reproducible validation'): 31,
         ('strongest_evidence_output', 'externally traceable material'): 4,
         ('strongest_evidence_output', 'governance boundary case'): 1,
+        ('primary_system_shape', 'candidate-analysis system'): 16,
+        ('primary_system_shape', 'feedback-driven fuzzing agent'): 17,
+        ('primary_system_shape', 'reproduction-, validation-, and repair-centered agent'): 20,
+        ('primary_system_shape', 'long-horizon pentest and CRS agent'): 14,
     }
     actual = {(row.get('dimension', ''), row.get('category', '')): int(row.get('count', '-1')) for row in current_stats}
     status('ERROR', actual == expected, 'current synthesis statistics reproduce the integrated lifecycle, capability, and evidence-output counts')
@@ -1643,6 +1647,48 @@ def validate_integrated_submission_update(corpus, crosswalk, extended, final_row
         required = ['Source records: 253', 'Canonical candidate studies: 248', 'Target-software study-level coded studies: 67', 'Extended-synthesis studies: 65', "No combined Cohen's kappa is inferred"]
         status('ERROR', all(item in report_text for item in required), 'corpus integration report records current counts and the two-round reliability boundary')
     print('SUBMISSION_UPDATE_CORPUS_INTEGRATION: source=253 canonical=248 target_studies=67 governance=1 extended=65 background=95 excluded=20')
+
+
+
+
+def validate_harmonized_coding_matrix(pre_matrix, harmonized, audit_rows, round_stats, extended_rows):
+    lifecycle_vocab = {'candidate analysis', 'path and input exploration', 'execution observation', 'reproduction and validation', 'patch validation', 'reporting and audit'}
+    shape_vocab = {'candidate-analysis system', 'feedback-driven fuzzing agent', 'reproduction-, validation-, and repair-centered agent', 'long-horizon pentest and CRS agent', 'governance boundary case'}
+    overlay_vocab = {'multi-agent orchestration', 'iterative optimization', 'failure-memory reuse', 'governance control'}
+    capability_vocab = {'context aggregation / rule extraction', 'tool routing / strategy routing', 'feedback interpretation / loop adjustment', 'validation organization / evidence packaging', 'long-horizon state management', 'failure reuse / strategy update', 'governance / human gates / disclosure control'}
+    status('ERROR', len(harmonized) == 68, f'harmonized study-level matrix rows = {len(harmonized)}; expected 68')
+    status('ERROR', len(audit_rows) == 408, f'harmonization audit rows = {len(audit_rows)}; expected 408')
+    status('ERROR', all(row.get('harmonization_status') == 'author_confirmed_2026-07-16' for row in harmonized), 'combined counts use only the author-confirmed harmonized matrix')
+    status('ERROR', all(split_multilabel(row.get('lifecycle_coverage', '')) <= lifecycle_vocab for row in harmonized), 'harmonized lifecycle fields use the controlled vocabulary')
+    status('ERROR', all(row.get('primary_system_shape', '') in shape_vocab for row in harmonized), 'harmonized primary shapes use approved values')
+    status('ERROR', all(split_multilabel(row.get('overlay_tags', '')) <= overlay_vocab for row in harmonized), 'overlay tags use approved values and remain outside primary shapes')
+    status('ERROR', all(split_multilabel(row.get('cross_stage_capabilities', '')) <= capability_vocab for row in harmonized), 'formal capability fields use the controlled vocabulary')
+    status('ERROR', all('role discussion / textual reflection' not in row.get('cross_stage_capabilities', '') for row in harmonized), 'formal capability fields contain no legacy textual-reflection label')
+    pre_by_id = {row.get('matrix_id', ''): row for row in pre_matrix}
+    harm_by_id = {row.get('matrix_id', ''): row for row in harmonized}
+    status('ERROR', set(pre_by_id) == set(harm_by_id) and len(harm_by_id) == 68, 'all 68 harmonized records preserve matrix identity')
+    status('ERROR', all(pre_by_id[mid].get('canonical_study_id') == harm_by_id[mid].get('canonical_study_id') for mid in harm_by_id), 'all harmonized records preserve canonical-study mapping')
+    status('ERROR', all(row.get('author_review_status') != 'pending_author_review' and (row.get('field') == 'overlay_tags' or row.get('final_harmonized_label', '')) for row in audit_rows), 'harmonization audit contains no pending decisions; blank overlay tags are allowed')
+    audit_fields = Counter((row.get('matrix_id', ''), row.get('field', '')) for row in audit_rows)
+    status('ERROR', all(value == 1 for value in audit_fields.values()) and len(audit_fields) == 408, 'harmonization audit covers six fields for each matrix row exactly once')
+    source_map = {'lifecycle_coverage': 'lifecycle_coverage', 'primary_system_shape': 'system_shape', 'overlay_tags': 'system_shape', 'cross_stage_capabilities': 'agentic_capabilities', 'strongest_evidence_output': 'strongest_evidence_output', 'external_traceability': 'external_traceability'}
+    status('ERROR', all(row.get('original_label', '') == pre_by_id.get(row.get('matrix_id', ''), {}).get(source_map.get(row.get('field', ''), ''), '') for row in audit_rows), 'all frozen/pre-harmonization labels remain preserved in the audit')
+    coded_canonical = {row.get('canonical_study_id', '') for row in harmonized}
+    extended_canonical = {row.get('canonical_study_id', '') for row in extended_rows}
+    status('ERROR', not (coded_canonical & extended_canonical), 'extended synthesis does not overlap the harmonized coded set')
+    target = [row for row in harmonized if row.get('analytical_role') == 'target_software_study']
+    initial = [row for row in target if row.get('coding_round') == 'initial_frozen_round']
+    update = [row for row in target if row.get('coding_round') == 'submission_update_20260715']
+    status('ERROR', len(initial) == 30 and len(update) == 37, 'round-wise target-software totals reconcile to 30 + 37 = 67')
+    stat_lookup = {(row.get('category', ''), row.get('label', '')): row for row in round_stats}
+    for category, field in [('lifecycle_coverage', 'lifecycle_coverage'), ('cross_stage_capability', 'cross_stage_capabilities'), ('primary_system_shape', 'primary_system_shape')]:
+        all_labels = set().union(*(split_multilabel(row.get(field, '')) for row in target))
+        for label in all_labels:
+            expected_initial = sum(label in split_multilabel(row.get(field, '')) for row in initial)
+            expected_update = sum(label in split_multilabel(row.get(field, '')) for row in update)
+            stat = stat_lookup.get((category, label), {})
+            status('ERROR', int(stat.get('initial_cohort_count', -1)) == expected_initial and int(stat.get('submission_update_cohort_count', -1)) == expected_update and int(stat.get('combined_harmonized_count', -1)) == expected_initial + expected_update, f'round statistics reconcile for {category}: {label}')
+    print('CODING_ROUND_HARMONIZATION: rows=68 target=67 governance=1 audit_fields=408 status=author_confirmed')
 
 
 def validate_tracked_file_boundary():
@@ -1714,6 +1760,9 @@ submission_update_integration = read_csv('submission_update_20260715_canonical_i
 submission_update_additions = read_csv('submission_update_20260715_study_level_additions.csv')
 current_synthesis_statistics = read_csv('current_synthesis_statistics.csv')
 current_study_level_matrix = read_csv('current_study_level_coding_matrix.csv')
+harmonized_study_level_matrix = read_csv('current_study_level_coding_matrix_harmonized.csv')
+coding_round_harmonization_audit = read_csv('coding_round_harmonization_audit.csv')
+current_synthesis_statistics_by_round = read_csv('current_synthesis_statistics_by_round.csv')
 
 validate_product_ecosystem_snapshot(product_snapshot)
 validate_second_coder_files(second_coder_blind, second_coder_adjudication, second_coder_formal, second_coder_formal_results)
@@ -1726,6 +1775,7 @@ validate_submission_update_full_audit(submission_update_screening, submission_up
 validate_submission_update_second_coder(submission_update_full_audit, submission_update_blind, submission_update_results, submission_update_adjudication)
 validate_submission_update_finalization(submission_update_adjudication, submission_update_adjudicated, submission_update_integration)
 validate_current_study_level_matrix(current_study_level_matrix, submission_update_additions)
+validate_harmonized_coding_matrix(current_study_level_matrix, harmonized_study_level_matrix, coding_round_harmonization_audit, current_synthesis_statistics_by_round, extended_synthesis)
 validate_integrated_submission_update(corpus, study_version_crosswalk, extended_synthesis, submission_update_adjudicated, submission_update_additions, current_synthesis_statistics)
 validate_tracked_file_boundary()
 

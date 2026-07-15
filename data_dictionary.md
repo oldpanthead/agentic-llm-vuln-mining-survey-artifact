@@ -5,20 +5,23 @@ This dictionary describes the non-sensitive audit artifact used by the survey ma
 
 ## Current Manuscript Layer Terminology
 
-Current terminology maps legacy artifact values as follows: `Core` identifies study-level coded source records and `Supporting` identifies extended-synthesis source records. The current corpus contains 68 study-level coded records (67 target-software studies plus one governance boundary case) and 65 extended-synthesis studies. `data/current_study_level_coding_matrix.csv` is the unified current study-level view. Legacy `core31` and `v13_` files preserve the frozen first coding round; the additions file preserves update-round provenance without imputed A/E labels.
+Current terminology maps legacy artifact values as follows: `Core` identifies study-level coded source records and `Supporting` identifies extended-synthesis source records. The current corpus contains 68 study-level coded records (67 target-software studies plus one governance boundary case) and 65 extended-synthesis studies. `data/current_study_level_coding_matrix_harmonized.csv` is the author-confirmed current study-level view; `data/current_study_level_coding_matrix.csv` preserves the pre-harmonization combined view. Legacy `core31` and `v13_` files preserve the frozen first coding round; the additions file preserves update-round provenance without imputed A/E labels.
 
-## `data/current_study_level_coding_matrix.csv`
+## `data/current_study_level_coding_matrix_harmonized.csv` and pre-harmonization provenance
 
-This is the unified current matrix for all 68 study-level coded records. It combines the frozen initial round with the 37 author-confirmed update additions while preserving round-specific provenance and reliability scope. It does not contain legacy A/E fields.
+`data/current_study_level_coding_matrix_harmonized.csv` is the author-confirmed current matrix for all 68 study-level coded records. It applies one controlled lifecycle, primary-shape, overlay, cross-stage-capability, evidence-output, and external-traceability schema while preserving round provenance and reliability scope. `data/current_study_level_coding_matrix.csv` is retained unchanged as the pre-harmonization combined view. Neither file contains legacy A/E fields.
 
 - `matrix_id`: stable row identifier inherited from the coding round (`C01`--`C31` or the applicable `U` identifier).
 - `record_id`, `canonical_study_id`: source-record and canonical-study links.
 - `system_alias`, `title`: system and publication identifiers.
 - `analytical_role`: `target_software_study` or `governance_boundary_case`.
 - `coding_round`: `initial_frozen_round` or `submission_update_20260715`.
-- `lifecycle_coverage`: current multi-label lifecycle coding.
-- `system_shape`: descriptive primary shape or preserved overlay labels; the governance row remains separate.
-- `agentic_capabilities`: current natural-language capability labels.
+- `harmonization_status`: author-confirmed coding-round harmonization status.
+- `lifecycle_coverage`: current controlled multi-label lifecycle coding.
+- `primary_system_shape`: one approved primary shape; the governance row remains separate.
+- `overlay_tags`: optional controlled overlays kept separate from the primary shape.
+- `cross_stage_capabilities`: current controlled multi-label capability field.
+- `legacy_notes`: historical textual labels retained outside formal capability coding.
 - `strongest_evidence_output`: current evidence-output label.
 - `external_traceability`: reported external-trace category or note.
 - `claim_boundary`: current English claim-boundary wording.
@@ -26,6 +29,10 @@ This is the unified current matrix for all 68 study-level coded records. It comb
 - `coding_status`: frozen initial-round or author-confirmed update status.
 - `reliability_scope`: fields independently checked in that row's coding round; it prevents reliability results from being generalized across fields or rounds.
 - `official_url`: public URL or ISBN locator.
+
+## `data/coding_round_harmonization_audit.csv`, `data/current_synthesis_statistics_by_round.csv`, and `CODING_ROUND_HARMONIZATION_REPORT.md`
+
+The harmonization audit preserves each original field value, current-codebook candidate, evidence basis, source location, uncertainty, author-review status, and final author-confirmed label. The round-statistics file reports initial, submission-update, and combined harmonized counts without constructing a combined reliability coefficient. The report summarizes coding drift, accepted changes, residual round differences, taxonomy stability, and the AI-assisted resolution boundary.
 ## Common Identifiers
 
 - `record_id`: stable identifier for one source record in the 253-record screening ledger.
@@ -127,7 +134,7 @@ This report compares the frozen author audit with the completed independent pass
 
 ## `data/submission_update_20260715_adjudication_working_draft.csv`
 
-This file retains author, coder2, and proposed values side by side for analytical layer, lifecycle coverage, primary system shape, agentic capabilities, strongest evidence output, external traceability, and claim boundary. `field_resolution_trace` records whether the proposal retains one input or applies an operational-rule harmonization. Every row is marked `assistant_proposed_pending_author_confirmation`; the file is not a completed human consensus record.
+This file retains author, coder2, and proposed values side by side for analytical layer, lifecycle coverage, primary system shape, agentic capabilities, strongest evidence output, external traceability, and claim boundary. `field_resolution_trace` records whether the proposal retains one input or applies an operational-rule harmonization. The file is a preserved working draft; final author-confirmed decisions are recorded in `data/submission_update_20260715_adjudicated.csv` and the current cross-round harmonization is recorded in `data/coding_round_harmonization_audit.csv`.
 
 ## `SUBMISSION_UPDATE_ADJUDICATION_SUMMARY.md` and `prepare_submission_update_adjudication.py`
 

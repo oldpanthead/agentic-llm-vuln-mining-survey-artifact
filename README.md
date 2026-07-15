@@ -27,25 +27,29 @@ Expected validation highlights:
 
 ## Terminology Compatibility Note
 
-The current corpus contains 68 study-level coded records (67 target-software studies plus one governance boundary case) and 65 extended-synthesis studies. `data/current_study_level_coding_matrix.csv` is the unified current study-level view. Legacy files with `core31` or `v13` names retain the frozen first-round 31-record coding and its formal reliability results; the 37-row additions file preserves update-round provenance without imputed A/E labels. Source-layer values retain `Core` and `Supporting` for script compatibility and record analytical role rather than study quality.
+The current corpus contains 68 study-level coded records (67 target-software studies plus one governance boundary case) and 65 extended-synthesis studies. `data/current_study_level_coding_matrix_harmonized.csv` is the author-confirmed current study-level view; `data/current_study_level_coding_matrix.csv` preserves the pre-harmonization combined view. Legacy files with `core31` or `v13` names retain the frozen first-round coding and its formal reliability results, while the 37-row additions file preserves update-round provenance without imputed A/E labels. Source-layer values retain `Core` and `Supporting` for script compatibility and record analytical role rather than study quality.
 
 ## Main Entry Points
 
 - `SEARCH_PROTOCOL.md`: source-specific search protocol.
 - `data/source_search_log.csv`: source-level search ledger.
 - `data/source_screening_audit.csv`: record-level screening audit for all 253 source records.
-- `data/submission_update_20260715_screening_audit.csv`: submission-time arXiv sensitivity-search decisions.
+- `data/submission_update_20260715_screening_audit.csv`: submission-time arXiv sensitivity and recall-recovery decisions.
 - `data/submission_update_20260715_full_coding_audit.csv`: frozen pre-adjudication author full-text workflow--capability--evidence audit of the 41 potentially eligible records.
 - `data/submission_update_20260715_second_coder_blind_template.csv`: blank independent-review sheet for the 41 update records; it exposes no author labels.
 - `data/submission_update_20260715_second_coder_results.csv`: completed independent 41-record coder2 decisions, reasons, and uncertainty notes.
 - `reports/SUBMISSION_UPDATE_SECOND_CODER_PRE_ADJUDICATION_REPORT.md`: computed agreement before disagreement resolution.
-- `data/submission_update_20260715_adjudication_working_draft.csv`: preserved assistant-prepared proposal reviewed by the author.
+- `data/submission_update_20260715_adjudication_working_draft.csv`: preserved AI-assisted evidence-linked proposal reviewed by the author.
 - `data/submission_update_20260715_adjudicated.csv`: author-confirmed 37/4 field resolution preserving author and coder2 inputs.
 - `reports/SUBMISSION_UPDATE_ADJUDICATION_REPORT.md`: confirmation scope, final layer outcome, and consensus boundary.
 - `data/submission_update_20260715_canonical_integration_crosswalk.csv`: canonical-identity assessment against the frozen corpus.
 - `SUBMISSION_UPDATE_CANONICAL_INTEGRATION_REPORT.md`: pre-integration canonical-match and projected-count assessment.
 - `SUBMISSION_UPDATE_CORPUS_INTEGRATION_REPORT.md`: completed integration counts and cohort boundary.
-- `data/current_study_level_coding_matrix.csv`: unified current matrix for all 67 target-software studies plus the governance boundary case; `coding_round` and `reliability_scope` preserve round-specific provenance.
+- `data/current_study_level_coding_matrix_harmonized.csv`: author-confirmed harmonized matrix for all 67 target-software studies plus the governance boundary case, with controlled primary shapes, overlays, and cross-stage capabilities.
+- `data/current_study_level_coding_matrix.csv`: pre-harmonization combined matrix retained for provenance.
+- `data/coding_round_harmonization_audit.csv`: field-level original, candidate, evidence basis, review status, and final label for both rounds.
+- `data/current_synthesis_statistics_by_round.csv`: initial, update, and combined harmonized distributions.
+- `CODING_ROUND_HARMONIZATION_REPORT.md`: coding-drift findings, author-confirmed changes, and framework-stability assessment.
 - `data/submission_update_20260715_study_level_additions.csv`: 37-row update-round view retained for auditability.
 - `data/current_synthesis_statistics.csv`: combined descriptive lifecycle, capability, and evidence-output counts.
 - `SUBMISSION_UPDATE_ADJUDICATION_SUMMARY.md`: resolution rules and reviewed working-draft history.
@@ -70,7 +74,7 @@ The current corpus contains 68 study-level coded records (67 target-software stu
 
 ## Second-Coder Status
 
-The formal strongest-evidence-output second-coder pass covers the 31 records in the frozen initial round. Results are in `data/core31_second_coder_formal_results.csv`, with agreement reported in `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md`. The separate 41-record update-round pass and its author-confirmed 37/4 resolution remain documented in the submission-update files; reliability is reported by round.
+The formal strongest-evidence-output second-coder pass covers the 31 records in the frozen initial round. Results are in `data/core31_second_coder_formal_results.csv`, with agreement reported in `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md`. The separate 41-record update-round pass and its author-confirmed 37/4 resolution remain documented in the submission-update files. Reliability is reported by round; harmonization does not create a synthetic combined kappa. AI-assisted tools organized disagreement records and prepared evidence-linked candidate resolutions, which the author independently reviewed against the recorded public-material basis.
 
 A separate extension check covers cross-stage capability and external traceability. Results are in `data/core31_second_coder_capability_traceability_results.csv`, with set-style agreement reported in `reports/SECOND_CODER_CAPABILITY_TRACEABILITY_AGREEMENT_REPORT.md`.
 
