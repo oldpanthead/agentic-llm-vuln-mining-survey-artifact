@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import argparse
 import csv
 import sys
 import subprocess
@@ -10,6 +11,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 DATA = ROOT / 'data'
 REPORTS = ROOT / 'reports'
+
+parser = argparse.ArgumentParser(description='Validate the public artifact and reproduce manuscript-facing tables/counts.')
+parser.add_argument('--manuscript', default=None, help='Optional path to main_acm_csur.tex for validating LaTeX \\path{} references.')
+ARGS = parser.parse_args()
+MANUSCRIPT_PATH = Path(ARGS.manuscript).expanduser().resolve() if ARGS.manuscript else None
+MANIFEST_PATH = ROOT / 'manuscript_artifact_paths.txt'
 
 CSV_REQUIRED_FIELDS = {
     'corpus.csv': ['record_id', 'corpus_layer'],
@@ -1735,19 +1742,46 @@ def validate_harmonized_coding_matrix(pre_matrix, harmonized, audit_rows, round_
 
 
 def validate_manuscript_artifact_paths():
-    manuscript = ROOT.parent / 'latex' / 'latex_acm_csur_en' / 'main_acm_csur.tex'
-    status('ERROR', manuscript.exists(), 'manuscript main_acm_csur.tex exists for artifact-path validation')
-    if not manuscript.exists():
+    manifest_missing = []
+    manifest_paths = []
+    status('ERROR', MANIFEST_PATH.exists(), 'manuscript_artifact_paths.txt exists for public-clone artifact path validation')
+    if MANIFEST_PATH.exists():
+        for raw in MANIFEST_PATH.read_text(encoding='utf-8').splitlines():
+            rel = raw.strip()
+            if not rel or rel.startswith('#'):
+                continue
+            normalized = rel.replace('\\', '/')
+            manifest_paths.append(normalized)
+            if normalized.startswith('/') or re.match(r'^[A-Za-z]:', normalized):
+                manifest_missing.append(normalized + ' (absolute paths are not allowed)')
+                continue
+            if '..' in Path(normalized).parts:
+                manifest_missing.append(normalized + ' (parent traversal is not allowed)')
+                continue
+            if not (ROOT / normalized).exists():
+                manifest_missing.append(normalized)
+        status('ERROR', not manifest_missing, 'manifest artifact paths exist inside the public artifact')
+        if manifest_missing:
+            print('ERROR: missing or invalid manifest artifact paths:', ', '.join(manifest_missing))
+        print(f'MANUSCRIPT_ARTIFACT_MANIFEST: paths={len(manifest_paths)} source={MANIFEST_PATH.name}')
+
+    if MANUSCRIPT_PATH is None:
+        print('INFO: no --manuscript path supplied; skipping LaTeX \\path{} source validation for standalone public artifact mode.')
         return
-    text = manuscript.read_text(encoding='utf-8')
+
+    status('ERROR', MANUSCRIPT_PATH.exists(), 'explicit --manuscript path exists for LaTeX artifact-path validation')
+    if not MANUSCRIPT_PATH.exists():
+        return
+    text = MANUSCRIPT_PATH.read_text(encoding='utf-8')
     paths = re.findall(r'\\path\{([^}]+)\}', text)
     missing = []
     for rel in paths:
         if rel.startswith(('data/', 'reports/')) or rel.endswith('.md') or rel.endswith('.py'):
-            candidate = ROOT / rel.replace('/', '\\')
+            normalized = rel.replace('\\', '/')
+            candidate = ROOT / normalized
             if not candidate.exists():
                 missing.append(rel)
-    status('ERROR', not missing, 'Data and Code Availability artifact paths exist in the public artifact')
+    status('ERROR', not missing, 'Data and Code Availability artifact paths from --manuscript exist in the public artifact')
     if missing:
         print('ERROR: missing artifact paths from manuscript:', ', '.join(missing))
 def validate_tracked_file_boundary():

@@ -8,7 +8,8 @@ This closure pass synchronizes the public artifact with the current ACM CSUR man
 
 - Repository: `oldpanthead/agentic-llm-vuln-mining-survey-artifact`
 - Submission tag: `csur-submission-2026-07`
-- Public-main final commit SHA: resolved by the submission tag and reported in the submission handoff/final response. The in-repository report records the immutable tag because a commit cannot embed its own final SHA without changing that SHA.
+- Public-main final commit SHA: reported in the submission handoff/final response after this closure report is committed and pushed. A commit cannot embed its own final SHA without changing that SHA.
+- Tag status: `csur-submission-2026-07` marks the prior synchronized submission baseline; this repair pass does not move the tag unless explicitly retagged.
 
 ## Corpus Counts
 
@@ -71,8 +72,8 @@ The manuscript has been updated to:
 - state the frozen-label versus harmonized-label reliability boundary;
 - use four dominant comparison shapes rather than a three-shape-plus-cross-cutting formulation;
 - use the formal reproduction-, validation-, and repair-centered shape name;
-- keep Table 7 legend text as a table note rather than a data cell;
-- remove the duplicated Table 14 explanatory sentence;
+- keep Table 7 legend text as a table note rather than a data cell; the recompiled PDF no longer contains the bad `Reproducible validation, not external confirmation Legend.` string;
+- place Table 14 after a complete introduction sentence and keep the `Trustworthy Agentic...` paragraph after the table; the recompiled PDF no longer contains the split `reporting requirements. Trustworthy` string;
 - update the conclusion to use recall-recovery and author-confirmed harmonized-label wording.
 
 ## Artifact Closure
@@ -89,10 +90,10 @@ The search protocol is titled around the `Submission-Time arXiv Sensitivity and 
 
 ## Validation Result
 
-`python reproduce_tables.py` exits with code 0. The script checks canonical counts, source/canonical separation, no cross-layer canonical overlap, second-coder reports, recall-recovery agreement values, harmonized matrix size and controlled vocabulary, round-specific shape and evidence counts, harmonization evidence bases, manuscript artifact-path existence, and tracked-file security boundaries.
+`python reproduce_tables.py` exits with code 0 in standalone public-artifact mode. `python reproduce_tables.py --manuscript <path-to-main_acm_csur.tex>` also exits with code 0 when the manuscript source is available. The script checks canonical counts, source/canonical separation, no cross-layer canonical overlap, second-coder reports, recall-recovery agreement values, harmonized matrix size and controlled vocabulary, round-specific shape and evidence counts, harmonization evidence bases, repository-local artifact-path manifest entries, optional manuscript `\path{}` entries, and tracked-file security boundaries.
 
-The current PDF compiles to 34 pages. The LaTeX log reports no undefined citations, no undefined references, and no overfull boxes. Remaining warnings are underfull box/caption warnings typical of dense survey tables.
+The current PDF compiles to 33 pages. The LaTeX log reports no undefined citations, no undefined references, no overfull boxes, and no rerun request. Remaining warnings are underfull box/caption warnings typical of dense survey tables. Rendered-page checks covered pages 14, 15, 18, 19, 22, 23, and 28; no large internal whitespace bands were detected on those pages after the float-placement repairs.
 
 ## Public-Artifact Sync Requirements
 
-After this report is committed, public main should expose all current files through the `csur-submission-2026-07` tag. The final handoff should record the pushed main commit SHA and tag SHA.
+After this report is committed and pushed, public main should expose the current artifact files. The final handoff should record the pushed main commit SHA, the `csur-submission-2026-07` tag status, and the public fresh-clone `python reproduce_tables.py` exit code.

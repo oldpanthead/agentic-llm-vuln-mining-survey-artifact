@@ -1,0 +1,5 @@
+# Artifact paths referenced by the ACM CSUR manuscript Data and Code Availability statement.
+# One repository-relative path per non-comment line.
+data/study_version_crosswalk.csv
+data/current_study_level_coding_matrix_harmonized.csv
+data/extended_synthesis_audit.csv

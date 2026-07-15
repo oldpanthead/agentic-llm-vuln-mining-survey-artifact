@@ -29,7 +29,7 @@ This index points reviewers to the public, non-sensitive files needed to audit t
 - `data/current_study_level_coding_matrix.csv`: pre-harmonization combined 68-record matrix retained for provenance.
 - `data/coding_round_harmonization_audit.csv`: field-level original values, current-codebook candidates, evidence bases, uncertainty notes, author-review status, and final author-confirmed labels.
 - `data/current_synthesis_statistics_by_round.csv`: initial-round, submission-update-round, and combined harmonized descriptive distributions.
-- `CODING_ROUND_HARMONIZATION_REPORT.md`: coding-drift findings, accepted changes, residual round differences, taxonomy stability, and AI-assisted resolution boundary.
+- `CODING_ROUND_HARMONIZATION_REPORT.md`: coding-drift findings, accepted changes, residual round differences, taxonomy stability, and AI-assisted working-note boundary.
 - `data/v13_core_synthesis_matrix.csv`: frozen initial-round 31-record matrix retained for historical traceability.
 - `data/v13_synthesis_statistics.csv`: checked synthesis statistics used by the manuscript.
 - `data/extended_synthesis_audit.csv`: record-level synthesis-use audit for the 65-study extended synthesis set.

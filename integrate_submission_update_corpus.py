@@ -347,7 +347,7 @@ def main() -> None:
             "claim_boundary": LEGACY_CLAIM_BOUNDARY_EN[row["core_id"]],
             "claim_boundary_original": row["main_claim_boundary"],
             "coding_status": "frozen_initial_round",
-            "reliability_scope": "strongest evidence output;agentic capabilities;external traceability",
+            "reliability_scope": "frozen-label checks: strongest evidence output, cross-stage capability, and external traceability; harmonized lifecycle/capability/shape labels are author-confirmed descriptive recodings",
             "official_url": reference_by_id[record_id]["official_url"],
         })
     for row in additions:
@@ -367,7 +367,7 @@ def main() -> None:
             "claim_boundary": row["claim_boundary"],
             "claim_boundary_original": row["claim_boundary"],
             "coding_status": row["coding_status"],
-            "reliability_scope": "analytical layer;lifecycle coverage;primary system shape;agentic capabilities;strongest evidence output;external traceability",
+            "reliability_scope": "pre-adjudication field-specific blind checks; final labels author-confirmed",
             "official_url": row["official_url"],
         })
     write("current_study_level_coding_matrix.csv", current_matrix, list(current_matrix[0]))

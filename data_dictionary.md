@@ -32,7 +32,7 @@ Current terminology maps legacy artifact values as follows: `Core` identifies st
 
 ## `data/coding_round_harmonization_audit.csv`, `data/current_synthesis_statistics_by_round.csv`, and `CODING_ROUND_HARMONIZATION_REPORT.md`
 
-The harmonization audit preserves each original field value, current-codebook candidate, evidence basis, source location, uncertainty, author-review status, and final author-confirmed label. The round-statistics file reports initial, submission-update, and combined harmonized counts without constructing a combined reliability coefficient. The report summarizes coding drift, accepted changes, residual round differences, taxonomy stability, and the AI-assisted resolution boundary.
+The harmonization audit preserves each original field value, current-codebook candidate, evidence basis, source location, uncertainty, author-review status, and final author-confirmed label. The round-statistics file reports initial, submission-update, and combined harmonized counts without constructing a combined reliability coefficient. The report summarizes coding drift, accepted changes, residual round differences, taxonomy stability, and the AI-assisted working-note boundary.
 ## Common Identifiers
 
 - `record_id`: stable identifier for one source record in the 253-record screening ledger.
@@ -87,7 +87,7 @@ This file records one source assignment and screening decision for each of the 2
 
 ## `data/submission_update_20260715_screening_audit.csv`
 
-This file records the submission-time arXiv sensitivity-search decisions without changing the frozen coded denominators.
+This file records the submission-time arXiv sensitivity-search decisions. The later 37/4 author-confirmed resolution has been integrated into the current corpus and harmonized study-level matrix.
 
 - `arxiv_id`, `title`, `published`, `official_url`, `query_ids`: normalized public arXiv metadata.
 - `existing_record_id`: matching corpus record, or `NA`.
@@ -138,7 +138,7 @@ This file retains author, coder2, and proposed values side by side for analytica
 
 ## `SUBMISSION_UPDATE_ADJUDICATION_SUMMARY.md` and `prepare_submission_update_adjudication.py`
 
-The summary records the resolution rules and proposed 37/4 analytical-layer outcome. The script reproduces the working draft and pre-adjudication report from the frozen author and coder2 inputs. Neither file changes the canonical corpus or manuscript denominator.
+The summary records the resolution rules and proposed 37/4 analytical-layer outcome. The script reproduces the working draft and pre-adjudication report from the frozen author and coder2 inputs. The final author-confirmed 37/4 outcome has since been integrated through the current corpus and harmonization files.
 
 ## `data/submission_update_20260715_adjudicated.csv`
 
@@ -153,12 +153,12 @@ The report states the confirmation scope, 37/4 analytical-layer outcome, preserv
 - `update_id`, `arxiv_id`, `title`, `authors`, `official_url`, `doi`: public update-study identity.
 - `adjudicated_analytical_layer`: confirmed study-level or extended-synthesis assignment.
 - `matched_existing_record_id`, `match_basis`, `best_existing_title`: canonical identity evidence against the frozen corpus.
-- `proposed_canonical_study_id`, `integration_status`, `counted_after_integration`: projected integration decision.
-- `integration_note`: reminder that this assessment does not itself rewrite the frozen corpus.
+- `proposed_canonical_study_id`, `integration_status`, `counted_after_integration`: integration decision later reflected in the current corpus files.
+- `integration_note`: provenance note for how the update records entered the integrated current corpus.
 
 ## `SUBMISSION_UPDATE_CANONICAL_INTEGRATION_REPORT.md` and `prepare_submission_update_canonical_integration.py`
 
-The report records the exact-identifier/title comparison and projected corpus impact. All 41 update records are new canonical studies under the current matching rules, yielding projected totals of 253 source records and 248 canonical studies. These projections remain separate from the frozen manuscript counts until the coding matrices, distributions, and text are updated together.
+The report records the exact-identifier/title comparison and corpus impact. All 41 update records are new canonical studies under the current matching rules, yielding the integrated totals of 253 source records and 248 canonical studies now reflected in the coding matrices, distributions, and manuscript text.
 
 ## `data/submission_update_20260715_study_level_additions.csv`
 

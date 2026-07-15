@@ -8,7 +8,7 @@
 - Author confirmation date: 2026-07-15
 - Final record: `data/submission_update_20260715_adjudicated.csv`
 
-The assistant prepared an evidence-based field resolution from the frozen author audit, the independent coder2 decisions, the public review material, and the operational codebook. The author reviewed and accepted that resolution. This is an author-confirmed analytical decision; it is not represented as a discussion between two human coders, a two-human consensus round, or a third-coder adjudication. The original author and coder2 labels remain unchanged in their source files and are retained side by side in the final record.
+The assistant prepared an evidence-linked working draft from the frozen author audit, the independent coder2 decisions, the public review material, and the operational codebook. The author reviewed that draft and confirmed the final field resolution. This is an author-confirmed analytical decision; it is not represented as a discussion between two human coders, a two-human consensus round, or a third-coder adjudication. The original author and coder2 labels remain unchanged in their source files and are retained side by side in the final record.
 
 ## Confirmed Analytical-Layer Outcome
 

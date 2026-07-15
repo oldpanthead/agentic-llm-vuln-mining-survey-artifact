@@ -39,7 +39,7 @@ The current corpus contains 68 study-level coded records (67 target-software stu
 - `data/submission_update_20260715_second_coder_blind_template.csv`: blank independent-review sheet for the 41 update records; it exposes no author labels.
 - `data/submission_update_20260715_second_coder_results.csv`: completed independent 41-record coder2 decisions, reasons, and uncertainty notes.
 - `reports/SUBMISSION_UPDATE_SECOND_CODER_PRE_ADJUDICATION_REPORT.md`: computed agreement before disagreement resolution.
-- `data/submission_update_20260715_adjudication_working_draft.csv`: preserved AI-assisted evidence-linked proposal reviewed by the author.
+- `data/submission_update_20260715_adjudication_working_draft.csv`: preserved AI-assisted evidence-linked working notes reviewed by the author.
 - `data/submission_update_20260715_adjudicated.csv`: author-confirmed 37/4 field resolution preserving author and coder2 inputs.
 - `reports/SUBMISSION_UPDATE_ADJUDICATION_REPORT.md`: confirmation scope, final layer outcome, and consensus boundary.
 - `data/submission_update_20260715_canonical_integration_crosswalk.csv`: canonical-identity assessment against the frozen corpus.
@@ -74,7 +74,7 @@ The current corpus contains 68 study-level coded records (67 target-software stu
 
 ## Second-Coder Status
 
-The formal strongest-evidence-output second-coder pass covers the 31 records in the frozen initial round. Results are in `data/core31_second_coder_formal_results.csv`, with agreement reported in `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md`. The separate 41-record recall-recovery pass and its author-confirmed 37/4 resolution remain documented in the submission-update files. Reliability is reported by round; harmonization does not create a synthetic combined kappa. Harmonized lifecycle, capability, and shape labels are author-confirmed descriptive recodings rather than a new independently re-coded reliability cohort. AI-assisted tools organized disagreement records and prepared evidence-linked candidate resolutions, which the author independently reviewed against the recorded public-material basis.
+The formal strongest-evidence-output second-coder pass covers the 31 records in the frozen initial round. Results are in `data/core31_second_coder_formal_results.csv`, with agreement reported in `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md`. The separate 41-record recall-recovery pass and its author-confirmed 37/4 resolution remain documented in the submission-update files. Reliability is reported by round; harmonization does not create a synthetic combined kappa. Harmonized lifecycle, capability, and shape labels are author-confirmed descriptive recodings rather than a new independently re-coded reliability cohort. AI-assisted tools organized disagreement records and drafted evidence-linked working notes, which the author independently reviewed against the recorded public-material basis.
 
 A separate extension check covers cross-stage capability and external traceability. Results are in `data/core31_second_coder_capability_traceability_results.csv`, with set-style agreement reported in `reports/SECOND_CODER_CAPABILITY_TRACEABILITY_AGREEMENT_REPORT.md`.
 

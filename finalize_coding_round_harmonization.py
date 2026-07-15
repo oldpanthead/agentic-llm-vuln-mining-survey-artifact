@@ -158,7 +158,7 @@ def main() -> None:
         "",
         "- Original author labels, independent-coder labels, and pre-adjudication reports remain preserved.",
         "- Every changed initial-round label is traceable through `data/coding_round_harmonization_audit.csv` to an existing frozen coding note or public-material audit location.",
-        "- AI-assisted tools organized the comparison and prepared evidence-linked candidate resolutions. The author reviewed the underlying recorded evidence and accepted the changes; AI output is not an independent human coding decision.",
+        "- AI-assisted tools organized the comparison and drafted evidence-linked working notes. The author reviewed the underlying recorded evidence and accepted the final changes; AI output is not an independent human coding decision.",
     ])
     (ROOT / "CODING_ROUND_HARMONIZATION_REPORT.md").write_text(
         "\n".join(report) + "\n", encoding="utf-8"
