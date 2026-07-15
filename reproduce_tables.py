@@ -1387,10 +1387,17 @@ def validate_submission_update_second_coder(audit_rows, blind_rows, result_rows,
     status('ERROR', not incomplete, 'all 41 submission update coder2 decisions, reasons, and uncertainty notes are populated')
 
     allowed_layers = {'study_level_candidate', 'extended_synthesis'}
-    allowed_shapes = {
+    current_shape_vocab = {
         'candidate-analysis system', 'feedback-driven fuzzing agent',
-        'PoC/PoV validation agent', 'long-horizon pentest and CRS agent',
+        'reproduction-, validation-, and repair-centered agent',
+        'long-horizon pentest and CRS agent',
     }
+    legacy_shape_aliases = {
+        'PoC/PoV validation agent': 'reproduction-, validation-, and repair-centered agent',
+    }
+    allowed_shapes = current_shape_vocab | set(legacy_shape_aliases)
+    def normalize_shape_label(value):
+        return legacy_shape_aliases.get(value, value)
     allowed_outputs = {
         'candidate judgment', 'controlled task completion', 'runtime safety signal',
         'reproducible validation', 'externally traceable material',
@@ -1401,7 +1408,7 @@ def validate_submission_update_second_coder(audit_rows, blind_rows, result_rows,
         'author-reported external clue', 'publicly aligned external trace',
     }
     status('ERROR', all(row.get('coder2_analysis_layer_decision') in allowed_layers for row in result_rows), 'submission update coder2 layer labels use the approved vocabulary')
-    status('ERROR', all(row.get('coder2_primary_system_shape') in allowed_shapes for row in result_rows), 'submission update coder2 system-shape labels use the approved vocabulary')
+    status('ERROR', all(row.get('coder2_primary_system_shape') in allowed_shapes for row in result_rows), 'submission update coder2 system-shape labels use approved current or preserved legacy vocabulary')
     status('ERROR', all(row.get('coder2_strongest_evidence_output') in allowed_outputs for row in result_rows), 'submission update coder2 evidence-output labels use the approved vocabulary')
     status('ERROR', all(row.get('coder2_external_traceability_label') in allowed_trace for row in result_rows), 'submission update coder2 traceability labels use the approved vocabulary')
 
@@ -1433,8 +1440,8 @@ def validate_submission_update_second_coder(audit_rows, blind_rows, result_rows,
 
     author_layers = [author_layer(audit_by_arxiv[row['arxiv_id']].get('author_analysis_layer', '')) for row in result_rows]
     coder_layers = [row.get('coder2_analysis_layer_decision', '') for row in result_rows]
-    author_shapes = [audit_by_arxiv[row['arxiv_id']].get('primary_system_shape', '') for row in result_rows]
-    coder_shapes = [row.get('coder2_primary_system_shape', '') for row in result_rows]
+    author_shapes = [normalize_shape_label(audit_by_arxiv[row['arxiv_id']].get('primary_system_shape', '')) for row in result_rows]
+    coder_shapes = [normalize_shape_label(row.get('coder2_primary_system_shape', '')) for row in result_rows]
     author_outputs = [audit_by_arxiv[row['arxiv_id']].get('strongest_evidence_output', '') for row in result_rows]
     coder_outputs = [row.get('coder2_strongest_evidence_output', '') for row in result_rows]
     author_trace = [audit_by_arxiv[row['arxiv_id']].get('external_traceability', '') for row in result_rows]
@@ -1680,6 +1687,41 @@ def validate_harmonized_coding_matrix(pre_matrix, harmonized, audit_rows, round_
     initial = [row for row in target if row.get('coding_round') == 'initial_frozen_round']
     update = [row for row in target if row.get('coding_round') == 'submission_update_20260715']
     status('ERROR', len(initial) == 30 and len(update) == 37, 'round-wise target-software totals reconcile to 30 + 37 = 67')
+    expected_shape_by_round = {
+        'initial': Counter({'candidate-analysis system': 4, 'feedback-driven fuzzing agent': 9, 'reproduction-, validation-, and repair-centered agent': 8, 'long-horizon pentest and CRS agent': 9}),
+        'update': Counter({'candidate-analysis system': 12, 'feedback-driven fuzzing agent': 8, 'reproduction-, validation-, and repair-centered agent': 12, 'long-horizon pentest and CRS agent': 5}),
+        'combined': Counter({'candidate-analysis system': 16, 'feedback-driven fuzzing agent': 17, 'reproduction-, validation-, and repair-centered agent': 20, 'long-horizon pentest and CRS agent': 14}),
+    }
+    expected_evidence_by_round = {
+        'initial': Counter({'candidate judgment': 3, 'controlled task completion': 5, 'runtime safety signal': 8, 'reproducible validation': 14, 'externally traceable material': 0}),
+        'update': Counter({'candidate judgment': 3, 'controlled task completion': 8, 'runtime safety signal': 5, 'reproducible validation': 17, 'externally traceable material': 4}),
+        'combined': Counter({'candidate judgment': 6, 'controlled task completion': 13, 'runtime safety signal': 13, 'reproducible validation': 31, 'externally traceable material': 4}),
+    }
+    shape_initial = Counter(row.get('primary_system_shape') for row in initial)
+    shape_update = Counter(row.get('primary_system_shape') for row in update)
+    shape_combined = Counter(row.get('primary_system_shape') for row in target)
+    evidence_initial = Counter(row.get('strongest_evidence_output') for row in initial)
+    evidence_update = Counter(row.get('strongest_evidence_output') for row in update)
+    evidence_combined = Counter(row.get('strongest_evidence_output') for row in target)
+    status('ERROR', shape_initial == expected_shape_by_round['initial'], 'initial-round primary-shape counts are 4/9/8/9')
+    status('ERROR', shape_update == expected_shape_by_round['update'], 'recall-recovery primary-shape counts are 12/8/12/5')
+    status('ERROR', shape_combined == expected_shape_by_round['combined'], 'combined primary-shape counts are 16/17/20/14')
+    status('ERROR', evidence_initial == expected_evidence_by_round['initial'], 'initial-round evidence counts are CJ3/TC5/RS8/RV14/ET0')
+    status('ERROR', evidence_update == expected_evidence_by_round['update'], 'recall-recovery evidence counts are CJ3/TC8/RS5/RV17/ET4')
+    status('ERROR', evidence_combined == expected_evidence_by_round['combined'], 'combined evidence counts are CJ6/TC13/RS13/RV31/ET4')
+
+    substantive = [row for row in audit_rows if row.get('change_required') == 'yes']
+    changed_record_ids = sorted({row.get('matrix_id') for row in substantive})
+    changed_fields = Counter(row.get('field') for row in substantive)
+    missing_basis = [row.get('matrix_id', '?') + ':' + row.get('field', '?') for row in substantive if len(row.get('evidence_basis', '').strip()) < 20]
+    unresolved = [row.get('matrix_id', '?') + ':' + row.get('field', '?') for row in audit_rows if 'pending' in row.get('author_review_status', '').lower()]
+    status('ERROR', not missing_basis, 'every substantive harmonization change has an evidence basis')
+    status('ERROR', not unresolved, 'harmonization audit has no unresolved fields')
+    if missing_basis:
+        print('ERROR: harmonization changes missing evidence basis:', ', '.join(missing_basis[:20]))
+    if unresolved:
+        print('ERROR: unresolved harmonization fields:', ', '.join(unresolved[:20]))
+    print('HARMONIZATION_CHANGE_SUMMARY: changed_records=' + str(len(changed_record_ids)) + ' changed_fields=' + str(dict(sorted(changed_fields.items()))))
     stat_lookup = {(row.get('category', ''), row.get('label', '')): row for row in round_stats}
     for category, field in [('lifecycle_coverage', 'lifecycle_coverage'), ('cross_stage_capability', 'cross_stage_capabilities'), ('primary_system_shape', 'primary_system_shape')]:
         all_labels = set().union(*(split_multilabel(row.get(field, '')) for row in target))
@@ -1691,6 +1733,23 @@ def validate_harmonized_coding_matrix(pre_matrix, harmonized, audit_rows, round_
     print('CODING_ROUND_HARMONIZATION: rows=68 target=67 governance=1 audit_fields=408 status=author_confirmed')
 
 
+
+def validate_manuscript_artifact_paths():
+    manuscript = ROOT.parent / 'latex' / 'latex_acm_csur_en' / 'main_acm_csur.tex'
+    status('ERROR', manuscript.exists(), 'manuscript main_acm_csur.tex exists for artifact-path validation')
+    if not manuscript.exists():
+        return
+    text = manuscript.read_text(encoding='utf-8')
+    paths = re.findall(r'\\path\{([^}]+)\}', text)
+    missing = []
+    for rel in paths:
+        if rel.startswith(('data/', 'reports/')) or rel.endswith('.md') or rel.endswith('.py'):
+            candidate = ROOT / rel.replace('/', '\\')
+            if not candidate.exists():
+                missing.append(rel)
+    status('ERROR', not missing, 'Data and Code Availability artifact paths exist in the public artifact')
+    if missing:
+        print('ERROR: missing artifact paths from manuscript:', ', '.join(missing))
 def validate_tracked_file_boundary():
     try:
         result = subprocess.run(['git', 'ls-files'], cwd=ROOT, check=True, capture_output=True, text=True)
@@ -1777,6 +1836,7 @@ validate_submission_update_finalization(submission_update_adjudication, submissi
 validate_current_study_level_matrix(current_study_level_matrix, submission_update_additions)
 validate_harmonized_coding_matrix(current_study_level_matrix, harmonized_study_level_matrix, coding_round_harmonization_audit, current_synthesis_statistics_by_round, extended_synthesis)
 validate_integrated_submission_update(corpus, study_version_crosswalk, extended_synthesis, submission_update_adjudicated, submission_update_additions, current_synthesis_statistics)
+validate_manuscript_artifact_paths()
 validate_tracked_file_boundary()
 
 expected_layers = {'Core': 68, 'Supporting': 69, 'Background': 95, 'Excluded': 21}
@@ -1878,3 +1938,7 @@ if ERROR_COUNT:
     sys.exit(1)
 
 print('DONE')
+
+
+
+

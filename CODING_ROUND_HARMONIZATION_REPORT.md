@@ -9,6 +9,7 @@ The frozen initial-round files and the adjudicated submission-update files remai
 - New literature added by this pass: none.
 - New evidence-output category required: none.
 - Synthetic combined kappa computed: no.
+- Change-only independent human recoding after harmonization: no. Harmonized lifecycle, capability, and shape labels are author-confirmed descriptive recodings; frozen author labels and independent-coder labels remain preserved.
 
 ## Fields changed
 
@@ -42,10 +43,12 @@ The round differences narrow after the initial cohort is recoded at the July 15 
 
 ## Interpretation
 
-All four target-software system-shape patterns remain populated. Repair-oriented additions stretch the existing reproduction/validation shape rather than requiring a fifth category. Externally traceable material appears only in the update cohort under the current strongest-output coding, but no new evidence-output category is needed. The central workflow--capability--evidence conclusions are unchanged: broader Agentic action scope requires corresponding workflow and validation traces before stronger vulnerability claims can be supported.
+All four target-software system-shape patterns remain populated. Repair-oriented additions stretch the existing reproduction-, validation-, and repair-centered shape rather than requiring a fifth category. Externally traceable material appears only in the update cohort under the current strongest-output coding, but no new evidence-output category is needed. The central workflow--capability--evidence conclusions are unchanged: broader Agentic action scope requires corresponding workflow and validation traces before stronger vulnerability claims can be supported.
 
 ## Preservation and disclosure
 
 - Original author labels, independent-coder labels, and pre-adjudication reports remain preserved.
 - Every changed initial-round label is traceable through `data/coding_round_harmonization_audit.csv` to an existing frozen coding note or public-material audit location.
 - AI-assisted tools organized the comparison and prepared evidence-linked candidate resolutions. The author reviewed the underlying recorded evidence and accepted the changes; AI output is not an independent human coding decision.
+
+

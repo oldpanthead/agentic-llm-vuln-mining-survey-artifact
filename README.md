@@ -74,13 +74,13 @@ The current corpus contains 68 study-level coded records (67 target-software stu
 
 ## Second-Coder Status
 
-The formal strongest-evidence-output second-coder pass covers the 31 records in the frozen initial round. Results are in `data/core31_second_coder_formal_results.csv`, with agreement reported in `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md`. The separate 41-record update-round pass and its author-confirmed 37/4 resolution remain documented in the submission-update files. Reliability is reported by round; harmonization does not create a synthetic combined kappa. AI-assisted tools organized disagreement records and prepared evidence-linked candidate resolutions, which the author independently reviewed against the recorded public-material basis.
+The formal strongest-evidence-output second-coder pass covers the 31 records in the frozen initial round. Results are in `data/core31_second_coder_formal_results.csv`, with agreement reported in `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md`. The separate 41-record recall-recovery pass and its author-confirmed 37/4 resolution remain documented in the submission-update files. Reliability is reported by round; harmonization does not create a synthetic combined kappa. Harmonized lifecycle, capability, and shape labels are author-confirmed descriptive recodings rather than a new independently re-coded reliability cohort. AI-assisted tools organized disagreement records and prepared evidence-linked candidate resolutions, which the author independently reviewed against the recorded public-material basis.
 
 A separate extension check covers cross-stage capability and external traceability. Results are in `data/core31_second_coder_capability_traceability_results.csv`, with set-style agreement reported in `reports/SECOND_CODER_CAPABILITY_TRACEABILITY_AGREEMENT_REPORT.md`.
 
 The pilot second-coder round is archived under `archive/pilot_second_coder_round_1/` for codebook calibration only and should not be cited as formal reliability.
 
-The 2026-07-15 update-search blind pass is complete for all 41 records. The author-confirmed resolution assigns 37 records to study-level coding and four to extended synthesis. Canonical integration is complete: the current corpus contains 253 source records, 248 canonical studies, 67 target-software coded studies plus one governance boundary case, and 65 extended-synthesis studies. Reliability remains reported by coding round rather than as a synthetic combined kappa.
+The 2026-07-15 update-search blind pass is complete for all 41 records. The author-confirmed resolution assigns 37 records to study-level coding and four to extended synthesis. Canonical integration is complete: the current corpus contains 253 source records, 248 canonical studies, 67 target-software coded studies plus one governance boundary case, and 65 extended-synthesis studies. Reliability remains reported by coding round rather than as a synthetic combined kappa; harmonized descriptive labels are author-confirmed and separately auditable.
 
 ## Evidence Boundary
 
@@ -104,3 +104,5 @@ The public artifact excludes undisclosed PoCs, exploit payloads, sensitive crash
 - Code scripts: MIT License, see `LICENSE-CODE`.
 
 Current public repository URL: `https://github.com/oldpanthead/agentic-llm-vuln-mining-survey-artifact`. Prepare a separate anonymized artifact package or anonymized repository link before anonymous peer review.
+
+
