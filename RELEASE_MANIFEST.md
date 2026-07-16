@@ -5,6 +5,7 @@ Prepared for public review of the Agentic LLM vulnerability-mining survey artifa
 - Prepared date: 2026-07-15
 - Source-specific search ledger date: 2026-06-30
 - Submission-time arXiv sensitivity-search date: 2026-07-15
+- Source-parity official-source check date: 2026-07-16
 - Product-ecosystem snapshot date: 2026-06-29
 - Repository: `https://github.com/oldpanthead/agentic-llm-vuln-mining-survey-artifact`
 
@@ -13,7 +14,7 @@ Prepared for public review of the Agentic LLM vulnerability-mining survey artifa
 The release includes non-sensitive materials needed to review the survey evidence:
 
 - compact entry map: `ARTIFACT_INDEX.md`;
-- source-specific search protocol, source-level ledger, record-level screening audit, submission-time arXiv update export, screening audit, 41-record author full-text audit, blank update-search template, completed independent update coding, pre-adjudication agreement report, preserved working draft, author-confirmed adjudication, canonical-integration assessment, corpus metadata, canonical study/version crosswalk, corpus-layer audit, and screening summary;
+- source-specific search protocol, source-level ledger, record-level screening audit, submission-time arXiv update export, screening audit, official-source parity-check log, 41-record author full-text audit, blank update-search template, completed independent update coding, pre-adjudication agreement report, preserved working draft, author-confirmed adjudication, canonical-integration assessment, corpus metadata, canonical study/version crosswalk, corpus-layer audit, and screening summary;
 - author-confirmed harmonized 68-record coding matrix, pre-harmonization combined view, field-level harmonization audit, round-specific statistics, frozen 31-record coding table, 37-record update-round view, `data/extended_synthesis_audit.csv`, extended synthesis audit report, corpus-stratification closure report, deduplication audit report, current evidence-output codebook, legacy A-profile codebook, field dictionary, and legacy-code crosswalk;
 - manuscript-facing synthesis matrix, synthesis statistics, mapping counts, benchmark-boundary notes, research-agenda outputs, and reproducibility audit files;
 - DOI/reference audit, DOI-status notes, Zotero/PDF resolution summary, and literature-update decisions;
@@ -39,7 +40,7 @@ The release excludes:
 
 Product pages, help pages, official blogs, model pages, project pages, and disclosure policies are recorded as dated public materials. They support ecosystem and boundary discussion only; they are not independently validated by this artifact and remain outside the current 68-record study-level coded set.
 
-The source-specific ledger and submission-time update record the current corpus by source bucket, query family, screening decision, and analysis layer. Reference-list size and corpus-record size are separate quantities. Current counts are 253 source records and 248 canonical studies: 68 study-level coded records (67 target-software studies plus one governance boundary case), 65 extended synthesis studies, 95 background/reference records, and 20 excluded near-neighbor studies.
+The source-specific ledger, submission-time update, and 2026-07-16 official-source parity check record the current corpus by source bucket, query family, screening decision, and analysis layer. Reference-list size and corpus-record size are separate quantities. The parity check introduced no corpus-count changes. Current counts are 253 source records and 248 canonical studies: 68 study-level coded records (67 target-software studies plus one governance boundary case), 65 extended synthesis studies, 95 background/reference records, and 20 excluded near-neighbor studies.
 
 The product-ecosystem snapshot is an independent boundary layer with 23 rows. It is not counted in the 253 source records or 248 canonical studies. Row-level `access_date`, `manuscript_role`, and `evidence_caveat` fields record source timing and use.
 
@@ -58,6 +59,9 @@ Legacy A/E fields are retained for historical reproducibility and cross-version 
 - `data/submission_update_20260715_full_coding_audit.csv`
 - `data/submission_update_20260715_second_coder_blind_template.csv`
 - `data/submission_update_20260715_second_coder_results.csv`
+- `data/submission_update_20260715_second_coder_initial_results.csv`
+- `data/submission_update_20260715_second_coder_rerun_blind_template.csv`
+- `SUBMISSION_UPDATE_SECOND_CODER_RERUN_NOTES.md`
 - `reports/SUBMISSION_UPDATE_SECOND_CODER_PRE_ADJUDICATION_REPORT.md`
 - `data/submission_update_20260715_adjudication_working_draft.csv`
 - `data/submission_update_20260715_adjudicated.csv`

@@ -22,6 +22,7 @@ Expected validation highlights:
 - Product/system boundary snapshot rows: 23
 - Source-specific search ledger date: 2026-06-30
 - Submission-time arXiv sensitivity-search date: 2026-07-15 (41-record independent pass, author-confirmed 37/4 resolution, and canonical integration complete)
+- Source-parity official-source check date: 2026-07-16 (no corpus-count changes)
 - Product-ecosystem snapshot date: 2026-06-29
 
 
@@ -35,9 +36,14 @@ The current corpus contains 68 study-level coded records (67 target-software stu
 - `data/source_search_log.csv`: source-level search ledger.
 - `data/source_screening_audit.csv`: record-level screening audit for all 253 source records.
 - `data/submission_update_20260715_screening_audit.csv`: submission-time arXiv sensitivity and recall-recovery decisions.
+- `data/source_parity_update_20260716_search_log.csv`: official-source parity check after the arXiv recall-recovery update.
+- `data/source_parity_update_20260716_screening_audit.csv`: record-level screening decisions for the source-parity check.
+- `SOURCE_PARITY_UPDATE_SEARCH_REPORT.md`: source-parity closure report; it records no corpus-count changes.
 - `data/submission_update_20260715_full_coding_audit.csv`: frozen pre-adjudication author full-text workflow--capability--evidence audit of the 41 potentially eligible records.
-- `data/submission_update_20260715_second_coder_blind_template.csv`: blank independent-review sheet for the 41 update records; it exposes no author labels.
-- `data/submission_update_20260715_second_coder_results.csv`: completed independent 41-record coder2 decisions, reasons, and uncertainty notes.
+- `data/submission_update_20260715_second_coder_blind_template.csv`: original blank independent-review sheet for the 41 update records; it exposes no author labels.
+- `data/submission_update_20260715_second_coder_rerun_blind_template.csv`: blank rerun sheet for applying the tightened boundary notes without exposing author labels or previous coder2 decisions.
+- `data/submission_update_20260715_second_coder_results.csv`: adopted tightened-boundary independent 41-record coder2 decisions, reasons, and uncertainty notes.
+- `data/submission_update_20260715_second_coder_initial_results.csv`: previous update-pass coder2 result retained for provenance before the tightened-boundary rerun.
 - `reports/SUBMISSION_UPDATE_SECOND_CODER_PRE_ADJUDICATION_REPORT.md`: computed agreement before disagreement resolution.
 - `data/submission_update_20260715_adjudication_working_draft.csv`: preserved AI-assisted evidence-linked working notes reviewed by the author.
 - `data/submission_update_20260715_adjudicated.csv`: author-confirmed 37/4 field resolution preserving author and coder2 inputs.
@@ -69,18 +75,19 @@ The current corpus contains 68 study-level coded records (67 target-software stu
 - `data/mapping_snapshot_counts.csv`: descriptive mapping views for the manuscript corpus.
 - `data/product_ecosystem_snapshot.csv`: product-ecosystem boundary snapshot, maintained outside the 253-record corpus.
 - `evidence_output_codebook.md`: current evidence-output label definitions.
+- `SUBMISSION_UPDATE_SECOND_CODER_RERUN_NOTES.md`: lightweight boundary notes for a possible rerun of the 41-record update second-coder pass.
 - `data_dictionary.md`: complete field dictionary.
 - `reproduce_tables.py`: validation and count-check script.
 
 ## Second-Coder Status
 
-The formal strongest-evidence-output second-coder pass covers the 31 records in the frozen initial round. Results are in `data/core31_second_coder_formal_results.csv`, with agreement reported in `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md`. The separate 41-record recall-recovery pass and its author-confirmed 37/4 resolution remain documented in the submission-update files. Reliability is reported by round; harmonization does not create a synthetic combined kappa. Harmonized lifecycle, capability, and shape labels are author-confirmed descriptive recodings rather than a new independently re-coded reliability cohort. AI-assisted tools organized disagreement records and drafted evidence-linked working notes, which the author independently reviewed against the recorded public-material basis.
+The formal strongest-evidence-output second-coder pass covers the 31 records in the frozen initial round. Results are in `data/core31_second_coder_formal_results.csv`, with agreement reported in `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md`. The separate 41-record recall-recovery pass and its author-confirmed 37/4 resolution remain documented in the submission-update files. Reliability is reported by round; harmonization does not create a synthetic combined kappa. Harmonized lifecycle, capability, and shape labels are author-confirmed descriptive recodings rather than a new independently re-coded reliability cohort. `SUBMISSION_UPDATE_SECOND_CODER_RERUN_NOTES.md` records the tightened primary/overlay and external-traceability boundary rules used for the adopted update-pass rerun. AI-assisted tools organized disagreement records and drafted evidence-linked working notes, which the author independently reviewed against the recorded public-material basis.
 
 A separate extension check covers cross-stage capability and external traceability. Results are in `data/core31_second_coder_capability_traceability_results.csv`, with set-style agreement reported in `reports/SECOND_CODER_CAPABILITY_TRACEABILITY_AGREEMENT_REPORT.md`.
 
 The pilot second-coder round is archived under `archive/pilot_second_coder_round_1/` for codebook calibration only and should not be cited as formal reliability.
 
-The 2026-07-15 update-search blind pass is complete for all 41 records. The author-confirmed resolution assigns 37 records to study-level coding and four to extended synthesis. Canonical integration is complete: the current corpus contains 253 source records, 248 canonical studies, 67 target-software coded studies plus one governance boundary case, and 65 extended-synthesis studies. Reliability remains reported by coding round rather than as a synthetic combined kappa; harmonized descriptive labels are author-confirmed and separately auditable.
+The 2026-07-15 update-search blind pass is complete for all 41 records. The 2026-07-16 source-parity official-source check introduced no additional canonical records. The author-confirmed resolution assigns 37 records to study-level coding and four to extended synthesis. Canonical integration is complete: the current corpus contains 253 source records, 248 canonical studies, 67 target-software coded studies plus one governance boundary case, and 65 extended-synthesis studies. Reliability remains reported by coding round rather than as a synthetic combined kappa; harmonized descriptive labels are author-confirmed and separately auditable.
 
 ## Evidence Boundary
 

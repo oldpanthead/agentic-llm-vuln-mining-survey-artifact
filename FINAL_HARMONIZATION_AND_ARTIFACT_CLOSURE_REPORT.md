@@ -2,12 +2,13 @@
 
 ## Scope
 
-This closure pass synchronizes the public artifact with the current ACM CSUR manuscript after canonical-study deduplication, recall-recovery integration, and coding-round harmonization. It does not add literature, rerun search, overwrite frozen author/coder2 files, create a synthetic combined kappa, or treat AI-assisted tools as an independent human coder.
+This closure pass synchronizes the public artifact with the current ACM CSUR manuscript after canonical-study deduplication, recall-recovery integration, coding-round harmonization, and the 2026-07-16 official-source parity check. It does not add literature, overwrite frozen author/coder2 files, create a synthetic combined kappa, or treat AI-assisted tools as an independent human coder.
 
 ## Public Release Pointer
 
 - Repository: `oldpanthead/agentic-llm-vuln-mining-survey-artifact`
 - Submission tag: `csur-submission-2026-07`
+- Source-parity check: 2026-07-16; no corpus-count changes
 - Public-main final commit SHA: reported in the submission handoff/final response after this closure report is committed and pushed. A commit cannot embed its own final SHA without changing that SHA.
 - Tag status: `csur-submission-2026-07` marks the prior synchronized submission baseline; this repair pass does not move the tag unless explicitly retagged.
 
@@ -20,6 +21,7 @@ This closure pass synchronizes the public artifact with the current ACM CSUR man
 - Background/reference records: 95
 - Canonical excluded near-neighbor studies: 20
 - Product-ecosystem snapshot rows: 23, maintained as an independent boundary layer
+- Source-parity official-source check: no new canonical candidate, study-level coded, extended-synthesis, background, or excluded records
 
 ## Harmonization Changes
 
@@ -48,7 +50,7 @@ Frozen-label reliability and harmonized-label descriptive synthesis are intentio
 1. Frozen initial-round labels and independent-coder labels remain preserved in the `core31_*` files and associated reports.
 2. The frozen initial strongest-evidence-output check remains 28/31 agreements, raw agreement = 0.903, Cohen's kappa = 0.860.
 3. The frozen initial capability/traceability extension remains reported with set-style metrics: capability exact = 0.645, mean Jaccard = 0.772, micro F1 = 0.857; external traceability exact/Jaccard = 0.839.
-4. The 41-record recall-recovery blind pass remains reported by field: layer 40/41, kappa = 0.844; primary shape 27/41, kappa = 0.514; strongest evidence 28/41, kappa = 0.566; external traceability 25/41, kappa = 0.320; lifecycle exact 4/41, mean Jaccard = 0.667, micro F1 = 0.794; capability exact 9/41, mean Jaccard = 0.760, micro F1 = 0.865.
+4. The adopted tightened-boundary 41-record recall-recovery blind rerun is reported by field: layer 40/41, kappa = 0.844; primary shape 26/41, kappa = 0.513; strongest evidence 28/41, kappa = 0.551; external traceability 28/41, kappa = 0.420; lifecycle exact 7/41, mean Jaccard = 0.666, micro F1 = 0.783; capability exact 11/41, mean Jaccard = 0.772, micro F1 = 0.872.
 5. Harmonized lifecycle, capability, and shape labels are author-confirmed descriptive recodings and were not independently re-coded in a change-only human reliability pass.
 6. No AI output is treated as an independent human coding decision.
 7. No synthetic combined kappa is generated or claimed.
@@ -86,11 +88,11 @@ The public artifact now includes and validates:
 - `CODING_ROUND_HARMONIZATION_REPORT.md`
 - `README.md`, `ARTIFACT_INDEX.md`, `RELEASE_MANIFEST.md`, `SEARCH_PROTOCOL.md`, `data_dictionary.md`, `public_release_checklist.md`, and `reproduce_tables.py`
 
-The search protocol is titled around the `Submission-Time arXiv Sensitivity and Recall-Recovery Search` and records that the historical ledger was multi-source and narrower, the recall-recovery pass was broader and arXiv-only, 432 unique records were screened, 41 reached full-text review, 37 entered study-level coding, four entered extended synthesis, no new evidence-output category was required, and the four dominant comparison shapes remained stable.
+The search protocol is titled around the `Submission-Time arXiv Sensitivity and Recall-Recovery Search` and records that the historical ledger was multi-source and narrower, the recall-recovery pass was broader and arXiv-only, 432 unique records were screened, 41 reached full-text review, 37 entered study-level coding, four entered extended synthesis, no new evidence-output category was required, and the four dominant comparison shapes remained stable. The artifact also includes `SOURCE_PARITY_UPDATE_SEARCH_REPORT.md`, `data/source_parity_update_20260716_search_log.csv`, and `data/source_parity_update_20260716_screening_audit.csv`; these files record that official conference/publisher source checks matched PANGOLIN and FirmAgent to already integrated canonical records and introduced no corpus-count changes.
 
 ## Validation Result
 
-`python reproduce_tables.py` exits with code 0 in standalone public-artifact mode. A GitHub fresh clone of public `main` after this repair pass also ran `python reproduce_tables.py` with exit code 0; the exact final pushed SHA is reported in the submission handoff/final response. `python reproduce_tables.py --manuscript <path-to-main_acm_csur.tex>` exits with code 0 when the manuscript source is available. The script checks canonical counts, source/canonical separation, no cross-layer canonical overlap, second-coder reports, recall-recovery agreement values, harmonized matrix size and controlled vocabulary, round-specific shape and evidence counts, harmonization evidence bases, repository-local artifact-path manifest entries, optional manuscript `\path{}` entries, and tracked-file security boundaries.
+`python reproduce_tables.py` exits with code 0 in standalone public-artifact mode. A GitHub fresh clone of public `main` after this repair pass also ran `python reproduce_tables.py` with exit code 0; the exact final pushed SHA is reported in the submission handoff/final response. `python reproduce_tables.py --manuscript <path-to-main_acm_csur.tex>` exits with code 0 when the manuscript source is available. The script checks canonical counts, source/canonical separation, no cross-layer canonical overlap, source-parity closure files, second-coder reports, recall-recovery agreement values, harmonized matrix size and controlled vocabulary, round-specific shape and evidence counts, harmonization evidence bases, repository-local artifact-path manifest entries, optional manuscript `\path{}` entries, and tracked-file security boundaries.
 
 The current PDF compiles to 33 pages. The LaTeX log reports no undefined citations, no undefined references, no overfull boxes, and no rerun request. Remaining warnings are underfull box/caption warnings typical of dense survey tables. Rendered-page checks covered pages 14, 15, 18, 19, 22, 23, and 28; no large internal whitespace bands were detected on those pages after the float-placement repairs.
 

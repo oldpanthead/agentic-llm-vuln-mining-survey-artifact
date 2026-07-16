@@ -15,6 +15,9 @@ This index points reviewers to the public, non-sensitive files needed to audit t
 - `data/source_screening_audit.csv`: record-level screening audit for all 253 source records.
 - `data/submission_update_20260715_arxiv_results.csv`: normalized raw-hit export for the 2026-07-15 arXiv update search.
 - `data/submission_update_20260715_screening_audit.csv`: record-level update-search decisions.
+- `data/source_parity_update_20260716_search_log.csv`: official-source parity check after the arXiv recall-recovery update.
+- `data/source_parity_update_20260716_screening_audit.csv`: screened formal-source matches and adjacent official-program records.
+- `SOURCE_PARITY_UPDATE_SEARCH_REPORT.md`: source-parity closure report; no corpus counts changed.
 - `data/submission_update_20260715_full_coding_audit.csv`: author full-text audit of the 41 potentially eligible update records.
 - `data/submission_update_20260715_second_coder_blind_template.csv`: blank 41-row independent-review template with no author labels.
 - `SUBMISSION_UPDATE_FULL_TEXT_AUDIT_REPORT.md`: provisional full-text decisions and the reliability boundary.
@@ -51,12 +54,16 @@ This index points reviewers to the public, non-sensitive files needed to audit t
 - `data/core31_second_coder_capability_traceability_results.csv`: completed capability/traceability extension pass.
 - `reports/SECOND_CODER_CAPABILITY_TRACEABILITY_AGREEMENT_REPORT.md`: set-style agreement report.
 - `archive/pilot_second_coder_round_1/`: pilot calibration only; do not cite as formal reliability.
-- `data/submission_update_20260715_second_coder_blind_template.csv`: blank update-search template with no author labels.
-- `data/submission_update_20260715_second_coder_results.csv`: completed 41-record independent pass.
+- `data/submission_update_20260715_second_coder_blind_template.csv`: original blank update-search template with no author labels.
+- `data/submission_update_20260715_second_coder_rerun_blind_template.csv`: blank rerun template using the tightened boundary notes.
+- `data/submission_update_20260715_second_coder_results.csv`: adopted tightened-boundary 41-record independent pass.
+- `data/submission_update_20260715_second_coder_initial_results.csv`: previous update-pass independent pass retained for provenance.
 - `reports/SUBMISSION_UPDATE_SECOND_CODER_PRE_ADJUDICATION_REPORT.md`: computed pre-adjudication agreement.
 - `data/submission_update_20260715_adjudication_working_draft.csv`: preserved candidate-resolution working draft reviewed by the author.
 - `data/submission_update_20260715_adjudicated.csv`: author-confirmed 37/4 resolution.
 - `reports/SUBMISSION_UPDATE_ADJUDICATION_REPORT.md`: finalization scope and consensus boundary.
+- `SUBMISSION_UPDATE_SECOND_CODER_RERUN_NOTES.md`: lightweight boundary notes used for the adopted 41-record update-pass blind rerun.
+- `data/submission_update_20260715_second_coder_rerun_blind_template.csv`: blank rerun template with coder2 fields empty.
 - `data/submission_update_20260715_canonical_integration_crosswalk.csv`: canonical-match assessment for U01-U41.
 - `SUBMISSION_UPDATE_CANONICAL_INTEGRATION_REPORT.md`: pre-integration canonical-match and projected-count assessment.
 - `SUBMISSION_UPDATE_CORPUS_INTEGRATION_REPORT.md`: completed integration report.

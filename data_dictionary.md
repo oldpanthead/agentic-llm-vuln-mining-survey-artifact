@@ -1,12 +1,15 @@
 # Data Dictionary
 
-This dictionary describes the non-sensitive audit artifact used by the survey manuscript. It is intended to help reviewers inspect corpus construction, legacy A/E traceability fields, current evidence-output labels, bibliographic verification, pilot second-coder calibration materials, formal second-coder templates/results, agreement reports, and submission-update adjudication materials. Files with `v13_` prefixes are retained filenames from the prior restructuring stage but are used by the current manuscript synthesis unless superseded.
+This dictionary describes the non-sensitive audit artifact used by the survey manuscript. It is intended to help reviewers inspect corpus construction, legacy A/E traceability fields, current evidence-output labels, bibliographic verification, pilot second-coder calibration materials, formal second-coder templates/results, agreement reports, the submission-update rerun notes, and submission-update adjudication materials. Files with `v13_` prefixes are retained filenames from the prior restructuring stage but are used by the current manuscript synthesis unless superseded.
 
 
 ## Current Manuscript Layer Terminology
 
 Current terminology maps legacy artifact values as follows: `Core` identifies study-level coded source records and `Supporting` identifies extended-synthesis source records. The current corpus contains 68 study-level coded records (67 target-software studies plus one governance boundary case) and 65 extended-synthesis studies. `data/current_study_level_coding_matrix_harmonized.csv` is the author-confirmed current study-level view; `data/current_study_level_coding_matrix.csv` preserves the pre-harmonization combined view. Legacy `core31` and `v13_` files preserve the frozen first coding round; the additions file preserves update-round provenance without imputed A/E labels.
 
+## `SUBMISSION_UPDATE_SECOND_CODER_RERUN_NOTES.md`
+
+Lightweight boundary notes for a possible rerun of the 41-record submission-update second-coder pass. It records the tightened primary/overlay and external-traceability rules used for the adopted update-pass rerun.
 ## `data/current_study_level_coding_matrix_harmonized.csv` and pre-harmonization provenance
 
 `data/current_study_level_coding_matrix_harmonized.csv` is the author-confirmed current matrix for all 68 study-level coded records. It applies one controlled lifecycle, primary-shape, overlay, cross-stage-capability, evidence-output, and external-traceability schema while preserving round provenance and reliability scope. `data/current_study_level_coding_matrix.csv` is retained unchanged as the pre-harmonization combined view. Neither file contains legacy A/E fields.
@@ -85,6 +88,16 @@ This file records one source assignment and screening decision for each of the 2
 - `deduplication_status`: deduplication status; `record_id` is the public candidate key.
 - `source_trace_note`: explanation of source assignment and deduplication policy.
 
+
+## `data/source_parity_update_20260716_search_log.csv`, `data/source_parity_update_20260716_screening_audit.csv`, and `SOURCE_PARITY_UPDATE_SEARCH_REPORT.md`
+
+These files record the 2026-07-16 official-source parity check run after the arXiv recall-recovery update. The check reviewed official conference/publisher sources for formal records corresponding to the update query families and exact-title probes. It matched PANGOLIN and FirmAgent to already integrated canonical records and introduced no new canonical candidate, study-level coded, extended-synthesis, background, or excluded records.
+
+- `source_id`, `source_name`, `source_category`, `search_interface`, `query_string`, `date_searched`, `date_range`: source and query provenance for the parity check.
+- `official_source_url`: public source page used for the check.
+- `records_reviewed`, `existing_canonical_matches`, `new_candidate_records`, `new_study_level_additions`, `new_extended_synthesis_additions`, `new_background_or_excluded_records`: parity-check outcomes kept separate from the main source-count ledger.
+- `match_status`, `screening_status`, `decision_reason`, `analytical_implication`: record-level decision fields explaining why each formal-source hit did or did not affect the current analytical corpus.
+
 ## `data/submission_update_20260715_screening_audit.csv`
 
 This file records the submission-time arXiv sensitivity-search decisions. The later 37/4 author-confirmed resolution has been integrated into the current corpus and harmonized study-level matrix.
@@ -124,9 +137,17 @@ This file is the blank independent-review input for the 41 update records. It co
 - `coder2_external_traceability_label`: independent external-traceability profile.
 - `coder2_claim_boundary`, `coder2_uncertainty_note`: independent boundary rationale and uncertainty.
 
+## `data/submission_update_20260715_second_coder_rerun_blind_template.csv`
+
+Blank rerun template for the 41-record submission-update pass. It has the same coder2 fields as the original blind template, keeps all coder2 fields empty, and points the coder to `SUBMISSION_UPDATE_SECOND_CODER_RERUN_NOTES.md`. It is not a completed results file.
+
+## `data/submission_update_20260715_second_coder_initial_results.csv`
+
+Previous completed update-pass coder2 decisions retained for provenance before the tightened-boundary rerun was adopted. It is not the current reported update-pass agreement source.
+
 ## `data/submission_update_20260715_second_coder_results.csv`
 
-This file contains the completed independent 41-record update-search pass. Its schema matches the blind template, contains no `author_*` or `original_*` fields, and preserves coder2 labels, reasons, claim boundaries, and uncertainty notes.
+This file contains the adopted tightened-boundary independent 41-record update-search pass. Its schema matches the rerun blind template, contains no `author_*` or `original_*` fields, and preserves coder2 labels, reasons, claim boundaries, and uncertainty notes.
 
 ## `reports/SUBMISSION_UPDATE_SECOND_CODER_PRE_ADJUDICATION_REPORT.md`
 
@@ -442,3 +463,14 @@ Do not infer a missing value from surrounding rows without recording the source 
 
 Per-Core public-material audit linked by `core_id`. Private Zotero paths are excluded. Status fields distinguish public artifact visibility, target version, environment, replay/PoC/PoV material, structured trace, author-reported external traces, publicly traceable external material, and claim-level alignment.
 
+
+
+
+## submission_update_20260715_rerun_sensitivity_analysis.csv
+Label-count sensitivity analysis for the July 15 recall-recovery rerun. It compares author-confirmed final labels with rerun second-coder labels for analytical layer, primary system shape, strongest evidence output, external traceability, lifecycle coverage, and agentic capability labels. It is a sensitivity/audit file, not a replacement for the harmonized coding matrix.
+
+## publication_status_standardized.csv
+Standardized publication-status view for the current study-level coding matrix. Allowed manuscript-facing values are `journal`, `conference`, `workshop`, `preprint`, and `benchmark/system report`. The table is used for appendix display and source-status sensitivity summaries; legacy source-specific status fields remain in older audit files for traceability.
+
+## publication_status_distribution_by_layer.csv
+Publication-status distribution summary for the target-software study-level set. It reports evidence-output counts, primary-shape counts, failure-reuse labels, and governance/human-gate labels by standardized publication status.

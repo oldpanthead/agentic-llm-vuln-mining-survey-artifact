@@ -10,6 +10,7 @@ This checklist prepares the minimal artifact for a future GitHub or Zenodo relea
 - [ ] Confirm `data/core31_second_coder_blind.csv` does not expose original labels or answer-key fields.
 - [ ] Confirm `data/core31_second_coder_adjudication_template.csv` is not used before independent coding.
 - [x] Report formal agreement statistics only after revised codebook freeze and new independent coding.
+- [x] Maintain `SUBMISSION_UPDATE_SECOND_CODER_RERUN_NOTES.md` and the blank rerun template for a lightweight tightened-boundary update-pass rerun.
 - [x] Confirm the cross-stage capability / external-traceability extension template hides original labels and contains blank coder2 fields.
 - [x] Confirm cross-stage capability / external-traceability results exist after real coder2 decisions.
 - [x] Report cross-stage capability / external-traceability agreement only with suitable set-style, Jaccard, or per-label metrics.
@@ -51,6 +52,7 @@ This checklist prepares the minimal artifact for a future GitHub or Zenodo relea
 - [x] `codebook.md` defines A/E coding categories and evidence objects.
 - [x] `data_dictionary.md` defines all core data fields.
 - [x] `intercoder_instructions.md` explains independent second-coder workflow.
+- [x] `SUBMISSION_UPDATE_SECOND_CODER_RERUN_NOTES.md` documents the tightened primary/overlay and external-traceability rules for the update-pass rerun.
 - [ ] Add final repository URL and release date.
 - [ ] Add license after author decision.
 - [ ] Add citation metadata if archiving on Zenodo.

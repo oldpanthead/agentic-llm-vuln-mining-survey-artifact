@@ -87,6 +87,38 @@ CSV_REQUIRED_FIELDS = {
       'coder2_claim_boundary',
       'coder2_uncertainty_note',
     ],
+    'submission_update_20260715_second_coder_rerun_blind_template.csv': [
+      'update_id',
+      'arxiv_id',
+      'title',
+      'publication_status',
+      'materials_to_review',
+      'coder2_analysis_layer_decision',
+      'coder2_inclusion_reason',
+      'coder2_lifecycle_coverage',
+      'coder2_primary_system_shape',
+      'coder2_cross_stage_capability_label',
+      'coder2_strongest_evidence_output',
+      'coder2_external_traceability_label',
+      'coder2_claim_boundary',
+      'coder2_uncertainty_note',
+    ],
+    'submission_update_20260715_second_coder_initial_results.csv': [
+      'update_id',
+      'arxiv_id',
+      'title',
+      'publication_status',
+      'materials_to_review',
+      'coder2_analysis_layer_decision',
+      'coder2_inclusion_reason',
+      'coder2_lifecycle_coverage',
+      'coder2_primary_system_shape',
+      'coder2_cross_stage_capability_label',
+      'coder2_strongest_evidence_output',
+      'coder2_external_traceability_label',
+      'coder2_claim_boundary',
+      'coder2_uncertainty_note',
+    ],
     'submission_update_20260715_second_coder_results.csv': [
       'update_id',
       'arxiv_id',
@@ -385,6 +417,35 @@ CSV_REQUIRED_FIELDS = {
       'deduplication_status',
       'source_trace_note',
     ],
+    'source_parity_update_20260716_search_log.csv': [
+      'source_id',
+      'source_name',
+      'source_category',
+      'search_interface',
+      'query_string',
+      'date_searched',
+      'date_range',
+      'official_source_url',
+      'records_reviewed',
+      'existing_canonical_matches',
+      'new_candidate_records',
+      'new_study_level_additions',
+      'new_extended_synthesis_additions',
+      'new_background_or_excluded_records',
+      'notes',
+    ],
+    'source_parity_update_20260716_screening_audit.csv': [
+      'source_id',
+      'title',
+      'official_url',
+      'source_type',
+      'venue_or_source',
+      'match_status',
+      'existing_record_or_canonical_id',
+      'screening_status',
+      'decision_reason',
+      'analytical_implication',
+    ],
 }
 VALIDATED_CSVS = set()
 ERROR_COUNT = 0
@@ -424,6 +485,58 @@ def contains_private_material(value):
     ]
     return any(token in lowered for token in sensitive_tokens)
 
+
+def validate_submission_update_rerun_notes():
+    path = ROOT / 'SUBMISSION_UPDATE_SECOND_CODER_RERUN_NOTES.md'
+    status('ERROR', path.exists(), 'submission-update rerun notes exist')
+    if not path.exists():
+        return
+    text = path.read_text(encoding='utf-8').lower()
+    required_phrases = [
+        '41-record submission-update second-coder pass',
+        'do not inspect author audit files',
+        'dominant evaluated role',
+        'item-level public alignment',
+        'row-level exact agreement',
+        'mean row jaccard',
+        'micro f1',
+        'do not tune labels to improve agreement',
+        'not an independent coder decision',
+    ]
+    missing = [phrase for phrase in required_phrases if phrase not in text]
+    status('ERROR', not missing, 'submission-update rerun notes record tightened boundary rules and field-appropriate metrics')
+    if missing:
+        print('ERROR: submission-update rerun notes missing phrases:', ', '.join(missing))
+
+
+def validate_submission_update_rerun_template(original_blind, rerun_blind):
+    status('ERROR', len(rerun_blind) == 41, f'submission-update rerun blind template rows = {len(rerun_blind)}; expected 41')
+    original_ids = [r.get('update_id', '') for r in original_blind]
+    rerun_ids = [r.get('update_id', '') for r in rerun_blind]
+    status('ERROR', rerun_ids == original_ids, 'submission-update rerun template preserves original update_id order')
+    if rerun_ids != original_ids:
+        print('ERROR: rerun update_id order differs from original blind template')
+    forbidden_columns = [c for c in (rerun_blind[0].keys() if rerun_blind else []) if c.startswith('author_') or c.startswith('original_') or 'adjudicat' in c.lower()]
+    status('ERROR', not forbidden_columns, 'submission-update rerun template hides author/original/adjudication fields')
+    if forbidden_columns:
+        print('ERROR: rerun template forbidden columns:', ', '.join(forbidden_columns))
+    coder_fields = [c for c in (rerun_blind[0].keys() if rerun_blind else []) if c.startswith('coder2_')]
+    filled = []
+    bad_materials = []
+    for idx, row in enumerate(rerun_blind, start=2):
+        for field in coder_fields:
+            if row.get(field, '').strip():
+                filled.append((idx, field))
+        materials = row.get('materials_to_review', '').lower()
+        if 'submission_update_second_coder_rerun_notes.md' not in materials or 'previous coder2 results' not in materials:
+            bad_materials.append(idx)
+    status('ERROR', not filled, 'submission-update rerun coder2 fields are blank')
+    if filled:
+        print('ERROR: rerun template pre-filled coder2 fields:', filled[:10])
+    status('ERROR', not bad_materials, 'submission-update rerun materials_to_review points to rerun notes and hides previous results')
+    if bad_materials:
+        print('ERROR: rerun template materials_to_review needs update on rows:', bad_materials[:10])
+
 def validate_csv_schema(name, reader, rows):
     fieldnames = reader.fieldnames or []
     required = CSV_REQUIRED_FIELDS.get(name, [])
@@ -443,7 +556,7 @@ def validate_csv_schema(name, reader, rows):
         required_non_empty = [field for field in required_non_empty if not field.startswith('coder2_')]
     if name == 'submission_update_20260715_full_coding_audit.csv':
         required_non_empty = [field for field in required_non_empty if field != 'uncertainty_note']
-    if name == 'submission_update_20260715_second_coder_blind_template.csv':
+    if name in {'submission_update_20260715_second_coder_blind_template.csv', 'submission_update_20260715_second_coder_rerun_blind_template.csv'}:
         required_non_empty = [field for field in required_non_empty if not field.startswith('coder2_')]
     width_errors = []
     required_errors = []
@@ -1076,6 +1189,40 @@ def validate_source_search_audit(corpus, source_log, source_audit):
 
 
 
+def validate_source_parity_update(search_rows, screening_rows):
+    report_path = ROOT / 'SOURCE_PARITY_UPDATE_SEARCH_REPORT.md'
+    status('ERROR', bool(search_rows), 'source-parity update search log exists and has rows')
+    status('ERROR', bool(screening_rows), 'source-parity update screening audit exists and has rows')
+    if not search_rows or not screening_rows:
+        return
+    def to_int(row, field):
+        try:
+            return int(row.get(field, '0'))
+        except Exception:
+            return -999999
+    additions = sum(to_int(row, 'new_candidate_records') for row in search_rows)
+    study_additions = sum(to_int(row, 'new_study_level_additions') for row in search_rows)
+    ext_additions = sum(to_int(row, 'new_extended_synthesis_additions') for row in search_rows)
+    other_additions = sum(to_int(row, 'new_background_or_excluded_records') for row in search_rows)
+    matches = sum(to_int(row, 'existing_canonical_matches') for row in search_rows)
+    status('ERROR', additions == 0, 'source-parity update introduced no new canonical candidate records')
+    status('ERROR', study_additions == 0 and ext_additions == 0 and other_additions == 0, 'source-parity update introduced no new analytical-layer records')
+    status('ERROR', matches >= 2, 'source-parity update records at least two existing canonical matches')
+    titles = ' | '.join(row.get('title', '') for row in screening_rows).lower()
+    status('ERROR', 'pangolin' in titles and 'firmagent' in titles, 'source-parity screening records PANGOLIN and FirmAgent formal-source matches')
+    bad_urls = [row.get('source_id', '?') for row in search_rows if not row.get('official_source_url', '').startswith('http')]
+    bad_urls += [row.get('title', '?') for row in screening_rows if not row.get('official_url', '').startswith('http')]
+    status('ERROR', not bad_urls, 'source-parity rows use public URLs rather than local locators')
+    status('ERROR', report_path.exists(), 'SOURCE_PARITY_UPDATE_SEARCH_REPORT.md exists')
+    if report_path.exists():
+        text = report_path.read_text(encoding='utf-8').lower()
+        required = ['source-parity', '2026-07-16', 'no corpus counts changed', 'pangolin', 'firmagent']
+        missing = [item for item in required if item not in text]
+        status('ERROR', not missing, 'source-parity report records date, no-count-change result, and formal-source matches')
+        if missing:
+            print('ERROR: source-parity report missing:', ', '.join(missing))
+
+
 def norm_text(value):
     value = (value or '').lower().replace('’', "'")
     return re.sub(r'[^a-z0-9]+', ' ', value).strip()
@@ -1466,11 +1613,11 @@ def validate_submission_update_second_coder(audit_rows, blind_rows, result_rows,
     cap = update_set_metrics('agentic_capabilities', 'coder2_cross_stage_capability_label')
 
     status('ERROR', layer_agree == 40 and abs(layer_kappa - 0.844) < 0.001, 'submission update layer agreement reproduces 40/41 and kappa 0.844')
-    status('ERROR', shape_agree == 27 and abs(shape_kappa - 0.514) < 0.001, 'submission update system-shape agreement reproduces 27/41 and kappa 0.514')
-    status('ERROR', output_agree == 28 and abs(output_kappa - 0.566) < 0.001, 'submission update evidence-output agreement reproduces 28/41 and kappa 0.566')
-    status('ERROR', trace_agree == 25 and abs(trace_kappa - 0.320) < 0.001, 'submission update traceability agreement reproduces 25/41 and kappa 0.320')
-    status('ERROR', life[0] == 4 and abs(life[2] - 0.667) < 0.001 and abs(life[3] - 0.794) < 0.001, 'submission update lifecycle agreement reproduces exact 4/41, Jaccard 0.667, and micro F1 0.794')
-    status('ERROR', cap[0] == 9 and abs(cap[2] - 0.760) < 0.001 and abs(cap[3] - 0.865) < 0.001, 'submission update capability agreement reproduces exact 9/41, Jaccard 0.760, and micro F1 0.865')
+    status('ERROR', shape_agree == 26 and abs(shape_kappa - 0.513) < 0.001, 'submission update system-shape agreement reproduces 26/41 and kappa 0.513')
+    status('ERROR', output_agree == 28 and abs(output_kappa - 0.551) < 0.001, 'submission update evidence-output agreement reproduces 28/41 and kappa 0.551')
+    status('ERROR', trace_agree == 28 and abs(trace_kappa - 0.420) < 0.001, 'submission update traceability agreement reproduces 28/41 and kappa 0.420')
+    status('ERROR', life[0] == 7 and abs(life[2] - 0.666) < 0.001 and abs(life[3] - 0.783) < 0.001, 'submission update lifecycle agreement reproduces exact 7/41, Jaccard 0.666, and micro F1 0.783')
+    status('ERROR', cap[0] == 11 and abs(cap[2] - 0.772) < 0.001 and abs(cap[3] - 0.872) < 0.001, 'submission update capability agreement reproduces exact 11/41, Jaccard 0.772, and micro F1 0.872')
     print(f'SUBMISSION_UPDATE_SECOND_CODER: layer={layer_agree}/41 kappa={layer_kappa:.3f}; shape={shape_agree}/41 kappa={shape_kappa:.3f}; evidence={output_agree}/41 kappa={output_kappa:.3f}; trace={trace_agree}/41 kappa={trace_kappa:.3f}')
     print(f'SUBMISSION_UPDATE_MULTILABEL: lifecycle exact={life[0]}/41 jaccard={life[2]:.3f} micro_f1={life[3]:.3f}; capabilities exact={cap[0]}/41 jaccard={cap[2]:.3f} micro_f1={cap[3]:.3f}')
 
@@ -1482,7 +1629,7 @@ def validate_submission_update_second_coder(audit_rows, blind_rows, result_rows,
     status('ERROR', generator_path.exists(), 'submission update adjudication generator exists')
     if report_path.exists():
         report_text = report_path.read_text(encoding='utf-8')
-        required = ['40 / 41', '0.844', '27 / 41', '0.514', '28 / 41', '0.566', '25 / 41', '0.320', 'No adjudicated labels or post-adjudication agreement statistic are claimed']
+        required = ['40 / 41', '0.844', '26 / 41', '0.513', '28 / 41', '0.551', '28 / 41', '0.420', '7 / 41', '0.666', '11 / 41', '0.872', 'No adjudicated labels or post-adjudication agreement statistic are claimed']
         status('ERROR', all(item in report_text for item in required), 'submission update agreement report contains computed metrics and preserves pre-adjudication scope')
 
     draft_ids = [row.get('update_id', '') for row in adjudication_rows]
@@ -1822,6 +1969,7 @@ def validate_tracked_file_boundary():
         print('ERROR: tracked files needing security-boundary review:', ', '.join(sorted(set(private_content_hits))))
 
 validate_all_csv_files()
+validate_submission_update_rerun_notes()
 
 corpus = read_csv('corpus.csv')
 core = read_csv('core_coding.csv')
@@ -1840,12 +1988,15 @@ repro_audit = read_csv('core_reproducibility_audit.csv')
 repro_summary = read_csv('core_reproducibility_audit_summary.csv')
 source_search_log = read_csv('source_search_log.csv')
 source_screening_audit = read_csv('source_screening_audit.csv')
+source_parity_update_log = read_csv('source_parity_update_20260716_search_log.csv')
+source_parity_update_screening = read_csv('source_parity_update_20260716_screening_audit.csv')
 extended_synthesis = read_csv('extended_synthesis_audit.csv')
 study_version_crosswalk = read_csv('study_version_crosswalk.csv')
 mapping_snapshot_counts = read_csv('mapping_snapshot_counts.csv')
 submission_update_screening = read_csv('submission_update_20260715_screening_audit.csv')
 submission_update_full_audit = read_csv('submission_update_20260715_full_coding_audit.csv')
 submission_update_blind = read_csv('submission_update_20260715_second_coder_blind_template.csv')
+submission_update_rerun_blind = read_csv('submission_update_20260715_second_coder_rerun_blind_template.csv')
 submission_update_results = read_csv('submission_update_20260715_second_coder_results.csv')
 submission_update_adjudication = read_csv('submission_update_20260715_adjudication_working_draft.csv')
 submission_update_adjudicated = read_csv('submission_update_20260715_adjudicated.csv')
@@ -1861,11 +2012,13 @@ validate_product_ecosystem_snapshot(product_snapshot)
 validate_second_coder_files(second_coder_blind, second_coder_adjudication, second_coder_formal, second_coder_formal_results)
 validate_second_coder_extension_template(second_coder_extension_template, second_coder_extension_results, core_synthesis)
 validate_source_search_audit(corpus, source_search_log, source_screening_audit)
+validate_source_parity_update(source_parity_update_log, source_parity_update_screening)
 validate_study_version_crosswalk(corpus, ref, study_version_crosswalk, mapping_snapshot_counts)
 validate_extended_synthesis_audit(corpus, extended_synthesis, study_version_crosswalk)
 validate_submission_update_screening(submission_update_screening)
 validate_submission_update_full_audit(submission_update_screening, submission_update_full_audit, submission_update_blind)
-validate_submission_update_second_coder(submission_update_full_audit, submission_update_blind, submission_update_results, submission_update_adjudication)
+validate_submission_update_second_coder(submission_update_full_audit, submission_update_rerun_blind, submission_update_results, submission_update_adjudication)
+validate_submission_update_rerun_template(submission_update_blind, submission_update_rerun_blind)
 validate_submission_update_finalization(submission_update_adjudication, submission_update_adjudicated, submission_update_integration)
 validate_current_study_level_matrix(current_study_level_matrix, submission_update_additions)
 validate_harmonized_coding_matrix(current_study_level_matrix, harmonized_study_level_matrix, coding_round_harmonization_audit, current_synthesis_statistics_by_round, extended_synthesis)
