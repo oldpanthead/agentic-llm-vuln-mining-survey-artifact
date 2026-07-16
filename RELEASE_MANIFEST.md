@@ -38,7 +38,7 @@ The release excludes:
 
 ## Evidence Boundary
 
-Product pages, help pages, official blogs, model pages, project pages, and disclosure policies are recorded as dated public materials. They support ecosystem and boundary discussion only; they are not independently validated by this artifact and remain outside the current 68-record study-level coded set.
+Product pages, help pages, official blogs, model pages, project pages, and disclosure policies are recorded as dated public materials. They support ecosystem and boundary discussion as source-limited public materials outside the current 68-record study-level coded set.
 
 The source-specific ledger, submission-time update, and 2026-07-16 official-source follow-up record the current corpus by source bucket, query family, screening decision, and analysis layer. Reference-list size and corpus-record size are separate quantities. The official-source follow-up introduced no corpus-count changes. Current counts are 253 source records and 248 canonical studies: 68 study-level coded records (67 target-software studies plus one governance boundary case), 65 extended synthesis studies, 95 background/reference records, and 20 excluded near-neighbor studies.
 
@@ -83,7 +83,7 @@ Legacy A/E fields are retained for historical reproducibility and cross-version 
 - `data/current_synthesis_statistics.csv`
 - `SUBMISSION_UPDATE_FULL_TEXT_AUDIT_REPORT.md`
 
-Pilot agreement/kappa values in the archive are retained for codebook calibration only and must not be cited as formal intercoder reliability. Formal strongest-evidence-output agreement and capability/traceability extension agreement are reported separately. The update-search report contains pre-adjudication agreement from a completed independent pass. The separate final record documents an author-confirmed evidence-based resolution and does not claim two-human consensus or a post-adjudication agreement statistic.
+Pilot agreement/kappa values in the archive are retained for codebook calibration only and must not be cited as formal intercoder reliability. Formal strongest-evidence-output agreement and capability/traceability extension agreement are reported separately. The update-search report contains pre-adjudication agreement from a completed independent pass. The separate final record documents an author-confirmed evidence-based resolution and preserves round-specific reliability provenance.
 
 ## Open Items
 

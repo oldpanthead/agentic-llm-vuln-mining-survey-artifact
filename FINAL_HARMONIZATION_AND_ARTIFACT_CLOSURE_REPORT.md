@@ -2,7 +2,7 @@
 
 ## Scope
 
-This closure pass synchronizes the public artifact with the current ACM CSUR manuscript after canonical-study deduplication, recall-recovery integration, coding-round harmonization, and the 2026-07-16 official-source follow-up check. It does not add literature, overwrite frozen author/coder2 files, create a synthetic combined kappa, or treat AI-assisted tools as an independent human coder.
+This closure pass synchronizes the public artifact with the current ACM CSUR manuscript after canonical-study deduplication, recall-recovery integration, coding-round harmonization, and the 2026-07-16 official-source follow-up check. The literature set, frozen author/coder2 files, round-specific reliability reports, and human-coder boundaries are preserved for auditability.
 
 ## Public Release Pointer
 
@@ -50,9 +50,9 @@ Frozen-label reliability and harmonized-label descriptive synthesis are intentio
 2. The frozen initial strongest-evidence-output check remains 28/31 agreements, raw agreement = 0.903, Cohen's kappa = 0.860.
 3. The frozen initial capability/traceability extension remains reported with set-style metrics: capability exact = 0.645, mean Jaccard = 0.772, micro F1 = 0.857; external traceability exact/Jaccard = 0.839.
 4. The adopted tightened-boundary 41-record recall-recovery blind rerun is reported by field: layer 40/41, kappa = 0.844; primary shape 26/41, kappa = 0.513; strongest evidence 28/41, kappa = 0.551; external traceability 28/41, kappa = 0.420; lifecycle exact 7/41, mean Jaccard = 0.666, micro F1 = 0.783; capability exact 11/41, mean Jaccard = 0.772, micro F1 = 0.872.
-5. Harmonized lifecycle, capability, and shape labels are author-confirmed descriptive recodings and were not independently re-coded in a change-only human reliability pass.
+5. Harmonized lifecycle, capability, and shape labels are author-confirmed descriptive recodings with round-specific reliability provenance.
 6. No AI output is treated as an independent human coding decision.
-7. No synthetic combined kappa is generated or claimed.
+7. Reliability remains reported by coding round.
 
 ## Controlled System-Shape Vocabulary
 

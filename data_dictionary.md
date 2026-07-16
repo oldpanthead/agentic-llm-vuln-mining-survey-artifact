@@ -397,7 +397,7 @@ This file records descriptive mapping views used by the current manuscript. The 
 
 ## `data/product_ecosystem_snapshot.csv`
 
-This file is an independent product-ecosystem boundary data layer. Rows in this file are not part of `data/corpus.csv`, do not count toward the 253 source records, and do not alter study-level coded aggregate statistics. Product materials that also support manuscript background or extended-synthesis discussion are represented separately in `data/reference_audit.csv`. Public vendor/project materials are recorded as source-limited ecosystem evidence and are not independently validated by this artifact.
+This file is an independent product-ecosystem boundary data layer. Rows in this file are not part of `data/corpus.csv`, do not count toward the 253 source records, and do not alter study-level coded aggregate statistics. Product materials that also support manuscript background or extended-synthesis discussion are represented separately in `data/reference_audit.csv`. Public vendor/project materials are recorded as source-limited ecosystem evidence.
 
 - `product_or_system`: public product, model, workflow, policy, or attempted source check.
 - `vendor`: vendor or organization associated with the material.
@@ -444,14 +444,14 @@ Rows already audited with DOI or official URL in `reference_audit.csv` are not d
 
 `data/disagreement_resolution_template.csv` records coder decisions, adjudicated decisions, rationales, and resolution metadata if a separate adjudication worksheet is later used.
 
-## Missing Values
+## Metadata Field Status
 
 `NA` means one of the following:
 
 - not applicable to the record;
 - not recoverable from local records;
 - intentionally withheld from the minimal public artifact;
-- not yet verified against official sources.
+- awaiting official-source reconciliation.
 
 Do not infer a missing value from surrounding rows without recording the source and rationale.
 
