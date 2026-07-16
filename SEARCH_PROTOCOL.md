@@ -56,7 +56,7 @@ without a security task, commentary without an identifiable source object,
 duplicates superseded by a later version, inaccessible records, or materials
 outside vulnerability mining, validation, benchmarking, or Agent governance.
 
-## Submission-Time arXiv Sensitivity and Recall-Recovery Search
+## Submission-Time arXiv Recall-Recovery Search
 
 A deliberately broader arXiv-only sensitivity and recall-recovery search was run on 2026-07-15 with four query groups defined in `submission_update_search.py`. The historical ledger was multi-source and used narrower query families; the July 15 pass assessed cutoff and query sensitivity and recovered relevant studies that predated the June 30 cutoff. Raw Atom responses, query timestamps, pagination, and SHA-256 hashes are preserved. The search returned 432 unique records: 12 matched the existing corpus, 26 were first submitted after the analytical cutoff, 41 advanced to full-text review, 30 were retained as contextual/background candidates, and 323 were excluded at title/abstract screening. Record-level decisions are in `data/submission_update_20260715_screening_audit.csv`.
 
@@ -69,3 +69,7 @@ Zotero metadata is used for title, source-type, DOI/URL, venue, and local
 bibliographic reconciliation. Local Zotero paths, PDFs, SQLite databases, and
 private working directories are excluded from the public artifact.
 
+
+
+## July 16 Official-Source Follow-Up
+A targeted official-source follow-up was run on 2026-07-16 after the arXiv recall-recovery pass. It resolved formal-source matches and official-program candidates using source-level title matching and query-family checks. It introduced no additional analytical records. The source-level protocol and record decisions are preserved in `data/source_parity_update_20260716_search_log.csv`, `data/source_parity_update_20260716_screening_audit.csv`, and `SOURCE_PARITY_UPDATE_SEARCH_REPORT.md`.

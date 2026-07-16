@@ -15,11 +15,14 @@ This index points reviewers to the public, non-sensitive files needed to audit t
 - `data/source_screening_audit.csv`: record-level screening audit for all 253 source records.
 - `data/submission_update_20260715_arxiv_results.csv`: normalized raw-hit export for the 2026-07-15 arXiv update search.
 - `data/submission_update_20260715_screening_audit.csv`: record-level update-search decisions.
-- `data/source_parity_update_20260716_search_log.csv`: official-source parity check after the arXiv recall-recovery update.
+- `data/source_parity_update_20260716_search_log.csv`: targeted official-source follow-up after the arXiv recall-recovery update.
 - `data/source_parity_update_20260716_screening_audit.csv`: screened formal-source matches and adjacent official-program records.
-- `SOURCE_PARITY_UPDATE_SEARCH_REPORT.md`: source-parity closure report; no corpus counts changed.
+- `SOURCE_PARITY_UPDATE_SEARCH_REPORT.md`: official-source follow-up closure report; no corpus counts changed.
 - `data/submission_update_20260715_full_coding_audit.csv`: author full-text audit of the 41 potentially eligible update records.
 - `data/submission_update_20260715_second_coder_blind_template.csv`: blank 41-row independent-review template with no author labels.
+- `data/submission_update_20260715_second_coder_initial_results.csv`: original update independent labels retained for provenance.
+- `data/submission_update_20260715_second_coder_rerun_results.csv`: adopted tightened-boundary rerun labels.
+- `data/submission_update_20260715_rerun_sensitivity_analysis.csv`: field-level label-substitution sensitivity table.
 - `SUBMISSION_UPDATE_FULL_TEXT_AUDIT_REPORT.md`: provisional full-text decisions and the reliability boundary.
 - `SUBMISSION_UPDATE_AUDIT_REPORT.md`: update-search method and sensitivity result.
 - `data/corpus.csv`: source-record metadata and legacy analysis layer.
@@ -28,6 +31,8 @@ This index points reviewers to the public, non-sensitive files needed to audit t
 
 ## Study-Level Coding And Extended Synthesis
 
+- `data/publication_status_standardized.csv`: standardized publication-status view for all 68 study-level rows.
+- `data/publication_status_distribution_by_layer.csv`: stratified publication-status summary for artifact inspection.
 - `data/current_study_level_coding_matrix_harmonized.csv`: author-confirmed current 68-record matrix with 67 target-software studies, one governance boundary case, controlled primary shapes, overlays, and cross-stage capabilities.
 - `data/current_study_level_coding_matrix.csv`: pre-harmonization combined 68-record matrix retained for provenance.
 - `data/coding_round_harmonization_audit.csv`: field-level original values, current-codebook candidates, evidence bases, uncertainty notes, author-review status, and final author-confirmed labels.

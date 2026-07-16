@@ -22,7 +22,7 @@ Expected validation highlights:
 - Product/system boundary snapshot rows: 23
 - Source-specific search ledger date: 2026-06-30
 - Submission-time arXiv sensitivity-search date: 2026-07-15 (41-record independent pass, author-confirmed 37/4 resolution, and canonical integration complete)
-- Source-parity official-source check date: 2026-07-16 (no corpus-count changes)
+- Official-source follow-up date: 2026-07-16 (formal-source matching; no corpus-count changes)
 - Product-ecosystem snapshot date: 2026-06-29
 
 
@@ -30,20 +30,26 @@ Expected validation highlights:
 
 The current corpus contains 68 study-level coded records (67 target-software studies plus one governance boundary case) and 65 extended-synthesis studies. `data/current_study_level_coding_matrix_harmonized.csv` is the author-confirmed current study-level view; `data/current_study_level_coding_matrix.csv` preserves the pre-harmonization combined view. Legacy files with `core31` or `v13` names retain the frozen first-round coding and its formal reliability results, while the 37-row additions file preserves update-round provenance without imputed A/E labels. Source-layer values retain `Core` and `Supporting` for script compatibility and record analytical role rather than study quality.
 
+
+The study-level labels are intentionally auditable in three layers: (1) original independent labels and blind templates, (2) the adopted tightened-boundary rerun for the update round, and (3) the author-confirmed harmonized descriptive matrix used for manuscript counts. The harmonized matrix is the manuscript-facing descriptive view; the independent labels and substitution-sensitivity files remain available for reviewer inspection.
+
 ## Main Entry Points
 
 - `SEARCH_PROTOCOL.md`: source-specific search protocol.
 - `data/source_search_log.csv`: source-level search ledger.
 - `data/source_screening_audit.csv`: record-level screening audit for all 253 source records.
 - `data/submission_update_20260715_screening_audit.csv`: submission-time arXiv sensitivity and recall-recovery decisions.
-- `data/source_parity_update_20260716_search_log.csv`: official-source parity check after the arXiv recall-recovery update.
-- `data/source_parity_update_20260716_screening_audit.csv`: record-level screening decisions for the source-parity check.
-- `SOURCE_PARITY_UPDATE_SEARCH_REPORT.md`: source-parity closure report; it records no corpus-count changes.
+- `data/source_parity_update_20260716_search_log.csv`: targeted official-source follow-up after the arXiv recall-recovery update.
+- `data/source_parity_update_20260716_screening_audit.csv`: record-level screening decisions for the official-source follow-up.
+- `SOURCE_PARITY_UPDATE_SEARCH_REPORT.md`: official-source follow-up closure report; it records no corpus-count changes.
 - `data/submission_update_20260715_full_coding_audit.csv`: frozen pre-adjudication author full-text workflow--capability--evidence audit of the 41 potentially eligible records.
 - `data/submission_update_20260715_second_coder_blind_template.csv`: original blank independent-review sheet for the 41 update records; it exposes no author labels.
 - `data/submission_update_20260715_second_coder_rerun_blind_template.csv`: blank rerun sheet for applying the tightened boundary notes without exposing author labels or previous coder2 decisions.
 - `data/submission_update_20260715_second_coder_results.csv`: adopted tightened-boundary independent 41-record coder2 decisions, reasons, and uncertainty notes.
 - `data/submission_update_20260715_second_coder_initial_results.csv`: previous update-pass coder2 result retained for provenance before the tightened-boundary rerun.
+- `data/publication_status_distribution_by_layer.csv`: publication-status distribution summary for evidence outputs, system shapes, failure reuse, and governance/human gates.
+- `data/publication_status_standardized.csv`: standardized study-level publication-status view used for appendix display and stratified inspection.
+- `data/submission_update_20260715_rerun_sensitivity_analysis.csv`: label-substitution sensitivity table comparing author-confirmed and rerun coder2 label counts.
 - `reports/SUBMISSION_UPDATE_SECOND_CODER_PRE_ADJUDICATION_REPORT.md`: computed agreement before disagreement resolution.
 - `data/submission_update_20260715_adjudication_working_draft.csv`: preserved AI-assisted evidence-linked working notes reviewed by the author.
 - `data/submission_update_20260715_adjudicated.csv`: author-confirmed 37/4 field resolution preserving author and coder2 inputs.
@@ -75,7 +81,7 @@ The current corpus contains 68 study-level coded records (67 target-software stu
 - `data/mapping_snapshot_counts.csv`: descriptive mapping views for the manuscript corpus.
 - `data/product_ecosystem_snapshot.csv`: product-ecosystem boundary snapshot, maintained outside the 253-record corpus.
 - `evidence_output_codebook.md`: current evidence-output label definitions.
-- `SUBMISSION_UPDATE_SECOND_CODER_RERUN_NOTES.md`: lightweight boundary notes for a possible rerun of the 41-record update second-coder pass.
+- `SUBMISSION_UPDATE_SECOND_CODER_RERUN_NOTES.md`: lightweight boundary notes used for the adopted tightened-boundary rerun of the 41-record update second-coder pass.
 - `data_dictionary.md`: complete field dictionary.
 - `reproduce_tables.py`: validation and count-check script.
 

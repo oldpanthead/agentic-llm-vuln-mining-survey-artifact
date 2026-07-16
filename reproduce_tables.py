@@ -135,6 +135,31 @@ CSV_REQUIRED_FIELDS = {
       'coder2_claim_boundary',
       'coder2_uncertainty_note',
     ],
+    'submission_update_20260715_rerun_sensitivity_analysis.csv': [
+      'scope',
+      'field',
+      'label',
+      'author_final_count',
+      'rerun_second_coder_count',
+      'absolute_difference',
+    ],
+    'publication_status_standardized.csv': [
+      'matrix_id',
+      'record_id',
+      'system_alias',
+      'analytical_role',
+      'coding_round',
+      'year',
+      'publication_status_standardized',
+      'strongest_evidence_output',
+      'primary_system_shape',
+      'cross_stage_capabilities',
+      'external_traceability',
+    ],
+    'publication_status_distribution_by_layer.csv': [
+      'publication_status_standardized',
+      'target_software_studies',
+    ],
     'submission_update_20260715_adjudication_working_draft.csv': [
       'update_id',
       'arxiv_id',
@@ -485,6 +510,31 @@ def contains_private_material(value):
     ]
     return any(token in lowered for token in sensitive_tokens)
 
+
+
+def validate_submission_snapshot_files(original_results, rerun_results, sensitivity_rows, publication_status_rows, publication_distribution_rows):
+    status('ERROR', len(original_results) == 41, f'original submission-update independent labels rows = {len(original_results)}; expected 41')
+    status('ERROR', len(rerun_results) == 41, f'tightened-boundary rerun results rows = {len(rerun_results)}; expected 41')
+    status('ERROR', len(sensitivity_rows) >= 30, 'label-substitution sensitivity table is populated')
+    status('ERROR', len(publication_status_rows) == 68, f'publication-status study-level view rows = {len(publication_status_rows)}; expected 68')
+    status('ERROR', len(publication_distribution_rows) >= 1, 'publication-status distribution summary exists')
+    sens_fields = {(row.get('field', ''), row.get('label', '')) for row in sensitivity_rows}
+    required_sens = {
+        ('strongest_evidence_output', 'reproducible validation'),
+        ('strongest_evidence_output', 'externally traceable material'),
+        ('agentic_capabilities', 'feedback interpretation / loop adjustment'),
+        ('agentic_capabilities', 'validation organization / evidence packaging'),
+        ('agentic_capabilities', 'failure reuse / strategy update'),
+        ('agentic_capabilities', 'governance / human gates / disclosure control'),
+    }
+    status('ERROR', required_sens.issubset(sens_fields), 'sensitivity file covers headline evidence and capability labels')
+    statuses = Counter(row.get('publication_status_standardized', '') for row in publication_status_rows)
+    approved = {'journal', 'conference', 'workshop', 'preprint', 'benchmark/system report'}
+    status('ERROR', set(statuses).issubset(approved), 'publication-status view uses approved manuscript-facing categories')
+    target_rows = [row for row in publication_status_rows if row.get('analytical_role') == 'target_software_study']
+    governance_rows = [row for row in publication_status_rows if row.get('analytical_role') == 'governance_boundary_case']
+    status('ERROR', len(target_rows) == 67 and len(governance_rows) == 1, 'publication-status view preserves 67+1 analytical boundary')
+    print('SUBMISSION_SNAPSHOT_FILES: original=41 rerun=41 sensitivity=present publication_status_rows=68')
 
 def validate_submission_update_rerun_notes():
     path = ROOT / 'SUBMISSION_UPDATE_SECOND_CODER_RERUN_NOTES.md'
@@ -1997,7 +2047,11 @@ submission_update_screening = read_csv('submission_update_20260715_screening_aud
 submission_update_full_audit = read_csv('submission_update_20260715_full_coding_audit.csv')
 submission_update_blind = read_csv('submission_update_20260715_second_coder_blind_template.csv')
 submission_update_rerun_blind = read_csv('submission_update_20260715_second_coder_rerun_blind_template.csv')
+submission_update_initial_results = read_csv('submission_update_20260715_second_coder_initial_results.csv')
 submission_update_results = read_csv('submission_update_20260715_second_coder_results.csv')
+submission_update_sensitivity = read_csv('submission_update_20260715_rerun_sensitivity_analysis.csv')
+publication_status_rows = read_csv('publication_status_standardized.csv')
+publication_distribution_rows = read_csv('publication_status_distribution_by_layer.csv')
 submission_update_adjudication = read_csv('submission_update_20260715_adjudication_working_draft.csv')
 submission_update_adjudicated = read_csv('submission_update_20260715_adjudicated.csv')
 submission_update_integration = read_csv('submission_update_20260715_canonical_integration_crosswalk.csv')

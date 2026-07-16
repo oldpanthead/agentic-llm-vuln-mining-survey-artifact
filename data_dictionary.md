@@ -9,7 +9,7 @@ Current terminology maps legacy artifact values as follows: `Core` identifies st
 
 ## `SUBMISSION_UPDATE_SECOND_CODER_RERUN_NOTES.md`
 
-Lightweight boundary notes for a possible rerun of the 41-record submission-update second-coder pass. It records the tightened primary/overlay and external-traceability rules used for the adopted update-pass rerun.
+Lightweight boundary notes for a adopted tightened-boundary rerun of the 41-record submission-update second-coder pass. It records the tightened primary/overlay and external-traceability rules used for the adopted update-pass rerun.
 ## `data/current_study_level_coding_matrix_harmonized.csv` and pre-harmonization provenance
 
 `data/current_study_level_coding_matrix_harmonized.csv` is the author-confirmed current matrix for all 68 study-level coded records. It applies one controlled lifecycle, primary-shape, overlay, cross-stage-capability, evidence-output, and external-traceability schema while preserving round provenance and reliability scope. `data/current_study_level_coding_matrix.csv` is retained unchanged as the pre-harmonization combined view. Neither file contains legacy A/E fields.
@@ -91,7 +91,7 @@ This file records one source assignment and screening decision for each of the 2
 
 ## `data/source_parity_update_20260716_search_log.csv`, `data/source_parity_update_20260716_screening_audit.csv`, and `SOURCE_PARITY_UPDATE_SEARCH_REPORT.md`
 
-These files record the 2026-07-16 official-source parity check run after the arXiv recall-recovery update. The check reviewed official conference/publisher sources for formal records corresponding to the update query families and exact-title probes. It matched PANGOLIN and FirmAgent to already integrated canonical records and introduced no new canonical candidate, study-level coded, extended-synthesis, background, or excluded records.
+These files record the 2026-07-16 official-official-source follow-up run after the arXiv recall-recovery update. The check reviewed official conference/publisher sources for formal records corresponding to the update query families and exact-title probes. It matched PANGOLIN and FirmAgent to already integrated canonical records and introduced no new canonical candidate, study-level coded, extended-synthesis, background, or excluded records.
 
 - `source_id`, `source_name`, `source_category`, `search_interface`, `query_string`, `date_searched`, `date_range`: source and query provenance for the parity check.
 - `official_source_url`: public source page used for the check.
