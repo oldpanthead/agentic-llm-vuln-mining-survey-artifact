@@ -90,8 +90,11 @@ Pilot agreement/kappa values in the archive are retained for codebook calibratio
 - Decide whether and when to archive on Zenodo.
 - Refresh fast-changing product materials before the next manuscript revision.
 - Refresh fast-changing update and product materials before final submission; the author-confirmed 37/4 update cohort is integrated and current corpus counts are validated.
-- Prepare an anonymized artifact package or anonymized repository link before anonymous peer review.
+- The analytical corpus is frozen. Pre-submission changes are limited to metadata corrections, formal-version reconciliation, and artifact consistency fixes.
 
 ## Extended synthesis terminology note
 
 The current artifact describes a 68-record study-level coded set and a 65-study extended synthesis set. `data/current_study_level_coding_matrix.csv` is the unified current matrix. Legacy `core31`, `Core`, `Supporting`, and `v13_` names remain for historical traceability and script compatibility; the 37-row additions table preserves update-round provenance rather than defining a separate analytical corpus.
+
+
+

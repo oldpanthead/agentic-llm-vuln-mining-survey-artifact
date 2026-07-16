@@ -2,14 +2,14 @@
 
 ## Scope
 
-This closure pass synchronizes the public artifact with the current ACM CSUR manuscript after canonical-study deduplication, recall-recovery integration, coding-round harmonization, and the 2026-07-16 official-source parity check. It does not add literature, overwrite frozen author/coder2 files, create a synthetic combined kappa, or treat AI-assisted tools as an independent human coder.
+This closure pass synchronizes the public artifact with the current ACM CSUR manuscript after canonical-study deduplication, recall-recovery integration, coding-round harmonization, and the 2026-07-16 official-source follow-up check. It does not add literature, overwrite frozen author/coder2 files, create a synthetic combined kappa, or treat AI-assisted tools as an independent human coder.
 
 ## Public Release Pointer
 
 - Repository: `oldpanthead/agentic-llm-vuln-mining-survey-artifact`
 - Official-source follow-up: 2026-07-16; no corpus-count changes
-- Public-main final commit SHA: reported in the submission handoff/final response after this closure report is committed and pushed. A commit cannot embed its own final SHA without changing that SHA.
 - Submission tag: `csur-submission-2026-07-final`.
+- Final artifact sync adds the representative reported-results audit file, the target-only sensitivity scopes, and official-source follow-up naming without changing corpus counts or coding metrics.
 
 ## Corpus Counts
 
@@ -87,15 +87,16 @@ The public artifact now includes and validates:
 - `CODING_ROUND_HARMONIZATION_REPORT.md`
 - `README.md`, `ARTIFACT_INDEX.md`, `RELEASE_MANIFEST.md`, `SEARCH_PROTOCOL.md`, `data_dictionary.md`, `public_release_checklist.md`, and `reproduce_tables.py`
 
-The search protocol records the submission-time arXiv recall-recovery search and records that the historical ledger was multi-source and narrower, the recall-recovery pass was broader and arXiv-only, 432 unique records were screened, 41 reached full-text review, 37 entered study-level coding, four entered extended synthesis, no new evidence-output category was required, and the four dominant comparison shapes remained stable. The artifact also includes `SOURCE_PARITY_UPDATE_SEARCH_REPORT.md`, `data/source_parity_update_20260716_search_log.csv`, and `data/source_parity_update_20260716_screening_audit.csv`; these files record that official-source follow-up checks matched PANGOLIN and FirmAgent to already integrated canonical records and introduced no corpus-count changes.
+The search protocol records the submission-time arXiv recall-recovery search and records that the historical ledger was multi-source and narrower, the recall-recovery pass was broader and arXiv-only, 432 unique records were screened, 41 reached full-text review, 37 entered study-level coding, four entered extended synthesis, no new evidence-output category was required, and the four dominant comparison shapes remained stable. The artifact also includes `OFFICIAL_SOURCE_FOLLOWUP_REPORT.md`, `data/official_source_followup_20260716_search_log.csv`, and `data/official_source_followup_20260716_screening_audit.csv`; these files record that official-source follow-up checks matched PANGOLIN and FirmAgent to already integrated canonical records and introduced no corpus-count changes.
 
 ## Validation Result
 
-`D:\Anaconda3\python.exe reproduce_tables.py` exits with code 0 in standalone public-artifact mode. The script remains public-clone compatible: `python reproduce_tables.py` requires only that `python` resolve to a real Python interpreter. `python reproduce_tables.py --manuscript <path-to-main_acm_csur.tex>` additionally validates manuscript `\path{}` entries when the manuscript source is available. The script checks canonical counts, source/canonical separation, no cross-layer canonical overlap, source-parity closure files, second-coder reports, recall-recovery agreement values, harmonized matrix size and controlled vocabulary, round-specific shape and evidence counts, harmonization evidence bases, repository-local artifact-path manifest entries, optional manuscript `\path{}` entries, and tracked-file security boundaries.
+`D:\Anaconda3\python.exe reproduce_tables.py` exits with code 0 in standalone public-artifact mode. The script remains public-clone compatible: `python reproduce_tables.py` requires only that `python` resolve to a real Python interpreter. `python reproduce_tables.py --manuscript <path-to-main_acm_csur.tex>` additionally validates manuscript `\path{}` entries when the manuscript source is available. The script checks canonical counts, source/canonical separation, no cross-layer canonical overlap, official-source follow-up closure files, second-coder reports, recall-recovery agreement values, harmonized matrix size and controlled vocabulary, round-specific shape and evidence counts, harmonization evidence bases, repository-local artifact-path manifest entries, optional manuscript `\path{}` entries, and tracked-file security boundaries.
 
 The current PDF compiles to 36 pages after adding the representative Appendix B reported-results table. The LaTeX log reports no undefined citations, no undefined references, no overfull boxes, and no rerun request after the final local compile. Remaining warnings are underfull box/caption warnings typical of dense survey tables. Rendered-page checks covered pages 14, 15, 18, 19, 22, 23, and 28; no large internal whitespace bands were detected on those pages after the float-placement repairs.
 
 ## Public-Artifact Sync Requirements
 
 After this report is committed and pushed, public main should expose the current artifact files. The final handoff should record the pushed main commit SHA, the `csur-submission-2026-07-final` tag status, and the standalone artifact validation exit code.
+
 

@@ -1,33 +1,87 @@
 scope,field,label,author_final_count,rerun_second_coder_count,absolute_difference
-update rerun (41 full-text records),analysis_layer,study_level_candidate,37,37,0
-update rerun (41 full-text records),analysis_layer,extended_synthesis,4,4,0
-update rerun (41 full-text records),analysis_layer,background_or_excluded,0,0,0
-update rerun (41 full-text records),analysis_layer,excluded,0,0,0
-update rerun (41 full-text records),primary_system_shape,candidate-analysis system,16,21,5
-update rerun (41 full-text records),primary_system_shape,feedback-driven fuzzing agent,8,8,0
-update rerun (41 full-text records),primary_system_shape,"reproduction-, validation-, and repair-centered agent",12,8,4
-update rerun (41 full-text records),primary_system_shape,long-horizon pentest and CRS agent,5,4,1
-update rerun (41 full-text records),primary_system_shape,governance boundary case,0,0,0
-update rerun (41 full-text records),strongest_evidence_output,candidate judgment,5,6,1
-update rerun (41 full-text records),strongest_evidence_output,controlled task completion,10,11,1
-update rerun (41 full-text records),strongest_evidence_output,runtime safety signal,5,4,1
-update rerun (41 full-text records),strongest_evidence_output,reproducible validation,17,15,2
-update rerun (41 full-text records),strongest_evidence_output,externally traceable material,4,5,1
-update rerun (41 full-text records),external_traceability,no external trace reported,0,0,0
-update rerun (41 full-text records),external_traceability,author-reported external clue,13,11,2
-update rerun (41 full-text records),external_traceability,benchmark ground truth / public material,22,21,1
-update rerun (41 full-text records),external_traceability,publicly aligned external trace,4,5,1
-update rerun (41 full-text records),external_traceability,not reported,2,4,2
-update rerun (41 full-text records),lifecycle_coverage,candidate analysis,34,37,3
-update rerun (41 full-text records),lifecycle_coverage,path and input exploration,26,25,1
-update rerun (41 full-text records),lifecycle_coverage,execution observation,30,30,0
-update rerun (41 full-text records),lifecycle_coverage,reproduction and validation,21,23,2
-update rerun (41 full-text records),lifecycle_coverage,patch validation,9,9,0
-update rerun (41 full-text records),lifecycle_coverage,reporting and audit,19,30,11
-update rerun (41 full-text records),agentic_capabilities,context aggregation / rule extraction,34,32,2
-update rerun (41 full-text records),agentic_capabilities,tool routing / strategy routing,27,28,1
-update rerun (41 full-text records),agentic_capabilities,feedback interpretation / loop adjustment,36,35,1
-update rerun (41 full-text records),agentic_capabilities,validation organization / evidence packaging,39,38,1
-update rerun (41 full-text records),agentic_capabilities,long-horizon state management,14,14,0
-update rerun (41 full-text records),agentic_capabilities,failure reuse / strategy update,11,8,3
-update rerun (41 full-text records),agentic_capabilities,governance / human gates / disclosure control,5,8,3
+all_41_full_text_records,analysis_layer,study_level_candidate,37,37,0
+all_41_full_text_records,analysis_layer,extended_synthesis,4,4,0
+all_41_full_text_records,analysis_layer,background_or_excluded,0,0,0
+all_41_full_text_records,analysis_layer,excluded,0,0,0
+all_41_full_text_records,primary_system_shape,candidate-analysis system,16,21,5
+all_41_full_text_records,primary_system_shape,feedback-driven fuzzing agent,8,8,0
+all_41_full_text_records,primary_system_shape,"reproduction-, validation-, and repair-centered agent",12,8,4
+all_41_full_text_records,primary_system_shape,long-horizon pentest and CRS agent,5,4,1
+all_41_full_text_records,primary_system_shape,governance boundary case,0,0,0
+all_41_full_text_records,strongest_evidence_output,candidate judgment,5,6,1
+all_41_full_text_records,strongest_evidence_output,controlled task completion,10,11,1
+all_41_full_text_records,strongest_evidence_output,runtime safety signal,5,4,1
+all_41_full_text_records,strongest_evidence_output,reproducible validation,17,15,2
+all_41_full_text_records,strongest_evidence_output,externally traceable material,4,5,1
+all_41_full_text_records,external_traceability,no external trace reported,0,0,0
+all_41_full_text_records,external_traceability,author-reported external clue,13,11,2
+all_41_full_text_records,external_traceability,benchmark ground truth / public material,22,21,1
+all_41_full_text_records,external_traceability,publicly aligned external trace,4,5,1
+all_41_full_text_records,external_traceability,not reported,2,4,2
+all_41_full_text_records,lifecycle_coverage,candidate analysis,34,37,3
+all_41_full_text_records,lifecycle_coverage,path and input exploration,26,25,1
+all_41_full_text_records,lifecycle_coverage,execution observation,30,30,0
+all_41_full_text_records,lifecycle_coverage,reproduction and validation,21,23,2
+all_41_full_text_records,lifecycle_coverage,patch validation,9,9,0
+all_41_full_text_records,lifecycle_coverage,reporting and audit,19,30,11
+all_41_full_text_records,agentic_capabilities,context aggregation / rule extraction,34,32,2
+all_41_full_text_records,agentic_capabilities,tool routing / strategy routing,27,28,1
+all_41_full_text_records,agentic_capabilities,feedback interpretation / loop adjustment,36,35,1
+all_41_full_text_records,agentic_capabilities,validation organization / evidence packaging,39,38,1
+all_41_full_text_records,agentic_capabilities,long-horizon state management,14,14,0
+all_41_full_text_records,agentic_capabilities,failure reuse / strategy update,11,8,3
+all_41_full_text_records,agentic_capabilities,governance / human gates / disclosure control,5,8,3
+37_final_target_software_update_records,primary_system_shape,PoC/PoV validation agent,0,9,9
+37_final_target_software_update_records,primary_system_shape,candidate-analysis system,12,8,4
+37_final_target_software_update_records,primary_system_shape,feedback-driven fuzzing agent,8,9,1
+37_final_target_software_update_records,primary_system_shape,long-horizon pentest and CRS agent,5,11,6
+37_final_target_software_update_records,primary_system_shape,"reproduction-, validation-, and repair-centered agent",12,0,12
+37_final_target_software_update_records,strongest_evidence_output,candidate judgment,3,4,1
+37_final_target_software_update_records,strongest_evidence_output,controlled task completion,8,9,1
+37_final_target_software_update_records,strongest_evidence_output,externally traceable material,4,3,1
+37_final_target_software_update_records,strongest_evidence_output,reproducible validation,17,17,0
+37_final_target_software_update_records,strongest_evidence_output,runtime safety signal,5,4,1
+37_final_target_software_update_records,external_traceability,author-reported external clue,12,10,2
+37_final_target_software_update_records,external_traceability,benchmark ground truth / public material,20,20,0
+37_final_target_software_update_records,external_traceability,not reported,1,3,2
+37_final_target_software_update_records,external_traceability,publicly aligned external trace,4,4,0
+37_final_target_software_update_records,lifecycle_coverage,candidate analysis,32,34,2
+37_final_target_software_update_records,lifecycle_coverage,execution observation,30,32,2
+37_final_target_software_update_records,lifecycle_coverage,patch validation,8,8,0
+37_final_target_software_update_records,lifecycle_coverage,path and input exploration,26,28,2
+37_final_target_software_update_records,lifecycle_coverage,reporting and audit,17,30,13
+37_final_target_software_update_records,lifecycle_coverage,reproduction and validation,21,27,6
+37_final_target_software_update_records,agentic_capabilities,context aggregation / rule extraction,31,33,2
+37_final_target_software_update_records,agentic_capabilities,failure reuse / strategy update,11,14,3
+37_final_target_software_update_records,agentic_capabilities,feedback interpretation / loop adjustment,35,35,0
+37_final_target_software_update_records,agentic_capabilities,governance / human gates / disclosure control,4,3,1
+37_final_target_software_update_records,agentic_capabilities,long-horizon state management,14,12,2
+37_final_target_software_update_records,agentic_capabilities,tool routing / strategy routing,27,37,10
+37_final_target_software_update_records,agentic_capabilities,validation organization / evidence packaging,35,36,1
+67_target_software_with_rerun_substitution,primary_system_shape,PoC/PoV validation agent,0,9,9
+67_target_software_with_rerun_substitution,primary_system_shape,candidate-analysis system,12,8,4
+67_target_software_with_rerun_substitution,primary_system_shape,feedback-driven fuzzing agent,8,9,1
+67_target_software_with_rerun_substitution,primary_system_shape,long-horizon pentest and CRS agent,5,11,6
+67_target_software_with_rerun_substitution,primary_system_shape,"reproduction-, validation-, and repair-centered agent",12,0,12
+67_target_software_with_rerun_substitution,strongest_evidence_output,candidate judgment,3,4,1
+67_target_software_with_rerun_substitution,strongest_evidence_output,controlled task completion,8,9,1
+67_target_software_with_rerun_substitution,strongest_evidence_output,externally traceable material,4,3,1
+67_target_software_with_rerun_substitution,strongest_evidence_output,reproducible validation,17,17,0
+67_target_software_with_rerun_substitution,strongest_evidence_output,runtime safety signal,5,4,1
+67_target_software_with_rerun_substitution,external_traceability,author-reported external clue,12,10,2
+67_target_software_with_rerun_substitution,external_traceability,benchmark ground truth / public material,20,20,0
+67_target_software_with_rerun_substitution,external_traceability,not reported,1,3,2
+67_target_software_with_rerun_substitution,external_traceability,publicly aligned external trace,4,4,0
+67_target_software_with_rerun_substitution,lifecycle_coverage,candidate analysis,32,34,2
+67_target_software_with_rerun_substitution,lifecycle_coverage,execution observation,30,32,2
+67_target_software_with_rerun_substitution,lifecycle_coverage,patch validation,8,8,0
+67_target_software_with_rerun_substitution,lifecycle_coverage,path and input exploration,26,28,2
+67_target_software_with_rerun_substitution,lifecycle_coverage,reporting and audit,17,30,13
+67_target_software_with_rerun_substitution,lifecycle_coverage,reproduction and validation,21,27,6
+67_target_software_with_rerun_substitution,agentic_capabilities,context aggregation / rule extraction,31,33,2
+67_target_software_with_rerun_substitution,agentic_capabilities,failure reuse / strategy update,11,14,3
+67_target_software_with_rerun_substitution,agentic_capabilities,feedback interpretation / loop adjustment,35,35,0
+67_target_software_with_rerun_substitution,agentic_capabilities,governance / human gates / disclosure control,4,3,1
+67_target_software_with_rerun_substitution,agentic_capabilities,long-horizon state management,14,12,2
+67_target_software_with_rerun_substitution,agentic_capabilities,tool routing / strategy routing,27,37,10
+67_target_software_with_rerun_substitution,agentic_capabilities,validation organization / evidence packaging,35,36,1

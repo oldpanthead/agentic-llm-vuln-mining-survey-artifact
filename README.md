@@ -39,9 +39,9 @@ The study-level labels are intentionally auditable in three layers: (1) original
 - `data/source_search_log.csv`: source-level search ledger.
 - `data/source_screening_audit.csv`: record-level screening audit for all 253 source records.
 - `data/submission_update_20260715_screening_audit.csv`: submission-time arXiv sensitivity and recall-recovery decisions.
-- `data/source_parity_update_20260716_search_log.csv`: targeted official-source follow-up after the arXiv recall-recovery update.
-- `data/source_parity_update_20260716_screening_audit.csv`: record-level screening decisions for the official-source follow-up.
-- `SOURCE_PARITY_UPDATE_SEARCH_REPORT.md`: official-source follow-up closure report; it records no corpus-count changes.
+- `data/official_source_followup_20260716_search_log.csv`: targeted official-source follow-up after the arXiv recall-recovery update.
+- `data/official_source_followup_20260716_screening_audit.csv`: record-level screening decisions for the official-source follow-up.
+- `OFFICIAL_SOURCE_FOLLOWUP_REPORT.md`: official-source follow-up closure report; it records no corpus-count changes.
 - `data/submission_update_20260715_full_coding_audit.csv`: frozen pre-adjudication author full-text workflow--capability--evidence audit of the 41 potentially eligible records.
 - `data/submission_update_20260715_second_coder_blind_template.csv`: original blank independent-review sheet for the 41 update records; it exposes no author labels.
 - `data/submission_update_20260715_second_coder_rerun_blind_template.csv`: blank rerun sheet for applying the tightened boundary notes without exposing author labels or previous coder2 decisions.
@@ -93,7 +93,7 @@ A separate extension check covers cross-stage capability and external traceabili
 
 The pilot second-coder round is archived under `archive/pilot_second_coder_round_1/` for codebook calibration only and should not be cited as formal reliability.
 
-The 2026-07-15 update-search blind pass is complete for all 41 records. The 2026-07-16 source-parity official-source check introduced no additional canonical records. The author-confirmed resolution assigns 37 records to study-level coding and four to extended synthesis. Canonical integration is complete: the current corpus contains 253 source records, 248 canonical studies, 67 target-software coded studies plus one governance boundary case, and 65 extended-synthesis studies. Reliability remains reported by coding round rather than as a synthetic combined kappa; harmonized descriptive labels are author-confirmed and separately auditable.
+The 2026-07-15 update-search blind pass is complete for all 41 records. The 2026-07-16 targeted official-source follow-up introduced no additional canonical records. The author-confirmed resolution assigns 37 records to study-level coding and four to extended synthesis. Canonical integration is complete: the current corpus contains 253 source records, 248 canonical studies, 67 target-software coded studies plus one governance boundary case, and 65 extended-synthesis studies. Reliability remains reported by coding round rather than as a synthetic combined kappa; harmonized descriptive labels are author-confirmed and separately auditable.
 
 ## Evidence Boundary
 
@@ -116,6 +116,9 @@ The public artifact excludes undisclosed PoCs, exploit payloads, sensitive crash
 - Data and documentation: CC BY 4.0, see `LICENSE-DATA`.
 - Code scripts: MIT License, see `LICENSE-CODE`.
 
-Current public repository URL: `https://github.com/oldpanthead/agentic-llm-vuln-mining-survey-artifact`. Prepare a separate anonymized artifact package or anonymized repository link before anonymous peer review.
+Current public repository URL: `https://github.com/oldpanthead/agentic-llm-vuln-mining-survey-artifact`. The analytical corpus is frozen. Pre-submission changes are limited to metadata corrections, formal-version reconciliation, and artifact consistency fixes.
+
+
+
 
 

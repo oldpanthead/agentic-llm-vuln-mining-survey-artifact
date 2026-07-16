@@ -442,7 +442,7 @@ CSV_REQUIRED_FIELDS = {
       'deduplication_status',
       'source_trace_note',
     ],
-    'source_parity_update_20260716_search_log.csv': [
+    'official_source_followup_20260716_search_log.csv': [
       'source_id',
       'source_name',
       'source_category',
@@ -459,7 +459,7 @@ CSV_REQUIRED_FIELDS = {
       'new_background_or_excluded_records',
       'notes',
     ],
-    'source_parity_update_20260716_screening_audit.csv': [
+    'official_source_followup_20260716_screening_audit.csv': [
       'source_id',
       'title',
       'official_url',
@@ -1239,10 +1239,10 @@ def validate_source_search_audit(corpus, source_log, source_audit):
 
 
 
-def validate_source_parity_update(search_rows, screening_rows):
-    report_path = ROOT / 'SOURCE_PARITY_UPDATE_SEARCH_REPORT.md'
-    status('ERROR', bool(search_rows), 'source-parity update search log exists and has rows')
-    status('ERROR', bool(screening_rows), 'source-parity update screening audit exists and has rows')
+def validate_official_source_followup(search_rows, screening_rows):
+    report_path = ROOT / 'OFFICIAL_SOURCE_FOLLOWUP_REPORT.md'
+    status('ERROR', bool(search_rows), 'official-source follow-up search log exists and has rows')
+    status('ERROR', bool(screening_rows), 'official-source follow-up screening audit exists and has rows')
     if not search_rows or not screening_rows:
         return
     def to_int(row, field):
@@ -1255,22 +1255,22 @@ def validate_source_parity_update(search_rows, screening_rows):
     ext_additions = sum(to_int(row, 'new_extended_synthesis_additions') for row in search_rows)
     other_additions = sum(to_int(row, 'new_background_or_excluded_records') for row in search_rows)
     matches = sum(to_int(row, 'existing_canonical_matches') for row in search_rows)
-    status('ERROR', additions == 0, 'source-parity update introduced no new canonical candidate records')
-    status('ERROR', study_additions == 0 and ext_additions == 0 and other_additions == 0, 'source-parity update introduced no new analytical-layer records')
-    status('ERROR', matches >= 2, 'source-parity update records at least two existing canonical matches')
+    status('ERROR', additions == 0, 'official-source follow-up introduced no new canonical candidate records')
+    status('ERROR', study_additions == 0 and ext_additions == 0 and other_additions == 0, 'official-source follow-up introduced no new analytical-layer records')
+    status('ERROR', matches >= 2, 'official-source follow-up records at least two existing canonical matches')
     titles = ' | '.join(row.get('title', '') for row in screening_rows).lower()
-    status('ERROR', 'pangolin' in titles and 'firmagent' in titles, 'source-parity screening records PANGOLIN and FirmAgent formal-source matches')
+    status('ERROR', 'pangolin' in titles and 'firmagent' in titles, 'official-source follow-up screening records PANGOLIN and FirmAgent formal-source matches')
     bad_urls = [row.get('source_id', '?') for row in search_rows if not row.get('official_source_url', '').startswith('http')]
     bad_urls += [row.get('title', '?') for row in screening_rows if not row.get('official_url', '').startswith('http')]
-    status('ERROR', not bad_urls, 'source-parity rows use public URLs rather than local locators')
-    status('ERROR', report_path.exists(), 'SOURCE_PARITY_UPDATE_SEARCH_REPORT.md exists')
+    status('ERROR', not bad_urls, 'official-source follow-up rows use public URLs rather than local locators')
+    status('ERROR', report_path.exists(), 'OFFICIAL_SOURCE_FOLLOWUP_REPORT.md exists')
     if report_path.exists():
         text = report_path.read_text(encoding='utf-8').lower()
-        required = ['source-parity', '2026-07-16', 'no corpus counts changed', 'pangolin', 'firmagent']
+        required = ['official-source follow-up', '2026-07-16', 'no corpus counts changed', 'pangolin', 'firmagent']
         missing = [item for item in required if item not in text]
-        status('ERROR', not missing, 'source-parity report records date, no-count-change result, and formal-source matches')
+        status('ERROR', not missing, 'official-source follow-up report records date, no-count-change result, and formal-source matches')
         if missing:
-            print('ERROR: source-parity report missing:', ', '.join(missing))
+            print('ERROR: official-source follow-up report missing:', ', '.join(missing))
 
 
 def norm_text(value):
@@ -1938,6 +1938,39 @@ def validate_harmonized_coding_matrix(pre_matrix, harmonized, audit_rows, round_
 
 
 
+
+def validate_representative_reported_results(rows, matrix_rows, reference_rows, sensitivity_rows):
+    status('ERROR', 9 <= len(rows) <= 10, f'representative reported results rows = {len(rows)}; expected 9-10')
+    matrix_by_system = {row.get('system_alias', '').strip().lower(): row for row in matrix_rows if row.get('analytical_role') == 'target_software_study'}
+    reference_keys = {row.get('citation_key', '').strip() for row in reference_rows if row.get('citation_key', '').strip()}
+    errors = []
+    for row in rows:
+        system_key = row.get('system', '').strip().lower()
+        matches = [m for name, m in matrix_by_system.items() if system_key == name or system_key in name or name in system_key]
+        if not matches:
+            errors.append((row.get('system'), 'missing study-level matrix row'))
+            continue
+        matrix_row = matches[0]
+        if matrix_row.get('primary_system_shape') != row.get('primary_shape'):
+            errors.append((row.get('system'), f"shape mismatch: {row.get('primary_shape')} vs {matrix_row.get('primary_system_shape')}"))
+        if row.get('citation_key', '').strip() not in reference_keys:
+            errors.append((row.get('system'), 'citation key missing from reference_audit.csv'))
+        if not row.get('source_location', '').strip():
+            errors.append((row.get('system'), 'empty source_location'))
+    status('ERROR', not errors, 'representative reported results map to study-level matrix, citation keys, and source locations')
+    if errors:
+        print('ERROR: representative reported result problems:', errors[:10])
+    scopes = {row.get('scope', '') for row in sensitivity_rows}
+    required_scopes = {'all_41_full_text_records', '37_final_target_software_update_records', '67_target_software_with_rerun_substitution'}
+    status('ERROR', required_scopes.issubset(scopes), 'sensitivity file contains all_41, 37-target, and 67-target substitution scopes')
+    target_rows = [row for row in sensitivity_rows if row.get('scope') in {'37_final_target_software_update_records', '67_target_software_with_rerun_substitution'}]
+    target_fields = {row.get('field') for row in target_rows}
+    required_fields = {'primary_system_shape', 'strongest_evidence_output', 'lifecycle_coverage', 'agentic_capabilities', 'external_traceability'}
+    status('ERROR', required_fields.issubset(target_fields), 'target-only sensitivity scopes cover shape, evidence, lifecycle, capability, and traceability fields')
+    shape_labels = {row.get('label') for row in target_rows if row.get('field') == 'primary_system_shape'}
+    evidence_labels = {row.get('label') for row in target_rows if row.get('field') == 'strongest_evidence_output'}
+    status('ERROR', len(shape_labels) >= 4, 'target-only sensitivity includes the four primary system shapes')
+    status('ERROR', len(evidence_labels) >= 5, 'target-only sensitivity includes the five strongest evidence outputs')
 def validate_manuscript_artifact_paths():
     manifest_missing = []
     manifest_paths = []
@@ -2038,8 +2071,8 @@ repro_audit = read_csv('core_reproducibility_audit.csv')
 repro_summary = read_csv('core_reproducibility_audit_summary.csv')
 source_search_log = read_csv('source_search_log.csv')
 source_screening_audit = read_csv('source_screening_audit.csv')
-source_parity_update_log = read_csv('source_parity_update_20260716_search_log.csv')
-source_parity_update_screening = read_csv('source_parity_update_20260716_screening_audit.csv')
+official_source_followup_log = read_csv('official_source_followup_20260716_search_log.csv')
+official_source_followup_screening = read_csv('official_source_followup_20260716_screening_audit.csv')
 extended_synthesis = read_csv('extended_synthesis_audit.csv')
 study_version_crosswalk = read_csv('study_version_crosswalk.csv')
 mapping_snapshot_counts = read_csv('mapping_snapshot_counts.csv')
@@ -2052,6 +2085,7 @@ submission_update_results = read_csv('submission_update_20260715_second_coder_re
 submission_update_sensitivity = read_csv('submission_update_20260715_rerun_sensitivity_analysis.csv')
 publication_status_rows = read_csv('publication_status_standardized.csv')
 publication_distribution_rows = read_csv('publication_status_distribution_by_layer.csv')
+representative_reported_results = read_csv('representative_reported_results.csv')
 submission_update_adjudication = read_csv('submission_update_20260715_adjudication_working_draft.csv')
 submission_update_adjudicated = read_csv('submission_update_20260715_adjudicated.csv')
 submission_update_integration = read_csv('submission_update_20260715_canonical_integration_crosswalk.csv')
@@ -2066,7 +2100,7 @@ validate_product_ecosystem_snapshot(product_snapshot)
 validate_second_coder_files(second_coder_blind, second_coder_adjudication, second_coder_formal, second_coder_formal_results)
 validate_second_coder_extension_template(second_coder_extension_template, second_coder_extension_results, core_synthesis)
 validate_source_search_audit(corpus, source_search_log, source_screening_audit)
-validate_source_parity_update(source_parity_update_log, source_parity_update_screening)
+validate_official_source_followup(official_source_followup_log, official_source_followup_screening)
 validate_study_version_crosswalk(corpus, ref, study_version_crosswalk, mapping_snapshot_counts)
 validate_extended_synthesis_audit(corpus, extended_synthesis, study_version_crosswalk)
 validate_submission_update_screening(submission_update_screening)
@@ -2077,6 +2111,7 @@ validate_submission_update_finalization(submission_update_adjudication, submissi
 validate_current_study_level_matrix(current_study_level_matrix, submission_update_additions)
 validate_harmonized_coding_matrix(current_study_level_matrix, harmonized_study_level_matrix, coding_round_harmonization_audit, current_synthesis_statistics_by_round, extended_synthesis)
 validate_integrated_submission_update(corpus, study_version_crosswalk, extended_synthesis, submission_update_adjudicated, submission_update_additions, current_synthesis_statistics)
+validate_representative_reported_results(representative_reported_results, harmonized_study_level_matrix, ref, submission_update_sensitivity)
 validate_manuscript_artifact_paths()
 validate_tracked_file_boundary()
 
@@ -2179,6 +2214,12 @@ if ERROR_COUNT:
     sys.exit(1)
 
 print('DONE')
+
+
+
+
+
+
 
 
 

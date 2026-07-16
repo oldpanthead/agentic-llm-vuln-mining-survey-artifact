@@ -72,4 +72,5 @@ private working directories are excluded from the public artifact.
 
 
 ## July 16 Official-Source Follow-Up
-A targeted official-source follow-up was run on 2026-07-16 after the arXiv recall-recovery pass. It resolved formal-source matches and official-program candidates using source-level title matching and query-family checks. It introduced no additional analytical records. The source-level protocol and record decisions are preserved in `data/source_parity_update_20260716_search_log.csv`, `data/source_parity_update_20260716_screening_audit.csv`, and `SOURCE_PARITY_UPDATE_SEARCH_REPORT.md`.
+A targeted official-source follow-up was run on 2026-07-16 after the arXiv recall-recovery pass. It resolved formal-source matches and official-program candidates using source-level title matching and query-family checks. It introduced no additional analytical records. The source-level protocol and record decisions are preserved in `data/official_source_followup_20260716_search_log.csv`, `data/official_source_followup_20260716_screening_audit.csv`, and `OFFICIAL_SOURCE_FOLLOWUP_REPORT.md`.
+

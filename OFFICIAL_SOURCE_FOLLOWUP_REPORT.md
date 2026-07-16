@@ -1,8 +1,8 @@
-# Source-Parity Update Search Report
+# Official-Source Follow-Up Report
 
 Date: 2026-07-16
 
-This report records a source-parity check performed after the 2026-07-15 arXiv recall-recovery update. The purpose was to check whether official conference and publisher sources exposed formal records that were missed because the recall-recovery update itself used arXiv as its active search interface.
+This report records a targeted official-source follow-up performed after the 2026-07-15 arXiv recall-recovery update. The purpose was to check whether official conference and publisher sources exposed formal records that were missed because the recall-recovery update itself used arXiv as its active search interface.
 
 ## Sources Checked
 
@@ -11,7 +11,7 @@ This report records a source-parity check performed after the 2026-07-15 arXiv r
 - ACM DL and IEEE Xplore title/keyword web checks using the update-cohort query families and exact-title probes.
 - SpringerLink and ScienceDirect title/keyword web checks using Agentic/LLM/vulnerability/fuzzing terms.
 
-The detailed source rows are in `data/source_parity_update_20260716_search_log.csv`; record-level screening decisions are in `data/source_parity_update_20260716_screening_audit.csv`.
+The detailed source rows are in `data/official_source_followup_20260716_search_log.csv`; record-level screening decisions are in `data/official_source_followup_20260716_screening_audit.csv`.
 
 ## Result
 
@@ -35,4 +35,5 @@ The current manuscript-facing corpus remains:
 - 95 background/reference records;
 - 20 excluded near-neighbor studies.
 
-The source-parity check is an audit closure file rather than a new source bucket in the main source-count ledger. It therefore validates publication-source symmetry without changing the canonical source-record totals.
+The targeted official-source follow-up is an audit closure file rather than a new source bucket in the main source-count ledger. It therefore resolves selected formal-source matches without changing the canonical source-record totals.
+

@@ -89,7 +89,7 @@ This file records one source assignment and screening decision for each of the 2
 - `source_trace_note`: explanation of source assignment and deduplication policy.
 
 
-## `data/source_parity_update_20260716_search_log.csv`, `data/source_parity_update_20260716_screening_audit.csv`, and `SOURCE_PARITY_UPDATE_SEARCH_REPORT.md`
+## `data/official_source_followup_20260716_search_log.csv`, `data/official_source_followup_20260716_screening_audit.csv`, and `OFFICIAL_SOURCE_FOLLOWUP_REPORT.md`
 
 These files record the 2026-07-16 official-official-source follow-up run after the arXiv recall-recovery update. The check reviewed official conference/publisher sources for formal records corresponding to the update query families and exact-title probes. It matched PANGOLIN and FirmAgent to already integrated canonical records and introduced no new canonical candidate, study-level coded, extended-synthesis, background, or excluded records.
 
@@ -474,3 +474,7 @@ Standardized publication-status view for the current study-level coding matrix. 
 
 ## publication_status_distribution_by_layer.csv
 Publication-status distribution summary for the target-software study-level set. It reports evidence-output counts, primary-shape counts, failure-reuse labels, and governance/human-gate labels by standardized publication status.
+
+
+## `data/representative_reported_results.csv`
+Source-located audit file for the representative reported-results table in Appendix B/Table 14. Each row corresponds to one manuscript table row and records the system, citation key, primary shape, evaluation setting, reported scale/result, validation material, source location, and extraction note. The file is descriptive and does not normalize or rank results across systems.

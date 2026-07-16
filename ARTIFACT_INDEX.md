@@ -15,9 +15,9 @@ This index points reviewers to the public, non-sensitive files needed to audit t
 - `data/source_screening_audit.csv`: record-level screening audit for all 253 source records.
 - `data/submission_update_20260715_arxiv_results.csv`: normalized raw-hit export for the 2026-07-15 arXiv update search.
 - `data/submission_update_20260715_screening_audit.csv`: record-level update-search decisions.
-- `data/source_parity_update_20260716_search_log.csv`: targeted official-source follow-up after the arXiv recall-recovery update.
-- `data/source_parity_update_20260716_screening_audit.csv`: screened formal-source matches and adjacent official-program records.
-- `SOURCE_PARITY_UPDATE_SEARCH_REPORT.md`: official-source follow-up closure report; no corpus counts changed.
+- `data/official_source_followup_20260716_search_log.csv`: targeted official-source follow-up after the arXiv recall-recovery update.
+- `data/official_source_followup_20260716_screening_audit.csv`: screened formal-source matches and adjacent official-program records.
+- `OFFICIAL_SOURCE_FOLLOWUP_REPORT.md`: official-source follow-up closure report; no corpus counts changed.
 - `data/submission_update_20260715_full_coding_audit.csv`: author full-text audit of the 41 potentially eligible update records.
 - `data/submission_update_20260715_second_coder_blind_template.csv`: blank 41-row independent-review template with no author labels.
 - `data/submission_update_20260715_second_coder_initial_results.csv`: original update independent labels retained for provenance.
@@ -33,6 +33,7 @@ This index points reviewers to the public, non-sensitive files needed to audit t
 
 - `data/publication_status_standardized.csv`: standardized publication-status view for all 68 study-level rows.
 - `data/publication_status_distribution_by_layer.csv`: stratified publication-status summary for artifact inspection.
+- `data/representative_reported_results.csv`: source-located audit rows for the manuscript representative reported-results table.
 - `data/current_study_level_coding_matrix_harmonized.csv`: author-confirmed current 68-record matrix with 67 target-software studies, one governance boundary case, controlled primary shapes, overlays, and cross-stage capabilities.
 - `data/current_study_level_coding_matrix.csv`: pre-harmonization combined 68-record matrix retained for provenance.
 - `data/coding_round_harmonization_audit.csv`: field-level original values, current-codebook candidates, evidence bases, uncertainty notes, author-review status, and final author-confirmed labels.
@@ -98,3 +99,5 @@ This index points reviewers to the public, non-sensitive files needed to audit t
 ## Safety Boundary
 
 Read `SECURITY_BOUNDARY.md` before using security-related rows. The public artifact excludes undisclosed PoCs, exploit payloads, sensitive crash inputs, private targets, credentials, live reproduction steps, PDFs, Zotero databases, local paths, and private vendor or bug-bounty communication.
+
+
