@@ -20,6 +20,18 @@ MANIFEST_PATH = ROOT / 'manuscript_artifact_paths.txt'
 
 CSV_REQUIRED_FIELDS = {
     'corpus.csv': ['record_id', 'corpus_layer'],
+    'unified_second_coder_final_blind_template.csv': [
+        'review_order',
+        'matrix_id',
+        'record_id',
+        'system_alias',
+        'title',
+        'year',
+        'publication_status',
+        'review_scope',
+        'official_url',
+        'materials_to_review',
+    ],
     'current_study_level_coding_matrix.csv': [
         'matrix_id',
         'record_id',
@@ -1798,6 +1810,117 @@ def validate_current_study_level_matrix(current_matrix, additions):
         print('ERROR: current matrix mismatches:', ', '.join(mismatches))
     print('CURRENT_STUDY_LEVEL_MATRIX: rows=68 target=67 governance=1 initial_round=31 update_round=37')
 
+
+def validate_unified_second_coder_template(template, harmonized_matrix):
+    codebook = ROOT / 'unified_second_coder_codebook.md'
+    guide = ROOT / 'UNIFIED_SECOND_CODER_REVIEW_GUIDE.md'
+    helper = ROOT / 'unified_second_coder_review.py'
+    for path, description in [
+        (codebook, 'unified second-coder codebook exists'),
+        (guide, 'unified second-coder review guide exists'),
+        (helper, 'unified second-coder preparation/validation helper exists'),
+    ]:
+        status('ERROR', path.exists(), description)
+
+    status('ERROR', len(template) == 68, f'unified second-coder blind template rows = {len(template)}; expected 68')
+    if not template or not harmonized_matrix:
+        return
+    ids = [row.get('matrix_id', '') for row in template]
+    matrix_ids = {row.get('matrix_id', '') for row in harmonized_matrix}
+    status('ERROR', len(ids) == len(set(ids)), 'unified second-coder template matrix IDs are unique')
+    status('ERROR', set(ids) == matrix_ids, 'unified second-coder template covers the complete 67+1 matrix')
+    status('ERROR', [int(row.get('review_order', '0')) for row in template] == list(range(1, 69)), 'unified second-coder review order is stable from 1 to 68')
+    roles = Counter(row.get('review_scope', '') for row in template)
+    status('ERROR', roles == Counter({'target-software study': 67, 'governance boundary case': 1}), 'unified second-coder template preserves the 67+1 scope boundary')
+
+    headers = set(template[0])
+    forbidden = [name for name in headers if any(token in name.lower() for token in ('author_', 'original_', 'harmonized', 'adjudicat'))]
+    status('ERROR', not forbidden, 'unified second-coder template exposes no author, original, harmonized, or adjudication fields')
+    if forbidden:
+        print('ERROR: forbidden unified-template fields:', ', '.join(forbidden))
+
+    coder_fields = [
+        'final_lifecycle_coverage',
+        'lifecycle_review_status',
+        'final_cross_stage_capabilities',
+        'capability_review_status',
+        'final_primary_system_shape',
+        'shape_review_status',
+        'final_strongest_evidence_output',
+        'evidence_review_status',
+        'final_external_traceability',
+        'traceability_review_status',
+        'final_claim_boundary',
+        'claim_boundary_review_status',
+        'material_checked',
+        'decision_note',
+        'uncertainty_note',
+        'row_status',
+    ]
+    status('ERROR', all(not row.get(field, '').strip() for row in template for field in coder_fields), 'unified second-coder public template keeps all coder decision fields blank')
+    status('ERROR', all('unified_second_coder_codebook.md' in row.get('materials_to_review', '') for row in template), 'unified second-coder material instructions point to the frozen unified codebook')
+    status('ERROR', all('do not consult author-label' in row.get('materials_to_review', '').lower() for row in template), 'unified second-coder instructions preserve author-label blinding')
+
+    matrix_by_id = {row.get('matrix_id', ''): row for row in harmonized_matrix}
+    metadata_mismatches = []
+    for row in template:
+        source = matrix_by_id.get(row.get('matrix_id', ''), {})
+        for field in ('record_id', 'system_alias', 'title', 'official_url'):
+            if row.get(field, '') != source.get(field, ''):
+                metadata_mismatches.append(f"{row.get('matrix_id', '?')}:{field}")
+    status('ERROR', not metadata_mismatches, 'unified second-coder template metadata matches the harmonized matrix without exposing labels')
+    if metadata_mismatches:
+        print('ERROR: unified-template metadata mismatches:', ', '.join(metadata_mismatches))
+    print('UNIFIED_SECOND_CODER_TEMPLATE: rows=68 target=67 governance=1 status=prepared_blank')
+
+
+def validate_unified_second_coder_results(results, sensitivity, harmonized_matrix):
+    report_path = ROOT / 'reports' / 'UNIFIED_SECOND_CODER_PRE_ADJUDICATION_REPORT.md'
+    disagreement_path = DATA / 'unified_second_coder_pre_adjudication_disagreements.csv'
+    status('ERROR', report_path.exists(), 'unified second-coder pre-adjudication report exists')
+    status('ERROR', disagreement_path.exists(), 'unified second-coder disagreement audit exists')
+    status('ERROR', len(results) == 68, f'unified second-coder completed rows = {len(results)}; expected 68')
+    status('ERROR', len(sensitivity) == 27, f'unified label-substitution rows = {len(sensitivity)}; expected 27')
+    if not results or not harmonized_matrix:
+        return
+
+    matrix_ids = {row.get('matrix_id', '') for row in harmonized_matrix}
+    result_ids = {row.get('matrix_id', '') for row in results}
+    status('ERROR', result_ids == matrix_ids, 'unified second-coder results cover the complete 67+1 matrix')
+    status('ERROR', all(row.get('row_status') == 'complete' for row in results), 'all unified second-coder rows are complete')
+    status('ERROR', all(row.get('material_checked', '').strip() and row.get('decision_note', '').strip() for row in results), 'all unified second-coder rows retain material and decision provenance')
+    status('ERROR', all(row.get('scope_n') == '67' for row in sensitivity), 'unified label-substitution sensitivity uses the 67 target-software denominator')
+
+    sensitivity_by_key = {(row.get('field', ''), row.get('label', '')): row for row in sensitivity}
+    expected_pairs = {
+        ('strongest_evidence_output', 'reproducible validation'): ('31', '31'),
+        ('strongest_evidence_output', 'candidate judgment'): ('6', '6'),
+        ('strongest_evidence_output', 'controlled task completion'): ('13', '13'),
+        ('primary_system_shape', 'feedback-driven fuzzing agent'): ('17', '17'),
+        ('strongest_evidence_output', 'externally traceable material'): ('4', '11'),
+        ('cross_stage_capabilities', 'failure reuse / strategy update'): ('15', '25'),
+        ('lifecycle_coverage', 'reporting and audit'): ('24', '57'),
+    }
+    for key, expected in expected_pairs.items():
+        row = sensitivity_by_key.get(key, {})
+        observed = (row.get('author_harmonized_count'), row.get('coder2_substitution_count'))
+        status('ERROR', observed == expected, f'unified sensitivity {key[0]} / {key[1]} = {observed}; expected {expected}')
+
+    if report_path.exists():
+        report = report_path.read_text(encoding='utf-8')
+        for marker in [
+            'exact = 18/67 = 0.269',
+            'mean row Jaccard = 0.746; micro F1 = 0.848',
+            'exact = 25/67 = 0.373',
+            'mean row Jaccard = 0.793; micro F1 = 0.877',
+            "raw agreement = 53/67 = 0.791; Cohen's kappa = 0.720",
+            "raw agreement = 51/67 = 0.761; Cohen's kappa = 0.665",
+            "raw agreement = 41/67 = 0.612; Cohen's kappa = 0.463",
+            'no consensus or post-adjudication reliability is claimed',
+        ]:
+            status('ERROR', marker in report, f'unified second-coder report preserves: {marker}')
+    print('UNIFIED_SECOND_CODER_RESULTS: rows=68 target_denominator=67 adjudication=not_planned')
+
 def validate_integrated_submission_update(corpus, crosswalk, extended, final_rows, additions, current_stats):
     status('ERROR', len(corpus) == 253, f'integrated corpus source rows = {len(corpus)}; expected 253')
     status('ERROR', len(crosswalk) == 253, f'integrated canonical crosswalk rows = {len(crosswalk)}; expected 253')
@@ -2093,6 +2216,9 @@ submission_update_additions = read_csv('submission_update_20260715_study_level_a
 current_synthesis_statistics = read_csv('current_synthesis_statistics.csv')
 current_study_level_matrix = read_csv('current_study_level_coding_matrix.csv')
 harmonized_study_level_matrix = read_csv('current_study_level_coding_matrix_harmonized.csv')
+unified_second_coder_template = read_csv('unified_second_coder_final_blind_template.csv')
+unified_second_coder_results = read_csv('unified_second_coder_final_results.csv')
+unified_second_coder_sensitivity = read_csv('unified_second_coder_label_substitution_sensitivity.csv')
 coding_round_harmonization_audit = read_csv('coding_round_harmonization_audit.csv')
 current_synthesis_statistics_by_round = read_csv('current_synthesis_statistics_by_round.csv')
 
@@ -2110,6 +2236,8 @@ validate_submission_update_rerun_template(submission_update_blind, submission_up
 validate_submission_update_finalization(submission_update_adjudication, submission_update_adjudicated, submission_update_integration)
 validate_current_study_level_matrix(current_study_level_matrix, submission_update_additions)
 validate_harmonized_coding_matrix(current_study_level_matrix, harmonized_study_level_matrix, coding_round_harmonization_audit, current_synthesis_statistics_by_round, extended_synthesis)
+validate_unified_second_coder_template(unified_second_coder_template, harmonized_study_level_matrix)
+validate_unified_second_coder_results(unified_second_coder_results, unified_second_coder_sensitivity, harmonized_study_level_matrix)
 validate_integrated_submission_update(corpus, study_version_crosswalk, extended_synthesis, submission_update_adjudicated, submission_update_additions, current_synthesis_statistics)
 validate_representative_reported_results(representative_reported_results, harmonized_study_level_matrix, ref, submission_update_sensitivity)
 validate_manuscript_artifact_paths()

@@ -7,8 +7,8 @@ This closure pass synchronizes the public artifact with the current ACM CSUR man
 ## Public Release Pointer
 
 - Repository: `oldpanthead/agentic-llm-vuln-mining-survey-artifact`
-- Official-source follow-up: 2026-07-16; no corpus-count changes
-- Submission tag: `csur-submission-2026-07-final`.
+- Official-source follow-up: 2026-07-16, with final metadata verification on 2026-07-22; no corpus-count changes
+- Submission tag: `csur-submission-2026-07-final-v2`.
 - Final artifact sync adds the representative reported-results audit file, the target-only sensitivity scopes, and official-source follow-up naming without changing corpus counts or coding metrics.
 
 ## Corpus Counts
@@ -44,15 +44,15 @@ Every substantive change has a recorded evidence basis and author-confirmed stat
 
 ## Reliability Boundary
 
-Frozen-label reliability and harmonized-label descriptive synthesis are intentionally separated.
+The current reliability result applies one frozen codebook to the complete study-level set, while the harmonized matrix remains the source of descriptive manuscript counts.
 
-1. Frozen initial-round labels and independent-coder labels remain preserved in the `core31_*` files and associated reports.
-2. The frozen initial strongest-evidence-output check remains 28/31 agreements, raw agreement = 0.903, Cohen's kappa = 0.860.
-3. The frozen initial capability/traceability extension remains reported with set-style metrics: capability exact = 0.645, mean Jaccard = 0.772, micro F1 = 0.857; external traceability exact/Jaccard = 0.839.
-4. The adopted tightened-boundary 41-record recall-recovery blind rerun is reported by field: layer 40/41, kappa = 0.844; primary shape 26/41, kappa = 0.513; strongest evidence 28/41, kappa = 0.551; external traceability 28/41, kappa = 0.420; lifecycle exact 7/41, mean Jaccard = 0.666, micro F1 = 0.783; capability exact 11/41, mean Jaccard = 0.772, micro F1 = 0.872.
-5. Harmonized lifecycle, capability, and shape labels are author-confirmed descriptive recodings with round-specific reliability provenance.
-6. No AI output is treated as an independent human coding decision.
-7. Reliability remains reported by coding round.
+1. The unified independent review covers all 67 target-software studies plus the governance boundary case; target-software reliability uses the 67-study denominator.
+2. Lifecycle coverage reached exact agreement 18/67 = 0.269, mean row Jaccard = 0.746, and micro F1 = 0.848.
+3. Cross-stage capability reached exact agreement 25/67 = 0.373, mean row Jaccard = 0.793, and micro F1 = 0.877.
+4. Primary system shape reached raw agreement 53/67 = 0.791 and Cohen's kappa = 0.720; strongest evidence output reached 51/67 = 0.761 and kappa = 0.665; external traceability reached 41/67 = 0.612 and kappa = 0.463.
+5. The harmonized matrix supplies descriptive counts, and the complete independent label-substitution table supplies the sensitivity view. No consensus labels, synthetic combined kappa, or post-adjudication reliability are claimed.
+6. Historical 31-record and 41-record files remain preserved as codebook-development and provenance records.
+7. No AI output is treated as an independent human coding decision.
 
 ## Controlled System-Shape Vocabulary
 
@@ -70,7 +70,7 @@ Conceptual overlaps remain possible, but each target-software coded study receiv
 
 The manuscript has been updated to:
 
-- state the frozen-label versus harmonized-label reliability boundary;
+- report one complete-study-set independent review and its label-substitution sensitivity;
 - use four dominant comparison shapes rather than a three-shape-plus-cross-cutting formulation;
 - use the formal reproduction-, validation-, and repair-centered shape name;
 - keep Table 7 legend text as a table note rather than a data cell; the recompiled PDF no longer contains the bad `Reproducible validation, not external confirmation Legend.` string;
@@ -85,18 +85,22 @@ The public artifact now includes and validates:
 - `data/coding_round_harmonization_audit.csv`
 - `data/current_synthesis_statistics_by_round.csv`
 - `CODING_ROUND_HARMONIZATION_REPORT.md`
+- `unified_second_coder_codebook.md`
+- `data/unified_second_coder_final_blind_template.csv`
+- `data/unified_second_coder_final_results.csv`
+- `data/unified_second_coder_pre_adjudication_disagreements.csv`
+- `data/unified_second_coder_label_substitution_sensitivity.csv`
+- `reports/UNIFIED_SECOND_CODER_PRE_ADJUDICATION_REPORT.md`
 - `README.md`, `ARTIFACT_INDEX.md`, `RELEASE_MANIFEST.md`, `SEARCH_PROTOCOL.md`, `data_dictionary.md`, `public_release_checklist.md`, and `reproduce_tables.py`
 
 The search protocol records the submission-time arXiv recall-recovery search and records that the historical ledger was multi-source and narrower, the recall-recovery pass was broader and arXiv-only, 432 unique records were screened, 41 reached full-text review, 37 entered study-level coding, four entered extended synthesis, no new evidence-output category was required, and the four dominant comparison shapes remained stable. The artifact also includes `OFFICIAL_SOURCE_FOLLOWUP_REPORT.md`, `data/official_source_followup_20260716_search_log.csv`, and `data/official_source_followup_20260716_screening_audit.csv`; these files record that official-source follow-up checks matched PANGOLIN and FirmAgent to already integrated canonical records and introduced no corpus-count changes.
 
 ## Validation Result
 
-`D:\Anaconda3\python.exe reproduce_tables.py` exits with code 0 in standalone public-artifact mode. The script remains public-clone compatible: `python reproduce_tables.py` requires only that `python` resolve to a real Python interpreter. `python reproduce_tables.py --manuscript <path-to-main_acm_csur.tex>` additionally validates manuscript `\path{}` entries when the manuscript source is available. The script checks canonical counts, source/canonical separation, no cross-layer canonical overlap, official-source follow-up closure files, second-coder reports, recall-recovery agreement values, harmonized matrix size and controlled vocabulary, round-specific shape and evidence counts, harmonization evidence bases, repository-local artifact-path manifest entries, optional manuscript `\path{}` entries, and tracked-file security boundaries.
+`python reproduce_tables.py` exits with code 0 in standalone public-artifact mode. `python reproduce_tables.py --manuscript <path-to-main_acm_csur.tex>` additionally validates manuscript `\path{}` entries when the manuscript source is available. The script checks canonical counts, source/canonical separation, no cross-layer canonical overlap, official-source follow-up files, historical provenance, unified second-coder completion and agreement values, label-substitution sensitivity, harmonized matrix size and controlled vocabulary, repository-local artifact-path entries, optional manuscript paths, and tracked-file security boundaries.
 
-The current PDF compiles to 34 pages after deleting the redundant selection-flow box, tightening the conclusion method recap, and removing repeated methodology explanations in Section 3. The LaTeX log reports no undefined citations, no undefined references, no overfull boxes, and no rerun request after the final local compile. Remaining warnings are underfull box/caption warnings typical of dense survey tables. Table 13 and Table 14 remain in the manuscript, and Table 14 preserves all four system-shape groups.
+The current PDF compiles to 32 pages. The LaTeX log reports no undefined citations, no undefined references, no overfull boxes, and no rerun request after the final local compile. Remaining warnings are underfull box/caption warnings typical of dense survey tables. Table 13 and Table 14 remain in the manuscript, and Table 14 preserves all four system-shape groups. Final metadata verification reconciled PANGOLIN with its official USENIX Security 2026 publication page without changing analytical counts or evidence coding.
 
-## Public-Artifact Sync Requirements
+## Public-Artifact Snapshot
 
-After this report is committed and pushed, public main should expose the current artifact files. The final handoff should record the pushed main commit SHA, the `csur-submission-2026-07-final` tag status, and the standalone artifact validation exit code.
-
-
+The synchronized public snapshot is identified by the `csur-submission-2026-07-final-v2` tag. Standalone artifact validation and optional manuscript-path validation are recorded above.

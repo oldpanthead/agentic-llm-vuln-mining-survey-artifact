@@ -48,6 +48,14 @@ Legacy A/E fields are retained for historical reproducibility and cross-version 
 
 ## Second-Coder Outputs
 
+- `unified_second_coder_codebook.md`
+- `UNIFIED_SECOND_CODER_REVIEW_GUIDE.md`
+- `unified_second_coder_review.py`
+- `data/unified_second_coder_final_blind_template.csv`
+- `data/unified_second_coder_final_results.csv`
+- `data/unified_second_coder_pre_adjudication_disagreements.csv`
+- `data/unified_second_coder_label_substitution_sensitivity.csv`
+- `reports/UNIFIED_SECOND_CODER_PRE_ADJUDICATION_REPORT.md`
 - `data/core31_second_coder_formal_blind_template.csv`
 - `data/core31_second_coder_formal_results.csv`
 - `data/core31_second_coder_adjudication_template.csv`
@@ -85,16 +93,12 @@ Legacy A/E fields are retained for historical reproducibility and cross-version 
 
 Pilot agreement/kappa values in the archive are retained for codebook calibration only and must not be cited as formal intercoder reliability. Formal strongest-evidence-output agreement and capability/traceability extension agreement are reported separately. The update-search report contains pre-adjudication agreement from a completed independent pass. The separate final record documents an author-confirmed evidence-based resolution and preserves round-specific reliability provenance.
 
-## Open Items
+## Release State
 
-- Decide whether and when to archive on Zenodo.
-- Refresh fast-changing product materials before the next manuscript revision.
-- Refresh fast-changing update and product materials before final submission; the author-confirmed 37/4 update cohort is integrated and current corpus counts are validated.
-- The analytical corpus is frozen. Pre-submission changes are limited to metadata corrections, formal-version reconciliation, and artifact consistency fixes.
+- Submission snapshot: `csur-submission-2026-07-final-v2`.
+- The analytical corpus is frozen. Subsequent corrections are limited to bibliographic metadata, formal-version reconciliation, and artifact consistency.
 
 ## Extended synthesis terminology note
 
 The current artifact describes a 68-record study-level coded set and a 65-study extended synthesis set. `data/current_study_level_coding_matrix.csv` is the unified current matrix. Legacy `core31`, `Core`, `Supporting`, and `v13_` names remain for historical traceability and script compatibility; the 37-row additions table preserves update-round provenance rather than defining a separate analytical corpus.
-
-
 

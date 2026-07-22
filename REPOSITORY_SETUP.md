@@ -50,7 +50,7 @@ This artifact has already been initialized as a local Git repository on branch `
 
 The first local commit has been created with anonymous review-safe metadata:
 
-- author name: `Anonymous Authors`
+- author name: `Jingran Fang`
 - author email: `anonymous@example.com`
 - commit message: `Add minimal audit artifact`
 

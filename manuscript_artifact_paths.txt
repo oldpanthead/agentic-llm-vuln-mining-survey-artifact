@@ -2,4 +2,6 @@
 # One repository-relative path per non-comment line.
 data/study_version_crosswalk.csv
 data/current_study_level_coding_matrix_harmonized.csv
+data/unified_second_coder_final_results.csv
+data/unified_second_coder_label_substitution_sensitivity.csv
 data/extended_synthesis_audit.csv

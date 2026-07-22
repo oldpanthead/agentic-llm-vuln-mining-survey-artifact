@@ -1,12 +1,15 @@
 cff-version: 1.2.0
 message: "If you use this audit artifact, please cite the accompanying survey manuscript."
-title: "Minimal Audit Artifact for Agentic LLM Vulnerability Mining Survey"
+title: "Audit Artifact for Agentic LLMs for Vulnerability Mining"
 type: dataset
 authors:
-  - name: "Anonymous Authors"
-abstract: "Non-sensitive audit artifact for a survey of Agentic LLM systems for vulnerability mining, including corpus metadata, A/E coding, reference audit data, and reproducibility checks."
-date-released: "2026-05-31"
-version: "0.1.0"
+  - family-names: "Fang"
+    given-names: "Jingran"
+    affiliation: "University of Chinese Academy of Sciences"
+    email: "fangjingran25@mails.ucas.ac.cn"
+abstract: "Non-sensitive audit artifact for a mapping-oriented scoping review of Agentic LLM systems for vulnerability mining, including corpus metadata, workflow-capability-evidence coding, independent second-coder results, reference audits, and reproducibility checks."
+date-released: "2026-07-22"
+version: "1.0.0"
 repository-code: "https://github.com/oldpanthead/agentic-llm-vuln-mining-survey-artifact"
 license: "CC-BY-4.0 AND MIT"
 keywords:
@@ -18,8 +21,9 @@ keywords:
   - "audit artifact"
 references:
   - type: article
-    title: "From Vulnerability Prediction to Evidence-Chain-Driven Vulnerability Mining: A Survey of Agentic LLM Systems for Vulnerability Mining"
+    title: "Agentic LLMs for Vulnerability Mining: A Survey of Workflows, Capabilities, and Evidence Boundaries"
     authors:
-      - name: "Anonymous Authors"
+      - family-names: "Fang"
+        given-names: "Jingran"
     year: 2026
     status: unpublished

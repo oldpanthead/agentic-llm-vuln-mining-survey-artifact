@@ -9,6 +9,8 @@ This repository contains the non-sensitive public artifact for a mapping-oriente
 3. Use `ARTIFACT_INDEX.md` as the compact file map.
 4. Use `data_dictionary.md` for field-level definitions.
 
+Versioned submission snapshot: `csur-submission-2026-07-final-v2`.
+
 Expected validation highlights:
 
 - Source records in screening ledger: 253
@@ -31,7 +33,7 @@ Expected validation highlights:
 The current corpus contains 68 study-level coded records (67 target-software studies plus one governance boundary case) and 65 extended-synthesis studies. `data/current_study_level_coding_matrix_harmonized.csv` is the author-confirmed current study-level view; `data/current_study_level_coding_matrix.csv` preserves the pre-harmonization combined view. Legacy files with `core31` or `v13` names retain the frozen first-round coding and its formal reliability results, while the 37-row additions file preserves update-round provenance without imputed A/E labels. Source-layer values retain `Core` and `Supporting` for script compatibility and record analytical role rather than study quality.
 
 
-The study-level labels are intentionally auditable in three layers: (1) original independent labels and blind templates, (2) the adopted tightened-boundary rerun for the update round, and (3) the author-confirmed harmonized descriptive matrix used for manuscript counts. The harmonized matrix is the manuscript-facing descriptive view; the independent labels and substitution-sensitivity files remain available for reviewer inspection.
+The current reliability view applies one frozen codebook to all 67 target-software studies plus the governance boundary case. The manuscript's descriptive counts use the author-confirmed harmonized matrix, while the complete independent second-coder labels and label-substitution sensitivity table show which conclusions persist under an alternative coding assignment. Historical round-specific files remain available as codebook and provenance records.
 
 ## Main Entry Points
 
@@ -64,6 +66,13 @@ The study-level labels are intentionally auditable in three layers: (1) original
 - `CODING_ROUND_HARMONIZATION_REPORT.md`: coding-drift findings, author-confirmed changes, and framework-stability assessment.
 - `data/submission_update_20260715_study_level_additions.csv`: 37-row update-round view retained for auditability.
 - `data/current_synthesis_statistics.csv`: combined descriptive lifecycle, capability, and evidence-output counts.
+- `unified_second_coder_codebook.md`: frozen definitions and boundary rules used for the complete 67+1 independent review.
+- `data/unified_second_coder_final_blind_template.csv`: blank public template for the complete review.
+- `data/unified_second_coder_final_results.csv`: completed independent labels for all 67 target-software studies plus the governance boundary case.
+- `data/unified_second_coder_pre_adjudication_disagreements.csv`: field-level comparison against the harmonized descriptive matrix; no consensus labels are claimed.
+- `data/unified_second_coder_label_substitution_sensitivity.csv`: label-count comparison under complete second-coder substitution.
+- `reports/UNIFIED_SECOND_CODER_PRE_ADJUDICATION_REPORT.md`: field-specific full-corpus agreement and sensitivity summary.
+- `unified_second_coder_review.py`: preparation, validation, and comparison helper for the unified review.
 - `SUBMISSION_UPDATE_ADJUDICATION_SUMMARY.md`: resolution rules and reviewed working-draft history.
 - `prepare_submission_update_adjudication.py`: reproducible generator for the working draft and update agreement reports.
 - `finalize_submission_update_adjudication.py`: deterministic promotion of the author-confirmed resolution.
@@ -87,9 +96,9 @@ The study-level labels are intentionally auditable in three layers: (1) original
 
 ## Second-Coder Status
 
-The formal strongest-evidence-output second-coder pass covers the 31 records in the frozen initial round. Results are in `data/core31_second_coder_formal_results.csv`, with agreement reported in `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md`. The separate 41-record recall-recovery pass and its author-confirmed 37/4 resolution are documented in the submission-update files. Reliability is reported by coding round, and the harmonized manuscript-facing matrix preserves field-level provenance for descriptive synthesis. `SUBMISSION_UPDATE_SECOND_CODER_RERUN_NOTES.md` records the tightened primary/overlay and external-traceability boundary rules used for the adopted update-pass rerun. AI-assisted tools supported organization of coding notes, which the author independently reviewed against the recorded public-material basis.
+The current formal reliability result is the unified independent review of all 67 target-software studies plus the governance boundary case under `unified_second_coder_codebook.md`. Field-specific agreement and complete label-substitution sensitivity are reported in `reports/UNIFIED_SECOND_CODER_PRE_ADJUDICATION_REPORT.md`. Descriptive counts use the harmonized author matrix; the independent labels test whether the reported patterns persist under substitution. No consensus or post-adjudication reliability is claimed.
 
-A separate extension check covers cross-stage capability and external traceability. Results are in `data/core31_second_coder_capability_traceability_results.csv`, with set-style agreement reported in `reports/SECOND_CODER_CAPABILITY_TRACEABILITY_AGREEMENT_REPORT.md`.
+The earlier 31-record and 41-record passes are retained as historical provenance showing codebook development and prior independent labels. They are not combined into a synthetic reliability coefficient.
 
 The pilot second-coder round is archived under `archive/pilot_second_coder_round_1/` for codebook calibration only and should not be cited as formal reliability.
 
@@ -117,8 +126,6 @@ The public artifact excludes undisclosed PoCs, exploit payloads, sensitive crash
 - Code scripts: MIT License, see `LICENSE-CODE`.
 
 Current public repository URL: `https://github.com/oldpanthead/agentic-llm-vuln-mining-survey-artifact`. The analytical corpus is frozen. Pre-submission changes are limited to metadata corrections, formal-version reconciliation, and artifact consistency fixes.
-
-
 
 
 

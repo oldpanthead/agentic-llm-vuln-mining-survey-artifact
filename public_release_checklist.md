@@ -85,6 +85,6 @@ This checklist prepares the minimal artifact for a future GitHub or Zenodo relea
 - [x] Confirm product-page changes do not automatically alter Core statistics.
 - [x] Confirm product-ecosystem global snapshot date is consistent with `RELEASE_MANIFEST.md` and row-level access dates are retained.
 - [x] Confirm `data/mapping_snapshot_counts.csv` is descriptive only and not a field-level prevalence estimate.
-- [ ] For anonymous review, remove or replace personal GitHub/account URLs with an anonymized artifact link or package.
+- [x] The public release uses the named repository and versioned submission tag cited by the manuscript.
 
 

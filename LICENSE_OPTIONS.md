@@ -11,12 +11,11 @@ This split is common when a release contains both research data/documentation an
 
 If the authors prefer one license file for the whole repository, use CC BY 4.0 for the entire artifact. This is simple for a survey-audit dataset, but less conventional for executable scripts.
 
-## Before Release
+## Release Notes
 
-Authors should decide:
+The selected licenses apply to the current public release. Any future reuse should also check:
 
 - whether institution, funder, or target venue policy requires a different license;
-- whether any included metadata inherited from third-party bibliographic sources requires attribution notes;
-- whether author names should remain anonymous during review.
+- whether any included metadata inherited from third-party bibliographic sources requires attribution notes.
 
 The active license files are `LICENSE-DATA` and `LICENSE-CODE`.

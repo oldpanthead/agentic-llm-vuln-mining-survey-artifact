@@ -53,6 +53,14 @@ This index points reviewers to the public, non-sensitive files needed to audit t
 
 ## Second-Coder Materials
 
+- `unified_second_coder_codebook.md`: frozen full-corpus definitions, examples, and boundary rules.
+- `UNIFIED_SECOND_CODER_REVIEW_GUIDE.md`: concise instructions for the complete 67+1 independent review.
+- `data/unified_second_coder_final_blind_template.csv`: blank public full-corpus review template.
+- `data/unified_second_coder_final_results.csv`: completed independent full-corpus labels.
+- `data/unified_second_coder_pre_adjudication_disagreements.csv`: field-level differences from the harmonized descriptive matrix, marked `not_planned` for adjudication.
+- `data/unified_second_coder_label_substitution_sensitivity.csv`: per-label author/coder2 count comparison on the 67 target-software studies.
+- `reports/UNIFIED_SECOND_CODER_PRE_ADJUDICATION_REPORT.md`: unified agreement metrics and stable/sensitive pattern summary.
+- `unified_second_coder_review.py`: deterministic preparation, validation, comparison, and sensitivity generator.
 - `data/core31_second_coder_formal_blind_template.csv`: blank strongest-evidence-output template for future reruns.
 - `data/core31_second_coder_formal_results.csv`: completed formal strongest-evidence-output pass.
 - `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md`: formal agreement report.
