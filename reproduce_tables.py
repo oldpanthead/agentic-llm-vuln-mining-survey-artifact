@@ -172,6 +172,44 @@ CSV_REQUIRED_FIELDS = {
       'publication_status_standardized',
       'target_software_studies',
     ],
+    'publication_status_sensitivity_analysis.csv': [
+      'scope',
+      'publication_status_group',
+      'dimension',
+      'label',
+      'count',
+      'denominator',
+      'share',
+    ],
+    'empirical_reporting_extraction.csv': [
+      'matrix_id',
+      'record_id',
+      'system',
+      'citation_key',
+      'primary_shape',
+      'evaluation_setting',
+      'agent_mechanism',
+      'model_version_status',
+      'evaluation_scale_status',
+      'quantitative_result_status',
+      'reported_result',
+      'baseline_status',
+      'validation_material_status',
+      'validation_material',
+      'runtime_status',
+      'cost_status',
+      'ablation_status',
+      'failure_reporting_status',
+      'source_location',
+      'extraction_note',
+    ],
+    'empirical_reporting_completeness.csv': [
+      'scope',
+      'reporting_item',
+      'reported_n',
+      'denominator',
+      'reported_share',
+    ],
     'submission_update_20260715_adjudication_working_draft.csv': [
       'update_id',
       'arxiv_id',
@@ -547,6 +585,46 @@ def validate_submission_snapshot_files(original_results, rerun_results, sensitiv
     governance_rows = [row for row in publication_status_rows if row.get('analytical_role') == 'governance_boundary_case']
     status('ERROR', len(target_rows) == 67 and len(governance_rows) == 1, 'publication-status view preserves 67+1 analytical boundary')
     print('SUBMISSION_SNAPSHOT_FILES: original=41 rerun=41 sensitivity=present publication_status_rows=68')
+
+
+def validate_publication_status_sensitivity(rows, publication_status_rows):
+    target = [row for row in publication_status_rows if row.get('analytical_role') == 'target_software_study']
+    groups = {
+        'all_target_software': target,
+        'peer_reviewed': [row for row in target if row.get('publication_status_standardized') in {'conference', 'journal', 'workshop'}],
+        'preprint': [row for row in target if row.get('publication_status_standardized') == 'preprint'],
+    }
+    fields = {
+        'primary_system_shape': 'primary_system_shape',
+        'strongest_evidence_output': 'strongest_evidence_output',
+        'external_traceability': 'external_traceability',
+    }
+    errors = []
+    for row in rows:
+        group = row.get('publication_status_group', '')
+        dimension = row.get('dimension', '')
+        label = row.get('label', '')
+        group_rows = groups.get(group)
+        if group_rows is None:
+            errors.append((group, dimension, label, 'unknown group'))
+            continue
+        if dimension == 'cross_stage_capability':
+            actual = sum(label in split_multilabel(item.get('cross_stage_capabilities', '')) for item in group_rows)
+        elif dimension in fields:
+            field = fields[dimension]
+            actual = sum(item.get(field, '') == label for item in group_rows)
+        else:
+            errors.append((group, dimension, label, 'unknown dimension'))
+            continue
+        denominator = len(group_rows)
+        expected_share = actual / denominator if denominator else 0.0
+        if int(row.get('count', -1)) != actual or int(row.get('denominator', -1)) != denominator or abs(float(row.get('share', -1)) - expected_share) > 0.0006:
+            errors.append((group, dimension, label, f"expected {actual}/{denominator}={expected_share:.3f}"))
+    status('ERROR', len(rows) == 63, f'publication-status sensitivity rows = {len(rows)}; expected 63')
+    status('ERROR', not errors, 'publication-status sensitivity counts reproduce the standardized study-level view')
+    if errors:
+        print('ERROR: publication-status sensitivity mismatches:', errors[:10])
+    print('PUBLICATION_STATUS_SENSITIVITY: all=67 peer_reviewed=13 preprint=51 benchmark_system_report=3')
 
 def validate_submission_update_rerun_notes():
     path = ROOT / 'SUBMISSION_UPDATE_SECOND_CODER_RERUN_NOTES.md'
@@ -2063,7 +2141,7 @@ def validate_harmonized_coding_matrix(pre_matrix, harmonized, audit_rows, round_
 
 
 def validate_representative_reported_results(rows, matrix_rows, reference_rows, sensitivity_rows):
-    status('ERROR', 9 <= len(rows) <= 10, f'representative reported results rows = {len(rows)}; expected 9-10')
+    status('ERROR', 12 <= len(rows) <= 16, f'representative reported results rows = {len(rows)}; expected 12-16')
     matrix_by_system = {row.get('system_alias', '').strip().lower(): row for row in matrix_rows if row.get('analytical_role') == 'target_software_study'}
     reference_keys = {row.get('citation_key', '').strip() for row in reference_rows if row.get('citation_key', '').strip()}
     errors = []
@@ -2094,6 +2172,57 @@ def validate_representative_reported_results(rows, matrix_rows, reference_rows, 
     evidence_labels = {row.get('label') for row in target_rows if row.get('field') == 'strongest_evidence_output'}
     status('ERROR', len(shape_labels) >= 4, 'target-only sensitivity includes the four primary system shapes')
     status('ERROR', len(evidence_labels) >= 5, 'target-only sensitivity includes the five strongest evidence outputs')
+
+
+def validate_empirical_reporting(extraction_rows, summary_rows, matrix_rows, reference_rows):
+    target_rows = [row for row in matrix_rows if row.get('analytical_role') == 'target_software_study']
+    target_by_id = {row.get('matrix_id'): row for row in target_rows}
+    extraction_by_id = {row.get('matrix_id'): row for row in extraction_rows}
+    status('ERROR', len(extraction_rows) == 67, f'empirical reporting extraction rows = {len(extraction_rows)}; expected 67')
+    status('ERROR', set(extraction_by_id) == set(target_by_id), 'empirical reporting extraction covers exactly the 67 target-software studies')
+    reference_keys = {row.get('citation_key', '').strip() for row in reference_rows if row.get('citation_key', '').strip()}
+    allowed = {'reported', 'not located'}
+    status_fields = [
+        'model_version_status', 'evaluation_scale_status', 'quantitative_result_status',
+        'baseline_status', 'validation_material_status', 'runtime_status', 'cost_status',
+        'ablation_status', 'failure_reporting_status',
+    ]
+    errors = []
+    for matrix_id, row in extraction_by_id.items():
+        matrix_row = target_by_id.get(matrix_id, {})
+        if row.get('record_id') != matrix_row.get('record_id'):
+            errors.append((matrix_id, 'record_id mismatch'))
+        if row.get('primary_shape') != matrix_row.get('primary_system_shape'):
+            errors.append((matrix_id, 'primary shape mismatch'))
+        if row.get('citation_key', '').strip() not in reference_keys:
+            errors.append((matrix_id, 'citation key missing from reference audit'))
+        if not row.get('source_location', '').strip():
+            errors.append((matrix_id, 'empty source location'))
+        for field in status_fields:
+            if row.get(field) not in allowed:
+                errors.append((matrix_id, f'invalid {field}: {row.get(field)}'))
+    status('ERROR', not errors, 'empirical reporting rows match matrix, references, source locations, and controlled statuses')
+    if errors:
+        print('ERROR: empirical reporting extraction problems:', errors[:12])
+
+    summary_index = {(row.get('scope'), row.get('reporting_item')): row for row in summary_rows}
+    scopes = {'all target-software studies': extraction_rows}
+    for shape in sorted({row.get('primary_shape') for row in extraction_rows}):
+        scopes[shape] = [row for row in extraction_rows if row.get('primary_shape') == shape]
+    summary_errors = []
+    for scope, scoped_rows in scopes.items():
+        for field in status_fields:
+            item = field.removesuffix('_status')
+            expected_n = sum(row.get(field) == 'reported' for row in scoped_rows)
+            summary_row = summary_index.get((scope, item))
+            if not summary_row:
+                summary_errors.append((scope, item, 'missing summary row'))
+                continue
+            if int(summary_row.get('reported_n', -1)) != expected_n or int(summary_row.get('denominator', -1)) != len(scoped_rows):
+                summary_errors.append((scope, item, 'count mismatch'))
+    status('ERROR', not summary_errors, 'empirical reporting completeness recomputes from the 67-row extraction')
+    if summary_errors:
+        print('ERROR: empirical reporting summary problems:', summary_errors[:12])
 def validate_manuscript_artifact_paths():
     manifest_missing = []
     manifest_paths = []
@@ -2208,7 +2337,10 @@ submission_update_results = read_csv('submission_update_20260715_second_coder_re
 submission_update_sensitivity = read_csv('submission_update_20260715_rerun_sensitivity_analysis.csv')
 publication_status_rows = read_csv('publication_status_standardized.csv')
 publication_distribution_rows = read_csv('publication_status_distribution_by_layer.csv')
+publication_status_sensitivity = read_csv('publication_status_sensitivity_analysis.csv')
 representative_reported_results = read_csv('representative_reported_results.csv')
+empirical_reporting_extraction = read_csv('empirical_reporting_extraction.csv')
+empirical_reporting_completeness = read_csv('empirical_reporting_completeness.csv')
 submission_update_adjudication = read_csv('submission_update_20260715_adjudication_working_draft.csv')
 submission_update_adjudicated = read_csv('submission_update_20260715_adjudicated.csv')
 submission_update_integration = read_csv('submission_update_20260715_canonical_integration_crosswalk.csv')
@@ -2240,6 +2372,9 @@ validate_unified_second_coder_template(unified_second_coder_template, harmonized
 validate_unified_second_coder_results(unified_second_coder_results, unified_second_coder_sensitivity, harmonized_study_level_matrix)
 validate_integrated_submission_update(corpus, study_version_crosswalk, extended_synthesis, submission_update_adjudicated, submission_update_additions, current_synthesis_statistics)
 validate_representative_reported_results(representative_reported_results, harmonized_study_level_matrix, ref, submission_update_sensitivity)
+validate_empirical_reporting(empirical_reporting_extraction, empirical_reporting_completeness, harmonized_study_level_matrix, ref)
+validate_submission_snapshot_files(submission_update_initial_results, submission_update_results, submission_update_sensitivity, publication_status_rows, publication_distribution_rows)
+validate_publication_status_sensitivity(publication_status_sensitivity, publication_status_rows)
 validate_manuscript_artifact_paths()
 validate_tracked_file_boundary()
 

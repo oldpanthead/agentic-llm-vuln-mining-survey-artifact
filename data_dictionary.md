@@ -479,6 +479,36 @@ Standardized publication-status view for the current study-level coding matrix. 
 ## publication_status_distribution_by_layer.csv
 Publication-status distribution summary for the target-software study-level set. It reports evidence-output counts, primary-shape counts, failure-reuse labels, and governance/human-gate labels by standardized publication status.
 
+## publication_status_sensitivity_analysis.csv
+Publication-status sensitivity view derived from `publication_status_standardized.csv`. It reports counts, denominators, and shares for the four primary system shapes, five strongest evidence outputs, seven cross-stage capabilities, and external-traceability categories. `peer_reviewed` combines conference, journal, and workshop records; `preprint` retains the standardized preprint category. The three benchmark/system reports remain visible in the complete-set totals and in `publication_status_distribution_by_layer.csv`, but are not folded into either comparison subset.
+
+- `scope`: fixed target-software denominator.
+- `publication_status_group`: `all_target_software`, `peer_reviewed`, or `preprint`.
+- `dimension`, `label`: coded dimension and controlled label.
+- `count`, `denominator`, `share`: directly reproduced frequency, group size, and proportion.
+
 
 ## `data/representative_reported_results.csv`
 Source-located audit file for the representative reported-results table in Appendix B/Table 14. Each row corresponds to one manuscript table row and records the system, citation key, primary shape, evaluation setting, reported scale/result, validation material, source location, and extraction note. The file is descriptive and does not normalize or rank results across systems.
+
+## `data/empirical_reporting_extraction.csv`
+
+One source-scoped row for each of the 67 target-software studies. This table is parallel to the coding matrix and does not add or revise lifecycle, capability, shape, evidence-output, or claim-boundary labels.
+
+- `matrix_id`, `record_id`, `system`, `citation_key`: links to the current study-level matrix and reference audit.
+- `primary_shape`: copied from the harmonized study-level matrix for grouped summaries.
+- `evaluation_setting`: concise target or task setting used in the study evaluation.
+- `agent_mechanism`: observable control functions derived from the coded cross-stage capabilities.
+- `*_status`: whether the reviewed public material reports the named item; controlled values are `reported` and `not located`.
+- `reported_result`: source-scoped result summary. Quantitative units retain the original study definition.
+- `validation_material`: executable, benchmark, runtime, or other validation material associated with the reported result.
+- `source_location`: reviewed paper pages/sections and field-specific locator where available.
+- `extraction_note`: interpretation rule; reporting status is not a performance score.
+
+## `data/empirical_reporting_completeness.csv`
+
+Counts recomputed from `data/empirical_reporting_extraction.csv` for the full 67-study set and each primary system shape.
+
+- `scope`: all target-software studies or one primary system shape.
+- `reporting_item`: model/version, evaluation scale, quantitative result, baseline, validation material, runtime, cost, ablation, or failure reporting.
+- `reported_n`, `denominator`, `reported_share`: source-located reporting count and proportion within the scope.

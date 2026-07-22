@@ -1,0 +1,46 @@
+﻿scope,reporting_item,reported_n,denominator,reported_share
+all target-software studies,model_version,65,67,0.970
+all target-software studies,evaluation_scale,67,67,1.000
+all target-software studies,quantitative_result,67,67,1.000
+all target-software studies,baseline,62,67,0.925
+all target-software studies,validation_material,66,67,0.985
+all target-software studies,runtime,44,67,0.657
+all target-software studies,cost,36,67,0.537
+all target-software studies,ablation,35,67,0.522
+all target-software studies,failure_reporting,28,67,0.418
+candidate-analysis system,model_version,15,16,0.938
+candidate-analysis system,evaluation_scale,16,16,1.000
+candidate-analysis system,quantitative_result,16,16,1.000
+candidate-analysis system,baseline,16,16,1.000
+candidate-analysis system,validation_material,16,16,1.000
+candidate-analysis system,runtime,8,16,0.500
+candidate-analysis system,cost,9,16,0.562
+candidate-analysis system,ablation,6,16,0.375
+candidate-analysis system,failure_reporting,4,16,0.250
+feedback-driven fuzzing agent,model_version,17,17,1.000
+feedback-driven fuzzing agent,evaluation_scale,17,17,1.000
+feedback-driven fuzzing agent,quantitative_result,17,17,1.000
+feedback-driven fuzzing agent,baseline,17,17,1.000
+feedback-driven fuzzing agent,validation_material,16,17,0.941
+feedback-driven fuzzing agent,runtime,14,17,0.824
+feedback-driven fuzzing agent,cost,7,17,0.412
+feedback-driven fuzzing agent,ablation,11,17,0.647
+feedback-driven fuzzing agent,failure_reporting,5,17,0.294
+long-horizon pentest and CRS agent,model_version,14,14,1.000
+long-horizon pentest and CRS agent,evaluation_scale,14,14,1.000
+long-horizon pentest and CRS agent,quantitative_result,14,14,1.000
+long-horizon pentest and CRS agent,baseline,9,14,0.643
+long-horizon pentest and CRS agent,validation_material,14,14,1.000
+long-horizon pentest and CRS agent,runtime,10,14,0.714
+long-horizon pentest and CRS agent,cost,7,14,0.500
+long-horizon pentest and CRS agent,ablation,5,14,0.357
+long-horizon pentest and CRS agent,failure_reporting,10,14,0.714
+"reproduction-, validation-, and repair-centered agent",model_version,19,20,0.950
+"reproduction-, validation-, and repair-centered agent",evaluation_scale,20,20,1.000
+"reproduction-, validation-, and repair-centered agent",quantitative_result,20,20,1.000
+"reproduction-, validation-, and repair-centered agent",baseline,20,20,1.000
+"reproduction-, validation-, and repair-centered agent",validation_material,20,20,1.000
+"reproduction-, validation-, and repair-centered agent",runtime,12,20,0.600
+"reproduction-, validation-, and repair-centered agent",cost,13,20,0.650
+"reproduction-, validation-, and repair-centered agent",ablation,13,20,0.650
+"reproduction-, validation-, and repair-centered agent",failure_reporting,9,20,0.450

@@ -1,0 +1,64 @@
+scope,publication_status_group,dimension,label,count,denominator,share
+67_target_software_studies,all_target_software,primary_system_shape,candidate-analysis system,16,67,0.239
+67_target_software_studies,all_target_software,primary_system_shape,feedback-driven fuzzing agent,17,67,0.254
+67_target_software_studies,all_target_software,primary_system_shape,"reproduction-, validation-, and repair-centered agent",20,67,0.299
+67_target_software_studies,all_target_software,primary_system_shape,long-horizon pentest and CRS agent,14,67,0.209
+67_target_software_studies,all_target_software,strongest_evidence_output,candidate judgment,6,67,0.090
+67_target_software_studies,all_target_software,strongest_evidence_output,controlled task completion,13,67,0.194
+67_target_software_studies,all_target_software,strongest_evidence_output,runtime safety signal,13,67,0.194
+67_target_software_studies,all_target_software,strongest_evidence_output,reproducible validation,31,67,0.463
+67_target_software_studies,all_target_software,strongest_evidence_output,externally traceable material,4,67,0.060
+67_target_software_studies,all_target_software,cross_stage_capability,context aggregation / rule extraction,51,67,0.761
+67_target_software_studies,all_target_software,cross_stage_capability,tool routing / strategy routing,44,67,0.657
+67_target_software_studies,all_target_software,cross_stage_capability,feedback interpretation / loop adjustment,58,67,0.866
+67_target_software_studies,all_target_software,cross_stage_capability,validation organization / evidence packaging,55,67,0.821
+67_target_software_studies,all_target_software,cross_stage_capability,long-horizon state management,30,67,0.448
+67_target_software_studies,all_target_software,cross_stage_capability,failure reuse / strategy update,15,67,0.224
+67_target_software_studies,all_target_software,cross_stage_capability,governance / human gates / disclosure control,4,67,0.060
+67_target_software_studies,all_target_software,external_traceability,no external trace reported,17,67,0.254
+67_target_software_studies,all_target_software,external_traceability,not reported,1,67,0.015
+67_target_software_studies,all_target_software,external_traceability,author-reported external clue,22,67,0.328
+67_target_software_studies,all_target_software,external_traceability,benchmark ground truth / public material,23,67,0.343
+67_target_software_studies,all_target_software,external_traceability,publicly aligned external trace,4,67,0.060
+67_target_software_studies,peer_reviewed,primary_system_shape,candidate-analysis system,2,13,0.154
+67_target_software_studies,peer_reviewed,primary_system_shape,feedback-driven fuzzing agent,6,13,0.462
+67_target_software_studies,peer_reviewed,primary_system_shape,"reproduction-, validation-, and repair-centered agent",4,13,0.308
+67_target_software_studies,peer_reviewed,primary_system_shape,long-horizon pentest and CRS agent,1,13,0.077
+67_target_software_studies,peer_reviewed,strongest_evidence_output,candidate judgment,2,13,0.154
+67_target_software_studies,peer_reviewed,strongest_evidence_output,controlled task completion,1,13,0.077
+67_target_software_studies,peer_reviewed,strongest_evidence_output,runtime safety signal,6,13,0.462
+67_target_software_studies,peer_reviewed,strongest_evidence_output,reproducible validation,4,13,0.308
+67_target_software_studies,peer_reviewed,strongest_evidence_output,externally traceable material,0,13,0.000
+67_target_software_studies,peer_reviewed,cross_stage_capability,context aggregation / rule extraction,9,13,0.692
+67_target_software_studies,peer_reviewed,cross_stage_capability,tool routing / strategy routing,7,13,0.538
+67_target_software_studies,peer_reviewed,cross_stage_capability,feedback interpretation / loop adjustment,9,13,0.692
+67_target_software_studies,peer_reviewed,cross_stage_capability,validation organization / evidence packaging,8,13,0.615
+67_target_software_studies,peer_reviewed,cross_stage_capability,long-horizon state management,3,13,0.231
+67_target_software_studies,peer_reviewed,cross_stage_capability,failure reuse / strategy update,1,13,0.077
+67_target_software_studies,peer_reviewed,cross_stage_capability,governance / human gates / disclosure control,0,13,0.000
+67_target_software_studies,peer_reviewed,external_traceability,no external trace reported,9,13,0.692
+67_target_software_studies,peer_reviewed,external_traceability,not reported,0,13,0.000
+67_target_software_studies,peer_reviewed,external_traceability,author-reported external clue,4,13,0.308
+67_target_software_studies,peer_reviewed,external_traceability,benchmark ground truth / public material,0,13,0.000
+67_target_software_studies,peer_reviewed,external_traceability,publicly aligned external trace,0,13,0.000
+67_target_software_studies,preprint,primary_system_shape,candidate-analysis system,14,51,0.275
+67_target_software_studies,preprint,primary_system_shape,feedback-driven fuzzing agent,11,51,0.216
+67_target_software_studies,preprint,primary_system_shape,"reproduction-, validation-, and repair-centered agent",15,51,0.294
+67_target_software_studies,preprint,primary_system_shape,long-horizon pentest and CRS agent,11,51,0.216
+67_target_software_studies,preprint,strongest_evidence_output,candidate judgment,4,51,0.078
+67_target_software_studies,preprint,strongest_evidence_output,controlled task completion,10,51,0.196
+67_target_software_studies,preprint,strongest_evidence_output,runtime safety signal,7,51,0.137
+67_target_software_studies,preprint,strongest_evidence_output,reproducible validation,26,51,0.510
+67_target_software_studies,preprint,strongest_evidence_output,externally traceable material,4,51,0.078
+67_target_software_studies,preprint,cross_stage_capability,context aggregation / rule extraction,42,51,0.824
+67_target_software_studies,preprint,cross_stage_capability,tool routing / strategy routing,34,51,0.667
+67_target_software_studies,preprint,cross_stage_capability,feedback interpretation / loop adjustment,46,51,0.902
+67_target_software_studies,preprint,cross_stage_capability,validation organization / evidence packaging,45,51,0.882
+67_target_software_studies,preprint,cross_stage_capability,long-horizon state management,24,51,0.471
+67_target_software_studies,preprint,cross_stage_capability,failure reuse / strategy update,14,51,0.275
+67_target_software_studies,preprint,cross_stage_capability,governance / human gates / disclosure control,4,51,0.078
+67_target_software_studies,preprint,external_traceability,no external trace reported,6,51,0.118
+67_target_software_studies,preprint,external_traceability,not reported,1,51,0.020
+67_target_software_studies,preprint,external_traceability,author-reported external clue,18,51,0.353
+67_target_software_studies,preprint,external_traceability,benchmark ground truth / public material,22,51,0.431
+67_target_software_studies,preprint,external_traceability,publicly aligned external trace,4,51,0.078

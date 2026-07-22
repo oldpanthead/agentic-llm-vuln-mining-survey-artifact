@@ -16,7 +16,7 @@ The release includes non-sensitive materials needed to review the survey evidenc
 - compact entry map: `ARTIFACT_INDEX.md`;
 - source-specific search protocol, source-level ledger, record-level screening audit, submission-time arXiv update export, screening audit, official-source follow-up log, 41-record author full-text audit, blank update-search template, completed independent update coding, tightened-boundary rerun files, label-substitution sensitivity table, pre-adjudication agreement report, preserved working draft, author-confirmed adjudication, canonical-integration assessment, corpus metadata, canonical study/version crosswalk, corpus-layer audit, and screening summary;
 - author-confirmed harmonized 68-record coding matrix, pre-harmonization combined view, field-level harmonization audit, round-specific statistics, frozen 31-record coding table, 37-record update-round view, `data/extended_synthesis_audit.csv`, extended synthesis audit report, corpus-stratification closure report, deduplication audit report, current evidence-output codebook, legacy A-profile codebook, field dictionary, publication-status study-level view, and legacy-code crosswalk;
-- manuscript-facing synthesis matrix, synthesis statistics, mapping counts, benchmark-boundary notes, research-agenda outputs, and reproducibility audit files;
+- manuscript-facing synthesis matrix, synthesis statistics, mapping counts, publication-status sensitivity analysis, 67-study empirical reporting extraction and completeness summary, representative reported results, benchmark-boundary notes, research-agenda outputs, and reproducibility audit files;
 - DOI/reference audit, DOI-status notes, Zotero/PDF resolution summary, and literature-update decisions;
 - product-ecosystem snapshot for public coding-agent and security-agent materials;
 - formal strongest-evidence-output second-coder results and agreement report;
@@ -101,4 +101,3 @@ Pilot agreement/kappa values in the archive are retained for codebook calibratio
 ## Extended synthesis terminology note
 
 The current artifact describes a 68-record study-level coded set and a 65-study extended synthesis set. `data/current_study_level_coding_matrix.csv` is the unified current matrix. Legacy `core31`, `Core`, `Supporting`, and `v13_` names remain for historical traceability and script compatibility; the 37-row additions table preserves update-round provenance rather than defining a separate analytical corpus.
-

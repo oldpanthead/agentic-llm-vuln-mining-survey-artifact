@@ -51,6 +51,10 @@ The current reliability view applies one frozen codebook to all 67 target-softwa
 - `data/submission_update_20260715_second_coder_initial_results.csv`: previous update-pass coder2 result retained for provenance before the tightened-boundary rerun.
 - `data/publication_status_distribution_by_layer.csv`: publication-status distribution summary for evidence outputs, system shapes, failure reuse, and governance/human gates.
 - `data/publication_status_standardized.csv`: standardized study-level publication-status view used for appendix display and stratified inspection.
+- `data/publication_status_sensitivity_analysis.csv`: count-and-share comparison of system shapes, evidence outputs, capabilities, and external traceability across the complete target-software set, peer-reviewed studies, and preprints.
+- `data/empirical_reporting_extraction.csv`: 67-study extraction of evaluation setting, Agent mechanism, reported outcome, validation material, and the availability of model, runtime, cost, ablation, and failure-analysis details.
+- `data/empirical_reporting_completeness.csv`: overall and system-shape reporting-completeness counts derived from the 67-study extraction.
+- `data/representative_reported_results.csv`: source-located rows used by the representative reported-results table in Appendix B.
 - `data/submission_update_20260715_rerun_sensitivity_analysis.csv`: label-substitution sensitivity table comparing author-confirmed and rerun coder2 label counts.
 - `reports/SUBMISSION_UPDATE_SECOND_CODER_PRE_ADJUDICATION_REPORT.md`: computed agreement before disagreement resolution.
 - `data/submission_update_20260715_adjudication_working_draft.csv`: preserved AI-assisted evidence-linked working notes reviewed by the author.
@@ -126,6 +130,4 @@ The public artifact excludes undisclosed PoCs, exploit payloads, sensitive crash
 - Code scripts: MIT License, see `LICENSE-CODE`.
 
 Current public repository URL: `https://github.com/oldpanthead/agentic-llm-vuln-mining-survey-artifact`. The analytical corpus is frozen. Pre-submission changes are limited to metadata corrections, formal-version reconciliation, and artifact consistency fixes.
-
-
 
