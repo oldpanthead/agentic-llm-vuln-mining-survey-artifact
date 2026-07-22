@@ -91,11 +91,11 @@ Legacy A/E fields are retained for historical reproducibility and cross-version 
 - `data/current_synthesis_statistics.csv`
 - `SUBMISSION_UPDATE_FULL_TEXT_AUDIT_REPORT.md`
 
-Pilot agreement/kappa values in the archive are retained for codebook calibration only and must not be cited as formal intercoder reliability. Formal strongest-evidence-output agreement and capability/traceability extension agreement are reported separately. The update-search report contains pre-adjudication agreement from a completed independent pass. The separate final record documents an author-confirmed evidence-based resolution and preserves round-specific reliability provenance.
+The current formal reliability result is the unified independent review of all 67 target-software studies plus the governance boundary case. Historical 31-record and 41-record checks remain available as codebook-development and round-provenance records; they are not combined into a synthetic reliability coefficient.
 
 ## Release State
 
-- Submission snapshot: `csur-submission-2026-07-final-v2`.
+- Submission snapshot: `csur-submission-2026-07-final-v3`.
 - The analytical corpus is frozen. Subsequent corrections are limited to bibliographic metadata, formal-version reconciliation, and artifact consistency.
 
 ## Extended synthesis terminology note

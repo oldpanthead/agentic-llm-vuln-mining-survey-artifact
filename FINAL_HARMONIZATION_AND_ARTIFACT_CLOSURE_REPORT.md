@@ -8,7 +8,7 @@ This closure pass synchronizes the public artifact with the current ACM CSUR man
 
 - Repository: `oldpanthead/agentic-llm-vuln-mining-survey-artifact`
 - Official-source follow-up: 2026-07-16, with final metadata verification on 2026-07-22; no corpus-count changes
-- Submission tag: `csur-submission-2026-07-final-v2`.
+- Submission tag: `csur-submission-2026-07-final-v3`.
 - Final artifact sync adds the representative reported-results audit file, the target-only sensitivity scopes, and official-source follow-up naming without changing corpus counts or coding metrics.
 
 ## Corpus Counts
@@ -73,8 +73,8 @@ The manuscript has been updated to:
 - report one complete-study-set independent review and its label-substitution sensitivity;
 - use four dominant comparison shapes rather than a three-shape-plus-cross-cutting formulation;
 - use the formal reproduction-, validation-, and repair-centered shape name;
-- keep Table 7 legend text as a table note rather than a data cell; the recompiled PDF no longer contains the bad `Reproducible validation, not external confirmation Legend.` string;
-- place Table 14 after a complete introduction sentence and keep the `Trustworthy Agentic...` paragraph after the table; the recompiled PDF no longer contains the split `reporting requirements. Trustworthy` string;
+- keep table legends as notes rather than data cells; the recompiled PDF no longer contains the bad `Reproducible validation, not external confirmation Legend.` string;
+- place the research-agenda table after a complete introduction sentence and keep the `Trustworthy Agentic...` paragraph after the table; the recompiled PDF no longer contains the split `reporting requirements. Trustworthy` string;
 - update the conclusion to use recall-recovery and author-confirmed harmonized-label wording.
 
 ## Artifact Closure
@@ -91,6 +91,10 @@ The public artifact now includes and validates:
 - `data/unified_second_coder_pre_adjudication_disagreements.csv`
 - `data/unified_second_coder_label_substitution_sensitivity.csv`
 - `reports/UNIFIED_SECOND_CODER_PRE_ADJUDICATION_REPORT.md`
+- `data/empirical_reporting_extraction.csv`
+- `data/empirical_reporting_completeness.csv`
+- `data/publication_status_sensitivity_analysis.csv`
+- `data/representative_reported_results.csv`
 - `README.md`, `ARTIFACT_INDEX.md`, `RELEASE_MANIFEST.md`, `SEARCH_PROTOCOL.md`, `data_dictionary.md`, `public_release_checklist.md`, and `reproduce_tables.py`
 
 The search protocol records the submission-time arXiv recall-recovery search and records that the historical ledger was multi-source and narrower, the recall-recovery pass was broader and arXiv-only, 432 unique records were screened, 41 reached full-text review, 37 entered study-level coding, four entered extended synthesis, no new evidence-output category was required, and the four dominant comparison shapes remained stable. The artifact also includes `OFFICIAL_SOURCE_FOLLOWUP_REPORT.md`, `data/official_source_followup_20260716_search_log.csv`, and `data/official_source_followup_20260716_screening_audit.csv`; these files record that official-source follow-up checks matched PANGOLIN and FirmAgent to already integrated canonical records and introduced no corpus-count changes.
@@ -99,8 +103,8 @@ The search protocol records the submission-time arXiv recall-recovery search and
 
 `python reproduce_tables.py` exits with code 0 in standalone public-artifact mode. `python reproduce_tables.py --manuscript <path-to-main_acm_csur.tex>` additionally validates manuscript `\path{}` entries when the manuscript source is available. The script checks canonical counts, source/canonical separation, no cross-layer canonical overlap, official-source follow-up files, historical provenance, unified second-coder completion and agreement values, label-substitution sensitivity, harmonized matrix size and controlled vocabulary, repository-local artifact-path entries, optional manuscript paths, and tracked-file security boundaries.
 
-The current PDF compiles to 32 pages. The LaTeX log reports no undefined citations, no undefined references, no overfull boxes, and no rerun request after the final local compile. Remaining warnings are underfull box/caption warnings typical of dense survey tables. Table 13 and Table 14 remain in the manuscript, and Table 14 preserves all four system-shape groups. Final metadata verification reconciled PANGOLIN with its official USENIX Security 2026 publication page without changing analytical counts or evidence coding.
+The current PDF compiles to 33 pages. The LaTeX log reports no undefined citations, no undefined references, no overfull boxes, and no rerun request after the final local compile. Remaining warnings are underfull box/caption warnings typical of dense survey tables. Tables 1--13 remain in the manuscript, and Table 13 preserves all four system-shape groups. Final metadata verification reconciled PANGOLIN with its official USENIX Security 2026 publication page without changing analytical counts or evidence coding.
 
 ## Public-Artifact Snapshot
 
-The synchronized public snapshot is identified by the `csur-submission-2026-07-final-v2` tag. Standalone artifact validation and optional manuscript-path validation are recorded above.
+The synchronized public snapshot is identified by the `csur-submission-2026-07-final-v3` tag. Standalone artifact validation and optional manuscript-path validation are recorded above.

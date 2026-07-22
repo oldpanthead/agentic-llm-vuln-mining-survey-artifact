@@ -9,7 +9,7 @@ This repository contains the non-sensitive public artifact for a mapping-oriente
 3. Use `ARTIFACT_INDEX.md` as the compact file map.
 4. Use `data_dictionary.md` for field-level definitions.
 
-Versioned submission snapshot: `csur-submission-2026-07-final-v2`.
+Versioned submission snapshot: `csur-submission-2026-07-final-v3`.
 
 Expected validation highlights:
 
@@ -106,7 +106,7 @@ The earlier 31-record and 41-record passes are retained as historical provenance
 
 The pilot second-coder round is archived under `archive/pilot_second_coder_round_1/` for codebook calibration only and should not be cited as formal reliability.
 
-The 2026-07-15 update-search blind pass is complete for all 41 records. The 2026-07-16 targeted official-source follow-up introduced no additional canonical records. The author-confirmed resolution assigns 37 records to study-level coding and four to extended synthesis. Canonical integration is complete: the current corpus contains 253 source records, 248 canonical studies, 67 target-software coded studies plus one governance boundary case, and 65 extended-synthesis studies. Reliability is reported by coding round, and harmonized descriptive labels remain separately auditable.
+The 2026-07-15 update-search blind pass is complete for all 41 records. The 2026-07-16 targeted official-source follow-up introduced no additional canonical records. The author-confirmed resolution assigns 37 records to study-level coding and four to extended synthesis. Canonical integration is complete: the current corpus contains 253 source records, 248 canonical studies, 67 target-software coded studies plus one governance boundary case, and 65 extended-synthesis studies.
 
 ## Evidence Boundary
 
@@ -130,4 +130,3 @@ The public artifact excludes undisclosed PoCs, exploit payloads, sensitive crash
 - Code scripts: MIT License, see `LICENSE-CODE`.
 
 Current public repository URL: `https://github.com/oldpanthead/agentic-llm-vuln-mining-survey-artifact`. The analytical corpus is frozen. Pre-submission changes are limited to metadata corrections, formal-version reconciliation, and artifact consistency fixes.
-

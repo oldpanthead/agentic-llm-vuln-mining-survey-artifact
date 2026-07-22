@@ -13,7 +13,7 @@ Current terminology maps legacy artifact values as follows: `Core` identifies st
 
 ## `SUBMISSION_UPDATE_SECOND_CODER_RERUN_NOTES.md`
 
-Lightweight boundary notes for a adopted tightened-boundary rerun of the 41-record submission-update second-coder pass. It records the tightened primary/overlay and external-traceability rules used for the adopted update-pass rerun.
+Lightweight boundary notes for an adopted tightened-boundary rerun of the 41-record submission-update second-coder pass. It records the tightened primary/overlay and external-traceability rules used for the adopted update-pass rerun.
 ## `data/current_study_level_coding_matrix_harmonized.csv` and pre-harmonization provenance
 
 `data/current_study_level_coding_matrix_harmonized.csv` is the author-confirmed current matrix for all 68 study-level coded records. It applies one controlled lifecycle, primary-shape, overlay, cross-stage-capability, evidence-output, and external-traceability schema while preserving round provenance and reliability scope. `data/current_study_level_coding_matrix.csv` is retained unchanged as the pre-harmonization combined view. Neither file contains legacy A/E fields.
@@ -95,11 +95,11 @@ This file records one source assignment and screening decision for each of the 2
 
 ## `data/official_source_followup_20260716_search_log.csv`, `data/official_source_followup_20260716_screening_audit.csv`, and `OFFICIAL_SOURCE_FOLLOWUP_REPORT.md`
 
-These files record the 2026-07-16 official-official-source follow-up run after the arXiv recall-recovery update. The check reviewed official conference/publisher sources for formal records corresponding to the update query families and exact-title probes. It matched PANGOLIN and FirmAgent to already integrated canonical records and introduced no new canonical candidate, study-level coded, extended-synthesis, background, or excluded records.
+These files record the 2026-07-16 targeted official-source follow-up after the arXiv recall-recovery update. The check reviewed official conference/publisher sources for formal records corresponding to the update query families and exact-title probes. It matched PANGOLIN and FirmAgent to already integrated canonical records and introduced no new canonical candidate, study-level coded, extended-synthesis, background, or excluded records.
 
-- `source_id`, `source_name`, `source_category`, `search_interface`, `query_string`, `date_searched`, `date_range`: source and query provenance for the parity check.
+- `source_id`, `source_name`, `source_category`, `search_interface`, `query_string`, `date_searched`, `date_range`: source and query provenance for the targeted follow-up.
 - `official_source_url`: public source page used for the check.
-- `records_reviewed`, `existing_canonical_matches`, `new_candidate_records`, `new_study_level_additions`, `new_extended_synthesis_additions`, `new_background_or_excluded_records`: parity-check outcomes kept separate from the main source-count ledger.
+- `records_reviewed`, `existing_canonical_matches`, `new_candidate_records`, `new_study_level_additions`, `new_extended_synthesis_additions`, `new_background_or_excluded_records`: follow-up outcomes kept separate from the main source-count ledger.
 - `match_status`, `screening_status`, `decision_reason`, `analytical_implication`: record-level decision fields explaining why each formal-source hit did or did not affect the current analytical corpus.
 
 ## `data/submission_update_20260715_screening_audit.csv`
@@ -489,7 +489,7 @@ Publication-status sensitivity view derived from `publication_status_standardize
 
 
 ## `data/representative_reported_results.csv`
-Source-located audit file for the representative reported-results table in Appendix B/Table 14. Each row corresponds to one manuscript table row and records the system, citation key, primary shape, evaluation setting, reported scale/result, validation material, source location, and extraction note. The file is descriptive and does not normalize or rank results across systems.
+Source-located audit file for the representative reported-results table in Appendix B/Table 13. Each row corresponds to one manuscript table row and records the system, citation key, primary shape, evaluation setting, reported scale/result, validation material, source location, and extraction note. The file is descriptive and does not normalize or rank results across systems.
 
 ## `data/empirical_reporting_extraction.csv`
 
