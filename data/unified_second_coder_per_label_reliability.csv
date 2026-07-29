@@ -1,0 +1,14 @@
+﻿field,label,scope_n,author_positive_n,coder2_positive_n,raw_agreement_n,raw_agreement,cohens_kappa
+lifecycle_coverage,candidate analysis,67,48,62,53,0.791,0.339
+lifecycle_coverage,path and input exploration,67,46,55,56,0.836,0.568
+lifecycle_coverage,execution observation,67,56,59,64,0.955,0.817
+lifecycle_coverage,reproduction and validation,67,36,51,52,0.776,0.534
+lifecycle_coverage,patch validation,67,12,13,64,0.955,0.853
+lifecycle_coverage,reporting and audit,67,24,57,34,0.507,0.178
+cross_stage_capabilities,context aggregation / rule extraction,67,51,60,54,0.806,0.339
+cross_stage_capabilities,tool routing / strategy routing,67,44,60,45,0.672,0.127
+cross_stage_capabilities,feedback interpretation / loop adjustment,67,58,60,61,0.910,0.575
+cross_stage_capabilities,validation organization / evidence packaging,67,55,60,60,0.896,0.576
+cross_stage_capabilities,long-horizon state management,67,30,27,64,0.955,0.909
+cross_stage_capabilities,failure reuse / strategy update,67,15,25,53,0.791,0.514
+cross_stage_capabilities,governance / human gates / disclosure control,67,4,5,64,0.955,0.643

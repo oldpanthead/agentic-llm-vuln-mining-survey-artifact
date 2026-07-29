@@ -29,7 +29,7 @@ Lightweight boundary notes for an adopted tightened-boundary rerun of the 41-rec
 - `overlay_tags`: optional controlled overlays kept separate from the primary shape.
 - `cross_stage_capabilities`: current controlled multi-label capability field.
 - `legacy_notes`: historical textual labels retained outside formal capability coding.
-- `strongest_evidence_output`: current evidence-output label.
+- `strongest_evidence_output`: historical schema field name retained for compatibility; it stores the manuscript's principal reported evidence-output label.
 - `external_traceability`: reported external-trace category or note.
 - `claim_boundary`: current English claim-boundary wording.
 - `claim_boundary_original`: source-round wording retained for traceability; it may match `claim_boundary` for update rows.
@@ -123,7 +123,7 @@ This file records the frozen author full-text audit of the 41 potentially eligib
 - `inclusion_rule_applied`: operational rule used to distinguish an observable Agentic workflow from adjacent static-analysis, management, or ecosystem material.
 - `target_domain`, `lifecycle_coverage`, `primary_system_shape`: descriptive mapping fields.
 - `agentic_capabilities`: multi-label capability coding using the current manuscript definitions.
-- `strongest_evidence_output`: current evidence-output codebook label.
+- `strongest_evidence_output`: historical schema field name retained for compatibility; it stores the manuscript's principal reported evidence-output label.
 - `external_traceability`: external-audit-material profile.
 - `claim_boundary`, `author_decision_reason`, `uncertainty_note`: study-specific rationale and interpretation boundary.
 - `formal_second_coder_status`: frozen pre-review status retained to document that this author file preceded the independent pass; current completion status is recorded in the results and agreement report.
@@ -159,7 +159,7 @@ This report compares the frozen author audit with the completed independent pass
 
 ## `data/submission_update_20260715_adjudication_working_draft.csv`
 
-This file retains author, coder2, and proposed values side by side for analytical layer, lifecycle coverage, primary system shape, agentic capabilities, strongest evidence output, external traceability, and claim boundary. `field_resolution_trace` records whether the proposal retains one input or applies an operational-rule harmonization. The file is a preserved working draft; final author-confirmed decisions are recorded in `data/submission_update_20260715_adjudicated.csv` and the current cross-round harmonization is recorded in `data/coding_round_harmonization_audit.csv`.
+This file retains author, coder2, and proposed values side by side for analytical layer, lifecycle coverage, primary system shape, agentic capabilities, principal reported evidence output, external traceability, and claim boundary. `field_resolution_trace` records whether the proposal retains one input or applies an operational-rule harmonization. The file is a preserved working draft; final author-confirmed decisions are recorded in `data/submission_update_20260715_adjudicated.csv` and the current cross-round harmonization is recorded in `data/coding_round_harmonization_audit.csv`.
 
 ## `SUBMISSION_UPDATE_ADJUDICATION_SUMMARY.md` and `prepare_submission_update_adjudication.py`
 
@@ -191,7 +191,7 @@ This file contains the 37 update studies added to the current study-level set. I
 
 ## `data/current_synthesis_statistics.csv`
 
-This file reports combined descriptive counts for 67 target-software studies across lifecycle coverage, agentic capabilities, and strongest evidence output. The governance boundary case is included only in the evidence-output total where explicitly labeled. `baseline_count` and `update_addition_count` preserve the two-cohort arithmetic.
+This file reports combined descriptive counts for 67 target-software studies across lifecycle coverage, agentic capabilities, and principal reported evidence output. The governance boundary case is included only in the evidence-output total where explicitly labeled. `baseline_count` and `update_addition_count` preserve the two-cohort arithmetic.
 
 ## `SUBMISSION_UPDATE_CORPUS_INTEGRATION_REPORT.md` and `integrate_submission_update_corpus.py`
 
@@ -471,7 +471,7 @@ Per-Core public-material audit linked by `core_id`. Private Zotero paths are exc
 
 
 ## submission_update_20260715_rerun_sensitivity_analysis.csv
-Label-count sensitivity analysis for the July 15 recall-recovery rerun. It compares author-confirmed final labels with rerun second-coder labels for analytical layer, primary system shape, strongest evidence output, external traceability, lifecycle coverage, and agentic capability labels. It is a sensitivity/audit file, not a replacement for the harmonized coding matrix.
+Label-count sensitivity analysis for the July 15 update-search rerun. It compares author-confirmed final labels with rerun second-coder labels for analytical layer, primary system shape, principal reported evidence output, external traceability, lifecycle coverage, and agentic capability labels. It is a sensitivity/audit file, not a replacement for the harmonized coding matrix.
 
 ## publication_status_standardized.csv
 Standardized publication-status view for the current study-level coding matrix. Allowed manuscript-facing values are `journal`, `conference`, `workshop`, `preprint`, and `benchmark/system report`. The table is used for appendix display and source-status sensitivity summaries; legacy source-specific status fields remain in older audit files for traceability.
@@ -480,7 +480,7 @@ Standardized publication-status view for the current study-level coding matrix. 
 Publication-status distribution summary for the target-software study-level set. It reports evidence-output counts, primary-shape counts, failure-reuse labels, and governance/human-gate labels by standardized publication status.
 
 ## publication_status_sensitivity_analysis.csv
-Publication-status sensitivity view derived from `publication_status_standardized.csv`. It reports counts, denominators, and shares for the four primary system shapes, five strongest evidence outputs, seven cross-stage capabilities, and external-traceability categories. `peer_reviewed` combines conference, journal, and workshop records; `preprint` retains the standardized preprint category. The three benchmark/system reports remain visible in the complete-set totals and in `publication_status_distribution_by_layer.csv`, but are not folded into either comparison subset.
+Publication-status sensitivity view derived from `publication_status_standardized.csv`. It reports counts, denominators, and shares for the four primary system shapes, five principal reported evidence outputs, seven cross-stage capabilities, and external-traceability categories. `peer_reviewed` combines conference, journal, and workshop records; `preprint` retains the standardized preprint category. The three benchmark/system reports remain visible in the complete-set totals and in `publication_status_distribution_by_layer.csv`, but are not folded into either comparison subset.
 
 - `scope`: fixed target-software denominator.
 - `publication_status_group`: `all_target_software`, `peer_reviewed`, or `preprint`.
@@ -512,3 +512,22 @@ Counts recomputed from `data/empirical_reporting_extraction.csv` for the full 67
 - `scope`: all target-software studies or one primary system shape.
 - `reporting_item`: model/version, evaluation scale, quantitative result, baseline, validation material, runtime, cost, ablation, or failure reporting.
 - `reported_n`, `denominator`, `reported_share`: source-located reporting count and proportion within the scope.
+
+## `data/traditional_security_primitives.csv`
+
+One source-located row for each of the 67 target-software studies. This author-audited extraction supports RQ1 and is separate from the five coded workflow/evidence fields and the qualitative claim-boundary note.
+
+- `matrix_id`, `system`: links to the harmonized study-level matrix.
+- `primitive_tags`: semicolon-delimited labels from seven families: `static_taint_specification`, `fuzzing_input_harness`, `symbolic_constraint`, `runtime_oracle`, `replay_poc_pov`, `patch_build_test`, and `recon_scan_pentest`.
+- `named_tools`: tools or execution mechanisms explicitly used in the study; `not specified` is used when the public material does not name one.
+- `source_location`: public-paper location supporting the extraction.
+- `extraction_note`: scope rule excluding related-work mentions and unsupported inference.
+
+## `data/unified_second_coder_per_label_reliability.csv`
+
+Per-label binary agreement for the 67 target-software studies in the complete independent review.
+
+- `field`, `label`, `scope_n`: coding dimension, controlled label, and denominator.
+- `author_positive_n`, `coder2_positive_n`: positive assignments under the harmonized author matrix and complete independent coding.
+- `raw_agreement_n`, `raw_agreement`: binary agreement count and proportion for the label.
+- `cohens_kappa`: label-specific Cohen's kappa; these values complement rather than replace row-level Jaccard and micro-F1 for the multi-label fields.

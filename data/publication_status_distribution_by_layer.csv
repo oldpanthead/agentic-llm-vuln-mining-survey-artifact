@@ -1,5 +1,5 @@
 publication_status_standardized,target_software_studies,evidence_candidate judgment,evidence_controlled task completion,evidence_runtime safety signal,evidence_reproducible validation,evidence_externally traceable material,shape_candidate-analysis system,shape_feedback-driven fuzzing agent,"shape_reproduction-, validation-, and repair-centered agent",shape_long-horizon pentest and CRS agent,failure_reuse_or_strategy_update,governance_or_human_gates
-conference,6,1,1,3,1,0,1,3,1,1,0,0
+conference,7,1,1,3,2,0,1,3,2,1,0,0
 journal,7,1,0,3,3,0,1,3,3,0,1,0
-preprint,51,4,10,7,26,4,14,11,15,11,14,4
+preprint,50,4,10,7,25,4,14,11,14,11,14,4
 benchmark/system report,3,0,2,0,1,0,0,0,1,2,0,0

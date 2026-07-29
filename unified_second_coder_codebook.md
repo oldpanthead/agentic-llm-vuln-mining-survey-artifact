@@ -70,7 +70,7 @@ The categories describe reported outputs; they are not a universal linear qualit
 - `publicly aligned external trace`: the reviewed public material links a specific system result to a specific external-process record.
 - `not reported` (governance boundary case only when the field is not applicable).
 
-External traceability is coded separately from strongest evidence output. An external clue can coexist with reproducible validation without changing the strongest-output label.
+External traceability is coded separately from the principal reported evidence output. An external clue can coexist with reproducible validation without changing the principal-output label.
 
 ## 6. Claim Boundary (short text)
 

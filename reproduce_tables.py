@@ -210,6 +210,24 @@ CSV_REQUIRED_FIELDS = {
       'denominator',
       'reported_share',
     ],
+    'traditional_security_primitives.csv': [
+      'matrix_id',
+      'system',
+      'primitive_tags',
+      'named_tools',
+      'source_location',
+      'extraction_note',
+    ],
+    'unified_second_coder_per_label_reliability.csv': [
+      'field',
+      'label',
+      'scope_n',
+      'author_positive_n',
+      'coder2_positive_n',
+      'raw_agreement_n',
+      'raw_agreement',
+      'cohens_kappa',
+    ],
     'submission_update_20260715_adjudication_working_draft.csv': [
       'update_id',
       'arxiv_id',
@@ -624,7 +642,7 @@ def validate_publication_status_sensitivity(rows, publication_status_rows):
     status('ERROR', not errors, 'publication-status sensitivity counts reproduce the standardized study-level view')
     if errors:
         print('ERROR: publication-status sensitivity mismatches:', errors[:10])
-    print('PUBLICATION_STATUS_SENSITIVITY: all=67 peer_reviewed=13 preprint=51 benchmark_system_report=3')
+    print('PUBLICATION_STATUS_SENSITIVITY: all=67 peer_reviewed=14 preprint=50 benchmark_system_report=3')
 
 def validate_submission_update_rerun_notes():
     path = ROOT / 'SUBMISSION_UPDATE_SECOND_CODER_RERUN_NOTES.md'
@@ -1291,7 +1309,7 @@ def validate_source_search_audit(corpus, source_log, source_audit):
     audit_layer_counts = Counter(row.get('corpus_layer', 'NA') for row in source_audit)
     expected_layers = {'Core': 68, 'Supporting': 69, 'Background': 95, 'Excluded': 21}
     for layer, expected in expected_layers.items():
-        status('ERROR', audit_layer_counts.get(layer, 0) == expected, f'source_screening_audit {layer} = {audit_layer_counts.get(layer, 0)}; expected {expected}')
+        status('ERROR', audit_layer_counts.get(layer, 0) == expected, f'legacy source-record layer {layer} = {audit_layer_counts.get(layer, 0)}; expected {expected}')
 
     def to_int(row, field):
         try:
@@ -2198,6 +2216,8 @@ def validate_empirical_reporting(extraction_rows, summary_rows, matrix_rows, ref
             errors.append((matrix_id, 'citation key missing from reference audit'))
         if not row.get('source_location', '').strip():
             errors.append((matrix_id, 'empty source location'))
+        if row.get('quantitative_result_status') == 'reported' and not re.search(r'\d', row.get('reported_result', '')):
+            errors.append((matrix_id, 'reported quantitative result has no explicit numeric endpoint'))
         for field in status_fields:
             if row.get(field) not in allowed:
                 errors.append((matrix_id, f'invalid {field}: {row.get(field)}'))
@@ -2223,6 +2243,93 @@ def validate_empirical_reporting(extraction_rows, summary_rows, matrix_rows, ref
     status('ERROR', not summary_errors, 'empirical reporting completeness recomputes from the 67-row extraction')
     if summary_errors:
         print('ERROR: empirical reporting summary problems:', summary_errors[:12])
+
+
+def validate_traditional_security_primitives(rows, matrix_rows):
+    target_rows = [row for row in matrix_rows if row.get('analytical_role') == 'target_software_study']
+    target_by_id = {row.get('matrix_id'): row for row in target_rows}
+    by_id = {row.get('matrix_id'): row for row in rows}
+    allowed = {
+        'static_taint_specification',
+        'fuzzing_input_harness',
+        'symbolic_constraint',
+        'runtime_oracle',
+        'replay_poc_pov',
+        'patch_build_test',
+        'recon_scan_pentest',
+    }
+    expected_counts = {
+        'static_taint_specification': 29,
+        'fuzzing_input_harness': 27,
+        'symbolic_constraint': 6,
+        'runtime_oracle': 58,
+        'replay_poc_pov': 42,
+        'patch_build_test': 14,
+        'recon_scan_pentest': 10,
+    }
+    status('ERROR', len(rows) == 67 and len(by_id) == 67, 'traditional-security-primitives extraction contains 67 unique rows')
+    status('ERROR', set(by_id) == set(target_by_id), 'traditional-security-primitives extraction covers exactly the target-software studies')
+    problems = []
+    counts = Counter()
+    for matrix_id, row in by_id.items():
+        tags = split_multilabel(row.get('primitive_tags', ''))
+        counts.update(tags)
+        if not tags or not tags.issubset(allowed):
+            problems.append((matrix_id, 'invalid or empty primitive tags'))
+        if row.get('system', '').strip() != target_by_id[matrix_id].get('system_alias', '').strip():
+            problems.append((matrix_id, 'system name mismatch'))
+        if not row.get('named_tools', '').strip():
+            problems.append((matrix_id, 'empty named_tools'))
+        if not row.get('source_location', '').strip():
+            problems.append((matrix_id, 'empty source_location'))
+    status('ERROR', not problems, 'traditional-security-primitives rows use controlled tags and source-located study identities')
+    if problems:
+        print('ERROR: traditional-security-primitives problems:', problems[:12])
+    status('ERROR', dict(counts) == expected_counts, f'traditional-security-primitives counts reproduce manuscript RQ1 table: {dict(counts)}')
+
+
+def validate_per_label_reliability(rows, matrix_rows, coder_rows):
+    target = [row for row in matrix_rows if row.get('analytical_role') == 'target_software_study']
+    author_by_id = {row.get('matrix_id'): row for row in target}
+    coder_by_id = {
+        row.get('matrix_id'): row for row in coder_rows
+        if row.get('review_scope') == 'target-software study'
+    }
+    status('ERROR', len(rows) == 13, 'per-label reliability table contains six lifecycle and seven capability rows')
+    status('ERROR', set(author_by_id) == set(coder_by_id) and len(author_by_id) == 67, 'per-label reliability uses the complete 67-study target-software review')
+    field_map = {
+        'lifecycle_coverage': ('lifecycle_coverage', 'final_lifecycle_coverage'),
+        'cross_stage_capabilities': ('cross_stage_capabilities', 'final_cross_stage_capabilities'),
+    }
+    problems = []
+    for row in rows:
+        field = row.get('field')
+        label = row.get('label')
+        if field not in field_map or not label:
+            problems.append((field, label, 'invalid field or label'))
+            continue
+        author_field, coder_field = field_map[field]
+        author_binary = [label in split_multilabel(author_by_id[mid].get(author_field, '')) for mid in sorted(author_by_id)]
+        coder_binary = [label in split_multilabel(coder_by_id[mid].get(coder_field, '')) for mid in sorted(author_by_id)]
+        author_n = sum(author_binary)
+        coder_n = sum(coder_binary)
+        agreement_n = sum(a == b for a, b in zip(author_binary, coder_binary))
+        kappa = cohen_kappa(author_binary, coder_binary)
+        expected = {
+            'scope_n': '67',
+            'author_positive_n': str(author_n),
+            'coder2_positive_n': str(coder_n),
+            'raw_agreement_n': str(agreement_n),
+            'raw_agreement': f'{agreement_n / 67:.3f}',
+            'cohens_kappa': f'{kappa:.3f}',
+        }
+        for key, value in expected.items():
+            if row.get(key) != value:
+                problems.append((field, label, key, row.get(key), value))
+    status('ERROR', not problems, 'per-label reliability recomputes from harmonized and complete independent labels')
+    if problems:
+        print('ERROR: per-label reliability problems:', problems[:12])
+
 def validate_manuscript_artifact_paths():
     manifest_missing = []
     manifest_paths = []
@@ -2341,6 +2448,8 @@ publication_status_sensitivity = read_csv('publication_status_sensitivity_analys
 representative_reported_results = read_csv('representative_reported_results.csv')
 empirical_reporting_extraction = read_csv('empirical_reporting_extraction.csv')
 empirical_reporting_completeness = read_csv('empirical_reporting_completeness.csv')
+traditional_security_primitives = read_csv('traditional_security_primitives.csv')
+unified_per_label_reliability = read_csv('unified_second_coder_per_label_reliability.csv')
 submission_update_adjudication = read_csv('submission_update_20260715_adjudication_working_draft.csv')
 submission_update_adjudicated = read_csv('submission_update_20260715_adjudicated.csv')
 submission_update_integration = read_csv('submission_update_20260715_canonical_integration_crosswalk.csv')
@@ -2373,6 +2482,8 @@ validate_unified_second_coder_results(unified_second_coder_results, unified_seco
 validate_integrated_submission_update(corpus, study_version_crosswalk, extended_synthesis, submission_update_adjudicated, submission_update_additions, current_synthesis_statistics)
 validate_representative_reported_results(representative_reported_results, harmonized_study_level_matrix, ref, submission_update_sensitivity)
 validate_empirical_reporting(empirical_reporting_extraction, empirical_reporting_completeness, harmonized_study_level_matrix, ref)
+validate_traditional_security_primitives(traditional_security_primitives, harmonized_study_level_matrix)
+validate_per_label_reliability(unified_per_label_reliability, harmonized_study_level_matrix, unified_second_coder_results)
 validate_submission_snapshot_files(submission_update_initial_results, submission_update_results, submission_update_sensitivity, publication_status_rows, publication_distribution_rows)
 validate_publication_status_sensitivity(publication_status_sensitivity, publication_status_rows)
 validate_manuscript_artifact_paths()
@@ -2383,7 +2494,7 @@ if corpus:
     status('ERROR', len(corpus) == 253, f'source records = {len(corpus)}; expected 253')
     layer_counts = Counter(r.get('corpus_layer', 'NA') for r in corpus)
     for layer, expected in expected_layers.items():
-        status('ERROR', layer_counts.get(layer, 0) == expected, f'{layer} = {layer_counts.get(layer, 0)}; expected {expected}')
+        status('ERROR', layer_counts.get(layer, 0) == expected, f'legacy source-record layer {layer} = {layer_counts.get(layer, 0)}; expected {expected}')
 
 if core:
     status('ERROR', len(core) == 31, f'study-level coding rows = {len(core)}; expected 31')
@@ -2397,7 +2508,7 @@ if core:
     if missing_reason:
         print('WARNING: missing A/E reason fields for:', ', '.join(missing_reason))
     else:
-        print('PASS: all Core rows include A/E reason fields')
+        print('PASS: all legacy first-round rows include A/E reason fields')
 
     a_counts = Counter()
     for r in core:

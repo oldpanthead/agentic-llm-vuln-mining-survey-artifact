@@ -54,6 +54,8 @@ The current reliability view applies one frozen codebook to all 67 target-softwa
 - `data/publication_status_sensitivity_analysis.csv`: count-and-share comparison of system shapes, evidence outputs, capabilities, and external traceability across the complete target-software set, peer-reviewed studies, and preprints.
 - `data/empirical_reporting_extraction.csv`: 67-study extraction of evaluation setting, Agent mechanism, reported outcome, validation material, and the availability of model, runtime, cost, ablation, and failure-analysis details.
 - `data/empirical_reporting_completeness.csv`: overall and system-shape reporting-completeness counts derived from the 67-study extraction.
+- `data/traditional_security_primitives.csv`: source-located, multi-label extraction of the conventional security primitives used by the 67 target-software studies.
+- `data/unified_second_coder_per_label_reliability.csv`: per-label raw agreement and Cohen's kappa for the six lifecycle and seven capability labels in the complete target-software review.
 - `data/representative_reported_results.csv`: source-located rows used by the representative reported-results table in Appendix B.
 - `data/submission_update_20260715_rerun_sensitivity_analysis.csv`: label-substitution sensitivity table comparing author-confirmed and rerun coder2 label counts.
 - `reports/SUBMISSION_UPDATE_SECOND_CODER_PRE_ADJUDICATION_REPORT.md`: computed agreement before disagreement resolution.
@@ -112,7 +114,7 @@ The 2026-07-15 update-search blind pass is complete for all 41 records. The 2026
 
 Product pages, help pages, official blogs, model pages, project pages, and disclosure policies are recorded as dated boundary materials. They support ecosystem discussion outside the 68-record study-level coded set. The 23-row product snapshot is independent of the 253 source records; row-level roles and caveats are recorded in `data/product_ecosystem_snapshot.csv` and `data/reference_audit.csv`.
 
-Legacy A/E fields are retained for historical traceability. The current manuscript synthesis uses natural-language workflow, capability, strongest evidence output, external audit material, and claim-boundary fields.
+Legacy A/E fields are retained for historical traceability. The current manuscript synthesis uses workflow, agentic capability, principal reported evidence output, external traceability, and claim-boundary notes. The CSV field name `strongest_evidence_output` is retained as a historical schema name for script compatibility.
 
 ## Security Boundary
 
