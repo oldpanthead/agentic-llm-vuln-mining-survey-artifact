@@ -34,9 +34,9 @@ This index points reviewers to the public, non-sensitive files needed to audit t
 - `data/publication_status_standardized.csv`: standardized publication-status view for all 68 study-level rows.
 - `data/publication_status_distribution_by_layer.csv`: stratified publication-status summary for artifact inspection.
 - `data/publication_status_sensitivity_analysis.csv`: reproducible publication-status sensitivity counts for the 67 target-software studies.
-- `data/empirical_reporting_extraction.csv`: study-level extraction of Agent mechanism, evaluation setting, reported outcome, validation material, and reporting details for all 67 target-software studies.
+- `data/empirical_reporting_extraction.csv`: study-level extraction of Agent mechanism, evaluation setting, source-scoped reported outcome, controlled endpoint type and audit status, validation material, and reporting details for all 67 target-software studies.
 - `data/empirical_reporting_completeness.csv`: overall and system-shape completeness counts recomputed from the empirical extraction.
-- `data/traditional_security_primitives.csv`: auditable RQ1 extraction of seven conventional security-primitive families across the 67 target-software studies.
+- `data/traditional_security_primitives.csv`: auditable, source-located RQ1 author extraction of seven conventional security-primitive families explicitly used in study workflows or evaluations; it is separate from the second-coder reliability scope.
 - `data/unified_second_coder_per_label_reliability.csv`: per-label reliability results for lifecycle and capability coding in the unified target-software review.
 - `data/representative_reported_results.csv`: source-located audit rows for the manuscript representative reported-results table.
 - `data/current_study_level_coding_matrix_harmonized.csv`: author-confirmed current 68-record matrix with 67 target-software studies, one governance boundary case, controlled primary shapes, overlays, and cross-stage capabilities.

@@ -31,7 +31,7 @@ The round differences narrow after the initial cohort is recoded at the July 15 
 | long-horizon pentest and CRS agent | 9 | 5 | 14 |
 | reproduction-, validation-, and repair-centered agent | 8 | 12 | 20 |
 
-### Strongest evidence outputs
+### Principal reported evidence outputs
 
 | Evidence output | Initial | Update | Combined |
 |---|---:|---:|---:|
@@ -50,5 +50,4 @@ All four target-software system-shape patterns remain populated. Repair-oriented
 - Original author labels, independent-coder labels, and pre-adjudication reports remain preserved.
 - Every changed initial-round label is traceable through `data/coding_round_harmonization_audit.csv` to an existing frozen coding note or public-material audit location.
 - AI-assisted tools organized the comparison and drafted evidence-linked working notes. The author reviewed the underlying recorded evidence and accepted the final changes; AI output is not an independent human coding decision.
-
 

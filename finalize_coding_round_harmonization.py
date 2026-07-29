@@ -138,7 +138,7 @@ def main() -> None:
         )
     report.extend([
         "",
-        "### Strongest evidence outputs",
+        "### Principal reported evidence outputs",
         "",
         "| Evidence output | Initial | Update | Combined |",
         "|---|---:|---:|---:|",

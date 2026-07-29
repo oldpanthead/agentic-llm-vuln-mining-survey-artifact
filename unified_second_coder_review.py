@@ -475,7 +475,7 @@ def compare(path: Path) -> int:
         ("lifecycle_coverage", "final_lifecycle_coverage", "Lifecycle coverage", True),
         ("cross_stage_capabilities", "final_cross_stage_capabilities", "Cross-stage capability", True),
         ("primary_system_shape", "final_primary_system_shape", "Primary system shape", False),
-        ("strongest_evidence_output", "final_strongest_evidence_output", "Strongest evidence output", False),
+        ("strongest_evidence_output", "final_strongest_evidence_output", "Principal reported evidence output", False),
         ("external_traceability", "final_external_traceability", "External traceability", False),
     ]
     metrics: dict[str, dict[str, float]] = {}
@@ -594,7 +594,7 @@ def compare(path: Path) -> int:
         "lifecycle_review_status": "Lifecycle coverage",
         "capability_review_status": "Cross-stage capability",
         "shape_review_status": "Primary system shape",
-        "evidence_review_status": "Strongest evidence output",
+        "evidence_review_status": "Principal reported evidence output",
         "traceability_review_status": "External traceability",
         "claim_boundary_review_status": "Claim boundary",
     }

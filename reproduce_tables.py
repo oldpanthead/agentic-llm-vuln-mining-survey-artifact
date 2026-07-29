@@ -18,6 +18,26 @@ ARGS = parser.parse_args()
 MANUSCRIPT_PATH = Path(ARGS.manuscript).expanduser().resolve() if ARGS.manuscript else None
 MANIFEST_PATH = ROOT / 'manuscript_artifact_paths.txt'
 
+
+def read_manuscript_bundle(path):
+    visited = set()
+
+    def read_one(current):
+        current = current.resolve()
+        if current in visited or not current.exists():
+            return ''
+        visited.add(current)
+        text = current.read_text(encoding='utf-8')
+        chunks = [text]
+        for rel in re.findall(r'\\input\{([^}]+)\}', text):
+            child = current.parent / rel
+            if child.suffix == '':
+                child = child.with_suffix('.tex')
+            chunks.append(read_one(child))
+        return '\n'.join(chunks)
+
+    return read_one(path)
+
 CSV_REQUIRED_FIELDS = {
     'corpus.csv': ['record_id', 'corpus_layer'],
     'unified_second_coder_final_blind_template.csv': [
@@ -192,6 +212,8 @@ CSV_REQUIRED_FIELDS = {
       'model_version_status',
       'evaluation_scale_status',
       'quantitative_result_status',
+      'quantitative_endpoint_type',
+      'quantitative_endpoint_audit_status',
       'reported_result',
       'baseline_status',
       'validation_material_status',
@@ -2159,7 +2181,7 @@ def validate_harmonized_coding_matrix(pre_matrix, harmonized, audit_rows, round_
 
 
 def validate_representative_reported_results(rows, matrix_rows, reference_rows, sensitivity_rows):
-    status('ERROR', 12 <= len(rows) <= 16, f'representative reported results rows = {len(rows)}; expected 12-16')
+    status('ERROR', len(rows) == 12, f'representative reported results rows = {len(rows)}; expected 12')
     matrix_by_system = {row.get('system_alias', '').strip().lower(): row for row in matrix_rows if row.get('analytical_role') == 'target_software_study'}
     reference_keys = {row.get('citation_key', '').strip() for row in reference_rows if row.get('citation_key', '').strip()}
     errors = []
@@ -2179,6 +2201,29 @@ def validate_representative_reported_results(rows, matrix_rows, reference_rows, 
     status('ERROR', not errors, 'representative reported results map to study-level matrix, citation keys, and source locations')
     if errors:
         print('ERROR: representative reported result problems:', errors[:10])
+    represented_shapes = {row.get('primary_shape', '').strip() for row in rows}
+    expected_shapes = {
+        'candidate-analysis system',
+        'feedback-driven fuzzing agent',
+        'reproduction-, validation-, and repair-centered agent',
+        'long-horizon pentest and CRS agent',
+    }
+    status('ERROR', represented_shapes == expected_shapes, 'representative reported results cover all four primary system shapes')
+    if MANUSCRIPT_PATH is not None and MANUSCRIPT_PATH.exists():
+        manuscript = read_manuscript_bundle(MANUSCRIPT_PATH)
+        table_match = re.search(
+            r'\\caption\{Representative reported results by system shape\.\}'
+            r'.*?\\label\{tab:appendix-reported-results\}(.*?)\\end\{table\}',
+            manuscript,
+            flags=re.S,
+        )
+        status('ERROR', bool(table_match), 'manuscript Table 14 representative-results block is locatable')
+        if table_match:
+            table_keys = set()
+            for group in re.findall(r'\\cite\{([^}]+)\}', table_match.group(1)):
+                table_keys.update(key.strip() for key in group.split(',') if key.strip())
+            csv_keys = {row.get('citation_key', '').strip() for row in rows}
+            status('ERROR', table_keys == csv_keys and len(table_keys) == 12, 'manuscript Table 14 contains the same 12 citation-linked rows as the CSV')
     scopes = {row.get('scope', '') for row in sensitivity_rows}
     required_scopes = {'all_41_full_text_records', '37_final_target_software_update_records', '67_target_software_with_rerun_substitution'}
     status('ERROR', required_scopes.issubset(scopes), 'sensitivity file contains all_41, 37-target, and 67-target substitution scopes')
@@ -2189,7 +2234,7 @@ def validate_representative_reported_results(rows, matrix_rows, reference_rows, 
     shape_labels = {row.get('label') for row in target_rows if row.get('field') == 'primary_system_shape'}
     evidence_labels = {row.get('label') for row in target_rows if row.get('field') == 'strongest_evidence_output'}
     status('ERROR', len(shape_labels) >= 4, 'target-only sensitivity includes the four primary system shapes')
-    status('ERROR', len(evidence_labels) >= 5, 'target-only sensitivity includes the five strongest evidence outputs')
+    status('ERROR', len(evidence_labels) >= 5, 'target-only sensitivity includes the five principal reported evidence outputs')
 
 
 def validate_empirical_reporting(extraction_rows, summary_rows, matrix_rows, reference_rows):
@@ -2200,6 +2245,20 @@ def validate_empirical_reporting(extraction_rows, summary_rows, matrix_rows, ref
     status('ERROR', set(extraction_by_id) == set(target_by_id), 'empirical reporting extraction covers exactly the 67 target-software studies')
     reference_keys = {row.get('citation_key', '').strip() for row in reference_rows if row.get('citation_key', '').strip()}
     allowed = {'reported', 'not located'}
+    allowed_endpoint_types = {
+        'performance',
+        'result_yield',
+        'performance_and_result_yield',
+        'evaluation_scale',
+        'resource_or_input',
+        'mixed_or_other_result',
+        'not_located',
+    }
+    allowed_endpoint_audit = {
+        'source_verified_2026-07-29',
+        'existing_source_location_retained',
+        'not_located',
+    }
     status_fields = [
         'model_version_status', 'evaluation_scale_status', 'quantitative_result_status',
         'baseline_status', 'validation_material_status', 'runtime_status', 'cost_status',
@@ -2216,12 +2275,32 @@ def validate_empirical_reporting(extraction_rows, summary_rows, matrix_rows, ref
             errors.append((matrix_id, 'citation key missing from reference audit'))
         if not row.get('source_location', '').strip():
             errors.append((matrix_id, 'empty source location'))
-        if row.get('quantitative_result_status') == 'reported' and not re.search(r'\d', row.get('reported_result', '')):
-            errors.append((matrix_id, 'reported quantitative result has no explicit numeric endpoint'))
+        endpoint_type = row.get('quantitative_endpoint_type', '')
+        endpoint_audit = row.get('quantitative_endpoint_audit_status', '')
+        if endpoint_type not in allowed_endpoint_types:
+            errors.append((matrix_id, f'invalid quantitative_endpoint_type: {endpoint_type}'))
+        if endpoint_audit not in allowed_endpoint_audit:
+            errors.append((matrix_id, f'invalid quantitative_endpoint_audit_status: {endpoint_audit}'))
+        if row.get('quantitative_result_status') == 'reported' and endpoint_type == 'not_located':
+            errors.append((matrix_id, 'reported result cannot use not_located endpoint type'))
+        if row.get('quantitative_result_status') == 'not located' and endpoint_type != 'not_located':
+            errors.append((matrix_id, 'not-located result must use not_located endpoint type'))
+        result_text = ' '.join(row.get('reported_result', '').split())
+        if endpoint_audit == 'source_verified_2026-07-29':
+            if len(result_text) < 45:
+                errors.append((matrix_id, 'source-verified result summary is too short'))
+            if re.match(r'(?i)^(table|figure|fig\.|section|sec\.)\s*\d', result_text):
+                errors.append((matrix_id, 'source-verified result begins with a table/figure/section locator'))
+            if re.search(r'(?i)(conference.?17|figure\s+\d+\s*:|table\s+\d+\s*:|section\s+\d+\s+(reports|presents))', result_text):
+                errors.append((matrix_id, 'source-verified result contains placeholder or locator text'))
+        if not row.get('source_location', '').strip():
+            errors.append((matrix_id, 'empty source location'))
         for field in status_fields:
             if row.get(field) not in allowed:
                 errors.append((matrix_id, f'invalid {field}: {row.get(field)}'))
-    status('ERROR', not errors, 'empirical reporting rows match matrix, references, source locations, and controlled statuses')
+    verified_n = sum(row.get('quantitative_endpoint_audit_status') == 'source_verified_2026-07-29' for row in extraction_rows)
+    status('ERROR', verified_n == 29, f'targeted quantitative endpoint recheck covers 29 rows: {verified_n}')
+    status('ERROR', not errors, 'empirical reporting rows match matrix, references, source locations, and controlled audit fields')
     if errors:
         print('ERROR: empirical reporting extraction problems:', errors[:12])
 
@@ -2282,10 +2361,55 @@ def validate_traditional_security_primitives(rows, matrix_rows):
             problems.append((matrix_id, 'empty named_tools'))
         if not row.get('source_location', '').strip():
             problems.append((matrix_id, 'empty source_location'))
+        note = row.get('extraction_note', '').lower()
+        if 'workflow or evaluation' not in note or 'not necessarily dynamically selected' not in note:
+            problems.append((matrix_id, 'extraction note does not state the workflow/evaluation construct boundary'))
     status('ERROR', not problems, 'traditional-security-primitives rows use controlled tags and source-located study identities')
     if problems:
         print('ERROR: traditional-security-primitives problems:', problems[:12])
     status('ERROR', dict(counts) == expected_counts, f'traditional-security-primitives counts reproduce manuscript RQ1 table: {dict(counts)}')
+    if MANUSCRIPT_PATH is not None and MANUSCRIPT_PATH.exists():
+        manuscript = read_manuscript_bundle(MANUSCRIPT_PATH)
+        table_match = re.search(
+            r'\\caption\{Traditional security primitives explicitly used in the workflows or evaluations of the 67 target-software studies\.\}'
+            r'.*?\\label\{tab:traditional-primitives\}(.*?)\\end\{table\}',
+            manuscript,
+            flags=re.S,
+        )
+        status('ERROR', bool(table_match), 'manuscript Table 6 traditional-primitives block is locatable')
+        if table_match:
+            body = table_match.group(1)
+            expected_rows = {
+                'Static, taint, or specification analysis': 29,
+                'Fuzzing, input, or harness generation': 27,
+                'Symbolic or constraint execution': 6,
+                'Runtime checks, sanitizers, or oracles': 58,
+                'Replay, PoC, or PoV execution': 42,
+                'Patch, build, or test validation': 14,
+                'Reconnaissance, scanning, or pentest tools': 10,
+            }
+            row_errors = []
+            for label, count in expected_rows.items():
+                if not re.search(re.escape(label) + r'.*?&\s*' + str(count) + r'\s*&', body, flags=re.S):
+                    row_errors.append((label, count))
+            status('ERROR', not row_errors, 'manuscript Table 6 reproduces the seven artifact counts')
+            if row_errors:
+                print('ERROR: manuscript Table 6 count mismatches:', row_errors)
+
+
+def validate_structured_claim_boundaries(matrix_rows):
+    problems = []
+    for row in matrix_rows:
+        note = row.get('claim_boundary', '').strip()
+        if not note.startswith('Supported claim and conditions:'):
+            problems.append((row.get('matrix_id'), 'missing supported-claim prefix'))
+        if 'Stronger-claim boundary:' not in note:
+            problems.append((row.get('matrix_id'), 'missing stronger-claim boundary prefix'))
+        if len(note) < 120:
+            problems.append((row.get('matrix_id'), 'claim-boundary note too short for structured review'))
+    status('ERROR', not problems, 'all 68 claim-boundary notes use the structured non-ordered template')
+    if problems:
+        print('ERROR: structured claim-boundary problems:', problems[:12])
 
 
 def validate_per_label_reliability(rows, matrix_rows, coder_rows):
@@ -2483,6 +2607,7 @@ validate_integrated_submission_update(corpus, study_version_crosswalk, extended_
 validate_representative_reported_results(representative_reported_results, harmonized_study_level_matrix, ref, submission_update_sensitivity)
 validate_empirical_reporting(empirical_reporting_extraction, empirical_reporting_completeness, harmonized_study_level_matrix, ref)
 validate_traditional_security_primitives(traditional_security_primitives, harmonized_study_level_matrix)
+validate_structured_claim_boundaries(harmonized_study_level_matrix)
 validate_per_label_reliability(unified_per_label_reliability, harmonized_study_level_matrix, unified_second_coder_results)
 validate_submission_snapshot_files(submission_update_initial_results, submission_update_results, submission_update_sensitivity, publication_status_rows, publication_distribution_rows)
 validate_publication_status_sensitivity(publication_status_sensitivity, publication_status_rows)

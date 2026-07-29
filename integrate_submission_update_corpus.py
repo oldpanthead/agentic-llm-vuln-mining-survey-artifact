@@ -347,7 +347,7 @@ def main() -> None:
             "claim_boundary": LEGACY_CLAIM_BOUNDARY_EN[row["core_id"]],
             "claim_boundary_original": row["main_claim_boundary"],
             "coding_status": "frozen_initial_round",
-            "reliability_scope": "frozen-label checks: strongest evidence output, cross-stage capability, and external traceability; harmonized lifecycle/capability/shape labels are author-confirmed descriptive recodings",
+            "reliability_scope": "frozen-label checks: principal reported evidence output, cross-stage capability, and external traceability; harmonized lifecycle/capability/shape labels are author-confirmed descriptive recodings",
             "official_url": reference_by_id[record_id]["official_url"],
         })
     for row in additions:

@@ -29,9 +29,9 @@ Lightweight boundary notes for an adopted tightened-boundary rerun of the 41-rec
 - `overlay_tags`: optional controlled overlays kept separate from the primary shape.
 - `cross_stage_capabilities`: current controlled multi-label capability field.
 - `legacy_notes`: historical textual labels retained outside formal capability coding.
-- `strongest_evidence_output`: historical schema field name retained for compatibility; it stores the manuscript's principal reported evidence-output label.
-- `external_traceability`: reported external-trace category or note.
-- `claim_boundary`: current English claim-boundary wording.
+- `strongest_evidence_output`: historical schema field name retained for compatibility; it stores the manuscript's principal reported evidence-output category. Candidate judgment, controlled task completion, runtime safety signal, and reproducible validation mainly describe system-produced results; externally traceable material is a combined state that aligns a concrete result with a public external-process record.
+- `external_traceability`: presence, type, and item-level alignment of external material, recorded independently from the principal category.
+- `claim_boundary`: current structured English note using `Supported claim and conditions` and `Stronger-claim boundary`; it is a derived interpretation field rather than an ordered category.
 - `claim_boundary_original`: source-round wording retained for traceability; it may match `claim_boundary` for update rows.
 - `coding_status`: frozen initial-round or author-confirmed update status.
 - `reliability_scope`: fields independently checked in that row's coding round; it prevents reliability results from being generalized across fields or rounds.
@@ -489,7 +489,7 @@ Publication-status sensitivity view derived from `publication_status_standardize
 
 
 ## `data/representative_reported_results.csv`
-Source-located audit file for the representative reported-results table in Appendix B/Table 13. Each row corresponds to one manuscript table row and records the system, citation key, primary shape, evaluation setting, reported scale/result, validation material, source location, and extraction note. The file is descriptive and does not normalize or rank results across systems.
+Source-located audit file for the representative reported-results table in Appendix B/Table 14. Each row corresponds to one manuscript table row and records the system, citation key, primary shape, evaluation setting, reported scale/result, validation material, source location, and extraction note. The file is descriptive and does not normalize or rank results across systems.
 
 ## `data/empirical_reporting_extraction.csv`
 
@@ -500,6 +500,8 @@ One source-scoped row for each of the 67 target-software studies. This table is 
 - `evaluation_setting`: concise target or task setting used in the study evaluation.
 - `agent_mechanism`: observable control functions derived from the coded cross-stage capabilities.
 - `*_status`: whether the reviewed public material reports the named item; controlled values are `reported` and `not located`.
+- `quantitative_endpoint_type`: controlled distinction among performance, result yield, combined performance/result yield, evaluation scale, resource/input, mixed/other result, and `not_located`.
+- `quantitative_endpoint_audit_status`: `source_verified_2026-07-29` for the targeted source-level recheck or `existing_source_location_retained` for the previously source-located extraction.
 - `reported_result`: source-scoped result summary. Quantitative units retain the original study definition.
 - `validation_material`: executable, benchmark, runtime, or other validation material associated with the reported result.
 - `source_location`: reviewed paper pages/sections and field-specific locator where available.
@@ -515,13 +517,13 @@ Counts recomputed from `data/empirical_reporting_extraction.csv` for the full 67
 
 ## `data/traditional_security_primitives.csv`
 
-One source-located row for each of the 67 target-software studies. This author-audited extraction supports RQ1 and is separate from the five coded workflow/evidence fields and the qualitative claim-boundary note.
+One source-located row for each of the 67 target-software studies. This multi-label author extraction supports RQ1 by recording primitive families explicitly present in each study's workflow or evaluation. It includes fixed pipelines, benchmark oracles, offline PoC execution, preset sanitizers, and evaluation components when explicitly used; the row does not imply that every primitive was dynamically selected by an Agent. The extraction is separate from the five coded fields, the claim-boundary note, and the second-coder reliability analysis.
 
 - `matrix_id`, `system`: links to the harmonized study-level matrix.
 - `primitive_tags`: semicolon-delimited labels from seven families: `static_taint_specification`, `fuzzing_input_harness`, `symbolic_constraint`, `runtime_oracle`, `replay_poc_pov`, `patch_build_test`, and `recon_scan_pentest`.
 - `named_tools`: tools or execution mechanisms explicitly used in the study; `not specified` is used when the public material does not name one.
 - `source_location`: public-paper location supporting the extraction.
-- `extraction_note`: scope rule excluding related-work mentions and unsupported inference.
+- `extraction_note`: scope rule excluding related-work mentions and unsupported inference; explicit workflow or evaluation use is the coded construct.
 
 ## `data/unified_second_coder_per_label_reliability.csv`
 

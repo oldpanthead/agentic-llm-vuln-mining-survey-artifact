@@ -431,7 +431,7 @@ The completed blind pass contains all 41 decisions and does not expose author la
 |---|---:|---:|---:|---|
 | Analysis layer | {layer_metrics[0]} / 41 | {layer_metrics[1]:.3f} | {layer_metrics[2]:.3f} | {disagreements('author_analysis_layer', 'coder2_analysis_layer_decision')} |
 | Primary system shape | {shape_metrics[0]} / 41 | {shape_metrics[1]:.3f} | {shape_metrics[2]:.3f} | {disagreements('author_primary_system_shape', 'coder2_primary_system_shape')} |
-| Strongest evidence output | {evidence_metrics[0]} / 41 | {evidence_metrics[1]:.3f} | {evidence_metrics[2]:.3f} | {disagreements('author_strongest_evidence_output', 'coder2_strongest_evidence_output')} |
+| Principal reported evidence output | {evidence_metrics[0]} / 41 | {evidence_metrics[1]:.3f} | {evidence_metrics[2]:.3f} | {disagreements('author_strongest_evidence_output', 'coder2_strongest_evidence_output')} |
 | External traceability | {trace_metrics[0]} / 41 | {trace_metrics[1]:.3f} | {trace_metrics[2]:.3f} | {disagreements('author_external_traceability', 'coder2_external_traceability')} |
 
 ## Multi-Label Fields

@@ -41,7 +41,7 @@ The existing formal second-coder results continue to apply only to the frozen 31
 - lifecycle coverage;
 - primary system shape;
 - cross-stage capability labels;
-- strongest evidence output;
+- principal reported evidence output;
 - external traceability;
 - claim boundary.
 

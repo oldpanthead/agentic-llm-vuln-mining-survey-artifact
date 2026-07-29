@@ -49,7 +49,7 @@ Choose the dominant evaluated role around which the study's main contribution an
 
 Long-horizon orchestration can overlay the other roles. Assign it as primary only when coordination across tasks or stages is the central evaluated contribution.
 
-## 4. Strongest Evidence Output (single-label)
+## 4. Principal Reported Evidence Output (single-label)
 
 Code the strongest system-produced output demonstrated in the reviewed material.
 

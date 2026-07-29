@@ -1,6 +1,6 @@
 # Evidence Output Codebook
 
-This codebook defines the current manuscript's principal reported evidence-output labels for the study-level coded set. The same labels are used for the frozen initial round (30 target-software studies plus one governance boundary case) and the 37 target-software additions from the submission update. The historical CSV field name `strongest_evidence_output` is retained for compatibility. Legacy A/E fields remain in the artifact for historical traceability, but they are not the current manuscript's main prose axis.
+This codebook defines the current manuscript's principal reported evidence-output categories for the study-level coded set. The same categories are used for the frozen initial round (30 target-software studies plus one governance boundary case) and the 37 target-software additions from the submission update. The historical CSV field name `strongest_evidence_output` is retained for compatibility. Legacy A/E fields remain in the artifact for historical traceability, but they are not the current manuscript's main prose axis. The five categories are not a universal linear ladder.
 
 ## Current Evidence-Output Labels
 
@@ -30,27 +30,27 @@ Legacy crosswalk: usually overlaps with old `E3`.
 
 ### externally traceable material / 外部可追踪材料
 
-The public material links a system result to an external process or record, such as project issue, security advisory, CVE, bug bounty note, maintainer confirmation, PR/commit, CI result, or disclosure status. This label records traceability; it does not automatically raise the system-output level unless the external material aligns with concrete output, target version, and reproducible material.
+The public material aligns a concrete system result item by item with an external process or record, such as a project issue, security advisory, CVE, bug-bounty note, maintainer confirmation, PR/commit, CI result, or disclosure status. This category records a combined claim-supporting evidence state rather than a system-produced artifact alone. The separate `external_traceability` field records the existence, type, and alignment of external material, so it may be present even when another principal category, such as reproducible validation, better characterizes the study's main evaluated result.
 
 Legacy crosswalk: related to old `E4a`, `E4b`, and `E4c` profiles.
 
-### claim-level audit material / 声明级审计材料
+### prospective reporting package / 前瞻性报告包
 
-The material connects the specific system output, target version, runtime environment, reproduction material, external process, and vulnerability claim into an auditable chain. This is a claim-level audit label, not a separate exploit technique.
+The material connects the specific system output, target version, runtime environment, reproduction material, external process, and vulnerability claim into an auditable package. This is a prospective reporting outcome, not one of the five coded evidence-output categories.
 
-Legacy crosswalk: extends the old E4 profile idea with explicit claim alignment.
+Legacy crosswalk: extends the old E4 profile idea with explicit claim alignment but is not used as a current category label.
 
 ### governance boundary case / 治理边界案例
 
-The Core item is included because it constrains governance, misuse, disclosure, or safety boundaries rather than because it contributes a target-software vulnerability evidence output. It should be kept separate from the main vulnerability-evidence progression.
+The boundary exemplar is included because it constrains governance, misuse, disclosure, or safety boundaries rather than because it contributes a target-software vulnerability evidence output. It remains outside the target-software distributions.
 
 Legacy crosswalk: commonly recorded as `N/A` or boundary-specific in old E-level fields.
 
 ## Coding Rule
 
-Code `strongest_evidence_output` as the highest evidence strength supported by the system's own public output. Tool count, number of agents, workflow length, benchmark name, or author wording does not automatically increase the evidence-output label. When public material is incomplete, keep the decision at the weaker supported label and explain the uncertainty.
+Code the historical field `strongest_evidence_output` as the principal reported category that most directly supports the study's main evaluated finding. Candidate judgment, controlled task completion, runtime safety signal, and reproducible validation mainly describe system-produced results; externally traceable material describes a system result aligned item by item with a public external-process record. Tool count, number of agents, workflow length, benchmark name, or author wording does not determine the category.
 
-External materials such as CVE, CNVD, maintainer confirmation, bug bounty, vendor confirmation, or fix records do not automatically move the main label to `externally traceable material` when they appear only as aggregate author reports or cannot be checked item by item. Code `externally traceable material` only when the external material can be aligned with a concrete system output, target version, reproducibility material, and a public issue, advisory, CVE, PR, commit, vendor notice, or specific vulnerability claim.
+External materials such as CVE, CNVD, maintainer confirmation, bug bounty, vendor confirmation, or fix records do not automatically make the principal category `externally traceable material` when they appear only as aggregate author reports or cannot be checked item by item. Use `externally traceable material` only when the external material can be aligned with a concrete system output, target version, reproducibility material, and a public issue, advisory, CVE, PR, commit, vendor notice, or specific vulnerability claim.
 
 If the system provides PoC, PoV, replay, patch validation, or verified benchmark artifacts, but external confirmation appears only as an aggregate author-reported clue, keep the main label at `reproducible validation` and record the external clue in the rationale or uncertainty note.
 

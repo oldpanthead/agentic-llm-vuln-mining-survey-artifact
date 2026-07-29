@@ -170,7 +170,7 @@ def main() -> None:
                 "materials_to_review": (
                     f"Review the public paper and public non-sensitive artifact materials for arXiv:{arxiv_id}. "
                     "Independently decide the analytical layer and code lifecycle coverage, primary system shape, "
-                    "cross-stage capabilities, strongest evidence output, external traceability, and claim boundary. "
+                    "cross-stage capabilities, principal reported evidence output, external traceability, and claim boundary. "
                     "Do not consult the author audit or adjudication files before completing the independent pass."
                 ),
                 "coder2_analysis_layer_decision": "",

@@ -8,7 +8,7 @@ This artifact supports an independent second-coder check. The first completed pa
 
 Primary task:
 
-- Independent full coding of the strongest evidence output for the 31-record study-level coded set.
+- Independent full coding of the principal reported evidence output for the 31-record study-level coded set.
 
 Optional task:
 
@@ -58,7 +58,7 @@ The optional task can inspect corpus layer, legacy A-profile, evidence object, a
 
 ## Submission-Update Independent Review
 
-The 2026-07-15 sensitivity search has a separate 41-row blind template: `data/submission_update_20260715_second_coder_blind_template.csv`. Use it to independently decide the analytical layer before coding lifecycle coverage, primary system shape, cross-stage capabilities, strongest evidence output, external traceability, and claim boundary. Do not inspect `data/submission_update_20260715_full_coding_audit.csv` before completing the pass because that file contains the author decisions.
+The 2026-07-15 sensitivity search has a separate 41-row blind template: `data/submission_update_20260715_second_coder_blind_template.csv`. Use it to independently decide the analytical layer before coding lifecycle coverage, primary system shape, cross-stage capabilities, principal reported evidence output, external traceability, and claim boundary. Do not inspect `data/submission_update_20260715_full_coding_audit.csv` before completing the pass because that file contains the author decisions.
 
 The tightened-boundary rerun uses `data/submission_update_20260715_second_coder_rerun_blind_template.csv` together with `SUBMISSION_UPDATE_SECOND_CODER_RERUN_NOTES.md`. The original blank update template and previous pass are retained for provenance. The adopted independent rerun decisions are in `data/submission_update_20260715_second_coder_results.csv`, and their pre-adjudication agreement is reported in `reports/SUBMISSION_UPDATE_SECOND_CODER_PRE_ADJUDICATION_REPORT.md`. The existing 31-record agreement results do not apply to these update-search records. The assistant-prepared working draft preserves both inputs; the author-confirmed resolution is stored separately in `data/submission_update_20260715_adjudicated.csv`. This finalization records author acceptance of an evidence-based resolution and is not described as two-human consensus or third-coder adjudication.
 
@@ -77,8 +77,8 @@ Only after independent coding is complete:
 
 After the future formal second-coder decisions are complete, the author may report:
 
-- raw agreement for strongest evidence output;
-- Cohen's kappa for strongest evidence output.
+- raw agreement for principal reported evidence output;
+- Cohen's kappa for principal reported evidence output.
 
 Optional sampled review of corpus layer, legacy A-profile, evidence object, and external-evidence profile remains separate. Multi-label fields should use row-level exact agreement, mean row Jaccard, micro F1, and per-label summaries rather than a single-label kappa. Blank or incomplete coder2 fields mean coding is incomplete; in that state the artifact must warn rather than report formal agreement or kappa. Pilot agreement/kappa values are calibration notes only.
 

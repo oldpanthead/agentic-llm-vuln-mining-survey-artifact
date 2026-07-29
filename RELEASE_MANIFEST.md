@@ -19,7 +19,7 @@ The release includes non-sensitive materials needed to review the survey evidenc
 - manuscript-facing synthesis matrix, synthesis statistics, mapping counts, publication-status sensitivity analysis, 67-study empirical reporting and traditional-primitive extractions, per-label reliability, representative reported results, benchmark-boundary notes, research-agenda outputs, and reproducibility audit files;
 - DOI/reference audit, DOI-status notes, Zotero/PDF resolution summary, and literature-update decisions;
 - product-ecosystem snapshot for public coding-agent and security-agent materials;
-- formal strongest-evidence-output second-coder results and agreement report;
+- formal principal-reported-evidence-output second-coder results and agreement report;
 - formal cross-stage capability / external-traceability extension results and set-style agreement report;
 - pilot second-coder calibration archive;
 - historical v13 restructuring audit archive;
@@ -97,7 +97,7 @@ The current formal reliability result is the unified independent review of all 6
 
 ## Release State
 
-- Submission snapshot: `csur-submission-2026-07-final-v3`.
+- Submission snapshot: `csur-submission-2026-07-final-v4`.
 - The analytical corpus is frozen. Subsequent corrections are limited to bibliographic metadata, formal-version reconciliation, and artifact consistency.
 
 ## Extended synthesis terminology note

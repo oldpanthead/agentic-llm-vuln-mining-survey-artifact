@@ -16,7 +16,7 @@ The completed rerun blind pass contains all 41 decisions and does not expose aut
 |---|---:|---:|---:|---|
 | Analysis layer | 40 / 41 | 0.976 | 0.844 | U24 |
 | Primary system shape | 26 / 41 | 0.634 | 0.513 | U01, U02, U03, U04, U07, U08, U10, U11, U12, U15, U21, U24, U29, U39, U40 |
-| Strongest evidence output | 28 / 41 | 0.683 | 0.551 | U01, U03, U04, U09, U14, U17, U21, U24, U26, U27, U36, U37, U39 |
+| Principal reported evidence output | 28 / 41 | 0.683 | 0.551 | U01, U03, U04, U09, U14, U17, U21, U24, U26, U27, U36, U37, U39 |
 | External traceability | 28 / 41 | 0.683 | 0.420 | U04, U07, U14, U16, U17, U18, U20, U22, U29, U30, U32, U35, U37 |
 
 ## Multi-Label Fields
