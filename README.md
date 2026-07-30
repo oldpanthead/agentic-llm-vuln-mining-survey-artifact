@@ -9,7 +9,7 @@ This repository contains the non-sensitive public artifact for a mapping-oriente
 3. Use `ARTIFACT_INDEX.md` as the compact file map.
 4. Use `data_dictionary.md` for field-level definitions.
 
-Versioned submission snapshot: `csur-submission-2026-07-final-v4`.
+Versioned submission snapshot: `csur-submission-2026-07-final-v5`.
 
 Expected validation highlights:
 
@@ -56,6 +56,9 @@ The current reliability view applies one frozen codebook to all 67 target-softwa
 - `data/empirical_reporting_completeness.csv`: overall and system-shape reporting-completeness counts derived from the 67-study extraction.
 - `data/traditional_security_primitives.csv`: source-located, multi-label author extraction of conventional security primitives explicitly used in the workflow or evaluation of the 67 target-software studies. It does not imply that every recorded primitive was dynamically selected by an Agent and is not part of the second-coder reliability analysis.
 - `data/unified_second_coder_per_label_reliability.csv`: per-label raw agreement and Cohen's kappa for the six lifecycle and seven capability labels in the complete target-software review.
+- `data/unified_second_coder_cohort_sensitivity.csv`: initial/update-cohort counts for externally traceable material and item-level public alignment under the harmonized and independent second-coder assignments; the cohort split is not treated as a temporal trend.
+- `data/representative_system_mechanisms.csv`: source-located mechanism extraction for eight representative systems spanning the four system shapes, including LLM decisions, runtime control, state and recovery, and principal outputs.
+- `data/mechanism_cost_ablation_synthesis.csv`: source-located observations used for the cross-shape ablation, cost, resource-control, and failure-recovery synthesis.
 - `data/representative_reported_results.csv`: source-located rows used by the representative reported-results table in Appendix B.
 - `data/submission_update_20260715_rerun_sensitivity_analysis.csv`: label-substitution sensitivity table comparing author-confirmed and rerun coder2 label counts.
 - `reports/SUBMISSION_UPDATE_SECOND_CODER_PRE_ADJUDICATION_REPORT.md`: computed agreement before disagreement resolution.

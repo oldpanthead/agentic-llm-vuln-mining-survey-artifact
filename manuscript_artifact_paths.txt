@@ -9,4 +9,7 @@ data/representative_reported_results.csv
 data/unified_second_coder_final_results.csv
 data/unified_second_coder_per_label_reliability.csv
 data/unified_second_coder_label_substitution_sensitivity.csv
+data/unified_second_coder_cohort_sensitivity.csv
+data/representative_system_mechanisms.csv
+data/mechanism_cost_ablation_synthesis.csv
 data/extended_synthesis_audit.csv

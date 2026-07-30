@@ -16,7 +16,7 @@ The release includes non-sensitive materials needed to review the survey evidenc
 - compact entry map: `ARTIFACT_INDEX.md`;
 - source-specific search protocol, source-level ledger, record-level screening audit, submission-time arXiv update export, screening audit, official-source follow-up log, 41-record author full-text audit, blank update-search template, completed independent update coding, tightened-boundary rerun files, label-substitution sensitivity table, pre-adjudication agreement report, preserved working draft, author-confirmed adjudication, canonical-integration assessment, corpus metadata, canonical study/version crosswalk, corpus-layer audit, and screening summary;
 - author-confirmed harmonized 68-record coding matrix, pre-harmonization combined view, field-level harmonization audit, round-specific statistics, frozen 31-record coding table, 37-record update-round view, `data/extended_synthesis_audit.csv`, extended synthesis audit report, corpus-stratification closure report, deduplication audit report, current evidence-output codebook, legacy A-profile codebook, field dictionary, publication-status study-level view, and legacy-code crosswalk;
-- manuscript-facing synthesis matrix, synthesis statistics, mapping counts, publication-status sensitivity analysis, 67-study empirical reporting and traditional-primitive extractions, per-label reliability, representative reported results, benchmark-boundary notes, research-agenda outputs, and reproducibility audit files;
+- manuscript-facing synthesis matrix, synthesis statistics, mapping counts, publication-status sensitivity analysis, 67-study empirical reporting and traditional-primitive extractions, per-label and cohort sensitivity (`data/unified_second_coder_cohort_sensitivity.csv`), representative system mechanisms (`data/representative_system_mechanisms.csv`), source-located cost/ablation/failure observations (`data/mechanism_cost_ablation_synthesis.csv`), representative reported results, benchmark-boundary notes, research-agenda outputs, and reproducibility audit files;
 - DOI/reference audit, DOI-status notes, Zotero/PDF resolution summary, and literature-update decisions;
 - product-ecosystem snapshot for public coding-agent and security-agent materials;
 - formal principal-reported-evidence-output second-coder results and agreement report;
@@ -56,6 +56,7 @@ Legacy A/E fields are retained for historical reproducibility and cross-version 
 - `data/unified_second_coder_pre_adjudication_disagreements.csv`
 - `data/unified_second_coder_label_substitution_sensitivity.csv`
 - `data/unified_second_coder_per_label_reliability.csv`
+- `data/unified_second_coder_cohort_sensitivity.csv`
 - `data/traditional_security_primitives.csv`
 - `reports/UNIFIED_SECOND_CODER_PRE_ADJUDICATION_REPORT.md`
 - `data/core31_second_coder_formal_blind_template.csv`
@@ -97,7 +98,7 @@ The current formal reliability result is the unified independent review of all 6
 
 ## Release State
 
-- Submission snapshot: `csur-submission-2026-07-final-v4`.
+- Submission snapshot: `csur-submission-2026-07-final-v5`.
 - The analytical corpus is frozen. Subsequent corrections are limited to bibliographic metadata, formal-version reconciliation, and artifact consistency.
 
 ## Extended synthesis terminology note

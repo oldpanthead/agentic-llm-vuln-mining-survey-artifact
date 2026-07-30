@@ -38,6 +38,9 @@ This index points reviewers to the public, non-sensitive files needed to audit t
 - `data/empirical_reporting_completeness.csv`: overall and system-shape completeness counts recomputed from the empirical extraction.
 - `data/traditional_security_primitives.csv`: auditable, source-located RQ1 author extraction of seven conventional security-primitive families explicitly used in study workflows or evaluations; it is separate from the second-coder reliability scope.
 - `data/unified_second_coder_per_label_reliability.csv`: per-label reliability results for lifecycle and capability coding in the unified target-software review.
+- `data/unified_second_coder_cohort_sensitivity.csv`: cohort-level comparison showing how ET and public-alignment assignments distribute under harmonized and complete independent labels.
+- `data/representative_system_mechanisms.csv`: source-located mechanism decomposition for the eight systems compared in the manuscript system-shape table.
+- `data/mechanism_cost_ablation_synthesis.csv`: source-located cost, runtime, ablation, and failure-recovery observations used in the cross-shape technical synthesis.
 - `data/representative_reported_results.csv`: source-located audit rows for the manuscript representative reported-results table.
 - `data/current_study_level_coding_matrix_harmonized.csv`: author-confirmed current 68-record matrix with 67 target-software studies, one governance boundary case, controlled primary shapes, overlays, and cross-stage capabilities.
 - `data/current_study_level_coding_matrix.csv`: pre-harmonization combined 68-record matrix retained for provenance.

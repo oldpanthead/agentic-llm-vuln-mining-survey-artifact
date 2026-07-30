@@ -533,3 +533,33 @@ Per-label binary agreement for the 67 target-software studies in the complete in
 - `author_positive_n`, `coder2_positive_n`: positive assignments under the harmonized author matrix and complete independent coding.
 - `raw_agreement_n`, `raw_agreement`: binary agreement count and proportion for the label.
 - `cohens_kappa`: label-specific Cohen's kappa; these values complement rather than replace row-level Jaccard and micro-F1 for the multi-label fields.
+
+## `data/unified_second_coder_cohort_sensitivity.csv`
+
+Compact cohort-level sensitivity for externally traceable material and item-level public alignment. It compares the initial and update cohorts under the harmonized matrix and the complete independent second-coder labels. The rows document boundary sensitivity and must not be interpreted as a temporal trend.
+
+- `field`, `label`, `label_source`: coded field, controlled label, and label assignment used.
+- `initial_cohort_n`, `update_cohort_n`, `total_n`: directly recomputed counts.
+- `interpretation`: scope note that distinguishes cohort provenance from temporal evolution.
+
+## `data/representative_system_mechanisms.csv`
+
+Source-located mechanism decomposition for the eight representative systems in the manuscript system-shape table. This supplementary author extraction does not add or revise any lifecycle, capability, shape, evidence-output, traceability, or claim-boundary label.
+
+- `matrix_id`, `system`, `citation_key`, `primary_shape`: links to the harmonized study-level matrix and reference audit.
+- `input_and_context`: material available at the system entry point.
+- `llm_decision`: semantic judgment or generation attributed to the LLM component.
+- `runtime_and_fixed_control`: agent-runtime controls, fixed scripts, conventional tools, and execution services.
+- `state_feedback_and_recovery`: persisted state, returned signals, and documented recovery behavior.
+- `principal_output`: the existing study-level principal evidence-output label in readable form.
+- `source_location`, `extraction_note`: paper section/page locator and interpretation boundary.
+
+## `data/mechanism_cost_ablation_synthesis.csv`
+
+Selected source-located observations used to interpret the existing runtime, cost, ablation, and failure-reporting extraction. Rows retain each study's original unit and are not normalized, averaged, or ranked across systems.
+
+- `system`, `citation_key`: study identity and reference-audit link.
+- `dimension`: controlled synthesis role: cost/runtime, cost, resource control, ablation, combined ablation/cost, failure recovery, or failure analysis.
+- `reported_observation`, `unit_or_comparison`: source-scoped finding and its original unit.
+- `source_location`: page, section, figure, or table locator in the reviewed paper.
+- `synthesis_use`: why the observation informs the manuscript's mechanism-level comparison.

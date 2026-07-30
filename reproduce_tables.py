@@ -250,6 +250,37 @@ CSV_REQUIRED_FIELDS = {
       'raw_agreement',
       'cohens_kappa',
     ],
+    'unified_second_coder_cohort_sensitivity.csv': [
+      'field',
+      'label',
+      'label_source',
+      'initial_cohort_n',
+      'update_cohort_n',
+      'total_n',
+      'interpretation',
+    ],
+    'representative_system_mechanisms.csv': [
+      'matrix_id',
+      'system',
+      'citation_key',
+      'primary_shape',
+      'input_and_context',
+      'llm_decision',
+      'runtime_and_fixed_control',
+      'state_feedback_and_recovery',
+      'principal_output',
+      'source_location',
+      'extraction_note',
+    ],
+    'mechanism_cost_ablation_synthesis.csv': [
+      'system',
+      'citation_key',
+      'dimension',
+      'reported_observation',
+      'unit_or_comparison',
+      'source_location',
+      'synthesis_use',
+    ],
     'submission_update_20260715_adjudication_working_draft.csv': [
       'update_id',
       'arxiv_id',
@@ -2454,6 +2485,112 @@ def validate_per_label_reliability(rows, matrix_rows, coder_rows):
     if problems:
         print('ERROR: per-label reliability problems:', problems[:12])
 
+
+def validate_cohort_sensitivity(rows):
+    expected = {
+        ('principal_reported_evidence_output', 'externally traceable material', 'harmonized'): (0, 4, 4),
+        ('principal_reported_evidence_output', 'externally traceable material', 'second_coder'): (6, 5, 11),
+        ('external_traceability', 'publicly aligned external trace', 'harmonized'): (0, 4, 4),
+        ('external_traceability', 'publicly aligned external trace', 'second_coder'): (6, 6, 12),
+    }
+    observed = {}
+    problems = []
+    for row in rows:
+        key = (row.get('field'), row.get('label'), row.get('label_source'))
+        try:
+            values = (
+                int(row.get('initial_cohort_n', -1)),
+                int(row.get('update_cohort_n', -1)),
+                int(row.get('total_n', -1)),
+            )
+        except ValueError:
+            problems.append((key, 'non-integer cohort count'))
+            continue
+        observed[key] = values
+        if values[0] + values[1] != values[2]:
+            problems.append((key, 'cohort counts do not sum to total'))
+        if 'temporal trend' not in row.get('interpretation', '') and key[2] == 'harmonized':
+            problems.append((key, 'harmonized interpretation must reject a temporal-trend reading'))
+    status('ERROR', observed == expected and not problems, 'cohort sensitivity reproduces ET 0/4 vs 6/5 and public-alignment 0/4 vs 6/6')
+    if observed != expected:
+        print('ERROR: cohort sensitivity mismatch:', observed)
+    if problems:
+        print('ERROR: cohort sensitivity problems:', problems)
+
+
+def validate_representative_system_mechanisms(rows, matrix_rows, reference_rows):
+    target_by_id = {
+        row.get('matrix_id'): row for row in matrix_rows
+        if row.get('analytical_role') == 'target_software_study'
+    }
+    reference_keys = {row.get('citation_key', '').strip() for row in reference_rows if row.get('citation_key', '').strip()}
+    required_shapes = {
+        'candidate-analysis system',
+        'feedback-driven fuzzing agent',
+        'reproduction-, validation-, and repair-centered agent',
+        'long-horizon pentest and CRS agent',
+    }
+    problems = []
+    for row in rows:
+        matrix_id = row.get('matrix_id')
+        matrix_row = target_by_id.get(matrix_id)
+        if not matrix_row:
+            problems.append((matrix_id, 'missing target-software matrix row'))
+            continue
+        if row.get('system') != matrix_row.get('system_alias'):
+            problems.append((matrix_id, 'system alias mismatch'))
+        if row.get('primary_shape') != matrix_row.get('primary_system_shape'):
+            problems.append((matrix_id, 'primary shape mismatch'))
+        if row.get('citation_key') not in reference_keys:
+            problems.append((matrix_id, 'citation key missing from reference audit'))
+        for field in (
+            'input_and_context', 'llm_decision', 'runtime_and_fixed_control',
+            'state_feedback_and_recovery', 'principal_output', 'source_location', 'extraction_note',
+        ):
+            if not row.get(field, '').strip():
+                problems.append((matrix_id, f'empty {field}'))
+    status('ERROR', len(rows) == 8 and len({row.get("matrix_id") for row in rows}) == 8, 'representative mechanism extraction contains eight unique systems')
+    status('ERROR', {row.get('primary_shape') for row in rows} == required_shapes, 'representative mechanism extraction covers all four system shapes')
+    status('ERROR', not problems, 'representative mechanism rows map to the matrix, references, and source locations')
+    if problems:
+        print('ERROR: representative mechanism problems:', problems[:12])
+    if MANUSCRIPT_PATH is not None and MANUSCRIPT_PATH.exists():
+        manuscript = read_manuscript_bundle(MANUSCRIPT_PATH)
+        table_match = re.search(
+            r'\\caption\{Representative system mechanisms across the four system shapes\.\}'
+            r'.*?\\label\{tab:shape-matrix\}(.*?)\\end\{table\}',
+            manuscript,
+            flags=re.S,
+        )
+        status('ERROR', bool(table_match), 'manuscript mechanism-comparison table is locatable')
+        if table_match:
+            table_keys = set()
+            for group in re.findall(r'\\cite\{([^}]+)\}', table_match.group(1)):
+                table_keys.update(key.strip() for key in group.split(',') if key.strip())
+            csv_keys = {row.get('citation_key') for row in rows}
+            status('ERROR', table_keys == csv_keys, 'manuscript mechanism table and artifact use the same eight citation keys')
+
+
+def validate_mechanism_cost_ablation(rows, reference_rows):
+    reference_keys = {row.get('citation_key', '').strip() for row in reference_rows if row.get('citation_key', '').strip()}
+    allowed_dimensions = {'cost_and_runtime', 'cost', 'resource_control', 'ablation', 'ablation_and_cost', 'failure_recovery', 'failure_analysis'}
+    problems = []
+    for index, row in enumerate(rows, start=1):
+        if row.get('citation_key') not in reference_keys:
+            problems.append((index, 'citation key missing from reference audit'))
+        if row.get('dimension') not in allowed_dimensions:
+            problems.append((index, f"invalid dimension: {row.get('dimension')}"))
+        for field in ('system', 'reported_observation', 'unit_or_comparison', 'source_location', 'synthesis_use'):
+            if not row.get(field, '').strip():
+                problems.append((index, f'empty {field}'))
+    required_systems = {'RFCAUDIT', 'LLAMA', 'PBFuzz', 'ReForge', 'LLMVD.js', 'PentestAgent', 'OSS-CRS'}
+    status('ERROR', len(rows) >= 10, f'mechanism/cost/ablation synthesis contains {len(rows)} source-located observations')
+    status('ERROR', required_systems.issubset({row.get('system') for row in rows}), 'mechanism/cost/ablation synthesis covers the selected cross-shape systems')
+    status('ERROR', not problems, 'mechanism/cost/ablation rows use controlled dimensions and source locations')
+    if problems:
+        print('ERROR: mechanism/cost/ablation problems:', problems[:12])
+
+
 def validate_manuscript_artifact_paths():
     manifest_missing = []
     manifest_paths = []
@@ -2574,6 +2711,9 @@ empirical_reporting_extraction = read_csv('empirical_reporting_extraction.csv')
 empirical_reporting_completeness = read_csv('empirical_reporting_completeness.csv')
 traditional_security_primitives = read_csv('traditional_security_primitives.csv')
 unified_per_label_reliability = read_csv('unified_second_coder_per_label_reliability.csv')
+unified_cohort_sensitivity = read_csv('unified_second_coder_cohort_sensitivity.csv')
+representative_system_mechanisms = read_csv('representative_system_mechanisms.csv')
+mechanism_cost_ablation_synthesis = read_csv('mechanism_cost_ablation_synthesis.csv')
 submission_update_adjudication = read_csv('submission_update_20260715_adjudication_working_draft.csv')
 submission_update_adjudicated = read_csv('submission_update_20260715_adjudicated.csv')
 submission_update_integration = read_csv('submission_update_20260715_canonical_integration_crosswalk.csv')
@@ -2609,6 +2749,9 @@ validate_empirical_reporting(empirical_reporting_extraction, empirical_reporting
 validate_traditional_security_primitives(traditional_security_primitives, harmonized_study_level_matrix)
 validate_structured_claim_boundaries(harmonized_study_level_matrix)
 validate_per_label_reliability(unified_per_label_reliability, harmonized_study_level_matrix, unified_second_coder_results)
+validate_cohort_sensitivity(unified_cohort_sensitivity)
+validate_representative_system_mechanisms(representative_system_mechanisms, harmonized_study_level_matrix, ref)
+validate_mechanism_cost_ablation(mechanism_cost_ablation_synthesis, ref)
 validate_submission_snapshot_files(submission_update_initial_results, submission_update_results, submission_update_sensitivity, publication_status_rows, publication_distribution_rows)
 validate_publication_status_sensitivity(publication_status_sensitivity, publication_status_rows)
 validate_manuscript_artifact_paths()
