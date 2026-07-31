@@ -36,8 +36,7 @@ Full-text assessment yielded 132 target-software studies, 83 extended-synthesis 
 The final ledger contains 1,785 source records and 1,772 studies. Analytical allocation is:
 
 - 199 target-software studies;
-- one governance boundary case;
-- 149 extended-synthesis studies;
+- 150 extended-synthesis studies, including governance and agent-safety context outside the target-software denominator;
 - 670 background/reference studies;
 - 753 excluded studies.
 

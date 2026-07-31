@@ -23,8 +23,7 @@ The review integrates database and supplementary searches conducted through 2026
 - Integrated source records: 1,785
 - Studies after version reconciliation: 1,772
 - Target-software studies with study-level coding: 199
-- Governance boundary case: 1, outside target-software distributions
-- Extended-synthesis studies: 149
+- Extended-synthesis studies: 150, including governance and agent-safety context outside the target-software denominator
 - Background/reference studies: 670
 - Excluded studies: 753
 - Alternate versions or source variants retained without separate counting: 13
@@ -50,8 +49,8 @@ The search used arXiv, OpenAlex, Crossref-backed publisher queries for ACM, IEEE
 
 ### Study-level and extended synthesis
 
-- `data/current_study_level_coding_matrix_harmonized.csv`: final 200-row matrix: 199 target-software studies and one governance boundary case.
-- `data/extended_synthesis_audit.csv`: record-level audit for 149 extended-synthesis studies.
+- `data/current_study_level_coding_matrix_harmonized.csv`: final 199-row target-software matrix.
+- `data/extended_synthesis_audit.csv`: record-level audit for 150 extended-synthesis studies, including AgentFuzz as cross-cutting governance context.
 - `data/traditional_security_primitives.csv`: source-located, multi-label author extraction for the 199 target-software studies.
 - `data/representative_system_mechanisms.csv`: source-located mechanism extraction used by the representative system comparison.
 - `data/mechanism_cost_ablation_synthesis.csv`: source-located cost, ablation, and failure-recovery observations.

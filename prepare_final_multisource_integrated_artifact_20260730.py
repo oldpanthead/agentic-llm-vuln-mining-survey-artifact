@@ -320,9 +320,8 @@ def main() -> int:
     summary = [
         {"metric": "source_records", "value": str(len(proposed_corpus))},
         {"metric": "canonical_studies", "value": str(len(canonical))},
-        {"metric": "study_level_matrix_rows_including_governance", "value": str(len(proposed_matrix))},
+        {"metric": "study_level_matrix_rows", "value": str(len(proposed_matrix))},
         {"metric": "target_software_studies", "value": str(sum(row["analytical_role"] == "target_software_study" for row in proposed_matrix))},
-        {"metric": "governance_boundary_cases", "value": str(sum(row["analytical_role"] != "target_software_study" for row in proposed_matrix))},
         {"metric": "extended_synthesis_studies", "value": str(len(proposed_extended))},
     ]
     summary.extend(

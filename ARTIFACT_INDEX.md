@@ -5,7 +5,7 @@
 - `reproduce_tables.py`: standalone validation of the integrated search, reconciliation, analytical layers, study-level distributions, primitive extraction, and complete second-coder files.
 - `manuscript_artifact_paths.txt`: repository-relative paths promised by the manuscript.
 
-Expected current counts: 1,785 source records; 1,772 studies after version reconciliation; 199 target-software studies; one governance boundary case; 149 extended-synthesis studies; 670 background/reference studies; 753 exclusions; and 13 alternate versions or source variants.
+Expected current counts: 1,785 source records; 1,772 studies after version reconciliation; 199 target-software studies; 150 extended-synthesis studies; 670 background/reference studies; 753 exclusions; and 13 alternate versions or source variants. AgentFuzz is retained in extended synthesis as governance and agent-safety context rather than as a separate analytical stratum.
 
 ## Integrated Search
 
@@ -23,8 +23,8 @@ Expected current counts: 1,785 source records; 1,772 studies after version recon
 
 - `data/corpus.csv`: integrated source-record ledger.
 - `data/study_version_crosswalk.csv`: source record to study/version mapping.
-- `data/current_study_level_coding_matrix_harmonized.csv`: 199 target-software rows plus one governance boundary row.
-- `data/extended_synthesis_audit.csv`: 149-study thematic-use audit.
+- `data/current_study_level_coding_matrix_harmonized.csv`: 199 target-software rows.
+- `data/extended_synthesis_audit.csv`: 150-study thematic-use audit, including cross-cutting governance context.
 - `data/reference_audit.csv`: citation and source-role audit.
 - `data/publication_status_standardized.csv`: study-level publication-status assignments.
 - `data/publication_status_distribution_by_layer.csv`: publication-status-stratified evidence and shape counts.

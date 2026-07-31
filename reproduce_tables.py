@@ -23,8 +23,7 @@ EXPECTED = {
     "source_records": 1785,
     "canonical_studies": 1772,
     "target_studies": 199,
-    "governance_cases": 1,
-    "extended_studies": 149,
+    "extended_studies": 150,
     "background_studies": 670,
     "excluded_studies": 753,
     "alternate_sources": 13,
@@ -194,7 +193,7 @@ def check_corpus() -> tuple[list[dict[str, str]], list[dict[str, str]]]:
     require(len(set(canonical_ids)) == len(canonical_ids), "a canonical study is counted more than once")
     layers = Counter(row.get("analytical_layer", "") for row in canonical)
     expected_layers = {
-        "study_level_coded": EXPECTED["target_studies"] + EXPECTED["governance_cases"],
+        "study_level_coded": EXPECTED["target_studies"],
         "extended_synthesis": EXPECTED["extended_studies"],
         "background_reference": EXPECTED["background_studies"],
         "excluded_near_neighbor": EXPECTED["excluded_studies"],
@@ -206,32 +205,32 @@ def check_corpus() -> tuple[list[dict[str, str]], list[dict[str, str]]]:
 
 def check_matrix() -> list[dict[str, str]]:
     matrix = read_csv(DATA / "current_study_level_coding_matrix_harmonized.csv")
-    require(len(matrix) == 200, "study-level matrix must contain 200 rows")
-    require(len({row.get("matrix_id", "") for row in matrix}) == 200, "matrix_id values must be unique")
+    require(len(matrix) == EXPECTED["target_studies"], "study-level matrix must contain 199 rows")
+    require(len({row.get("matrix_id", "") for row in matrix}) == len(matrix), "matrix_id values must be unique")
     target = [row for row in matrix if row.get("analytical_role") == "target_software_study"]
-    governance = [row for row in matrix if row.get("analytical_role") != "target_software_study"]
     require(len(target) == EXPECTED["target_studies"], "target-software denominator must be 199")
-    require(len(governance) == EXPECTED["governance_cases"], "governance boundary count must be 1")
     require(Counter(row.get("strongest_evidence_output", "") for row in target) == EVIDENCE, "principal evidence counts differ")
     require(Counter(row.get("primary_system_shape", "") for row in target) == SHAPES, "system-shape counts differ")
     require(count_multilabel(target, "lifecycle_coverage") == LIFECYCLE, "lifecycle counts differ")
     require(count_multilabel(target, "cross_stage_capabilities") == CAPABILITY, "capability counts differ")
     require(Counter(row.get("external_traceability", "") for row in target) == TRACE, "external-trace counts differ")
     require(all(row.get("claim_boundary", "").strip() for row in target), "missing claim-boundary note")
-    info("study-level coding: 199 target studies + 1 governance boundary case")
+    require(not any(row.get("record_id") == "CP114" for row in matrix), "AgentFuzz must not enter target-software coding")
+    info("study-level coding: 199 target-software studies")
     return target
 
 
 def check_extended(target: list[dict[str, str]]) -> None:
     rows = read_csv(DATA / "extended_synthesis_audit.csv")
-    require(len(rows) == EXPECTED["extended_studies"], "extended synthesis must contain 149 studies")
+    require(len(rows) == EXPECTED["extended_studies"], "extended synthesis must contain 150 studies")
     require(len({row.get("record_id", "") for row in rows}) == len(rows), "duplicate extended-synthesis record")
     target_records = {row.get("record_id", "") for row in target}
     require(not (target_records & {row.get("record_id", "") for row in rows}), "study-level and extended layers overlap")
     require(all(row.get("extracted_contribution", "").strip() for row in rows), "missing extended-synthesis contribution")
     require(all(row.get("reason_not_study_level_coded", "").strip() for row in rows), "missing extended-synthesis boundary reason")
     require(all(row.get("public_material_basis", "").strip() for row in rows), "missing extended-synthesis source basis")
-    info("extended synthesis: 149 full-text-supported adjacent studies")
+    require(sum(row.get("record_id") == "CP114" for row in rows) == 1, "AgentFuzz must appear once in extended synthesis")
+    info("extended synthesis: 150 full-text-supported adjacent studies")
 
 
 def check_search_and_dedup() -> None:
@@ -248,8 +247,7 @@ def check_search_and_dedup() -> None:
         "integrated_source_records": 1785,
         "integrated_canonical_studies": 1772,
         "target_software_studies": 199,
-        "governance_boundary_cases": 1,
-        "extended_synthesis_studies": 149,
+        "extended_synthesis_studies": 150,
         "background_reference_studies": 670,
         "excluded_studies": 753,
     }
@@ -293,7 +291,7 @@ def check_supplementary_extractions(target: list[dict[str, str]]) -> None:
 def check_publication_status(target: list[dict[str, str]]) -> None:
     rows = read_csv(DATA / "publication_status_standardized.csv")
     target_rows = [row for row in rows if row.get("analytical_role") == "target_software_study"]
-    require(len(rows) == 200, "publication-status view must contain 200 coded records")
+    require(len(rows) == 199, "publication-status view must contain 199 target-software records")
     require(len(target_rows) == EXPECTED["target_studies"], "publication-status target denominator must be 199")
     require(
         Counter(row.get("publication_status_standardized", "") for row in target_rows) == PUBLICATION_STATUS,
@@ -371,7 +369,7 @@ def check_manuscript(path: Path) -> None:
         error(f"manuscript not found: {path}")
         return
     text = path.read_text(encoding="utf-8-sig", errors="replace")
-    for required in ("1,772", "199", "149"):
+    for required in ("1,772", "199", "150"):
         require(required in text, f"manuscript does not contain integrated value/date: {required}")
     require(
         "2026-07-30" in text or "July 30, 2026" in text,

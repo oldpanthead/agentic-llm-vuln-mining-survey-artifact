@@ -44,8 +44,8 @@ def main() -> int:
         {"stage": "Integrated source records", "count": str(len(corpus)), "note": "Search and supplementary source records; versions remain traceable."},
         {"stage": "Version or duplicate source records", "count": str(len(crosswalk) - len(canonical)), "note": "Alternate source/version records not counted as separate studies."},
         {"stage": "Canonical studies after version reconciliation", "count": str(len(canonical)), "note": "Analytical counts use one canonical study per study/version group."},
-        {"stage": "Study-level coded records", "count": str(len(matrix)), "note": f"{len(target)} target-software studies plus one governance boundary case."},
-        {"stage": "Extended synthesis studies", "count": str(len(extended)), "note": "Full-text-supported adjacent mechanism and evaluation synthesis."},
+        {"stage": "Study-level coded records", "count": str(len(matrix)), "note": "Target-software studies receiving complete study-level coding."},
+        {"stage": "Extended synthesis studies", "count": str(len(extended)), "note": "Full-text-supported adjacent mechanism, evaluation, and governance synthesis."},
         {"stage": "Background/reference studies", "count": str(layer_counts["background_reference"]), "note": "Conceptual, benchmark, tool, method, and ecosystem context."},
         {"stage": "Excluded studies", "count": str(layer_counts["excluded_near_neighbor"]), "note": "Title/abstract exclusions, near-neighbors, and unavailable potentially eligible reports."},
         {"stage": "Product ecosystem snapshot", "count": "23", "note": "Independent deployment-context layer; not part of canonical study counts."},
@@ -84,10 +84,8 @@ def main() -> int:
     }
     for shape, label in shape_names.items():
         snapshot.append({"view": "primary_system_shape", "category": label, "count": str(shapes[shape]), "denominator": f"{len(target)} target-software studies", "scope_note": "one primary shape per target-software study; capabilities remain multi-label"})
-    snapshot.append({"view": "primary_system_shape", "category": "governance boundary exemplar", "count": "1", "denominator": f"{len(matrix)} coded records including boundary exemplar", "scope_note": "outside target-software distributions"})
     final_labels = {
         "target-software study-level coded studies": len(target),
-        "governance boundary coded record": len(matrix) - len(target),
         "extended synthesis studies": len(extended),
         "background/reference studies": layer_counts["background_reference"],
         "excluded studies": layer_counts["excluded_near_neighbor"],

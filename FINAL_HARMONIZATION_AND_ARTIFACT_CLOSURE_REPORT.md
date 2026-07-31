@@ -13,8 +13,7 @@ This report records the synchronized local manuscript/artifact state after the i
 - 1,785 integrated source records
 - 1,772 studies after version reconciliation
 - 199 target-software studies
-- one governance boundary case outside target-software distributions
-- 149 extended-synthesis studies
+- 150 extended-synthesis studies, including AgentFuzz as cross-cutting governance and agent-safety context
 - 670 background/reference studies
 - 753 excluded studies
 - 13 alternate versions or source variants retained without separate counting

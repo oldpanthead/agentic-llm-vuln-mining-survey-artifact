@@ -115,7 +115,6 @@ def main() -> int:
         ("final", "integrated_source_records", integrated["source_records"], "Source versions remain traceable"),
         ("final", "integrated_canonical_studies", integrated["canonical_studies"], "Each study counted once after version reconciliation"),
         ("final", "target_software_studies", integrated["target_software_studies"], "Study-level analytical denominator"),
-        ("final", "governance_boundary_cases", integrated["governance_boundary_cases"], "Outside target-software distributions"),
         ("final", "extended_synthesis_studies", integrated["extended_synthesis_studies"], "Full-text-supported adjacent synthesis"),
         ("final", "background_reference_studies", integrated["canonical_layer_background_reference"], "Contextual literature"),
         ("final", "excluded_studies", integrated["canonical_layer_excluded_near_neighbor"], "Title/abstract exclusions, full-text near-neighbors, and unavailable potentially eligible reports"),
@@ -173,7 +172,7 @@ def main() -> int:
             "",
             "## Final Analytical Allocation",
             "",
-            f"After version reconciliation, the integrated corpus contains **{integrated['canonical_studies']} canonical studies** from **{integrated['source_records']} source records**: **{integrated['target_software_studies']} target-software studies**, **{integrated['governance_boundary_cases']} governance boundary case**, **{integrated['extended_synthesis_studies']} full-text-supported extended-synthesis studies**, **{integrated['canonical_layer_background_reference']} background/reference studies**, and **{integrated['canonical_layer_excluded_near_neighbor']} excluded studies**.",
+            f"After version reconciliation, the integrated corpus contains **{integrated['canonical_studies']} canonical studies** from **{integrated['source_records']} source records**: **{integrated['target_software_studies']} target-software studies**, **{integrated['extended_synthesis_studies']} full-text-supported extended-synthesis studies**, **{integrated['canonical_layer_background_reference']} background/reference studies**, and **{integrated['canonical_layer_excluded_near_neighbor']} excluded studies**.",
             "",
             "Historical search files remain unchanged as provenance. The manuscript-facing method can report the integrated source coverage, date range, screening rules, version reconciliation, and final allocation without narrating internal search rounds.",
         ]

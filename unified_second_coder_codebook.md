@@ -2,9 +2,9 @@
 
 ## Purpose
 
-This codebook supports one unified second-coder review of the complete study-level set: 67 target-software studies plus one governance boundary case. The same definitions apply to records from both corpus-acquisition stages. Earlier second-coder decisions may be confirmed or revised, but every final decision must be checked against the public paper or project material under this codebook.
+This codebook supports the unified second-coder review of the current 199-study target-software set. The same definitions apply across acquisition stages. Earlier second-coder decisions may be confirmed or revised, but every final decision must be checked against the public paper or project material under this codebook. Historical templates retain the former C27 boundary row for provenance; that study is now part of extended synthesis and is not included in current reliability calculations.
 
-The review covers six descriptive fields. The governance boundary case is coded where applicable but is not part of target-software lifecycle, capability, or system-shape denominators.
+The review covers six descriptive fields for target-software studies.
 
 ## General Decision Rule
 
@@ -45,7 +45,7 @@ Choose the dominant evaluated role around which the study's main contribution an
 - `feedback-driven fuzzing agent`
 - `reproduction-, validation-, and repair-centered agent`
 - `long-horizon pentest and CRS agent`
-- `governance boundary case` (C27 only)
+- `governance boundary case` (historical C27 provenance only; not a current target-software value)
 
 Long-horizon orchestration can overlay the other roles. Assign it as primary only when coordination across tasks or stages is the central evaluated contribution.
 
@@ -58,7 +58,7 @@ Code the strongest system-produced output demonstrated in the reviewed material.
 - `runtime safety signal`: crash, sanitizer, assertion, oracle, coverage-linked bug signal, or other execution-time safety observation without a sufficiently specified replay package.
 - `reproducible validation`: replay, PoC/PoV, validation script, or failing-before/passing-after patch check aligned with the target version and environment.
 - `externally traceable material`: a specific system result is publicly aligned with an issue, advisory, CVE, PR/commit, maintainer record, bounty record, or equivalent external-process record.
-- `governance boundary case` (C27 only)
+- `governance boundary case` (historical C27 provenance only; not a current target-software value)
 
 The categories describe reported outputs; they are not a universal linear quality ladder. Benchmark ground truth or an aggregate author-reported CVE count does not automatically become externally traceable material.
 
@@ -68,7 +68,7 @@ The categories describe reported outputs; they are not a universal linear qualit
 - `author-reported external clue`: the paper reports a CVE, vendor, maintainer, bounty, or disclosure outcome without public item-level alignment to the specific system output.
 - `benchmark ground truth / public material`: a benchmark or public vulnerability record supplies task background, but does not establish that the system independently produced the externally recorded result.
 - `publicly aligned external trace`: the reviewed public material links a specific system result to a specific external-process record.
-- `not reported` (governance boundary case only when the field is not applicable).
+- `not reported` (historical C27 provenance only; not a current target-software value).
 
 External traceability is coded separately from the principal reported evidence output. An external clue can coexist with reproducible validation without changing the principal-output label.
 

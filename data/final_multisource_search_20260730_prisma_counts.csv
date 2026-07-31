@@ -19,7 +19,6 @@ integration,prior_canonical_studies_not_reidentified,1662,Canonical studies reta
 final,integrated_source_records,1785,Source versions remain traceable
 final,integrated_canonical_studies,1772,Each study counted once after version reconciliation
 final,target_software_studies,199,Study-level analytical denominator
-final,governance_boundary_cases,1,Outside target-software distributions
-final,extended_synthesis_studies,149,Full-text-supported adjacent synthesis
+final,extended_synthesis_studies,150,"Full-text-supported adjacent mechanism, evaluation, and governance synthesis"
 final,background_reference_studies,670,Contextual literature
 final,excluded_studies,753,"Title/abstract exclusions, full-text near-neighbors, and unavailable potentially eligible reports"

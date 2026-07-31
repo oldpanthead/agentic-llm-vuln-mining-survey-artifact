@@ -42,13 +42,12 @@ Publisher-filtered Crossref feeds were used for ACM, IEEE, Springer, and Elsevie
 | final | integrated source records | 1785 |
 | final | integrated canonical studies | 1772 |
 | final | target software studies | 199 |
-| final | governance boundary cases | 1 |
-| final | extended synthesis studies | 149 |
+| final | extended synthesis studies | 150 |
 | final | background reference studies | 670 |
 | final | excluded studies | 753 |
 
 ## Final Analytical Allocation
 
-After version reconciliation, the integrated corpus contains **1772 canonical studies** from **1785 source records**: **199 target-software studies**, **1 governance boundary case**, **149 full-text-supported extended-synthesis studies**, **670 background/reference studies**, and **753 excluded studies**.
+After version reconciliation, the integrated corpus contains **1772 canonical studies** from **1785 source records**: **199 target-software studies**, **150 full-text-supported extended-synthesis studies**, **670 background/reference studies**, and **753 excluded studies**. AgentFuzz is retained within extended synthesis as governance and agent-safety context and does not enter target-software distributions.
 
 Historical search files remain unchanged as provenance. The manuscript-facing method can report the integrated source coverage, date range, screening rules, version reconciliation, and final allocation without narrating internal search rounds.

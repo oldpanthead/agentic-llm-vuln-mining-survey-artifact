@@ -4,8 +4,8 @@ Unique multi-source search records screened,1642,Exact-title-deduplicated record
 Integrated source records,1785,Search and supplementary source records; versions remain traceable.
 Version or duplicate source records,13,Alternate source/version records not counted as separate studies.
 Canonical studies after version reconciliation,1772,Analytical counts use one canonical study per study/version group.
-Study-level coded records,200,199 target-software studies plus one governance boundary case.
-Extended synthesis studies,149,Full-text-supported adjacent mechanism and evaluation synthesis.
+Study-level coded records,199,Target-software studies receiving complete study-level coding.
+Extended synthesis studies,150,"Full-text-supported adjacent mechanism, evaluation, and governance synthesis."
 Background/reference studies,670,"Conceptual, benchmark, tool, method, and ecosystem context."
 Excluded studies,753,"Title/abstract exclusions, near-neighbors, and unavailable potentially eligible reports."
 Product ecosystem snapshot,23,Independent deployment-context layer; not part of canonical study counts.

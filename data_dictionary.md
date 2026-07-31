@@ -1,17 +1,17 @@
 # Data Dictionary
 
-This dictionary describes the non-sensitive audit artifact used by the survey manuscript. Current manuscript-facing files implement the integrated multi-source search through 2026-07-30, study/version reconciliation, the 199-study target-software coding matrix, the 149-study extended synthesis audit, and the complete independent second-coder review. Earlier 31-record, 41-record, 67-study, `core31`, and `v13_` files remain only as historical provenance unless a section below explicitly identifies them as current.
+This dictionary describes the non-sensitive audit artifact used by the survey manuscript. Current manuscript-facing files implement the integrated multi-source search through 2026-07-30, study/version reconciliation, the 199-study target-software coding matrix, the 150-study extended synthesis audit, and the complete independent second-coder review. Earlier 31-record, 41-record, 67-study, `core31`, and `v13_` files remain only as historical provenance unless a section below explicitly identifies them as current.
 
 
 ## Current Manuscript Layer Terminology
 
-Current terminology maps legacy source-layer values as follows: `Core` identifies study-level coded source records and `Supporting` identifies extended-synthesis source records. The current corpus contains 200 study-level rows: 199 target-software studies plus one governance boundary case. It also contains 149 extended-synthesis studies. `data/current_study_level_coding_matrix_harmonized.csv` is the current manuscript-facing matrix; `data/current_study_level_coding_matrix.csv` preserves a pre-final-multisource historical view.
+Current terminology maps legacy source-layer values as follows: `Core` identifies study-level coded source records and `Supporting` identifies extended-synthesis source records. The current corpus contains 199 target-software study-level rows and 150 extended-synthesis studies. AgentFuzz is retained in extended synthesis as governance and agent-safety context rather than as a separate analytical stratum. `data/current_study_level_coding_matrix_harmonized.csv` is the current manuscript-facing matrix; `data/current_study_level_coding_matrix.csv` preserves a pre-final-multisource historical view.
 
 The current shape and capability schema consolidates historical coding terms through `LEGACY_CODE_CROSSWALK.md` and the documented cross-round harmonization. All newly integrated target-software studies use that same schema; historical files retain their earlier labels and provenance.
 
 ## Complete second-coder review files
 
-`unified_second_coder_codebook.md` defines the shared coding boundary. `data/integrated_199_second_coder_comparison_20260730.csv` compares the final and independent labels for all 199 target-software studies. `data/integrated_199_per_label_reliability_20260730.csv` reports label-level agreement for lifecycle and capability fields, and `data/integrated_199_label_substitution_sensitivity_20260730.csv` reports final-versus-coder2 counts for every controlled label. `INTEGRATED_199_SECOND_CODER_AGREEMENT_20260730.md` is the current reliability report. The separately coded governance case is excluded from target-software reliability denominators. No consensus or post-adjudication reliability is claimed.
+`unified_second_coder_codebook.md` defines the shared coding boundary. `data/integrated_199_second_coder_comparison_20260730.csv` compares the final and independent labels for all 199 target-software studies. `data/integrated_199_per_label_reliability_20260730.csv` reports label-level agreement for lifecycle and capability fields, and `data/integrated_199_label_substitution_sensitivity_20260730.csv` reports final-versus-coder2 counts for every controlled label. `INTEGRATED_199_SECOND_CODER_AGREEMENT_20260730.md` is the current reliability report. No consensus or post-adjudication reliability is claimed.
 
 ## Integrated multi-source search files
 
@@ -23,7 +23,7 @@ The current shape and capability schema consolidates historical coding terms thr
 - `data/final_multisource_search_20260730_prisma_counts.csv`: the adapted PRISMA-ScR accounting used in the manuscript.
 - `data/final_multisource_search_20260730_dedup_resolutions.csv`: potential same-study/version pairs, their resolution, and evidence basis.
 
-The integrated totals are 1,785 source records and 1,772 studies after version reconciliation: 199 target-software studies, one governance boundary case, 149 extended-synthesis studies, 670 background/reference studies, and 753 exclusions. Thirteen alternate versions or source variants remain traceable without separate counting.
+The integrated totals are 1,785 source records and 1,772 studies after version reconciliation: 199 target-software studies, 150 extended-synthesis studies, 670 background/reference studies, and 753 exclusions. Thirteen alternate versions or source variants remain traceable without separate counting.
 
 ## Historical coding and search provenance
 
@@ -32,7 +32,7 @@ The integrated totals are 1,785 source records and 1,772 studies after version r
 Lightweight boundary notes for an adopted tightened-boundary rerun of the 41-record submission-update second-coder pass. It records the tightened primary/overlay and external-traceability rules used for the adopted update-pass rerun.
 ## `data/current_study_level_coding_matrix_harmonized.csv` and pre-harmonization provenance
 
-`data/current_study_level_coding_matrix_harmonized.csv` is the current matrix for all 200 study-level records. It applies one controlled lifecycle, primary-shape, overlay, cross-stage-capability, evidence-output, and external-traceability schema while preserving coding provenance. `data/current_study_level_coding_matrix.csv` is retained as a historical pre-final-multisource view. Neither file contains legacy A/E fields.
+`data/current_study_level_coding_matrix_harmonized.csv` is the current matrix for all 199 target-software study-level records. It applies one controlled lifecycle, primary-shape, overlay, cross-stage-capability, evidence-output, and external-traceability schema while preserving coding provenance. `data/current_study_level_coding_matrix.csv` is retained as a historical pre-final-multisource view. Neither file contains legacy A/E fields.
 
 - `matrix_id`: stable row identifier inherited from the coding round (`C01`--`C31` or the applicable `U` identifier).
 - `record_id`, `canonical_study_id`: source-record and canonical-study links.
@@ -253,7 +253,7 @@ This file links 1,785 source records to 1,772 studies. It preserves version hist
 
 ## `data/extended_synthesis_audit.csv`
 
-This file provides a record-level synthesis-use audit for the 149-study extended synthesis set. It complements the study-level workflow--capability--evidence coding used for 199 target-software studies plus one governance boundary case.
+This file provides a record-level synthesis-use audit for the 150-study extended synthesis set. It complements the study-level workflow--capability--evidence coding used for 199 target-software studies. Governance and agent-safety studies in this layer support cross-cutting discussion without entering target-software distributions.
 
 - `record_id`: stable identifier linked to `data/corpus.csv`.
 - `citation_key`: bibliography key extracted from the public reference audit when available; `NA` means no key was recorded in the source note.
@@ -554,7 +554,7 @@ This file preserves per-label binary agreement for the earlier 67-study review. 
 
 ## `data/integrated_199_second_coder_comparison_20260730.csv`
 
-One comparison row for each target-software study. It preserves the final and independent values for primary system shape, principal reported evidence output, external traceability, lifecycle coverage, cross-stage capabilities, and the associated agreement flags. The denominator is 199; the governance boundary case is excluded.
+One comparison row for each target-software study. It preserves the final and independent values for primary system shape, principal reported evidence output, external traceability, lifecycle coverage, cross-stage capabilities, and the associated agreement flags. The denominator is 199.
 
 ## `data/integrated_199_per_label_reliability_20260730.csv`
 

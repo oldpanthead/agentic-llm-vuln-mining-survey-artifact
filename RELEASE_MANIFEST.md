@@ -2,7 +2,7 @@
 
 ## Release Scope
 
-This public release contains non-sensitive data and scripts supporting the ACM CSUR manuscript. It includes the integrated multi-source search through 2026-07-30, study/version reconciliation, analytical-layer allocation, the 199-study target-software coding matrix, the 149-study extended synthesis audit, complete independent second-coder files, and source-located supplementary extractions.
+This public release contains non-sensitive data and scripts supporting the ACM CSUR manuscript. It includes the integrated multi-source search through 2026-07-30, study/version reconciliation, analytical-layer allocation, the 199-study target-software coding matrix, the 150-study extended synthesis audit, complete independent second-coder files, and source-located supplementary extractions.
 
 The immutable submission tag will be added after the synchronized manuscript and artifact commit is approved. Earlier tags remain unchanged.
 
@@ -15,8 +15,7 @@ The immutable submission tag will be added after the synchronized manuscript and
 - Source records: 1,785
 - Studies after version reconciliation: 1,772
 - Target-software studies: 199
-- Governance boundary case: 1
-- Extended-synthesis studies: 149
+- Extended-synthesis studies: 150, including AgentFuzz as governance and agent-safety context outside target-software distributions
 - Background/reference studies: 670
 - Excluded studies: 753
 - Alternate versions or source variants: 13

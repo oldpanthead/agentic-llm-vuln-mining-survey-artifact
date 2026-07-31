@@ -1,6 +1,6 @@
 # Evidence Output Codebook
 
-This codebook defines the current manuscript's principal reported evidence-output categories for the study-level coded set. The same categories are used for the frozen initial round (30 target-software studies plus one governance boundary case) and the 37 target-software additions from the submission update. The historical CSV field name `strongest_evidence_output` is retained for compatibility. Legacy A/E fields remain in the artifact for historical traceability, but they are not the current manuscript's main prose axis. The five categories are not a universal linear ladder.
+This codebook defines the current manuscript's principal reported evidence-output categories for target-software study-level coding. The historical CSV field name `strongest_evidence_output` is retained for compatibility. Legacy A/E fields and the former C27 governance-boundary value remain only in historical provenance files; they are not current target-software categories. The five categories are not a universal linear ladder.
 
 ## Current Evidence-Output Labels
 
@@ -40,9 +40,9 @@ The material connects the specific system output, target version, runtime enviro
 
 Legacy crosswalk: extends the old E4 profile idea with explicit claim alignment but is not used as a current category label.
 
-### governance boundary case / 治理边界案例
+### Historical governance boundary value
 
-The boundary exemplar is included because it constrains governance, misuse, disclosure, or safety boundaries rather than because it contributes a target-software vulnerability evidence output. It remains outside the target-software distributions.
+Historical files used this value for C27. The current analytical allocation retains that study in extended synthesis as governance and agent-safety context, so it does not receive a target-software evidence-output label or enter target-software distributions.
 
 Legacy crosswalk: commonly recorded as `N/A` or boundary-specific in old E-level fields.
 

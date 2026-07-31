@@ -12,9 +12,7 @@ primary_system_shape,candidate analysis,46,199 target-software studies,one prima
 primary_system_shape,feedback-driven fuzzing,34,199 target-software studies,one primary shape per target-software study; capabilities remain multi-label
 primary_system_shape,reproduction/validation/repair,62,199 target-software studies,one primary shape per target-software study; capabilities remain multi-label
 primary_system_shape,long-horizon pentest/CRS,57,199 target-software studies,one primary shape per target-software study; capabilities remain multi-label
-primary_system_shape,governance boundary exemplar,1,200 coded records including boundary exemplar,outside target-software distributions
 final_canonical_stratification,target-software study-level coded studies,199,1772 canonical studies,analysis-use allocation after version reconciliation
-final_canonical_stratification,governance boundary coded record,1,1772 canonical studies,analysis-use allocation after version reconciliation
-final_canonical_stratification,extended synthesis studies,149,1772 canonical studies,analysis-use allocation after version reconciliation
+final_canonical_stratification,extended synthesis studies,150,1772 canonical studies,analysis-use allocation after version reconciliation
 final_canonical_stratification,background/reference studies,670,1772 canonical studies,analysis-use allocation after version reconciliation
 final_canonical_stratification,excluded studies,753,1772 canonical studies,analysis-use allocation after version reconciliation
