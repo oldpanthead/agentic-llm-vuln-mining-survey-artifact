@@ -17,6 +17,7 @@ The review integrates database, metadata-index, publisher, conference, seed, sno
 | springer_crossref | 2000 | 14 |
 
 Publisher-filtered Crossref feeds were used for ACM, IEEE, Springer, and Elsevier metadata. Official ACM Digital Library, IEEE Xplore, SpringerLink, ScienceDirect, USENIX, NDSS, and DBLP pages were checked as supplementary interfaces; their access records are preserved even where no complete export count was available. Scopus and Web of Science were inaccessible without authenticated subscriptions, and Google Scholar automated access was blocked, so none is represented as a completed database export.
+ArXiv and OpenAlex occurrences entered deduplication under their source-query boundaries. Crossref-derived occurrences additionally required a vulnerability, security-testing, or offensive-security cue in the title; the source-count file records the resulting interface-specific reductions.
 
 ## PRISMA-ScR Account
 
@@ -37,8 +38,8 @@ Publisher-filtered Crossref feeds were used for ACM, IEEE, Springer, and Elsevie
 | eligibility | full text excluded near neighbor | 3 |
 | integration | current search matches to retained studies | 110 |
 | integration | new or reconciled source records added | 1532 |
-| integration | supplementary source records not reidentified | 1675 |
-| integration | prior canonical studies not reidentified | 1662 |
+| integration | supplementary source records not reidentified | 143 |
+| integration | prior canonical studies not reidentified | 138 |
 | final | integrated source records | 1785 |
 | final | integrated canonical studies | 1772 |
 | final | target software studies | 199 |
@@ -48,6 +49,6 @@ Publisher-filtered Crossref feeds were used for ACM, IEEE, Springer, and Elsevie
 
 ## Final Analytical Allocation
 
-After version reconciliation, the integrated corpus contains **1772 canonical studies** from **1785 source records**: **199 target-software studies**, **150 full-text-supported extended-synthesis studies**, **670 background/reference studies**, and **753 excluded studies**. AgentFuzz is retained within extended synthesis as governance and agent-safety context and does not enter target-software distributions.
+After version reconciliation, the integrated corpus contains **1772 canonical studies** from **1785 source records**: **199 target-software studies**, **150 extended-synthesis studies with record-level public-material audit**, **670 background/reference studies**, and **753 excluded studies**.
 
 Historical search files remain unchanged as provenance. The manuscript-facing method can report the integrated source coverage, date range, screening rules, version reconciliation, and final allocation without narrating internal search rounds.

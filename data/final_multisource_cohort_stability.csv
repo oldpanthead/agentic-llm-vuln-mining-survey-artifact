@@ -1,0 +1,33 @@
+cohort,denominator,dimension,label,count,share
+retained_pre_final_67,67,primary_system_shape,candidate-analysis system,16,0.239
+retained_pre_final_67,67,primary_system_shape,feedback-driven fuzzing agent,17,0.254
+retained_pre_final_67,67,primary_system_shape,long-horizon pentest and CRS agent,14,0.209
+retained_pre_final_67,67,primary_system_shape,"reproduction-, validation-, and repair-centered agent",20,0.299
+retained_pre_final_67,67,principal_reported_evidence_output,candidate judgment,6,0.090
+retained_pre_final_67,67,principal_reported_evidence_output,controlled task completion,13,0.194
+retained_pre_final_67,67,principal_reported_evidence_output,externally traceable material,4,0.060
+retained_pre_final_67,67,principal_reported_evidence_output,reproducible validation,31,0.463
+retained_pre_final_67,67,principal_reported_evidence_output,runtime safety signal,13,0.194
+retained_pre_final_67,67,cross_stage_capability,context aggregation / rule extraction,51,0.761
+retained_pre_final_67,67,cross_stage_capability,failure reuse / strategy update,15,0.224
+retained_pre_final_67,67,cross_stage_capability,feedback interpretation / loop adjustment,58,0.866
+retained_pre_final_67,67,cross_stage_capability,governance / human gates / disclosure control,4,0.060
+retained_pre_final_67,67,cross_stage_capability,long-horizon state management,30,0.448
+retained_pre_final_67,67,cross_stage_capability,tool routing / strategy routing,44,0.657
+retained_pre_final_67,67,cross_stage_capability,validation organization / evidence packaging,55,0.821
+new_multisource_132,132,primary_system_shape,candidate-analysis system,30,0.227
+new_multisource_132,132,primary_system_shape,feedback-driven fuzzing agent,17,0.129
+new_multisource_132,132,primary_system_shape,long-horizon pentest and CRS agent,43,0.326
+new_multisource_132,132,primary_system_shape,"reproduction-, validation-, and repair-centered agent",42,0.318
+new_multisource_132,132,principal_reported_evidence_output,candidate judgment,28,0.212
+new_multisource_132,132,principal_reported_evidence_output,controlled task completion,42,0.318
+new_multisource_132,132,principal_reported_evidence_output,externally traceable material,2,0.015
+new_multisource_132,132,principal_reported_evidence_output,reproducible validation,52,0.394
+new_multisource_132,132,principal_reported_evidence_output,runtime safety signal,8,0.061
+new_multisource_132,132,cross_stage_capability,context aggregation / rule extraction,113,0.856
+new_multisource_132,132,cross_stage_capability,failure reuse / strategy update,79,0.598
+new_multisource_132,132,cross_stage_capability,feedback interpretation / loop adjustment,128,0.970
+new_multisource_132,132,cross_stage_capability,governance / human gates / disclosure control,14,0.106
+new_multisource_132,132,cross_stage_capability,long-horizon state management,95,0.720
+new_multisource_132,132,cross_stage_capability,tool routing / strategy routing,106,0.803
+new_multisource_132,132,cross_stage_capability,validation organization / evidence packaging,92,0.697

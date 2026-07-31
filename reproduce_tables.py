@@ -230,20 +230,74 @@ def check_extended(target: list[dict[str, str]]) -> None:
     require(all(row.get("reason_not_study_level_coded", "").strip() for row in rows), "missing extended-synthesis boundary reason")
     require(all(row.get("public_material_basis", "").strip() for row in rows), "missing extended-synthesis source basis")
     require(sum(row.get("record_id") == "CP114" for row in rows) == 1, "AgentFuzz must appear once in extended synthesis")
-    info("extended synthesis: 150 full-text-supported adjacent studies")
+    metadata_only = [
+        row for row in rows
+        if "title/abstract metadata" in row.get("reviewer_note", "").casefold()
+    ]
+    require(len(metadata_only) == 61, "extended-synthesis metadata-supported count must be 61")
+    require(len(rows) - len(metadata_only) == 89, "extended-synthesis full-text-supported count must be 89")
+    info("extended synthesis: 89 full-text-supported and 61 metadata-supported studies")
 
 
 def check_search_and_dedup() -> None:
     results = read_csv(DATA / "final_multisource_search_20260730_results.csv")
     screened = read_csv(DATA / "final_multisource_search_20260730_screening_audit.csv")
+    completed = read_csv(DATA / "final_multisource_search_20260730_complete_screening.csv")
     require(len(results) == EXPECTED["search_occurrences"], "search export must contain 12,090 source occurrences")
     require(len(screened) == EXPECTED["search_records"], "screening audit must contain 1,642 unique records")
+    require(len(completed) == EXPECTED["search_records"], "complete screening audit must contain 1,642 unique records")
+    require(len({row.get("discovery_id", "") for row in completed}) == EXPECTED["search_records"], "complete screening audit contains duplicate discovery IDs")
+    require(all(row.get("final_analytical_layer", "").strip() for row in completed), "complete screening audit contains an unresolved final layer")
+    completed_layers = Counter(row["final_analytical_layer"] for row in completed)
+    require(
+        completed_layers == Counter({
+            "excluded_near_neighbor": 733,
+            "background_reference": 575,
+            "study_level": 132,
+            "existing_study_or_version": 110,
+            "extended_synthesis": 84,
+            "version_reconciliation": 8,
+        }),
+        f"complete screening layer counts differ: {dict(completed_layers)}",
+    )
+    unretrieved = [row for row in completed if row["screening_stage"] == "report_retrieval"]
+    require(len(unretrieved) == 35, "report-not-retrieved count must be 35")
+    require(
+        not any(row["final_analytical_layer"] in {"study_level", "extended_synthesis"} for row in unretrieved),
+        "a report-not-retrieved record entered an analytical synthesis layer",
+    )
+    exclusion_summary = read_csv(DATA / "final_multisource_exclusion_summary.csv")
+    expected_exclusions = {
+        "interface_title_abstract_exclusions": 705,
+        "interface_full_text_exclusions": 3,
+        "interface_retrieval_stage_exclusions": 25,
+        "supplementary_retained_exclusions": 20,
+    }
+    require(
+        {row.get("exclusion_group", ""): int(row.get("count", "0")) for row in exclusion_summary}
+        == expected_exclusions,
+        "high-level exclusion account differs",
+    )
+    require(sum(expected_exclusions.values()) == EXPECTED["excluded_studies"], "exclusion account does not close")
     prisma = {row["metric"]: int(row["count"]) for row in read_csv(DATA / "final_multisource_search_20260730_prisma_counts.csv")}
     checks = {
         "exported_source_occurrences": 12090,
+        "removed_by_deterministic_query_filter": 9801,
+        "source_occurrences_entering_deduplication": 2289,
+        "duplicate_source_occurrences_removed": 647,
         "unique_search_records_screened": 1642,
+        "records_not_advanced_to_report_retrieval": 1368,
         "reports_sought": 274,
+        "reports_not_retrieved": 35,
         "reports_assessed_at_full_text": 239,
+        "full_text_study_level": 132,
+        "full_text_extended_synthesis": 83,
+        "full_text_background_reference": 21,
+        "full_text_excluded_near_neighbor": 3,
+        "current_search_matches_to_retained_studies": 110,
+        "new_or_reconciled_source_records_added": 1532,
+        "supplementary_source_records_not_reidentified": 143,
+        "prior_canonical_studies_not_reidentified": 138,
         "integrated_source_records": 1785,
         "integrated_canonical_studies": 1772,
         "target_software_studies": 199,
@@ -285,7 +339,52 @@ def check_supplementary_extractions(target: list[dict[str, str]]) -> None:
             and audited.get("official_url") == row.get("official_url"),
             f"reference audit differs from generated metadata: {row.get('record_id', '')}",
         )
-    info("supplementary primitive and reference extractions verified")
+
+    cohort_rows = read_csv(DATA / "final_multisource_cohort_stability.csv")
+    require(len(cohort_rows) == 32, "cohort-stability audit must contain 32 rows")
+    expected_denominators = {"retained_pre_final_67": 67, "new_multisource_132": 132}
+    require(
+        {row.get("cohort", "") for row in cohort_rows} == set(expected_denominators),
+        "cohort-stability audit has unexpected cohorts",
+    )
+    pre_final_all = read_csv(DATA / "current_study_level_coding_matrix_harmonized_pre_final_multisource_20260730.csv")
+    pre_ids = {
+        row.get("matrix_id", "")
+        for row in pre_final_all
+        if row.get("analytical_role") == "target_software_study"
+    }
+    pre_final = [row for row in target if row.get("matrix_id", "") in pre_ids]
+    require(len(pre_ids) == 67 and len(pre_final) == 67, "pre-final target-study baseline must contain 67 retained target rows")
+    new_target = [row for row in target if row.get("matrix_id", "") not in pre_ids]
+    require(len(new_target) == 132, "new multi-source target cohort must contain 132 rows")
+    cohort_records = {"retained_pre_final_67": pre_final, "new_multisource_132": new_target}
+    for cohort, denominator in expected_denominators.items():
+        subset = [row for row in cohort_rows if row.get("cohort") == cohort]
+        require(all(int(row.get("denominator", "0")) == denominator for row in subset), f"cohort denominator differs: {cohort}")
+        require(sum(int(row["count"]) for row in subset if row["dimension"] == "primary_system_shape") == denominator, f"shape count does not close: {cohort}")
+        require(sum(int(row["count"]) for row in subset if row["dimension"] == "principal_reported_evidence_output") == denominator, f"evidence count does not close: {cohort}")
+        require(len([row for row in subset if row["dimension"] == "cross_stage_capability"]) == 7, f"capability labels differ: {cohort}")
+        records = cohort_records[cohort]
+        recomputed = {
+            ("primary_system_shape", label): count
+            for label, count in Counter(row.get("primary_system_shape", "") for row in records).items()
+        }
+        recomputed.update({
+            ("principal_reported_evidence_output", label): count
+            for label, count in Counter(row.get("strongest_evidence_output", "") for row in records).items()
+        })
+        capability_counts = Counter()
+        for row in records:
+            capability_counts.update(split_labels(row.get("cross_stage_capabilities", "")))
+        recomputed.update({("cross_stage_capability", label): count for label, count in capability_counts.items()})
+        for row in subset:
+            key = (row.get("dimension", ""), row.get("label", ""))
+            require(recomputed.get(key) == int(row.get("count", "0")), f"cohort label count differs: {cohort} {key}")
+    require(
+        all(int(row["count"]) > 0 for row in cohort_rows if row["dimension"] in {"primary_system_shape", "principal_reported_evidence_output"}),
+        "a cohort does not populate every shape and evidence category",
+    )
+    info("supplementary primitive, reference, and cohort-stability extractions verified")
 
 
 def check_publication_status(target: list[dict[str, str]]) -> None:

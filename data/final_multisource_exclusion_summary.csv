@@ -1,0 +1,5 @@
+exclusion_group,count,screening_basis,analytical_treatment
+interface_title_abstract_exclusions,705,Resolved from title and abstract against the operational scope,Excluded from the analytical corpus
+interface_full_text_exclusions,3,Assessed at full text and classified as near-neighbor studies,Excluded from the analytical corpus
+interface_retrieval_stage_exclusions,25,Resolved at report retrieval from public availability and metadata,Excluded; includes 16 potentially eligible reports not retrieved and 9 metadata-resolved out-of-scope records
+supplementary_retained_exclusions,20,Retained exclusion decisions from supplementary identification methods,Excluded from the analytical corpus

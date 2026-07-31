@@ -12,10 +12,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 DATA = ROOT / "data"
 RESULTS = DATA / "final_multisource_search_20260730_results.csv"
-SCREENING = DATA / "final_multisource_search_20260730_complete_screening_proposal.csv"
-OLD_CORPUS = DATA / "corpus.csv"
-OLD_CROSSWALK = DATA / "study_version_crosswalk.csv"
-COUNTS = DATA / "final_multisource_search_20260730_proposed_integrated_counts.csv"
+SCREENING = DATA / "final_multisource_search_20260730_complete_screening.csv"
+OLD_CORPUS = DATA / "corpus_pre_final_multisource_20260730.csv"
+OLD_CROSSWALK = DATA / "study_version_crosswalk_pre_final_multisource_20260730.csv"
+CURRENT_CORPUS = DATA / "corpus.csv"
+CURRENT_CROSSWALK = DATA / "study_version_crosswalk.csv"
 OUTPUT = DATA / "final_multisource_search_20260730_prisma_counts.csv"
 SOURCE_OUTPUT = DATA / "final_multisource_search_20260730_source_counts.csv"
 REPORT = ROOT / "FINAL_MULTISOURCE_SEARCH_AND_PRISMA_20260730.md"
@@ -47,7 +48,22 @@ def main() -> int:
     search_module = load_screening_module()
     result_rows = read(RESULTS)
     screening_rows = read(SCREENING)
-    integrated = {row["metric"]: int(row["value"]) for row in read(COUNTS)}
+    current_corpus = read(CURRENT_CORPUS)
+    current_crosswalk = read(CURRENT_CROSSWALK)
+    canonical = [
+        row for row in current_crosswalk if row["counting_status"] == "canonical_counted"
+    ]
+    canonical_layers = Counter(row["analytical_layer"] for row in canonical)
+    integrated = {
+        "source_records": len(current_corpus),
+        "canonical_studies": len(canonical),
+        "target_software_studies": canonical_layers["study_level_coded"],
+        "extended_synthesis_studies": canonical_layers["extended_synthesis"],
+        "canonical_layer_study_level_coded": canonical_layers["study_level_coded"],
+        "canonical_layer_extended_synthesis": canonical_layers["extended_synthesis"],
+        "canonical_layer_background_reference": canonical_layers["background_reference"],
+        "canonical_layer_excluded_near_neighbor": canonical_layers["excluded_near_neighbor"],
+    }
 
     raw = Counter(row["source_id"] for row in result_rows)
     entered = Counter()
@@ -64,7 +80,9 @@ def main() -> int:
             "exported_occurrences": str(raw[source]),
             "occurrences_entering_deduplication": str(entered[source]),
             "count_note": (
-                "exported records; publisher/Crossref queries were subject to the recorded per-query cap"
+                "source-query boundary; all exported occurrences entered deduplication"
+                if source in search_module.DISCOVERY_SOURCES
+                else "publisher/Crossref export subject to the recorded per-query cap and title-level security-task filter"
             ),
         }
         for source in sorted(raw)
@@ -72,9 +90,9 @@ def main() -> int:
     write(SOURCE_OUTPUT, source_rows)
 
     stage_counts = Counter(row["screening_stage"] for row in screening_rows)
-    layer_counts = Counter(row["ai_assisted_proposed_layer"] for row in screening_rows)
+    layer_counts = Counter(row["final_analytical_layer"] for row in screening_rows)
     cross = Counter(
-        (row["screening_stage"], row["ai_assisted_proposed_layer"])
+        (row["screening_stage"], row["final_analytical_layer"])
         for row in screening_rows
     )
 
@@ -115,7 +133,7 @@ def main() -> int:
         ("final", "integrated_source_records", integrated["source_records"], "Source versions remain traceable"),
         ("final", "integrated_canonical_studies", integrated["canonical_studies"], "Each study counted once after version reconciliation"),
         ("final", "target_software_studies", integrated["target_software_studies"], "Study-level analytical denominator"),
-        ("final", "extended_synthesis_studies", integrated["extended_synthesis_studies"], "Full-text-supported adjacent synthesis"),
+        ("final", "extended_synthesis_studies", integrated["extended_synthesis_studies"], "Adjacent synthesis with record-level public-material audit"),
         ("final", "background_reference_studies", integrated["canonical_layer_background_reference"], "Contextual literature"),
         ("final", "excluded_studies", integrated["canonical_layer_excluded_near_neighbor"], "Title/abstract exclusions, full-text near-neighbors, and unavailable potentially eligible reports"),
     ]
@@ -158,6 +176,7 @@ def main() -> int:
         [
             "",
             "Publisher-filtered Crossref feeds were used for ACM, IEEE, Springer, and Elsevier metadata. Official ACM Digital Library, IEEE Xplore, SpringerLink, ScienceDirect, USENIX, NDSS, and DBLP pages were checked as supplementary interfaces; their access records are preserved even where no complete export count was available. Scopus and Web of Science were inaccessible without authenticated subscriptions, and Google Scholar automated access was blocked, so none is represented as a completed database export.",
+            "ArXiv and OpenAlex occurrences entered deduplication under their source-query boundaries. Crossref-derived occurrences additionally required a vulnerability, security-testing, or offensive-security cue in the title; the source-count file records the resulting interface-specific reductions.",
             "",
             "## PRISMA-ScR Account",
             "",
@@ -172,7 +191,7 @@ def main() -> int:
             "",
             "## Final Analytical Allocation",
             "",
-            f"After version reconciliation, the integrated corpus contains **{integrated['canonical_studies']} canonical studies** from **{integrated['source_records']} source records**: **{integrated['target_software_studies']} target-software studies**, **{integrated['extended_synthesis_studies']} full-text-supported extended-synthesis studies**, **{integrated['canonical_layer_background_reference']} background/reference studies**, and **{integrated['canonical_layer_excluded_near_neighbor']} excluded studies**.",
+            f"After version reconciliation, the integrated corpus contains **{integrated['canonical_studies']} canonical studies** from **{integrated['source_records']} source records**: **{integrated['target_software_studies']} target-software studies**, **{integrated['extended_synthesis_studies']} extended-synthesis studies with record-level public-material audit**, **{integrated['canonical_layer_background_reference']} background/reference studies**, and **{integrated['canonical_layer_excluded_near_neighbor']} excluded studies**.",
             "",
             "Historical search files remain unchanged as provenance. The manuscript-facing method can report the integrated source coverage, date range, screening rules, version reconciliation, and final allocation without narrating internal search rounds.",
         ]

@@ -21,9 +21,9 @@ from typing import Iterable
 ROOT = Path(__file__).resolve().parent
 DATA = ROOT / "data"
 SOURCE_RESULTS = DATA / "final_multisource_search_20260730_results.csv"
-CORPUS = DATA / "corpus.csv"
-REFERENCE_AUDIT = DATA / "reference_audit.csv"
-CROSSWALK = DATA / "study_version_crosswalk.csv"
+CORPUS = DATA / "corpus_pre_final_multisource_20260730.csv"
+REFERENCE_AUDIT = DATA / "reference_audit_pre_final_multisource_20260730.csv"
+CROSSWALK = DATA / "study_version_crosswalk_pre_final_multisource_20260730.csv"
 OUTPUT = DATA / "final_multisource_search_20260730_screening_audit.csv"
 SUMMARY = DATA / "final_multisource_search_20260730_screening_summary.csv"
 

@@ -9,7 +9,7 @@ This repository contains the non-sensitive artifact for a mapping-oriented scopi
 3. Use `ARTIFACT_INDEX.md` as the compact file map.
 4. Use `data_dictionary.md` for field definitions.
 
-The submission snapshot tag will be recorded after the synchronized manuscript and artifact commit is approved. Earlier tags, including `csur-submission-2026-07-final-v6`, remain immutable historical snapshots.
+The synchronized submission snapshot is identified by `csur-submission-2026-07-final-v7`. Earlier tags, including `csur-submission-2026-07-final-v6`, remain immutable historical snapshots.
 
 ## Current Integrated Snapshot
 
@@ -37,9 +37,11 @@ The search used arXiv, OpenAlex, Crossref-backed publisher queries for ACM, IEEE
 - `FINAL_MULTISOURCE_SEARCH_PROTOCOL_20260730.md`: unified protocol, date range, query groups, and source-access boundaries.
 - `data/final_multisource_search_20260730_access_log.csv`: query-level access and export log.
 - `data/final_multisource_search_20260730_results.csv`: saved multi-source search occurrences.
-- `data/final_multisource_search_20260730_screening_audit.csv`: title/abstract and retrieval decisions for the 1,642 unique interface records.
-- `data/final_multisource_search_20260730_fulltext_assessment.csv`: full-text eligibility and analytical-layer decisions.
-- `data/final_multisource_search_20260730_prisma_counts.csv`: directly recomputable PRISMA-ScR counts.
+- `data/final_multisource_search_20260730_screening_audit.csv`: deterministic title/abstract triage for the 1,642 unique interface records.
+- `data/final_multisource_search_20260730_fulltext_assessment.csv`: retrieval and assessment evidence retained from the eligibility workflow.
+- `data/final_multisource_search_20260730_complete_screening.csv`: frozen final screening stage, analytical allocation, and decision basis for all 1,642 records.
+- `data/final_multisource_exclusion_summary.csv`: high-level account of the 753 exclusions by screening stage and basis.
+- `data/final_multisource_search_20260730_prisma_counts.csv`: PRISMA-ScR counts regenerated from the frozen screening audit and pre-integration baselines.
 - `data/final_multisource_search_20260730_source_counts.csv`: source-interface occurrence counts.
 - `data/final_multisource_search_20260730_dedup_resolutions.csv`: same-study/version decisions.
 - `data/corpus.csv`: integrated 1,785-source-record ledger.
@@ -50,8 +52,9 @@ The search used arXiv, OpenAlex, Crossref-backed publisher queries for ACM, IEEE
 ### Study-level and extended synthesis
 
 - `data/current_study_level_coding_matrix_harmonized.csv`: final 199-row target-software matrix.
-- `data/extended_synthesis_audit.csv`: record-level audit for 150 extended-synthesis studies, including AgentFuzz as cross-cutting governance context.
+- `data/extended_synthesis_audit.csv`: record-level audit for 150 extended-synthesis studies, comprising 89 full-text-supported and 61 title/abstract-metadata-supported records; AgentFuzz supplies cross-cutting governance context.
 - `data/traditional_security_primitives.csv`: source-located, multi-label author extraction for the 199 target-software studies.
+- `data/final_multisource_cohort_stability.csv`: descriptive comparison of the retained 67-study baseline and 132 newly identified target-software studies under the same shape, evidence, and capability schema.
 - `data/representative_system_mechanisms.csv`: source-located mechanism extraction used by the representative system comparison.
 - `data/mechanism_cost_ablation_synthesis.csv`: source-located cost, ablation, and failure-recovery observations.
 - `data/representative_reported_results.csv`: source-located rows used by the representative reported-results table.

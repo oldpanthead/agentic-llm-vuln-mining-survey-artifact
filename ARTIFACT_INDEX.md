@@ -14,9 +14,11 @@ Expected current counts: 1,785 source records; 1,772 studies after version recon
 - `data/final_multisource_search_20260730_access_log.csv`: query attempts, interfaces, timestamps, status, and raw export paths.
 - `data/final_multisource_search_20260730_results.csv`: 12,090 saved source occurrences.
 - `data/final_multisource_search_20260730_source_counts.csv`: source-interface occurrence totals.
-- `data/final_multisource_search_20260730_screening_audit.csv`: 1,642 unique interface records and screening decisions.
-- `data/final_multisource_search_20260730_fulltext_assessment.csv`: 239 full-text assessments.
-- `data/final_multisource_search_20260730_prisma_counts.csv`: recomputable flow counts.
+- `data/final_multisource_search_20260730_screening_audit.csv`: deterministic triage for 1,642 unique interface records.
+- `data/final_multisource_search_20260730_fulltext_assessment.csv`: retrieval and assessment evidence from the eligibility workflow.
+- `data/final_multisource_search_20260730_complete_screening.csv`: frozen final screening and analytical-allocation audit for all 1,642 records.
+- `data/final_multisource_exclusion_summary.csv`: stage-level closure of the 753 excluded studies.
+- `data/final_multisource_search_20260730_prisma_counts.csv`: flow counts regenerated from the frozen final audit and pre-integration baselines.
 - `data/final_multisource_search_20260730_dedup_resolutions.csv`: same-study/version resolutions.
 
 ## Corpus and Coding
@@ -24,7 +26,7 @@ Expected current counts: 1,785 source records; 1,772 studies after version recon
 - `data/corpus.csv`: integrated source-record ledger.
 - `data/study_version_crosswalk.csv`: source record to study/version mapping.
 - `data/current_study_level_coding_matrix_harmonized.csv`: 199 target-software rows.
-- `data/extended_synthesis_audit.csv`: 150-study thematic-use audit, including cross-cutting governance context.
+- `data/extended_synthesis_audit.csv`: 150-study thematic-use audit: 89 full-text-supported and 61 title/abstract-metadata-supported records, including cross-cutting governance context.
 - `data/reference_audit.csv`: citation and source-role audit.
 - `data/publication_status_standardized.csv`: study-level publication-status assignments.
 - `data/publication_status_distribution_by_layer.csv`: publication-status-stratified evidence and shape counts.
@@ -42,6 +44,7 @@ Expected current counts: 1,785 source records; 1,772 studies after version recon
 ## Supplementary Extractions
 
 - `data/traditional_security_primitives.csv`: 199-study RQ1 extraction with source locations.
+- `data/final_multisource_cohort_stability.csv`: shape, evidence-output, and capability distributions for the retained 67-study baseline and 132 new target-software studies.
 - `data/representative_system_mechanisms.csv`: representative mechanism cases.
 - `data/mechanism_cost_ablation_synthesis.csv`: source-located cost, ablation, and recovery observations.
 - `data/representative_reported_results.csv`: representative result rows.
@@ -58,3 +61,5 @@ Expected current counts: 1,785 source records; 1,772 studies after version recon
 ## Historical Files
 
 Earlier corpus snapshots, July 15/16 search files, 31-record and 41-record coding checks, and 67-study review files remain in the repository for provenance. Filenames containing `pre_final_multisource_20260730` are frozen inputs to the integrated build. They must not be interpreted as current counts or current manuscript-facing results.
+
+`archive/final_multisource_preintegration_20260730/` contains the superseded pending-status checklist and integration precheck created before the final corpus was closed.

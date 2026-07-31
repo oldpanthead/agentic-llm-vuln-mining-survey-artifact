@@ -4,7 +4,7 @@
 
 This public release contains non-sensitive data and scripts supporting the ACM CSUR manuscript. It includes the integrated multi-source search through 2026-07-30, study/version reconciliation, analytical-layer allocation, the 199-study target-software coding matrix, the 150-study extended synthesis audit, complete independent second-coder files, and source-located supplementary extractions.
 
-The immutable submission tag will be added after the synchronized manuscript and artifact commit is approved. Earlier tags remain unchanged.
+The immutable synchronized submission tag is `csur-submission-2026-07-final-v7`. Earlier tags remain unchanged.
 
 ## Current Counts
 
@@ -25,12 +25,14 @@ The immutable submission tag will be added after the synchronized manuscript and
 
 The authoritative list is `manuscript_artifact_paths.txt`. It includes:
 
-- integrated search, source-count, screening, full-text, PRISMA, and deduplication audits;
+- integrated search, source-count, frozen complete-screening, retrieval/full-text, PRISMA, and deduplication audits;
+- the stage-level exclusion account and pre-final/new-study cohort-stability audit;
 - `data/corpus.csv` and `data/study_version_crosswalk.csv`;
 - `data/current_study_level_coding_matrix_harmonized.csv`;
-- `data/extended_synthesis_audit.csv`;
+- `data/extended_synthesis_audit.csv` (89 full-text-supported and 61 title/abstract-metadata-supported records);
 - study-level publication-status assignments and stratified distributions;
 - `data/traditional_security_primitives.csv`;
+- `data/final_multisource_cohort_stability.csv`;
 - integrated 199-study second-coder comparison, per-label reliability, and substitution sensitivity;
 - representative mechanism, reported-result, cost, ablation, and failure-recovery extractions;
 - reference metadata for newly integrated study-level records.

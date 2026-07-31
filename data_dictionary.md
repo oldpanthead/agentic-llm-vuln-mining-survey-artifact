@@ -18,12 +18,18 @@ The current shape and capability schema consolidates historical coding terms thr
 - `data/final_multisource_search_20260730_access_log.csv`: one row per query request or source check, with interface, query, timestamp, status, returned records, raw-file path, and access note.
 - `data/final_multisource_search_20260730_results.csv`: saved source occurrences before source-level deduplication.
 - `data/final_multisource_search_20260730_source_counts.csv`: exported occurrences and occurrences entering deduplication by interface.
-- `data/final_multisource_search_20260730_screening_audit.csv`: 1,642 unique interface records with title/abstract, retrieval, and final screening fields.
-- `data/final_multisource_search_20260730_fulltext_assessment.csv`: 239 retrieved reports with full-text decisions and evidence locations.
-- `data/final_multisource_search_20260730_prisma_counts.csv`: the adapted PRISMA-ScR accounting used in the manuscript.
+- `data/final_multisource_search_20260730_screening_audit.csv`: deterministic title/abstract triage for 1,642 unique interface records; blank decision fields are retained as the pre-screening audit surface rather than the final allocation.
+- `data/final_multisource_search_20260730_fulltext_assessment.csv`: retrieval and assessment evidence, including source locations and version relations, from the eligibility workflow.
+- `data/final_multisource_search_20260730_complete_screening.csv`: frozen final screening stage and analytical allocation for all 1,642 records. Its `decision_provenance` field distinguishes integrated assignments, existing-study matches, and version reconciliation.
+- `data/final_multisource_exclusion_summary.csv`: high-level closure of the 753 exclusions, separating interface title/abstract decisions, interface full-text exclusions, retrieval-stage exclusions, and retained supplementary exclusions.
+- `data/final_multisource_search_20260730_prisma_counts.csv`: the adapted PRISMA-ScR accounting regenerated from the complete screening audit and frozen pre-integration corpus/crosswalk.
 - `data/final_multisource_search_20260730_dedup_resolutions.csv`: potential same-study/version pairs, their resolution, and evidence basis.
 
 The integrated totals are 1,785 source records and 1,772 studies after version reconciliation: 199 target-software studies, 150 extended-synthesis studies, 670 background/reference studies, and 753 exclusions. Thirteen alternate versions or source variants remain traceable without separate counting.
+
+## `data/final_multisource_cohort_stability.csv`
+
+This descriptive audit separates the 67 target-software studies retained from the pre-final baseline from the 132 studies added by the integrated multi-source search. It reports primary-shape, principal-evidence-output, and capability counts under the same final schema. The file checks taxonomy coverage and cohort composition; it does not define a temporal trend or a separate manuscript denominator.
 
 ## Historical coding and search provenance
 
@@ -253,7 +259,7 @@ This file links 1,785 source records to 1,772 studies. It preserves version hist
 
 ## `data/extended_synthesis_audit.csv`
 
-This file provides a record-level synthesis-use audit for the 150-study extended synthesis set. It complements the study-level workflow--capability--evidence coding used for 199 target-software studies. Governance and agent-safety studies in this layer support cross-cutting discussion without entering target-software distributions.
+This file provides a record-level synthesis-use audit for the 150-study extended synthesis set. Eighty-nine records are supported by reviewed full text, including a formal canonical record whose alternate version supplied the reviewed report; 61 historical records are supported by public title/abstract metadata. It complements the study-level workflow--capability--evidence coding used for 199 target-software studies. Governance and agent-safety studies in this layer support cross-cutting discussion without entering target-software distributions.
 
 - `record_id`: stable identifier linked to `data/corpus.csv`.
 - `citation_key`: bibliography key extracted from the public reference audit when available; `NA` means no key was recorded in the source note.
