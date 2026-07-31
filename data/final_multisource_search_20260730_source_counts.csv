@@ -1,0 +1,8 @@
+source_interface,exported_occurrences,occurrences_entering_deduplication,count_note
+acm_crossref,2000,34,exported records; publisher/Crossref queries were subject to the recorded per-query cap
+arxiv,1673,1673,exported records; publisher/Crossref queries were subject to the recorded per-query cap
+crossref,2000,84,exported records; publisher/Crossref queries were subject to the recorded per-query cap
+elsevier_crossref,2000,14,exported records; publisher/Crossref queries were subject to the recorded per-query cap
+ieee_crossref,2000,53,exported records; publisher/Crossref queries were subject to the recorded per-query cap
+openalex,417,417,exported records; publisher/Crossref queries were subject to the recorded per-query cap
+springer_crossref,2000,14,exported records; publisher/Crossref queries were subject to the recorded per-query cap

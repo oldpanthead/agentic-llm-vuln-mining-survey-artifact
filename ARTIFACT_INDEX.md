@@ -1,119 +1,60 @@
 # Artifact Index
 
-This index points reviewers to the public, non-sensitive files needed to audit the survey. Start with `README.md`, then use this page as a compact map.
+## Validation Entry Point
 
-## Fast Validation
+- `reproduce_tables.py`: standalone validation of the integrated search, reconciliation, analytical layers, study-level distributions, primitive extraction, and complete second-coder files.
+- `manuscript_artifact_paths.txt`: repository-relative paths promised by the manuscript.
 
-- `reproduce_tables.py`: schema, count, second-coder, product snapshot, source ledger, and safety-boundary checks.
-- Expected corpus counts: 253 source records; 248 canonical candidate studies; 68 study-level coded records (67 target-software studies plus 1 governance boundary case); 65 extended synthesis studies; 95 Background references; 20 Excluded near-neighbor studies.
-- Product ecosystem snapshot: 23 rows, maintained as an independent boundary layer.
+Expected current counts: 1,785 source records; 1,772 studies after version reconciliation; 199 target-software studies; one governance boundary case; 149 extended-synthesis studies; 670 background/reference studies; 753 exclusions; and 13 alternate versions or source variants.
 
-## Corpus Construction
+## Integrated Search
 
-- `SEARCH_PROTOCOL.md`: source-specific search protocol.
-- `data/source_search_log.csv`: source-level search ledger frozen on 2026-06-30.
-- `data/source_screening_audit.csv`: record-level screening audit for all 253 source records.
-- `data/submission_update_20260715_arxiv_results.csv`: normalized raw-hit export for the 2026-07-15 arXiv update search.
-- `data/submission_update_20260715_screening_audit.csv`: record-level update-search decisions.
-- `data/official_source_followup_20260716_search_log.csv`: targeted official-source follow-up after the arXiv recall-recovery update.
-- `data/official_source_followup_20260716_screening_audit.csv`: screened formal-source matches and adjacent official-program records.
-- `OFFICIAL_SOURCE_FOLLOWUP_REPORT.md`: official-source follow-up closure report; no corpus counts changed.
-- `data/submission_update_20260715_full_coding_audit.csv`: author full-text audit of the 41 potentially eligible update records.
-- `data/submission_update_20260715_second_coder_blind_template.csv`: blank 41-row independent-review template with no author labels.
-- `data/submission_update_20260715_second_coder_initial_results.csv`: original update independent labels retained for provenance.
-- `data/submission_update_20260715_second_coder_rerun_results.csv`: adopted tightened-boundary rerun labels.
-- `data/submission_update_20260715_rerun_sensitivity_analysis.csv`: field-level label-substitution sensitivity table.
-- `SUBMISSION_UPDATE_FULL_TEXT_AUDIT_REPORT.md`: provisional full-text decisions and the reliability boundary.
-- `SUBMISSION_UPDATE_AUDIT_REPORT.md`: update-search method and sensitivity result.
-- `data/corpus.csv`: source-record metadata and legacy analysis layer.
-- `data/study_version_crosswalk.csv`: canonical study/version crosswalk used for analytical counts.
-- `data/screening_summary.csv`: compact count summary.
+- `FINAL_MULTISOURCE_SEARCH_PROTOCOL_20260730.md`: protocol and source-access boundaries.
+- `FINAL_MULTISOURCE_SEARCH_AND_PRISMA_20260730.md`: search and PRISMA-ScR summary.
+- `data/final_multisource_search_20260730_access_log.csv`: query attempts, interfaces, timestamps, status, and raw export paths.
+- `data/final_multisource_search_20260730_results.csv`: 12,090 saved source occurrences.
+- `data/final_multisource_search_20260730_source_counts.csv`: source-interface occurrence totals.
+- `data/final_multisource_search_20260730_screening_audit.csv`: 1,642 unique interface records and screening decisions.
+- `data/final_multisource_search_20260730_fulltext_assessment.csv`: 239 full-text assessments.
+- `data/final_multisource_search_20260730_prisma_counts.csv`: recomputable flow counts.
+- `data/final_multisource_search_20260730_dedup_resolutions.csv`: same-study/version resolutions.
 
-## Study-Level Coding And Extended Synthesis
+## Corpus and Coding
 
-- `data/publication_status_standardized.csv`: standardized publication-status view for all 68 study-level rows.
-- `data/publication_status_distribution_by_layer.csv`: stratified publication-status summary for artifact inspection.
-- `data/publication_status_sensitivity_analysis.csv`: reproducible publication-status sensitivity counts for the 67 target-software studies.
-- `data/empirical_reporting_extraction.csv`: study-level extraction of Agent mechanism, evaluation setting, source-scoped reported outcome, controlled endpoint type and audit status, validation material, and reporting details for all 67 target-software studies.
-- `data/empirical_reporting_completeness.csv`: overall and system-shape completeness counts recomputed from the empirical extraction.
-- `data/traditional_security_primitives.csv`: auditable, source-located RQ1 author extraction of seven conventional security-primitive families explicitly used in study workflows or evaluations; it is separate from the second-coder reliability scope.
-- `data/unified_second_coder_per_label_reliability.csv`: per-label reliability results for lifecycle and capability coding in the unified target-software review.
-- `data/unified_second_coder_cohort_sensitivity.csv`: cohort-level comparison showing how ET and public-alignment assignments distribute under harmonized and complete independent labels.
-- `data/representative_system_mechanisms.csv`: source-located mechanism decomposition for the eight systems compared in the manuscript system-shape table.
-- `data/mechanism_cost_ablation_synthesis.csv`: source-located cost, runtime, ablation, and failure-recovery observations used in the cross-shape technical synthesis.
-- `data/representative_reported_results.csv`: source-located audit rows for the manuscript representative reported-results table.
-- `data/current_study_level_coding_matrix_harmonized.csv`: author-confirmed current 68-record matrix with 67 target-software studies, one governance boundary case, controlled primary shapes, overlays, and cross-stage capabilities.
-- `data/current_study_level_coding_matrix.csv`: pre-harmonization combined 68-record matrix retained for provenance.
-- `data/coding_round_harmonization_audit.csv`: field-level original values, current-codebook candidates, evidence bases, uncertainty notes, author-review status, and final author-confirmed labels.
-- `data/current_synthesis_statistics_by_round.csv`: initial-round, submission-update-round, and combined harmonized descriptive distributions.
-- `CODING_ROUND_HARMONIZATION_REPORT.md`: coding-drift findings, accepted changes, residual round differences, taxonomy stability, and AI-assisted working-note boundary.
-- `data/v13_core_synthesis_matrix.csv`: frozen initial-round 31-record matrix retained for historical traceability.
-- `data/v13_synthesis_statistics.csv`: checked synthesis statistics used by the manuscript.
-- `data/extended_synthesis_audit.csv`: record-level synthesis-use audit for the 65-study extended synthesis set.
-- `EXTENDED_SYNTHESIS_AUDIT_REPORT.md`: summary of the extended synthesis audit.
-- `CORPUS_STRATIFICATION_CLOSURE_REPORT.md`: corpus-stratification closure report for the manuscript and artifact.
-- `DEDUP_AND_EXTENDED_SYNTHESIS_AUDIT_REPORT.md`: canonical deduplication and extended-synthesis substantiation report.
-- `data/mapping_snapshot_counts.csv`: descriptive mapping views for the manuscript corpus.
-- `data/core_coding.csv`: legacy A/E fields retained for historical traceability.
-- `evidence_output_codebook.md`: current evidence-output labels.
-- `codebook.md`: legacy coding definitions and cross-version context.
-- `LEGACY_CODE_CROSSWALK.md`: mapping between historical and current coding views.
+- `data/corpus.csv`: integrated source-record ledger.
+- `data/study_version_crosswalk.csv`: source record to study/version mapping.
+- `data/current_study_level_coding_matrix_harmonized.csv`: 199 target-software rows plus one governance boundary row.
+- `data/extended_synthesis_audit.csv`: 149-study thematic-use audit.
+- `data/reference_audit.csv`: citation and source-role audit.
+- `data/publication_status_standardized.csv`: study-level publication-status assignments.
+- `data/publication_status_distribution_by_layer.csv`: publication-status-stratified evidence and shape counts.
+- `unified_second_coder_codebook.md`: controlled coding definitions and boundary rules.
+- `evidence_output_codebook.md`: principal evidence-output labels.
 
-## Second-Coder Materials
+## Complete Independent Review
 
-- `unified_second_coder_codebook.md`: frozen full-corpus definitions, examples, and boundary rules.
-- `UNIFIED_SECOND_CODER_REVIEW_GUIDE.md`: concise instructions for the complete 67+1 independent review.
-- `data/unified_second_coder_final_blind_template.csv`: blank public full-corpus review template.
-- `data/unified_second_coder_final_results.csv`: completed independent full-corpus labels.
-- `data/unified_second_coder_pre_adjudication_disagreements.csv`: field-level differences from the harmonized descriptive matrix, marked `not_planned` for adjudication.
-- `data/unified_second_coder_label_substitution_sensitivity.csv`: per-label author/coder2 count comparison on the 67 target-software studies.
-- `reports/UNIFIED_SECOND_CODER_PRE_ADJUDICATION_REPORT.md`: unified agreement metrics and stable/sensitive pattern summary.
-- `unified_second_coder_review.py`: deterministic preparation, validation, comparison, and sensitivity generator.
-- `data/core31_second_coder_formal_blind_template.csv`: blank strongest-evidence-output template for future reruns.
-- `data/core31_second_coder_formal_results.csv`: completed formal strongest-evidence-output pass.
-- `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md`: formal agreement report.
-- `data/core31_second_coder_capability_traceability_blind_template.csv`: blank capability/traceability extension template.
-- `data/core31_second_coder_capability_traceability_results.csv`: completed capability/traceability extension pass.
-- `reports/SECOND_CODER_CAPABILITY_TRACEABILITY_AGREEMENT_REPORT.md`: set-style agreement report.
-- `archive/pilot_second_coder_round_1/`: pilot calibration only; do not cite as formal reliability.
-- `data/submission_update_20260715_second_coder_blind_template.csv`: original blank update-search template with no author labels.
-- `data/submission_update_20260715_second_coder_rerun_blind_template.csv`: blank rerun template using the tightened boundary notes.
-- `data/submission_update_20260715_second_coder_results.csv`: adopted tightened-boundary 41-record independent pass.
-- `data/submission_update_20260715_second_coder_initial_results.csv`: previous update-pass independent pass retained for provenance.
-- `reports/SUBMISSION_UPDATE_SECOND_CODER_PRE_ADJUDICATION_REPORT.md`: computed pre-adjudication agreement.
-- `data/submission_update_20260715_adjudication_working_draft.csv`: preserved candidate-resolution working draft reviewed by the author.
-- `data/submission_update_20260715_adjudicated.csv`: author-confirmed 37/4 resolution.
-- `reports/SUBMISSION_UPDATE_ADJUDICATION_REPORT.md`: finalization scope and consensus boundary.
-- `SUBMISSION_UPDATE_SECOND_CODER_RERUN_NOTES.md`: lightweight boundary notes used for the adopted 41-record update-pass blind rerun.
-- `data/submission_update_20260715_second_coder_rerun_blind_template.csv`: blank rerun template with coder2 fields empty.
-- `data/submission_update_20260715_canonical_integration_crosswalk.csv`: canonical-match assessment for U01-U41.
-- `SUBMISSION_UPDATE_CANONICAL_INTEGRATION_REPORT.md`: pre-integration canonical-match and projected-count assessment.
-- `SUBMISSION_UPDATE_CORPUS_INTEGRATION_REPORT.md`: completed integration report.
-- `data/submission_update_20260715_study_level_additions.csv`: 37-row update-round view retained alongside the unified current matrix.
-- `data/current_synthesis_statistics.csv`: combined current descriptive statistics.
-- `integrate_submission_update_corpus.py`: deterministic corpus-integration script.
-- `SUBMISSION_UPDATE_ADJUDICATION_SUMMARY.md`: operational rules and reviewed working-draft history.
-- `prepare_submission_update_adjudication.py`: reproducible update-adjudication generator.
-- `finalize_submission_update_adjudication.py`: deterministic author-confirmation finalizer.
-- `prepare_submission_update_canonical_integration.py`: deterministic canonical-match assessment.
+- `data/integrated_199_second_coder_comparison_20260730.csv`: complete field comparison.
+- `data/integrated_199_per_label_reliability_20260730.csv`: lifecycle and capability label-level reliability.
+- `data/integrated_199_label_substitution_sensitivity_20260730.csv`: full-label substitution counts.
+- `INTEGRATED_199_SECOND_CODER_AGREEMENT_20260730.md`: report used by the manuscript.
+- `data/final_multisource_search_20260730_all_coder_comparison.csv`: detailed comparison for newly reviewed records.
 
-## References, Products, And Reproducibility
+## Supplementary Extractions
 
-- `data/reference_audit.csv`: bibliographic audit table.
-- `data/doi_remaining_manual_status.csv`: DOI-not-found or DOI-not-applicable notes.
-- `data/product_ecosystem_snapshot.csv`: dated product-ecosystem boundary snapshot as of 2026-06-29.
-- `data/core_reproducibility_audit.csv`: public-material reproducibility audit for 30 target-software study-level coded studies.
-- `data/core_reproducibility_audit_summary.csv`: aggregate reproducibility audit summary.
-- `ZOTERO_PDF_RESOLUTION_REPORT.md`: path-redacted Zotero/PDF resolution summary.
+- `data/traditional_security_primitives.csv`: 199-study RQ1 extraction with source locations.
+- `data/representative_system_mechanisms.csv`: representative mechanism cases.
+- `data/mechanism_cost_ablation_synthesis.csv`: source-located cost, ablation, and recovery observations.
+- `data/representative_reported_results.csv`: representative result rows.
+- `references_final_multisource_new_studies_20260730.bib`: metadata for newly integrated study-level studies.
 
-## Archive And Local-Only Material
+## Boundary and Release Files
 
-- `archive/v13_restructuring_audits/`: historical audit notes from prior manuscript restructuring.
-- `archive/pilot_second_coder_round_1/`: archived pilot second-coder calibration.
-- `local_private_working/`: ignored local workspace; not part of the public artifact.
+- `data/product_ecosystem_snapshot.csv`: independent product-ecosystem context.
+- `SECURITY_BOUNDARY.md`: excluded sensitive material.
+- `RELEASE_MANIFEST.md`: release scope and validation status.
+- `data_dictionary.md`: field definitions and historical/current status.
+- `FINAL_HARMONIZATION_AND_ARTIFACT_CLOSURE_REPORT.md`: current closure record.
 
-## Safety Boundary
+## Historical Files
 
-Read `SECURITY_BOUNDARY.md` before using security-related rows. The public artifact excludes undisclosed PoCs, exploit payloads, sensitive crash inputs, private targets, credentials, live reproduction steps, PDFs, Zotero databases, local paths, and private vendor or bug-bounty communication.
-
-
+Earlier corpus snapshots, July 15/16 search files, 31-record and 41-record coding checks, and 67-study review files remain in the repository for provenance. Filenames containing `pre_final_multisource_20260730` are frozen inputs to the integrated build. They must not be interpreted as current counts or current manuscript-facing results.

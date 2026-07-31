@@ -1,0 +1,25 @@
+stage,metric,count,definition
+identification,exported_source_occurrences,12090,All saved API/interface exports before local query-specific filtering
+identification,removed_by_deterministic_query_filter,9801,Broad ranked metadata outside the four-group query boundary
+deduplication,source_occurrences_entering_deduplication,2289,Occurrences retained by the documented query-specific rules
+deduplication,duplicate_source_occurrences_removed,647,Exact normalized-title source duplicates before record screening
+screening,unique_search_records_screened,1642,"Records screened by title/abstract and, where indicated, full text"
+screening,records_not_advanced_to_report_retrieval,1368,"Resolved at title/abstract stage, including background, existing-study, and exclusion decisions"
+retrieval,reports_sought,274,Reports selected for retrieval or already retrieved
+retrieval,reports_not_retrieved,35,No accessible full report from documented public sources
+eligibility,reports_assessed_at_full_text,239,Downloaded and text-extracted reports
+eligibility,full_text_study_level,132,New target-software study-level records
+eligibility,full_text_extended_synthesis,83,Adjacent studies with full-text-supported thematic extraction
+eligibility,full_text_background_reference,21,Contextual studies retained outside analytical synthesis
+eligibility,full_text_excluded_near_neighbor,3,Full-text exclusions
+integration,current_search_matches_to_retained_studies,110,Search records already represented in the retained corpus
+integration,new_or_reconciled_source_records_added,1532,Includes new canonical studies and alternate source versions
+integration,supplementary_source_records_not_reidentified,1675,"Previously retained seed, snowball, benchmark, project, or official-page records not reidentified by the current export interfaces"
+integration,prior_canonical_studies_not_reidentified,1662,Canonical studies retained from supplementary discovery sources
+final,integrated_source_records,1785,Source versions remain traceable
+final,integrated_canonical_studies,1772,Each study counted once after version reconciliation
+final,target_software_studies,199,Study-level analytical denominator
+final,governance_boundary_cases,1,Outside target-software distributions
+final,extended_synthesis_studies,149,Full-text-supported adjacent synthesis
+final,background_reference_studies,670,Contextual literature
+final,excluded_studies,753,"Title/abstract exclusions, full-text near-neighbors, and unavailable potentially eligible reports"

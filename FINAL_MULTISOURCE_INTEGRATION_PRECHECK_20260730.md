@@ -1,0 +1,181 @@
+# Final Multi-Source Integration Precheck (2026-07-30)
+
+This report is a non-adjudicating preview. It does not modify the released corpus,
+assign final layers, or resolve disagreements.
+
+- Full-text assessment rows: 161
+- Required blind second-coder rows: 86
+- Complete blind second-coder rows: 86
+- Confirmed author decisions: 0
+- Candidate duplicate-key groups: 0
+- Readiness problems: 161
+
+## Comparison Status
+
+- awaiting_author_confirmation: 161
+
+## Readiness Problems
+
+- FMS0016: author final decision not confirmed
+- FMS0048: author final decision not confirmed
+- FMS0105: author final decision not confirmed
+- FMS0109: author final decision not confirmed
+- FMS0134: author final decision not confirmed
+- FMS0143: author final decision not confirmed
+- FMS0145: author final decision not confirmed
+- FMS0146: author final decision not confirmed
+- FMS0148: author final decision not confirmed
+- FMS0151: author final decision not confirmed
+- FMS0152: author final decision not confirmed
+- FMS0166: author final decision not confirmed
+- FMS0205: author final decision not confirmed
+- FMS0212: author final decision not confirmed
+- FMS0214: author final decision not confirmed
+- FMS0226: author final decision not confirmed
+- FMS0230: author final decision not confirmed
+- FMS0254: author final decision not confirmed
+- FMS0257: author final decision not confirmed
+- FMS0260: author final decision not confirmed
+- FMS0263: author final decision not confirmed
+- FMS0266: author final decision not confirmed
+- FMS0267: author final decision not confirmed
+- FMS0269: author final decision not confirmed
+- FMS0270: author final decision not confirmed
+- FMS0271: author final decision not confirmed
+- FMS0272: author final decision not confirmed
+- FMS0274: author final decision not confirmed
+- FMS0275: author final decision not confirmed
+- FMS0279: author final decision not confirmed
+- FMS0280: author final decision not confirmed
+- FMS0281: author final decision not confirmed
+- FMS0284: author final decision not confirmed
+- FMS0288: author final decision not confirmed
+- FMS0335: author final decision not confirmed
+- FMS0367: author final decision not confirmed
+- FMS0372: author final decision not confirmed
+- FMS0389: author final decision not confirmed
+- FMS0401: author final decision not confirmed
+- FMS0435: author final decision not confirmed
+- FMS0444: author final decision not confirmed
+- FMS0457: author final decision not confirmed
+- FMS0489: author final decision not confirmed
+- FMS0500: author final decision not confirmed
+- FMS0509: author final decision not confirmed
+- FMS0530: author final decision not confirmed
+- FMS0538: author final decision not confirmed
+- FMS0541: author final decision not confirmed
+- FMS0568: author final decision not confirmed
+- FMS0575: author final decision not confirmed
+- FMS0577: author final decision not confirmed
+- FMS0578: author final decision not confirmed
+- FMS0580: author final decision not confirmed
+- FMS0584: author final decision not confirmed
+- FMS0598: author final decision not confirmed
+- FMS0605: author final decision not confirmed
+- FMS0606: author final decision not confirmed
+- FMS0613: author final decision not confirmed
+- FMS0615: author final decision not confirmed
+- FMS0618: author final decision not confirmed
+- FMS0619: author final decision not confirmed
+- FMS0637: author final decision not confirmed
+- FMS0648: author final decision not confirmed
+- FMS0650: author final decision not confirmed
+- FMS0676: author final decision not confirmed
+- FMS0678: author final decision not confirmed
+- FMS0684: author final decision not confirmed
+- FMS0698: author final decision not confirmed
+- FMS0705: author final decision not confirmed
+- FMS0708: author final decision not confirmed
+- FMS0713: author final decision not confirmed
+- FMS0718: author final decision not confirmed
+- FMS0733: author final decision not confirmed
+- FMS0734: author final decision not confirmed
+- FMS0741: author final decision not confirmed
+- FMS0744: author final decision not confirmed
+- FMS0747: author final decision not confirmed
+- FMS0753: author final decision not confirmed
+- FMS0768: author final decision not confirmed
+- FMS0789: author final decision not confirmed
+- FMS0831: author final decision not confirmed
+- FMS0842: author final decision not confirmed
+- FMS0850: author final decision not confirmed
+- FMS0886: author final decision not confirmed
+- FMS0890: author final decision not confirmed
+- FMS0891: author final decision not confirmed
+- FMS0902: author final decision not confirmed
+- FMS0904: author final decision not confirmed
+- FMS0911: author final decision not confirmed
+- FMS0914: author final decision not confirmed
+- FMS0922: author final decision not confirmed
+- FMS0927: author final decision not confirmed
+- FMS0933: author final decision not confirmed
+- FMS0935: author final decision not confirmed
+- FMS0945: author final decision not confirmed
+- FMS0946: author final decision not confirmed
+- FMS0948: author final decision not confirmed
+- FMS0957: author final decision not confirmed
+- FMS0964: author final decision not confirmed
+- FMS0966: author final decision not confirmed
+- FMS0969: author final decision not confirmed
+- FMS0994: author final decision not confirmed
+- FMS0998: author final decision not confirmed
+- FMS1017: author final decision not confirmed
+- FMS1024: author final decision not confirmed
+- FMS1031: author final decision not confirmed
+- FMS1034: author final decision not confirmed
+- FMS1040: author final decision not confirmed
+- FMS1054: author final decision not confirmed
+- FMS1055: author final decision not confirmed
+- FMS1063: author final decision not confirmed
+- FMS1082: author final decision not confirmed
+- FMS1083: author final decision not confirmed
+- FMS1084: author final decision not confirmed
+- FMS1085: author final decision not confirmed
+- FMS1087: author final decision not confirmed
+- FMS1088: author final decision not confirmed
+- FMS1093: author final decision not confirmed
+- FMS1095: author final decision not confirmed
+- FMS1096: author final decision not confirmed
+- FMS1098: author final decision not confirmed
+- FMS1127: author final decision not confirmed
+- FMS1135: author final decision not confirmed
+- FMS1136: author final decision not confirmed
+- FMS1144: author final decision not confirmed
+- FMS1148: author final decision not confirmed
+- FMS1149: author final decision not confirmed
+- FMS1161: author final decision not confirmed
+- FMS1164: author final decision not confirmed
+- FMS1175: author final decision not confirmed
+- FMS1196: author final decision not confirmed
+- FMS1218: author final decision not confirmed
+- FMS1227: author final decision not confirmed
+- FMS1239: author final decision not confirmed
+- FMS1261: author final decision not confirmed
+- FMS1275: author final decision not confirmed
+- FMS1279: author final decision not confirmed
+- FMS1293: author final decision not confirmed
+- FMS1307: author final decision not confirmed
+- FMS1312: author final decision not confirmed
+- FMS1318: author final decision not confirmed
+- FMS1321: author final decision not confirmed
+- FMS1323: author final decision not confirmed
+- FMS1338: author final decision not confirmed
+- FMS1389: author final decision not confirmed
+- FMS1398: author final decision not confirmed
+- FMS1464: author final decision not confirmed
+- FMS1492: author final decision not confirmed
+- FMS1495: author final decision not confirmed
+- FMS1509: author final decision not confirmed
+- FMS1514: author final decision not confirmed
+- FMS1561: author final decision not confirmed
+- FMS1577: author final decision not confirmed
+- FMS1586: author final decision not confirmed
+- FMS1605: author final decision not confirmed
+- FMS1607: author final decision not confirmed
+- FMS1613: author final decision not confirmed
+- FMS1618: author final decision not confirmed
+- FMS1635: author final decision not confirmed
+- FMS1639: author final decision not confirmed
+- FMS1640: author final decision not confirmed
+
+Final corpus counts must not be calculated from this preview until all problems are closed.

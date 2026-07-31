@@ -1,31 +1,45 @@
 # Data Dictionary
 
-This dictionary describes the non-sensitive audit artifact used by the survey manuscript. It is intended to help reviewers inspect corpus construction, legacy A/E traceability fields, current evidence-output labels, bibliographic verification, pilot second-coder calibration materials, formal second-coder templates/results, agreement reports, the submission-update rerun notes, and submission-update adjudication materials. Files with `v13_` prefixes are retained filenames from the prior restructuring stage but are used by the current manuscript synthesis unless superseded.
+This dictionary describes the non-sensitive audit artifact used by the survey manuscript. Current manuscript-facing files implement the integrated multi-source search through 2026-07-30, study/version reconciliation, the 199-study target-software coding matrix, the 149-study extended synthesis audit, and the complete independent second-coder review. Earlier 31-record, 41-record, 67-study, `core31`, and `v13_` files remain only as historical provenance unless a section below explicitly identifies them as current.
 
 
 ## Current Manuscript Layer Terminology
 
-Current terminology maps legacy artifact values as follows: `Core` identifies study-level coded source records and `Supporting` identifies extended-synthesis source records. The current corpus contains 68 study-level coded records (67 target-software studies plus one governance boundary case) and 65 extended-synthesis studies. `data/current_study_level_coding_matrix_harmonized.csv` is the author-confirmed current study-level view; `data/current_study_level_coding_matrix.csv` preserves the pre-harmonization combined view. Legacy `core31` and `v13_` files preserve the frozen first coding round; the additions file preserves update-round provenance without imputed A/E labels.
+Current terminology maps legacy source-layer values as follows: `Core` identifies study-level coded source records and `Supporting` identifies extended-synthesis source records. The current corpus contains 200 study-level rows: 199 target-software studies plus one governance boundary case. It also contains 149 extended-synthesis studies. `data/current_study_level_coding_matrix_harmonized.csv` is the current manuscript-facing matrix; `data/current_study_level_coding_matrix.csv` preserves a pre-final-multisource historical view.
 
-The current shape and capability schema consolidates historical coding terms through `LEGACY_CODE_CROSSWALK.md` and the cross-round harmonization documented in `CODING_ROUND_HARMONIZATION_REPORT.md` and `data/coding_round_harmonization_audit.csv`. The integrated update-study labels use the unified schema; historical files retain the earlier labels and their provenance.
+The current shape and capability schema consolidates historical coding terms through `LEGACY_CODE_CROSSWALK.md` and the documented cross-round harmonization. All newly integrated target-software studies use that same schema; historical files retain their earlier labels and provenance.
 
-## Unified second-coder review files
+## Complete second-coder review files
 
-`unified_second_coder_codebook.md` and `UNIFIED_SECOND_CODER_REVIEW_GUIDE.md` define the single frozen review boundary applied across all 67 target-software studies plus the governance boundary case. `data/unified_second_coder_final_blind_template.csv` is the blank public input, and `data/unified_second_coder_final_results.csv` contains the completed independent labels and row-level material/decision provenance. `data/unified_second_coder_pre_adjudication_disagreements.csv` compares those labels with the manuscript-facing harmonized matrix without creating consensus labels. `data/unified_second_coder_label_substitution_sensitivity.csv` reports, for each lifecycle, capability, system-shape, evidence-output, and external-traceability label, the author-harmonized count, complete coder2 substitution count, absolute difference, and direction on the 67-study target-software denominator. `reports/UNIFIED_SECOND_CODER_PRE_ADJUDICATION_REPORT.md` reports field-specific agreement before adjudication; adjudication is not planned and no post-adjudication reliability is claimed. Historical 31-record and 41-record files remain as codebook-development and round-provenance records rather than a synthetic combined reliability result.
+`unified_second_coder_codebook.md` defines the shared coding boundary. `data/integrated_199_second_coder_comparison_20260730.csv` compares the final and independent labels for all 199 target-software studies. `data/integrated_199_per_label_reliability_20260730.csv` reports label-level agreement for lifecycle and capability fields, and `data/integrated_199_label_substitution_sensitivity_20260730.csv` reports final-versus-coder2 counts for every controlled label. `INTEGRATED_199_SECOND_CODER_AGREEMENT_20260730.md` is the current reliability report. The separately coded governance case is excluded from target-software reliability denominators. No consensus or post-adjudication reliability is claimed.
+
+## Integrated multi-source search files
+
+- `data/final_multisource_search_20260730_access_log.csv`: one row per query request or source check, with interface, query, timestamp, status, returned records, raw-file path, and access note.
+- `data/final_multisource_search_20260730_results.csv`: saved source occurrences before source-level deduplication.
+- `data/final_multisource_search_20260730_source_counts.csv`: exported occurrences and occurrences entering deduplication by interface.
+- `data/final_multisource_search_20260730_screening_audit.csv`: 1,642 unique interface records with title/abstract, retrieval, and final screening fields.
+- `data/final_multisource_search_20260730_fulltext_assessment.csv`: 239 retrieved reports with full-text decisions and evidence locations.
+- `data/final_multisource_search_20260730_prisma_counts.csv`: the adapted PRISMA-ScR accounting used in the manuscript.
+- `data/final_multisource_search_20260730_dedup_resolutions.csv`: potential same-study/version pairs, their resolution, and evidence basis.
+
+The integrated totals are 1,785 source records and 1,772 studies after version reconciliation: 199 target-software studies, one governance boundary case, 149 extended-synthesis studies, 670 background/reference studies, and 753 exclusions. Thirteen alternate versions or source variants remain traceable without separate counting.
+
+## Historical coding and search provenance
 
 ## `SUBMISSION_UPDATE_SECOND_CODER_RERUN_NOTES.md`
 
 Lightweight boundary notes for an adopted tightened-boundary rerun of the 41-record submission-update second-coder pass. It records the tightened primary/overlay and external-traceability rules used for the adopted update-pass rerun.
 ## `data/current_study_level_coding_matrix_harmonized.csv` and pre-harmonization provenance
 
-`data/current_study_level_coding_matrix_harmonized.csv` is the author-confirmed current matrix for all 68 study-level coded records. It applies one controlled lifecycle, primary-shape, overlay, cross-stage-capability, evidence-output, and external-traceability schema while preserving round provenance and reliability scope. `data/current_study_level_coding_matrix.csv` is retained unchanged as the pre-harmonization combined view. Neither file contains legacy A/E fields.
+`data/current_study_level_coding_matrix_harmonized.csv` is the current matrix for all 200 study-level records. It applies one controlled lifecycle, primary-shape, overlay, cross-stage-capability, evidence-output, and external-traceability schema while preserving coding provenance. `data/current_study_level_coding_matrix.csv` is retained as a historical pre-final-multisource view. Neither file contains legacy A/E fields.
 
 - `matrix_id`: stable row identifier inherited from the coding round (`C01`--`C31` or the applicable `U` identifier).
 - `record_id`, `canonical_study_id`: source-record and canonical-study links.
 - `system_alias`, `title`: system and publication identifiers.
 - `analytical_role`: `target_software_study` or `governance_boundary_case`.
-- `coding_round`: `initial_frozen_round` or `submission_update_20260715`.
-- `harmonization_status`: author-confirmed coding-round harmonization status.
+- `coding_round`: provenance value identifying the initial round, July update, or integrated multi-source addition.
+- `harmonization_status`: final-label provenance; it does not imply two-coder consensus.
 - `lifecycle_coverage`: current controlled multi-label lifecycle coding.
 - `primary_system_shape`: one approved primary shape; the governance row remains separate.
 - `overlay_tags`: optional controlled overlays kept separate from the primary shape.
@@ -44,7 +58,7 @@ Lightweight boundary notes for an adopted tightened-boundary rerun of the 41-rec
 The harmonization audit preserves each original field value, current-codebook candidate, evidence basis, source location, uncertainty, author-review status, and final author-confirmed label. The round-statistics file reports initial, submission-update, and combined harmonized counts without constructing a combined reliability coefficient. The report summarizes coding drift, accepted changes, residual round differences, taxonomy stability, and the AI-assisted working-note boundary.
 ## Common Identifiers
 
-- `record_id`: stable identifier for one source record in the 253-record screening ledger.
+- `record_id`: stable identifier for one source record in the 1,785-record integrated ledger.
 - `core_id`: stable identifier for one legacy Core record in the 31-record study-level coded set.
 - `sample_id`: stable identifier for one record in the second-coder sample.
 
@@ -64,7 +78,7 @@ The harmonization audit preserves each original field value, current-codebook ca
 
 ## `data/source_search_log.csv`
 
-This file records the source-specific search ledger for the current manuscript corpus. Counts are deduplicated records captured in the public screening ledger, not volatile web-search result totals.
+This file preserves the earlier source-specific ledger. The current manuscript-facing search audit is the `final_multisource_search_20260730_*` file family described above.
 
 - `source_id`: compact source bucket identifier.
 - `source_name`: human-readable source bucket name.
@@ -82,7 +96,7 @@ This file records the source-specific search ledger for the current manuscript c
 
 ## `data/source_screening_audit.csv`
 
-This file records one source assignment and screening decision for each of the 253 source records in the screening ledger.
+This file preserves screening decisions for the earlier 253-source-record snapshot. The current interface screening audit is `data/final_multisource_search_20260730_screening_audit.csv`.
 
 - `record_id`: stable candidate record identifier linked to `data/corpus.csv`.
 - `title`, `year`: record title and year from corpus metadata.
@@ -185,7 +199,7 @@ The report states the confirmation scope, 37/4 analytical-layer outcome, preserv
 
 ## `SUBMISSION_UPDATE_CANONICAL_INTEGRATION_REPORT.md` and `prepare_submission_update_canonical_integration.py`
 
-The report records the exact-identifier/title comparison and corpus impact. All 41 update records are new canonical studies under the current matching rules, yielding the integrated totals of 253 source records and 248 canonical studies now reflected in the coding matrices, distributions, and manuscript text.
+The report records the exact-identifier/title comparison and corpus impact for the July 15 historical update. Its 253-source/248-study totals were superseded by the integrated multi-source search through July 30.
 
 ## `data/submission_update_20260715_study_level_additions.csv`
 
@@ -193,11 +207,11 @@ This file contains the 37 update studies added to the current study-level set. I
 
 ## `data/current_synthesis_statistics.csv`
 
-This file reports combined descriptive counts for 67 target-software studies across lifecycle coverage, agentic capabilities, and principal reported evidence output. The governance boundary case is included only in the evidence-output total where explicitly labeled. `baseline_count` and `update_addition_count` preserve the two-cohort arithmetic.
+This file preserves descriptive counts for the earlier 67-study snapshot. Current counts are recomputed directly from `data/current_study_level_coding_matrix_harmonized.csv` by `reproduce_tables.py`.
 
 ## `SUBMISSION_UPDATE_CORPUS_INTEGRATION_REPORT.md` and `integrate_submission_update_corpus.py`
 
-The report records the completed 253-source-record / 248-canonical-study integration and the 67+1 denominator policy. The deterministic script expands the source ledger, canonical crosswalk, reference audit, current-field additions, extended synthesis, mapping views, and current descriptive statistics while preserving the legacy 31-record coding files and both rounds of reliability results.
+The report and script preserve the earlier 253-source/248-study integration stage. They are retained as provenance and do not define the current manuscript denominators.
 
 ## `data/core_coding.csv`
 
@@ -222,7 +236,7 @@ The report records the completed 253-source-record / 248-canonical-study integra
 
 ## `data/study_version_crosswalk.csv`
 
-This file links the 253 source records to 248 canonical studies. It preserves version history while preventing preprints, conference versions, exact duplicates, or source variants of the same study from being counted twice.
+This file links 1,785 source records to 1,772 studies. It preserves version history while preventing preprints, conference versions, exact duplicates, or source variants of the same study from being counted twice.
 
 - `record_id`: source-record identifier from `data/corpus.csv`.
 - `title`: source-record title.
@@ -239,7 +253,7 @@ This file links the 253 source records to 248 canonical studies. It preserves ve
 
 ## `data/extended_synthesis_audit.csv`
 
-This file provides a lightweight, record-level synthesis-use audit for the 65-study canonical extended synthesis set. It complements the study-level workflow--capability--evidence coding used for 67 target-software studies plus one governance boundary case.
+This file provides a record-level synthesis-use audit for the 149-study extended synthesis set. It complements the study-level workflow--capability--evidence coding used for 199 target-software studies plus one governance boundary case.
 
 - `record_id`: stable identifier linked to `data/corpus.csv`.
 - `citation_key`: bibliography key extracted from the public reference audit when available; `NA` means no key was recorded in the source note.
@@ -267,7 +281,7 @@ Positive examples: an LLM-guided fuzzing paper without full study-level trace fi
 - `original_layer`: layer in the original public-minimal corpus.
 - `supplemental_layer`: supplemental analysis layer, including `Analytical Core`, `Supporting`, `Background Context`, and `Excluded`.
 - `task_category`: coarse task family used during screening.
-- `is_analytical_core`: whether the record is part of the current 68-record study-level coded set.
+- `is_analytical_core`: whether the record belonged to the study-level coded set in this historical layer-audit snapshot.
 - `core_id`: Core identifier when applicable; otherwise `NA`.
 - `system_alias`: short system or benchmark name when applicable.
 - `a_level_original`: original A-profile code for Core records.
@@ -388,22 +402,22 @@ This file is for comparison and adjudication after independent coding is complet
 - `last_verified_date`: date of the latest local audit update for this row.
 - `note`: provenance, risk flags, and manual-check notes.
 
-Manuscript citation count is not a corpus statistic. The earlier reference-list expansion cited rows already present in the corpus; the 2026-07-15 update is instead recorded as a separate, fully screened and coded integration. Current totals are 253 source records, 248 canonical studies, 68 study-level coded records, 65 extended synthesis studies, 95 Background references, and 20 Excluded near-neighbor studies.
+Manuscript citation count is not a corpus statistic. This file contains historical reference-audit and submission-update fields as well as entries added during the final multi-source integration. Current corpus totals are validated from `data/corpus.csv`, `data/study_version_crosswalk.csv`, and the final multi-source audit files rather than inferred from bibliography size.
 
 
 ## `data/mapping_snapshot_counts.csv`
 
-This file records descriptive mapping views used by the current manuscript. The counts describe the manuscript corpus and product boundary snapshot only; they are not field-level prevalence estimates.
+This file preserves descriptive mapping views from an earlier manuscript snapshot. Current distributions are recomputed from the integrated matrix.
 
 - `view`: mapping view, such as `year_distribution`, `source_type_distribution`, or `task_facet_distribution`.
 - `category`: category displayed in the manuscript mapping view.
 - `count`: count for the category.
-- `denominator`: counting scope, such as 253 source records, the independent product snapshot layer, 67 target-software studies, the 68-record coded set including the governance boundary case, or the 65-study extended synthesis set.
+- `denominator`: counting scope recorded for the historical snapshot or independent product layer.
 - `scope_note`: boundary note explaining that the count is descriptive rather than a prevalence estimate.
 
 ## `data/product_ecosystem_snapshot.csv`
 
-This file is an independent product-ecosystem boundary data layer. Rows in this file are not part of `data/corpus.csv`, do not count toward the 253 source records, and do not alter study-level coded aggregate statistics. Product materials that also support manuscript background or extended-synthesis discussion are represented separately in `data/reference_audit.csv`. Public vendor/project materials are recorded as source-limited ecosystem evidence.
+This file is an independent product-ecosystem boundary data layer. Its rows are not part of `data/corpus.csv` and do not alter study-level aggregate statistics. Product materials that also support manuscript background or extended-synthesis discussion are represented separately in `data/reference_audit.csv`.
 
 - `product_or_system`: public product, model, workflow, policy, or attempted source check.
 - `vendor`: vendor or organization associated with the material.
@@ -436,7 +450,7 @@ This file is an independent product-ecosystem boundary data layer. Rows in this 
 
 `data/doi_remaining_manual_status.csv` documents records that remain DOI-less after the DOI merge and supplemental pass.
 
-Product and policy pages added for the product-ecosystem snapshot are also listed there when DOI is not applicable. These rows record `doi_not_applicable_product_page` or equivalent status and do not change the 253-record research corpus or the 68-record study-level coded set.
+Product and policy pages added for the product-ecosystem snapshot are also listed there when DOI is not applicable. These rows record `doi_not_applicable_product_page` or an equivalent status and remain outside the integrated research-study counts.
 
 Rows already audited with DOI or official URL in `reference_audit.csv` are not duplicated in `doi_remaining_manual_status.csv` merely because they are newly cited in a manuscript draft.
 
@@ -482,7 +496,7 @@ Standardized publication-status view for the current study-level coding matrix. 
 Publication-status distribution summary for the target-software study-level set. It reports evidence-output counts, primary-shape counts, failure-reuse labels, and governance/human-gate labels by standardized publication status.
 
 ## publication_status_sensitivity_analysis.csv
-Publication-status sensitivity view derived from `publication_status_standardized.csv`. It reports counts, denominators, and shares for the four primary system shapes, five principal reported evidence outputs, seven cross-stage capabilities, and external-traceability categories. `peer_reviewed` combines conference, journal, and workshop records; `preprint` retains the standardized preprint category. The three benchmark/system reports remain visible in the complete-set totals and in `publication_status_distribution_by_layer.csv`, but are not folded into either comparison subset.
+Historical 67-study publication-status sensitivity view. It is retained for provenance and is not the source of current 199-study distribution claims. `publication_status_standardized.csv` and `publication_status_distribution_by_layer.csv` contain the integrated status assignments and summary counts.
 
 - `scope`: fixed target-software denominator.
 - `publication_status_group`: `all_target_software`, `peer_reviewed`, or `preprint`.
@@ -495,7 +509,7 @@ Source-located audit file for the representative reported-results table in Appen
 
 ## `data/empirical_reporting_extraction.csv`
 
-One source-scoped row for each of the 67 target-software studies. This table is parallel to the coding matrix and does not add or revise lifecycle, capability, shape, evidence-output, or claim-boundary labels.
+This file preserves the source-located empirical-reporting extraction created for the earlier 67-study snapshot. The current manuscript uses its representative, source-checked observations without presenting it as a 199-study completeness estimate. It does not add or revise lifecycle, capability, shape, evidence-output, or claim-boundary labels.
 
 Every column name is unique. `reproduce_tables.py` treats duplicate CSV header names as an error.
 
@@ -513,7 +527,7 @@ Every column name is unique. `reproduce_tables.py` treats duplicate CSV header n
 
 ## `data/empirical_reporting_completeness.csv`
 
-Counts recomputed from `data/empirical_reporting_extraction.csv` for the full 67-study set and each primary system shape.
+Counts recomputed from the historical 67-study `data/empirical_reporting_extraction.csv`. They are retained for provenance and are not current full-corpus prevalence counts.
 
 - `scope`: all target-software studies or one primary system shape.
 - `reporting_item`: model/version, evaluation scale, quantitative result, baseline, validation material, runtime, cost, ablation, or failure reporting.
@@ -521,7 +535,7 @@ Counts recomputed from `data/empirical_reporting_extraction.csv` for the full 67
 
 ## `data/traditional_security_primitives.csv`
 
-One source-located row for each of the 67 target-software studies. This multi-label author extraction supports RQ1 by recording primitive families explicitly present in each study's workflow or evaluation. It includes fixed pipelines, benchmark oracles, offline PoC execution, preset sanitizers, and evaluation components when explicitly used; the row does not imply that every primitive was dynamically selected by an Agent. The extraction is separate from the five coded fields, the claim-boundary note, and the second-coder reliability analysis.
+One source-located row for each of the 199 target-software studies. This multi-label author extraction supports RQ1 by recording primitive families explicitly present in each study's workflow or evaluation. It includes fixed pipelines, benchmark oracles, offline PoC execution, preset sanitizers, and evaluation components when explicitly used; a row does not imply that every primitive was dynamically selected by an agent. The extraction is separate from the five second-coded fields and the claim-boundary note.
 
 - `matrix_id`, `system`: links to the harmonized study-level matrix.
 - `primitive_tags`: semicolon-delimited labels from seven families: `static_taint_specification`, `fuzzing_input_harness`, `symbolic_constraint`, `runtime_oracle`, `replay_poc_pov`, `patch_build_test`, and `recon_scan_pentest`.
@@ -531,12 +545,24 @@ One source-located row for each of the 67 target-software studies. This multi-la
 
 ## `data/unified_second_coder_per_label_reliability.csv`
 
-Per-label binary agreement for the 67 target-software studies in the complete independent review.
+This file preserves per-label binary agreement for the earlier 67-study review. Current label-level agreement for all 199 target-software studies is stored in `data/integrated_199_per_label_reliability_20260730.csv`.
 
 - `field`, `label`, `scope_n`: coding dimension, controlled label, and denominator.
 - `author_positive_n`, `coder2_positive_n`: positive assignments under the harmonized author matrix and complete independent coding.
 - `raw_agreement_n`, `raw_agreement`: binary agreement count and proportion for the label.
 - `cohens_kappa`: label-specific Cohen's kappa; these values complement rather than replace row-level Jaccard and micro-F1 for the multi-label fields.
+
+## `data/integrated_199_second_coder_comparison_20260730.csv`
+
+One comparison row for each target-software study. It preserves the final and independent values for primary system shape, principal reported evidence output, external traceability, lifecycle coverage, cross-stage capabilities, and the associated agreement flags. The denominator is 199; the governance boundary case is excluded.
+
+## `data/integrated_199_per_label_reliability_20260730.csv`
+
+Binary per-label agreement for the six lifecycle and seven capability labels across all 199 target-software studies. Fields include final/coder2 positive counts, raw agreement, and Cohen's kappa. Row-level exact agreement, Jaccard, and micro-F1 remain in `INTEGRATED_199_SECOND_CODER_AGREEMENT_20260730.md`.
+
+## `data/integrated_199_label_substitution_sensitivity_20260730.csv`
+
+Final-versus-coder2 counts for the four primary shapes, five principal evidence outputs, six lifecycle labels, seven capability labels, and four external-traceability values. It supports the manuscript's complete-label substitution statements without changing the final coding matrix.
 
 ## `data/unified_second_coder_cohort_sensitivity.csv`
 

@@ -1,76 +1,52 @@
-# Source-Specific Search Protocol
+# Integrated Search Protocol
 
-This file records the source-specific search and screening protocol used by the
-current manuscript artifact. The protocol is designed for auditability of the
-mapping-oriented scoping review corpus, not for claiming a PRISMA-complete
-systematic review.
+## Scope
 
-## Reconciled Ledger Date And Scope
+The review integrates database and supplementary searches for public material dated from 2023-01-01 through 2026-07-30. The analytical start date marks the period in which public Agentic LLM vulnerability-discovery and validation workflows became the review target; earlier LLM-assisted analysis, fuzzing, code-model, and orchestration studies remain eligible as background.
 
-- Search ledger date: 2026-06-30
-- Date range covered: 2023-01-01 to 2026-06-30
-- Corpus scope: Agentic LLM systems for vulnerability mining, vulnerability
-  validation, fuzzing, PoC/PoV generation, automated penetration testing, cyber
-  reasoning systems, benchmarks, reproducibility artifacts, and Agent security
-  governance boundaries.
-- Product ecosystem materials are maintained separately in
-  `data/product_ecosystem_snapshot.csv` and are not counted as corpus records.
+The complete protocol, source-specific query strings, access status, and execution details are preserved in `FINAL_MULTISOURCE_SEARCH_PROTOCOL_20260730.md` and `data/final_multisource_search_20260730_access_log.csv`.
 
 ## Sources
 
-The screening ledger uses the following source buckets:
+Exportable results were collected through:
 
-- ACM Digital Library
-- arXiv / CoRR
-- DOI / Crossref / publisher-title lookup
-- IEEE Xplore
-- ScienceDirect / Elsevier
-- SpringerLink
-- USENIX / security-conference official pages
-- Local Zotero / seed / snowball metadata
+- arXiv official API;
+- OpenAlex;
+- Crossref and publisher-prefix queries for ACM, IEEE, Springer, and Elsevier records.
 
-The source buckets are recorded in `data/source_search_log.csv`. Record-level
-source assignment and screening decisions are recorded in
-`data/source_screening_audit.csv`.
+Supplementary discovery and formal-version checks used official ACM, IEEE, Springer, ScienceDirect, USENIX, NDSS, and DBLP pages where accessible, together with seed studies, backward and forward snowballing, benchmark pages, project pages, DOI/title checks, and prior retained records. These web checks are not represented as complete database exports. Google Scholar was blocked during execution; Scopus and Web of Science were unavailable without authenticated access. The access log records these limits directly.
 
-## Concept Groups
+## Query Logic
 
-The search strings combine four concept groups:
+Four concept groups were adapted to each interface:
 
-- Model and system form: `LLM`, `large language model`, `agent`,
-  `multi-agent`, `workflow`, `tool use`.
-- Vulnerability-mining task: `vulnerability detection`, `vulnerability
-  discovery`, `vulnerability validation`, `fuzzing`, `PoC`, `PoV`, `exploit`,
-  `patch validation`.
-- Environment interaction and evidence: `execution feedback`, `crash`,
-  `coverage`, `sanitizer`, `oracle`, `replay`, `harness`, `artifact`.
-- Evaluation and governance: `benchmark`, `CTF`, `bug bounty`, `CVE`, `CRS`,
-  `cyber agent`, `permission`, `sandbox`, `disclosure`.
+1. Agent/system form: LLM, large language model, agent, agentic, multi-agent, autonomous system, or cyber reasoning system.
+2. Security task: vulnerability discovery/detection, fuzzing, penetration testing, exploit/PoC/PoV generation, repair, patch validation, or disclosure.
+3. Interaction and evidence: tool use, execution, feedback, coverage, crash, sanitizer, oracle, replay, validation, or environment.
+4. Evaluation and governance: benchmark, cost, ablation, failure analysis, human approval, permission, sandbox, audit, or external record.
 
-## Inclusion And Exclusion Criteria
+The exact strings and pagination are stored in the access log and raw-export manifest rather than reconstructed from prose.
 
-Records are included when they have an identifiable research object, system,
-benchmark, artifact, or source-limited public material related to the review
-scope. Records are excluded when they are generic LLM/code-generation work
-without a security task, commentary without an identifiable source object,
-duplicates superseded by a later version, inaccessible records, or materials
-outside vulnerability mining, validation, benchmarking, or Agent governance.
+## Screening and Reconciliation
 
-## Submission-Time arXiv Recall-Recovery Search
+Saved interfaces returned 12,090 source occurrences. Documented query-specific filtering retained 2,289 occurrences; exact source-level deduplication produced 1,642 unique interface records for title/abstract screening. Reports were sought for 274 records, 239 were assessed at full text, and 35 could not be retrieved from the documented public sources.
 
-A deliberately broader arXiv-only sensitivity and recall-recovery search was run on 2026-07-15 with four query groups defined in `submission_update_search.py`. The historical ledger was multi-source and used narrower query families; the July 15 pass assessed cutoff and query sensitivity and recovered relevant studies that predated the June 30 cutoff. Raw Atom responses, query timestamps, pagination, and SHA-256 hashes are preserved. The search returned 432 unique records: 12 matched the existing corpus, 26 were first submitted after the analytical cutoff, 41 advanced to full-text review, 30 were retained as contextual/background candidates, and 323 were excluded at title/abstract screening. Record-level decisions are in `data/submission_update_20260715_screening_audit.csv`.
+Full-text assessment yielded 132 target-software studies, 83 extended-synthesis studies, 21 background records, and three exclusions from the interface search. Supplementary identification contributed 143 additional non-overlapping source records. Version reconciliation then combined preprints, formal publications, exact duplicates, and source variants at study level.
 
-The 41 full-text records received an author audit, an independent blind coding pass, and an author-confirmed evidence-based resolution. Thirty-seven entered study-level coding and four entered extended synthesis. Original and recall-recovery rounds remain separately auditable. The recall-recovery cohort broadened the empirical base and extended the reproduction-, validation-, and repair-centered shape to cover repair-centered systems, but it required no new evidence-output category and did not change the four dominant comparison shapes or the central workflow--capability--evidence finding. The resulting corpus is a documented analytical set rather than an exhaustive census.
-## Counting Policy
+The final ledger contains 1,785 source records and 1,772 studies. Analytical allocation is:
 
-`record_id` is the source-record key in the public screening ledger. The artifact records 253 source records and uses `data/study_version_crosswalk.csv` to resolve them into 248 canonical studies. Current canonical analysis-use counts are 68 study-level coded records (67 target-software studies plus one governance boundary case), 65 extended synthesis studies, 95 background/reference records, and 20 excluded near-neighbor studies. Source-search counts in `data/source_search_log.csv` describe captured source records and canonical allocations rather than volatile web-result totals.
+- 199 target-software studies;
+- one governance boundary case;
+- 149 extended-synthesis studies;
+- 670 background/reference studies;
+- 753 excluded studies.
 
-Zotero metadata is used for title, source-type, DOI/URL, venue, and local
-bibliographic reconciliation. Local Zotero paths, PDFs, SQLite databases, and
-private working directories are excluded from the public artifact.
+Thirteen alternate versions or source variants remain in the crosswalk without separate counting.
 
+## Inclusion Boundary
 
+Study-level inclusion requires public evidence that context or feedback interpreted by an LLM changes a later tool-mediated action or retained workflow state in vulnerability discovery, exploration, execution observation, validation, repair, or reporting. A stand-alone label, explanation, or general code-generation result does not satisfy this boundary. Adjacent mechanisms, benchmarks, and evaluation studies with partial workflow relevance enter extended synthesis; conventional primitives and general context enter background/reference; near-neighbor exclusions retain record-level reasons.
 
-## July 16 Official-Source Follow-Up
-A targeted official-source follow-up was run on 2026-07-16 after the arXiv recall-recovery pass. It resolved formal-source matches and official-program candidates using source-level title matching and query-family checks. It introduced no additional analytical records. The source-level protocol and record decisions are preserved in `data/official_source_followup_20260716_search_log.csv`, `data/official_source_followup_20260716_screening_audit.csv`, and `OFFICIAL_SOURCE_FOLLOWUP_REPORT.md`.
+## Historical Provenance
 
+Earlier source-ledger, July 15 arXiv, July 16 official-source, and round-specific coding files are retained to preserve provenance. The manuscript presents the integrated method and final counts above rather than treating those execution stages as separate analytical corpora.

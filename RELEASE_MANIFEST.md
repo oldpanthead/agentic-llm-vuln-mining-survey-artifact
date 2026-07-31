@@ -1,106 +1,64 @@
 # Release Manifest
 
-Prepared for public review of the Agentic LLM vulnerability-mining survey artifact.
+## Release Scope
 
-- Prepared date: 2026-07-15
-- Source-specific search ledger date: 2026-06-30
-- Submission-time arXiv sensitivity-search date: 2026-07-15
-- Official-source follow-up date: 2026-07-16
-- Product-ecosystem snapshot date: 2026-06-29
-- Repository: `https://github.com/oldpanthead/agentic-llm-vuln-mining-survey-artifact`
+This public release contains non-sensitive data and scripts supporting the ACM CSUR manuscript. It includes the integrated multi-source search through 2026-07-30, study/version reconciliation, analytical-layer allocation, the 199-study target-software coding matrix, the 149-study extended synthesis audit, complete independent second-coder files, and source-located supplementary extractions.
 
-## Included
+The immutable submission tag will be added after the synchronized manuscript and artifact commit is approved. Earlier tags remain unchanged.
 
-The release includes non-sensitive materials needed to review the survey evidence:
+## Current Counts
 
-- compact entry map: `ARTIFACT_INDEX.md`;
-- source-specific search protocol, source-level ledger, record-level screening audit, submission-time arXiv update export, screening audit, official-source follow-up log, 41-record author full-text audit, blank update-search template, completed independent update coding, tightened-boundary rerun files, label-substitution sensitivity table, pre-adjudication agreement report, preserved working draft, author-confirmed adjudication, canonical-integration assessment, corpus metadata, canonical study/version crosswalk, corpus-layer audit, and screening summary;
-- author-confirmed harmonized 68-record coding matrix, pre-harmonization combined view, field-level harmonization audit, round-specific statistics, frozen 31-record coding table, 37-record update-round view, `data/extended_synthesis_audit.csv`, extended synthesis audit report, corpus-stratification closure report, deduplication audit report, current evidence-output codebook, legacy A-profile codebook, field dictionary, publication-status study-level view, and legacy-code crosswalk;
-- manuscript-facing synthesis matrix, synthesis statistics, mapping counts, publication-status sensitivity analysis, 67-study empirical reporting and traditional-primitive extractions, per-label and cohort sensitivity (`data/unified_second_coder_cohort_sensitivity.csv`), representative system mechanisms (`data/representative_system_mechanisms.csv`), source-located cost/ablation/failure observations (`data/mechanism_cost_ablation_synthesis.csv`), representative reported results, benchmark-boundary notes, research-agenda outputs, and reproducibility audit files;
-- DOI/reference audit, DOI-status notes, Zotero/PDF resolution summary, and literature-update decisions;
-- product-ecosystem snapshot for public coding-agent and security-agent materials;
-- formal principal-reported-evidence-output second-coder results and agreement report;
-- formal cross-stage capability / external-traceability extension results and set-style agreement report;
-- pilot second-coder calibration archive;
-- historical v13 restructuring audit archive;
-- security boundary, release checklist, repository setup notes, licenses, and reproducibility script.
+- Search occurrences exported: 12,090
+- Occurrences entering source-level deduplication: 2,289
+- Unique interface records screened: 1,642
+- Reports sought / assessed: 274 / 239
+- Source records: 1,785
+- Studies after version reconciliation: 1,772
+- Target-software studies: 199
+- Governance boundary case: 1
+- Extended-synthesis studies: 149
+- Background/reference studies: 670
+- Excluded studies: 753
+- Alternate versions or source variants: 13
+- Product-ecosystem snapshot rows: 23, maintained outside the research-study counts
 
-Files with `v13_` prefixes are retained filenames from a prior restructuring stage but are used by the current manuscript synthesis unless superseded. Historical narrative audit notes from that stage are under `archive/v13_restructuring_audits/`.
+## Manuscript-Facing Files
 
-## Excluded
+The authoritative list is `manuscript_artifact_paths.txt`. It includes:
 
-The release excludes:
+- integrated search, source-count, screening, full-text, PRISMA, and deduplication audits;
+- `data/corpus.csv` and `data/study_version_crosswalk.csv`;
+- `data/current_study_level_coding_matrix_harmonized.csv`;
+- `data/extended_synthesis_audit.csv`;
+- study-level publication-status assignments and stratified distributions;
+- `data/traditional_security_primitives.csv`;
+- integrated 199-study second-coder comparison, per-label reliability, and substitution sensitivity;
+- representative mechanism, reported-result, cost, ablation, and failure-recovery extractions;
+- reference metadata for newly integrated study-level records.
 
-- undisclosed PoCs, exploit payloads, live reproduction instructions, sensitive crash inputs, private targets, credentials, or tokens;
-- local Zotero storage paths, Zotero SQLite databases, PDFs, private working directories, and private verification exports;
-- second-coder answer keys before independent coding, undisclosed adjudication results, and private disagreement notes;
-- manuscript source files, build logs, ZIP archives, and temporary audit variants.
+## Reproduction
 
-## Evidence Boundary
+Run:
 
-Product pages, help pages, official blogs, model pages, project pages, and disclosure policies are recorded as dated public materials. They support ecosystem and boundary discussion as source-limited public materials outside the current 68-record study-level coded set.
+```text
+python reproduce_tables.py
+```
 
-The source-specific ledger, submission-time update, and 2026-07-16 official-source follow-up record the current corpus by source bucket, query family, screening decision, and analysis layer. Reference-list size and corpus-record size are separate quantities. The official-source follow-up introduced no corpus-count changes. Current counts are 253 source records and 248 canonical studies: 68 study-level coded records (67 target-software studies plus one governance boundary case), 65 extended synthesis studies, 95 background/reference records, and 20 excluded near-neighbor studies.
+The default public mode has no dependency on a manuscript checkout. It verifies file presence, unique CSV headers, corpus and layer counts, study/version uniqueness, shape and evidence distributions, lifecycle and capability counts, external-traceability counts, primitive extraction counts, PRISMA arithmetic, deduplication resolutions, reference metadata, and the complete 199-study reliability files. Optional manuscript validation is available through `--manuscript`.
 
-The product-ecosystem snapshot is an independent boundary layer with 23 rows. It is not counted in the 253 source records or 248 canonical studies. Row-level `access_date`, `manuscript_role`, and `evidence_caveat` fields record source timing and use.
+## Historical Provenance
 
-Legacy A/E fields are retained for historical reproducibility and cross-version traceability. The current manuscript presents the synthesis primarily through natural-language workflow, capability, evidence-output, external-audit, and claim-boundary fields.
+Legacy files retain earlier search and coding stages, including 31-record, 41-record, and 67-study views. Baseline files ending in `pre_final_multisource_20260730` are frozen inputs used to build the current integrated ledger. They are not current manuscript denominators. Legacy values such as `Core`, `Supporting`, `core31`, and `v13_` are preserved only for traceability and compatibility.
 
-## Second-Coder Outputs
+## Security Boundary
 
-- `unified_second_coder_codebook.md`
-- `UNIFIED_SECOND_CODER_REVIEW_GUIDE.md`
-- `unified_second_coder_review.py`
-- `data/unified_second_coder_final_blind_template.csv`
-- `data/unified_second_coder_final_results.csv`
-- `data/unified_second_coder_pre_adjudication_disagreements.csv`
-- `data/unified_second_coder_label_substitution_sensitivity.csv`
-- `data/unified_second_coder_per_label_reliability.csv`
-- `data/unified_second_coder_cohort_sensitivity.csv`
-- `data/traditional_security_primitives.csv`
-- `reports/UNIFIED_SECOND_CODER_PRE_ADJUDICATION_REPORT.md`
-- `data/core31_second_coder_formal_blind_template.csv`
-- `data/core31_second_coder_formal_results.csv`
-- `data/core31_second_coder_adjudication_template.csv`
-- `reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md`
-- `data/core31_second_coder_capability_traceability_blind_template.csv`
-- `data/core31_second_coder_capability_traceability_results.csv`
-- `reports/SECOND_CODER_CAPABILITY_TRACEABILITY_AGREEMENT_REPORT.md`
-- `archive/pilot_second_coder_round_1/`
-- `data/submission_update_20260715_full_coding_audit.csv`
-- `data/submission_update_20260715_second_coder_blind_template.csv`
-- `data/submission_update_20260715_second_coder_results.csv`
-- `data/submission_update_20260715_second_coder_initial_results.csv`
-- `data/submission_update_20260715_second_coder_rerun_blind_template.csv`
-- `SUBMISSION_UPDATE_SECOND_CODER_RERUN_NOTES.md`
-- `reports/SUBMISSION_UPDATE_SECOND_CODER_PRE_ADJUDICATION_REPORT.md`
-- `data/submission_update_20260715_adjudication_working_draft.csv`
-- `data/submission_update_20260715_adjudicated.csv`
-- `reports/SUBMISSION_UPDATE_ADJUDICATION_REPORT.md`
-- `data/submission_update_20260715_canonical_integration_crosswalk.csv`
-- `SUBMISSION_UPDATE_CANONICAL_INTEGRATION_REPORT.md`
-- `SUBMISSION_UPDATE_ADJUDICATION_SUMMARY.md`
-- `prepare_submission_update_adjudication.py`
-- `finalize_submission_update_adjudication.py`
-- `prepare_submission_update_canonical_integration.py`
-- `integrate_submission_update_corpus.py`
-- `SUBMISSION_UPDATE_CORPUS_INTEGRATION_REPORT.md`
-- `data/current_study_level_coding_matrix.csv`
-- `data/current_study_level_coding_matrix_harmonized.csv`
-- `data/coding_round_harmonization_audit.csv`
-- `data/current_synthesis_statistics_by_round.csv`
-- `CODING_ROUND_HARMONIZATION_REPORT.md`
-- `data/submission_update_20260715_study_level_additions.csv`
-- `data/current_synthesis_statistics.csv`
-- `SUBMISSION_UPDATE_FULL_TEXT_AUDIT_REPORT.md`
+Excluded from the public release:
 
-The current formal reliability result is the unified independent review of all 67 target-software studies plus the governance boundary case. Historical 31-record and 41-record checks remain available as codebook-development and round-provenance records; they are not combined into a synthetic reliability coefficient.
+- undisclosed PoCs and exploit payloads;
+- sensitive crash-triggering inputs;
+- credentials, private targets, and live reproduction steps;
+- local document-library paths and private databases;
+- full-text PDFs not licensed for redistribution;
+- vendor-private and bug-bounty communications.
 
-## Release State
-
-- Submission snapshot: `csur-submission-2026-07-final-v6`.
-- The analytical corpus is frozen. Subsequent corrections are limited to bibliographic metadata, formal-version reconciliation, and artifact consistency.
-
-## Extended synthesis terminology note
-
-The current artifact describes a 68-record study-level coded set and a 65-study extended synthesis set. `data/current_study_level_coding_matrix.csv` is the unified current matrix. Legacy `core31`, `Core`, `Supporting`, and `v13_` names remain for historical traceability and script compatibility; the 37-row additions table preserves update-round provenance rather than defining a separate analytical corpus.
+See `SECURITY_BOUNDARY.md` for the complete boundary.

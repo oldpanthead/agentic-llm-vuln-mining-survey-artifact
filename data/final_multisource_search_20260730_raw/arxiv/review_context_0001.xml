@@ -1,0 +1,277 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/OBO1XQrn3n9xEseTXc2rLsyZSso</id>
+  <title>arXiv Query: search_query=submittedDate:"202301010000 TO 202607302359" AND (ti:review OR ti:survey OR ti:"systematic literature review") AND (all:LLM OR all:"large language model") AND (all:vulnerability OR all:fuzzing OR all:"software security")&amp;id_list=&amp;start=100&amp;max_results=100</title>
+  <updated>2026-07-31T09:01:12Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=submittedDate:%22202301010000+TO+202607302359%22+AND+((ti:review+OR+(ti:survey+OR+ti:%22systematic+literature+review%22))+AND+((all:LLM+OR+all:%22large+language+model%22)+AND+(all:vulnerability+OR+(all:fuzzing+OR+all:%22software+security%22))))&amp;start=100&amp;max_results=100&amp;id_list=" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>100</opensearch:itemsPerPage>
+  <opensearch:totalResults>108</opensearch:totalResults>
+  <opensearch:startIndex>100</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2402.00888v2</id>
+    <title>Security and Privacy Challenges of Large Language Models: A Survey</title>
+    <updated>2024-11-14T22:20:49Z</updated>
+    <link href="https://arxiv.org/abs/2402.00888v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2402.00888v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Large Language Models (LLMs) have demonstrated extraordinary capabilities and contributed to multiple fields, such as generating and summarizing text, language translation, and question-answering. Nowadays, LLM is becoming a very popular tool in computerized language processing tasks, with the capability to analyze complicated linguistic patterns and provide relevant and appropriate responses depending on the context. While offering significant advantages, these models are also vulnerable to security and privacy attacks, such as jailbreaking attacks, data poisoning attacks, and Personally Identifiable Information (PII) leakage attacks. This survey provides a thorough review of the security and privacy challenges of LLMs for both training data and users, along with the application-based risks in various domains, such as transportation, education, and healthcare. We assess the extent of LLM vulnerabilities, investigate emerging security and privacy attacks for LLMs, and review the potential defense mechanisms. Additionally, the survey outlines existing research gaps in this domain and highlights future research directions.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2024-01-30T04:00:54Z</published>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Badhan Chandra Das</name>
+    </author>
+    <author>
+      <name>M. Hadi Amini</name>
+    </author>
+    <author>
+      <name>Yanzhao Wu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2312.10982v1</id>
+    <title>A Comprehensive Survey of Attack Techniques, Implementation, and Mitigation Strategies in Large Language Models</title>
+    <updated>2023-12-18T07:07:32Z</updated>
+    <link href="https://arxiv.org/abs/2312.10982v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2312.10982v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Ensuring the security of large language models (LLMs) is an ongoing challenge despite their widespread popularity. Developers work to enhance LLMs security, but vulnerabilities persist, even in advanced versions like GPT-4. Attackers exploit these weaknesses, highlighting the need for proactive cybersecurity measures in AI model development. This article explores two attack categories: attacks on models themselves and attacks on model applications. The former requires expertise, access to model data, and significant implementation time, while the latter is more accessible to attackers and has seen increased attention. Our study reviews over 100 recent research works, providing an in-depth analysis of each attack type. We identify the latest attack methods and explore various approaches to carry them out. We thoroughly investigate mitigation techniques, assessing their effectiveness and limitations. Furthermore, we summarize future defenses against these attacks. We also examine real-world techniques, including reported and our implemented attacks on LLMs, to consolidate our findings. Our research highlights the urgency of addressing security concerns and aims to enhance the understanding of LLM attacks, contributing to robust defense development in this evolving domain.</summary>
+    <category term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2023-12-18T07:07:32Z</published>
+    <arxiv:comment>Accepted to be published in the Proceedings of the 3rd International Conference on Ubiquitous Security 2023 (UbiSec-2023)</arxiv:comment>
+    <arxiv:primary_category term="cs.CR"/>
+    <author>
+      <name>Aysan Esmradi</name>
+    </author>
+    <author>
+      <name>Daniel Wankit Yip</name>
+    </author>
+    <author>
+      <name>Chun Fai Chan</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2312.02003v3</id>
+    <title>A Survey on Large Language Model (LLM) Security and Privacy: The Good, the Bad, and the Ugly</title>
+    <updated>2024-03-20T19:00:24Z</updated>
+    <link href="https://arxiv.org/abs/2312.02003v3" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2312.02003v3" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Large Language Models (LLMs), such as ChatGPT and Bard, have revolutionized natural language understanding and generation. They possess deep language comprehension, human-like text generation capabilities, contextual awareness, and robust problem-solving skills, making them invaluable in various domains (e.g., search engines, customer support, translation). In the meantime, LLMs have also gained traction in the security community, revealing security vulnerabilities and showcasing their potential in security-related tasks. This paper explores the intersection of LLMs with security and privacy. Specifically, we investigate how LLMs positively impact security and privacy, potential risks and threats associated with their use, and inherent vulnerabilities within LLMs. Through a comprehensive literature review, the paper categorizes the papers into "The Good" (beneficial LLM applications), "The Bad" (offensive applications), and "The Ugly" (vulnerabilities of LLMs and their defenses). We have some interesting findings. For example, LLMs have proven to enhance code security (code vulnerability detection) and data privacy (data confidentiality protection), outperforming traditional methods. However, they can also be harnessed for various attacks (particularly user-level attacks) due to their human-like reasoning abilities. We have identified areas that require further research efforts. For example, Research on model and parameter extraction attacks is limited and often theoretical, hindered by LLM parameter scale and confidentiality. Safe instruction tuning, a recent development, requires more exploration. We hope that our work can shed light on the LLMs' potential to both bolster and jeopardize cybersecurity.</summary>
+    <category term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2023-12-04T16:25:18Z</published>
+    <arxiv:primary_category term="cs.CR"/>
+    <author>
+      <name>Yifan Yao</name>
+    </author>
+    <author>
+      <name>Jinhao Duan</name>
+    </author>
+    <author>
+      <name>Kaidi Xu</name>
+    </author>
+    <author>
+      <name>Yuanfang Cai</name>
+    </author>
+    <author>
+      <name>Zhibo Sun</name>
+    </author>
+    <author>
+      <name>Yue Zhang</name>
+    </author>
+    <arxiv:doi>10.1016/j.hcc.2024.100211</arxiv:doi>
+    <link rel="related" href="https://doi.org/10.1016/j.hcc.2024.100211" title="doi"/>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2310.10844v1</id>
+    <title>Survey of Vulnerabilities in Large Language Models Revealed by Adversarial Attacks</title>
+    <updated>2023-10-16T21:37:24Z</updated>
+    <link href="https://arxiv.org/abs/2310.10844v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2310.10844v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Large Language Models (LLMs) are swiftly advancing in architecture and capability, and as they integrate more deeply into complex systems, the urgency to scrutinize their security properties grows. This paper surveys research in the emerging interdisciplinary field of adversarial attacks on LLMs, a subfield of trustworthy ML, combining the perspectives of Natural Language Processing and Security. Prior work has shown that even safety-aligned LLMs (via instruction tuning and reinforcement learning through human feedback) can be susceptible to adversarial attacks, which exploit weaknesses and mislead AI systems, as evidenced by the prevalence of `jailbreak' attacks on models like ChatGPT and Bard. In this survey, we first provide an overview of large language models, describe their safety alignment, and categorize existing research based on various learning structures: textual-only attacks, multi-modal attacks, and additional attack methods specifically targeting complex systems, such as federated learning or multi-agent systems. We also offer comprehensive remarks on works that focus on the fundamental sources of vulnerabilities and potential defenses. To make this field more accessible to newcomers, we present a systematic review of existing works, a structured typology of adversarial attack concepts, and additional resources, including slides for presentations on related topics at the 62nd Annual Meeting of the Association for Computational Linguistics (ACL'24).</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2023-10-16T21:37:24Z</published>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Erfan Shayegani</name>
+    </author>
+    <author>
+      <name>Md Abdullah Al Mamun</name>
+    </author>
+    <author>
+      <name>Yu Fu</name>
+    </author>
+    <author>
+      <name>Pedram Zaree</name>
+    </author>
+    <author>
+      <name>Yue Dong</name>
+    </author>
+    <author>
+      <name>Nael Abu-Ghazaleh</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2309.15025v1</id>
+    <title>Large Language Model Alignment: A Survey</title>
+    <updated>2023-09-26T15:49:23Z</updated>
+    <link href="https://arxiv.org/abs/2309.15025v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2309.15025v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Recent years have witnessed remarkable progress made in large language models (LLMs). Such advancements, while garnering significant attention, have concurrently elicited various concerns. The potential of these models is undeniably vast; however, they may yield texts that are imprecise, misleading, or even detrimental. Consequently, it becomes paramount to employ alignment techniques to ensure these models to exhibit behaviors consistent with human values.
+  This survey endeavors to furnish an extensive exploration of alignment methodologies designed for LLMs, in conjunction with the extant capability research in this domain. Adopting the lens of AI alignment, we categorize the prevailing methods and emergent proposals for the alignment of LLMs into outer and inner alignment. We also probe into salient issues including the models' interpretability, and potential vulnerabilities to adversarial attacks. To assess LLM alignment, we present a wide variety of benchmarks and evaluation methodologies. After discussing the state of alignment research for LLMs, we finally cast a vision toward the future, contemplating the promising avenues of research that lie ahead.
+  Our aspiration for this survey extends beyond merely spurring research interests in this realm. We also envision bridging the gap between the AI alignment research community and the researchers engrossed in the capability exploration of LLMs for both capable and safe LLMs.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2023-09-26T15:49:23Z</published>
+    <arxiv:comment>76 pages</arxiv:comment>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Tianhao Shen</name>
+    </author>
+    <author>
+      <name>Renren Jin</name>
+    </author>
+    <author>
+      <name>Yufei Huang</name>
+    </author>
+    <author>
+      <name>Chuang Liu</name>
+    </author>
+    <author>
+      <name>Weilong Dong</name>
+    </author>
+    <author>
+      <name>Zishan Guo</name>
+    </author>
+    <author>
+      <name>Xinwei Wu</name>
+    </author>
+    <author>
+      <name>Yan Liu</name>
+    </author>
+    <author>
+      <name>Deyi Xiong</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2309.05163v1</id>
+    <title>The Impact of AI in Physics Education: A Comprehensive Review from GCSE to University Levels</title>
+    <updated>2023-09-10T23:06:15Z</updated>
+    <link href="https://arxiv.org/abs/2309.05163v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2309.05163v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>With the rapid evolution of Artificial Intelligence (AI), its potential implications for higher education have become a focal point of interest. This study delves into the capabilities of AI in Physics Education and offers actionable AI policy recommendations. Using a Large Language Model (LLM), we assessed its ability to answer 1337 Physics exam questions spanning GCSE, A-Level, and Introductory University curricula. We employed various AI prompting techniques: Zero Shot, In Context Learning, and Confirmatory Checking, which merges Chain of Thought reasoning with Reflection. The AI's proficiency varied across academic levels: it scored an average of 83.4% on GCSE, 63.8% on A-Level, and 37.4% on university-level questions, with an overall average of 59.9% using the most effective prompting technique. In a separate test, the LLM's accuracy on 5000 mathematical operations was found to decrease as the number of digits increased. Furthermore, when evaluated as a marking tool, the LLM's concordance with human markers averaged at 50.8%, with notable inaccuracies in marking straightforward questions, like multiple-choice. Given these results, our recommendations underscore caution: while current LLMs can consistently perform well on Physics questions at earlier educational stages, their efficacy diminishes with advanced content and complex calculations. LLM outputs often showcase novel methods not in the syllabus, excessive verbosity, and miscalculations in basic arithmetic. This suggests that at university, there's no substantial threat from LLMs for non-invigilated Physics questions. However, given the LLMs' considerable proficiency in writing Physics essays and coding abilities, non-invigilated examinations of these skills in Physics are highly vulnerable to automated completion by LLMs. This vulnerability also extends to Physics questions pitched at lower academic levels.</summary>
+    <category term="physics.ed-ph" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2023-09-10T23:06:15Z</published>
+    <arxiv:comment>22 pages, 10 Figures, 2 Tables</arxiv:comment>
+    <arxiv:primary_category term="physics.ed-ph"/>
+    <author>
+      <name>Will Yeadon</name>
+    </author>
+    <author>
+      <name>Tom Hardy</name>
+    </author>
+    <arxiv:doi>10.1088/1361-6552/ad1fa2</arxiv:doi>
+    <link rel="related" href="https://doi.org/10.1088/1361-6552/ad1fa2" title="doi"/>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2308.15736v3</id>
+    <title>Vulnerability of Machine Learning Approaches Applied in IoT-based Smart Grid: A Review</title>
+    <updated>2023-12-25T03:14:20Z</updated>
+    <link href="https://arxiv.org/abs/2308.15736v3" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2308.15736v3" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Machine learning (ML) sees an increasing prevalence of being used in the internet-of-things (IoT)-based smart grid. However, the trustworthiness of ML is a severe issue that must be addressed to accommodate the trend of ML-based smart grid applications (MLsgAPPs). The adversarial distortion injected into the power signal will greatly affect the system's normal control and operation. Therefore, it is imperative to conduct vulnerability assessment for MLsgAPPs applied in the context of safety-critical power systems. In this paper, we provide a comprehensive review of the recent progress in designing attack and defense methods for MLsgAPPs. Unlike the traditional survey about ML security, this is the first review work about the security of MLsgAPPs that focuses on the characteristics of power systems. We first highlight the specifics for constructing the adversarial attacks on MLsgAPPs. Then, the vulnerability of MLsgAPP is analyzed from both the aspects of the power system and ML model. Afterward, a comprehensive survey is conducted to review and compare existing studies about the adversarial attacks on MLsgAPPs in scenarios of generation, transmission, distribution, and consumption, and the countermeasures are reviewed according to the attacks that they defend against. Finally, the future research directions are discussed on the attacker's and defender's side, respectively. We also analyze the potential vulnerability of large language model-based (e.g., ChatGPT) power system applications. Overall, we encourage more researchers to contribute to investigating the adversarial issues of MLsgAPPs.</summary>
+    <category term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="eess.SY" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2023-08-30T03:29:26Z</published>
+    <arxiv:primary_category term="cs.CR"/>
+    <author>
+      <name>Zhenyong Zhang</name>
+    </author>
+    <author>
+      <name>Mengxiang Liu</name>
+    </author>
+    <author>
+      <name>Mingyang Sun</name>
+    </author>
+    <author>
+      <name>Ruilong Deng</name>
+    </author>
+    <author>
+      <name>Peng Cheng</name>
+    </author>
+    <author>
+      <name>Dusit Niyato</name>
+    </author>
+    <author>
+      <name>Mo-Yuen Chow</name>
+    </author>
+    <author>
+      <name>Jiming Chen</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2305.11391v2</id>
+    <title>A Survey of Safety and Trustworthiness of Large Language Models through the Lens of Verification and Validation</title>
+    <updated>2023-08-27T13:12:30Z</updated>
+    <link href="https://arxiv.org/abs/2305.11391v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2305.11391v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Large Language Models (LLMs) have exploded a new heatwave of AI for their ability to engage end-users in human-level conversations with detailed and articulate answers across many knowledge domains. In response to their fast adoption in many industrial applications, this survey concerns their safety and trustworthiness. First, we review known vulnerabilities and limitations of the LLMs, categorising them into inherent issues, attacks, and unintended bugs. Then, we consider if and how the Verification and Validation (V&amp;V) techniques, which have been widely developed for traditional software and deep learning models such as convolutional neural networks as independent processes to check the alignment of their implementations against the specifications, can be integrated and further extended throughout the lifecycle of the LLMs to provide rigorous analysis to the safety and trustworthiness of LLMs and their applications. Specifically, we consider four complementary techniques: falsification and evaluation, verification, runtime monitoring, and regulations and ethical use. In total, 370+ references are considered to support the quick understanding of the safety and trustworthiness issues from the perspective of V&amp;V. While intensive research has been conducted to identify the safety and trustworthiness issues, rigorous yet practical methods are called for to ensure the alignment of LLMs with safety and trustworthiness requirements.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2023-05-19T02:41:12Z</published>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Xiaowei Huang</name>
+    </author>
+    <author>
+      <name>Wenjie Ruan</name>
+    </author>
+    <author>
+      <name>Wei Huang</name>
+    </author>
+    <author>
+      <name>Gaojie Jin</name>
+    </author>
+    <author>
+      <name>Yi Dong</name>
+    </author>
+    <author>
+      <name>Changshun Wu</name>
+    </author>
+    <author>
+      <name>Saddek Bensalem</name>
+    </author>
+    <author>
+      <name>Ronghui Mu</name>
+    </author>
+    <author>
+      <name>Yi Qi</name>
+    </author>
+    <author>
+      <name>Xingyu Zhao</name>
+    </author>
+    <author>
+      <name>Kaiwen Cai</name>
+    </author>
+    <author>
+      <name>Yanghao Zhang</name>
+    </author>
+    <author>
+      <name>Sihao Wu</name>
+    </author>
+    <author>
+      <name>Peipei Xu</name>
+    </author>
+    <author>
+      <name>Dengyu Wu</name>
+    </author>
+    <author>
+      <name>Andre Freitas</name>
+    </author>
+    <author>
+      <name>Mustafa A. Mustafa</name>
+    </author>
+  </entry>
+</feed>

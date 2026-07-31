@@ -1,2908 +1,413 @@
 #!/usr/bin/env python3
+"""Validate the public artifact for the integrated search through 2026-07-30.
+
+The default public mode is self-contained. Use ``--manuscript`` only when a
+local LaTeX source should also be checked against the artifact snapshot.
+"""
+
+from __future__ import annotations
+
 import argparse
 import csv
-import sys
-import subprocess
 import re
-from collections import Counter, defaultdict
-from datetime import date
+from collections import Counter
 from pathlib import Path
 
+
 ROOT = Path(__file__).resolve().parent
-DATA = ROOT / 'data'
-REPORTS = ROOT / 'reports'
+DATA = ROOT / "data"
+ERRORS: list[str] = []
+INFOS: list[str] = []
 
-parser = argparse.ArgumentParser(description='Validate the public artifact and reproduce manuscript-facing tables/counts.')
-parser.add_argument('--manuscript', default=None, help='Optional path to main_acm_csur.tex for validating LaTeX \\path{} references.')
-ARGS = parser.parse_args()
-MANUSCRIPT_PATH = Path(ARGS.manuscript).expanduser().resolve() if ARGS.manuscript else None
-MANIFEST_PATH = ROOT / 'manuscript_artifact_paths.txt'
-
-
-def read_manuscript_bundle(path):
-    visited = set()
-
-    def read_one(current):
-        current = current.resolve()
-        if current in visited or not current.exists():
-            return ''
-        visited.add(current)
-        text = current.read_text(encoding='utf-8')
-        chunks = [text]
-        for rel in re.findall(r'\\input\{([^}]+)\}', text):
-            child = current.parent / rel
-            if child.suffix == '':
-                child = child.with_suffix('.tex')
-            chunks.append(read_one(child))
-        return '\n'.join(chunks)
-
-    return read_one(path)
-
-CSV_REQUIRED_FIELDS = {
-    'corpus.csv': ['record_id', 'corpus_layer'],
-    'unified_second_coder_final_blind_template.csv': [
-        'review_order',
-        'matrix_id',
-        'record_id',
-        'system_alias',
-        'title',
-        'year',
-        'publication_status',
-        'review_scope',
-        'official_url',
-        'materials_to_review',
-    ],
-    'current_study_level_coding_matrix.csv': [
-        'matrix_id',
-        'record_id',
-        'canonical_study_id',
-        'system_alias',
-        'title',
-        'analytical_role',
-        'coding_round',
-        'lifecycle_coverage',
-        'system_shape',
-        'agentic_capabilities',
-        'strongest_evidence_output',
-        'external_traceability',
-        'claim_boundary',
-        'claim_boundary_original',
-        'coding_status',
-        'reliability_scope',
-        'official_url',
-    ],
-    'submission_update_20260715_screening_audit.csv': [
-      'arxiv_id',
-      'title',
-      'published',
-      'existing_record_id',
-      'screening_status',
-      'screening_level',
-      'decision_reason',
-      'analytical_implication',
-      'official_url',
-      'query_ids',
-    ],
-    'submission_update_20260715_full_coding_audit.csv': [
-      'arxiv_id',
-      'title',
-      'official_url',
-      'published',
-      'review_material',
-      'full_text_status',
-      'author_analysis_layer',
-      'inclusion_rule_applied',
-      'target_domain',
-      'lifecycle_coverage',
-      'agentic_capabilities',
-      'strongest_evidence_output',
-      'external_traceability',
-      'primary_system_shape',
-      'claim_boundary',
-      'author_decision_reason',
-      'uncertainty_note',
-      'formal_second_coder_status',
-    ],
-    'submission_update_20260715_second_coder_blind_template.csv': [
-      'update_id',
-      'arxiv_id',
-      'title',
-      'publication_status',
-      'materials_to_review',
-      'coder2_analysis_layer_decision',
-      'coder2_inclusion_reason',
-      'coder2_lifecycle_coverage',
-      'coder2_primary_system_shape',
-      'coder2_cross_stage_capability_label',
-      'coder2_strongest_evidence_output',
-      'coder2_external_traceability_label',
-      'coder2_claim_boundary',
-      'coder2_uncertainty_note',
-    ],
-    'submission_update_20260715_second_coder_rerun_blind_template.csv': [
-      'update_id',
-      'arxiv_id',
-      'title',
-      'publication_status',
-      'materials_to_review',
-      'coder2_analysis_layer_decision',
-      'coder2_inclusion_reason',
-      'coder2_lifecycle_coverage',
-      'coder2_primary_system_shape',
-      'coder2_cross_stage_capability_label',
-      'coder2_strongest_evidence_output',
-      'coder2_external_traceability_label',
-      'coder2_claim_boundary',
-      'coder2_uncertainty_note',
-    ],
-    'submission_update_20260715_second_coder_initial_results.csv': [
-      'update_id',
-      'arxiv_id',
-      'title',
-      'publication_status',
-      'materials_to_review',
-      'coder2_analysis_layer_decision',
-      'coder2_inclusion_reason',
-      'coder2_lifecycle_coverage',
-      'coder2_primary_system_shape',
-      'coder2_cross_stage_capability_label',
-      'coder2_strongest_evidence_output',
-      'coder2_external_traceability_label',
-      'coder2_claim_boundary',
-      'coder2_uncertainty_note',
-    ],
-    'submission_update_20260715_second_coder_results.csv': [
-      'update_id',
-      'arxiv_id',
-      'title',
-      'publication_status',
-      'materials_to_review',
-      'coder2_analysis_layer_decision',
-      'coder2_inclusion_reason',
-      'coder2_lifecycle_coverage',
-      'coder2_primary_system_shape',
-      'coder2_cross_stage_capability_label',
-      'coder2_strongest_evidence_output',
-      'coder2_external_traceability_label',
-      'coder2_claim_boundary',
-      'coder2_uncertainty_note',
-    ],
-    'submission_update_20260715_rerun_sensitivity_analysis.csv': [
-      'scope',
-      'field',
-      'label',
-      'author_final_count',
-      'rerun_second_coder_count',
-      'absolute_difference',
-    ],
-    'publication_status_standardized.csv': [
-      'matrix_id',
-      'record_id',
-      'system_alias',
-      'analytical_role',
-      'coding_round',
-      'year',
-      'publication_status_standardized',
-      'strongest_evidence_output',
-      'primary_system_shape',
-      'cross_stage_capabilities',
-      'external_traceability',
-    ],
-    'publication_status_distribution_by_layer.csv': [
-      'publication_status_standardized',
-      'target_software_studies',
-    ],
-    'publication_status_sensitivity_analysis.csv': [
-      'scope',
-      'publication_status_group',
-      'dimension',
-      'label',
-      'count',
-      'denominator',
-      'share',
-    ],
-    'empirical_reporting_extraction.csv': [
-      'matrix_id',
-      'record_id',
-      'system',
-      'citation_key',
-      'primary_shape',
-      'evaluation_setting',
-      'agent_mechanism',
-      'model_version_status',
-      'evaluation_scale_status',
-      'quantitative_result_status',
-      'quantitative_endpoint_type',
-      'quantitative_endpoint_audit_status',
-      'reported_result',
-      'baseline_status',
-      'validation_material_status',
-      'validation_material',
-      'runtime_status',
-      'cost_status',
-      'ablation_status',
-      'failure_reporting_status',
-      'source_location',
-      'extraction_note',
-    ],
-    'empirical_reporting_completeness.csv': [
-      'scope',
-      'reporting_item',
-      'reported_n',
-      'denominator',
-      'reported_share',
-    ],
-    'traditional_security_primitives.csv': [
-      'matrix_id',
-      'system',
-      'primitive_tags',
-      'named_tools',
-      'source_location',
-      'extraction_note',
-    ],
-    'unified_second_coder_per_label_reliability.csv': [
-      'field',
-      'label',
-      'scope_n',
-      'author_positive_n',
-      'coder2_positive_n',
-      'raw_agreement_n',
-      'raw_agreement',
-      'cohens_kappa',
-    ],
-    'unified_second_coder_cohort_sensitivity.csv': [
-      'field',
-      'label',
-      'label_source',
-      'initial_cohort_n',
-      'update_cohort_n',
-      'total_n',
-      'interpretation',
-    ],
-    'representative_system_mechanisms.csv': [
-      'matrix_id',
-      'system',
-      'citation_key',
-      'primary_shape',
-      'input_and_context',
-      'llm_decision',
-      'runtime_and_fixed_control',
-      'state_feedback_and_recovery',
-      'principal_output',
-      'source_location',
-      'extraction_note',
-    ],
-    'mechanism_cost_ablation_synthesis.csv': [
-      'system',
-      'citation_key',
-      'dimension',
-      'reported_observation',
-      'unit_or_comparison',
-      'source_location',
-      'synthesis_use',
-    ],
-    'submission_update_20260715_adjudication_working_draft.csv': [
-      'update_id',
-      'arxiv_id',
-      'title',
-      'publication_status',
-      'author_analysis_layer',
-      'coder2_analysis_layer_decision',
-      'proposed_analysis_layer',
-      'author_lifecycle_coverage',
-      'coder2_lifecycle_coverage',
-      'proposed_lifecycle_coverage',
-      'author_primary_system_shape',
-      'coder2_primary_system_shape',
-      'proposed_primary_system_shape',
-      'author_agentic_capabilities',
-      'coder2_agentic_capabilities',
-      'proposed_agentic_capabilities',
-      'author_strongest_evidence_output',
-      'coder2_strongest_evidence_output',
-      'proposed_strongest_evidence_output',
-      'author_external_traceability',
-      'coder2_external_traceability',
-      'proposed_external_traceability',
-      'author_claim_boundary',
-      'coder2_claim_boundary',
-      'proposed_claim_boundary',
-      'author_decision_reason',
-      'coder2_inclusion_reason',
-      'coder2_uncertainty_note',
-      'adjudication_basis',
-      'field_resolution_trace',
-      'adjudication_status',
-    ],    'study_version_crosswalk.csv': [
-        'record_id',
-        'title',
-        'canonical_study_id',
-        'canonical_record_id',
-        'version_type',
-        'source_version',
-        'same_study_as',
-        'dedup_basis',
-        'analytical_layer',
-        'counting_status',
-        'retained_reason',
-        'notes',
-    ],
-    'extended_synthesis_audit.csv': [
-        'record_id',
-        'citation_key',
-        'title',
-        'material_type',
-        'primary_synthesis_role',
-        'secondary_synthesis_roles',
-        'rq_contribution',
-        'manuscript_section_use',
-        'extracted_contribution',
-        'reason_not_study_level_coded',
-        'public_material_basis',
-        'reviewer_note',
-    ],
-    'core_coding.csv': ['core_id', 'record_id', 'a_level', 'e_level', 'evidence_object'],
-    'screening_summary.csv': ['stage', 'count'],
-    'reference_audit.csv': ['record_id', 'canonical_title'],
-    'record_classification_audit.csv': [
-        'record',
-        'citation_id',
-        'classification',
-        'boundary_case',
-        'classification_reason',
-        'core_eligibility',
-        'evidence_chain_relevance',
-        'high_risk_claim_handling',
-        'author_note',
-    ],
-    'v13_synthesis_statistics.csv': [
-        'dimension',
-        'category',
-        'token',
-        'count',
-        'core_ids',
-        'includes_governance_boundary_case',
-        'field_type',
-        'note',
-    ],
-    'v13_core_synthesis_matrix.csv': [
-        'core_id',
-        'system_alias',
-        'reference_key',
-        'core_type',
-        'lifecycle_coverage',
-        'agent_capabilities',
-        'strongest_evidence_output',
-        'external_audit_materials',
-        'main_claim_boundary',
-    ],
-    'v13_benchmark_boundary.csv': [
-        'benchmark_or_scenario',
-        'task_background',
-        'typical_system_output',
-        'supported_claim',
-        'unsupported_extrapolation',
-    ],
-    'v13_reproducibility_audit.csv': [
-        'audit_dimension',
-        'counting_scope',
-        'core_count',
-        'interpretation',
-        'unsupported_extrapolation',
-    ],
-    'v13_research_agenda_outputs.csv': [
-        'observation_basis',
-        'unclosed_gap',
-        'materials_to_report',
-        'structured_output',
-        'purpose',
-    ],
-    'core_reproducibility_audit.csv': [
-        'core_id',
-        'system_alias',
-        'reference_key',
-        'core_type',
-        'public_artifact_status',
-        'target_version_status',
-        'environment_status',
-        'replay_material_status',
-        'structured_trace_status',
-        'author_reported_external_trace_status',
-        'publicly_traceable_external_material_status',
-        'claim_level_alignment_status',
-        'zotero_pdf_review_status',
-        'review_status',
-        'manual_review_required',
-    ],
-    'core_reproducibility_audit_summary.csv': [
-      'audit_dimension',
-      'reported_yes',
-      'reported_partial',
-      'not_found_after_review',
-      'unknown_not_audited',
-      'restricted_or_sensitive',
-      'not_applicable',
-      'scope_note',
-    ],
-    'doi_remaining_manual_status.csv': [
-      'reference_key',
-      'title',
-      'current_source_type',
-      'doi_status',
-      'evidence',
-      'manual_action_required',
-      'notes',
-    ],
-    'core31_second_coder_blind.csv': [
-      'core_id',
-      'record_id',
-      'system_alias',
-      'title',
-      'publication_status',
-      'boundary_role',
-      'materials_to_review',
-    ],
-    'core31_second_coder_formal_blind_template.csv': [
-      'core_id',
-      'record_id',
-      'system_alias',
-      'title',
-      'publication_status',
-      'boundary_role',
-      'materials_to_review',
-      'coder2_strongest_evidence_output',
-      'coder2_decision_reason',
-      'coder2_uncertainty_note',
-    ],
-    'core31_second_coder_formal_results.csv': [
-      'core_id',
-      'record_id',
-      'system_alias',
-      'title',
-      'publication_status',
-      'boundary_role',
-      'materials_to_review',
-      'coder2_strongest_evidence_output',
-      'coder2_decision_reason',
-      'coder2_uncertainty_note',
-    ],
-    'core31_second_coder_capability_traceability_blind_template.csv': [
-      'core_id',
-      'record_id',
-      'system_alias',
-      'title',
-      'publication_status',
-      'boundary_role',
-      'materials_to_review',
-      'coder2_cross_stage_capability_label',
-      'coder2_capability_decision_reason',
-      'coder2_capability_uncertainty_note',
-      'coder2_external_traceability_label',
-      'coder2_external_traceability_decision_reason',
-      'coder2_external_traceability_uncertainty_note',
-    ],
-    'core31_second_coder_capability_traceability_results.csv': [
-      'core_id',
-      'record_id',
-      'system_alias',
-      'title',
-      'publication_status',
-      'boundary_role',
-      'materials_to_review',
-      'coder2_cross_stage_capability_label',
-      'coder2_capability_decision_reason',
-      'coder2_capability_uncertainty_note',
-      'coder2_external_traceability_label',
-      'coder2_external_traceability_decision_reason',
-      'coder2_external_traceability_uncertainty_note',
-    ],
-    'core31_second_coder_adjudication_template.csv': [
-      'core_id',
-      'record_id',
-      'system_alias',
-      'title',
-      'publication_status',
-      'boundary_role',
-      'original_strongest_evidence_output',
-    ],
-    'product_ecosystem_snapshot.csv': [
-      'product_or_system',
-      'vendor',
-      'snapshot_date',
-      'model_or_version',
-      'public_capabilities',
-      'security_workflow',
-      'public_evidence_type',
-      'source_url',
-      'publication_or_update_date',
-      'access_date',
-      'manuscript_role',
-      'core_eligibility',
-      'evidence_caveat',
-      'external_traceability',
-      'update_required',
-      'notes',
-    ],
-    'mapping_snapshot_counts.csv': [
-      'view',
-      'category',
-      'count',
-      'denominator',
-      'scope_note',
-    ],
-    'source_search_log.csv': [
-      'source_id',
-      'source_name',
-      'source_category',
-      'search_interface',
-      'query_string',
-      'date_searched',
-      'date_range',
-      'records_captured_before_dedup',
-      'duplicates_or_variants_removed',
-      'unique_candidate_records_after_dedup',
-      'core_records',
-      'supporting_records',
-      'background_records',
-      'excluded_records',
-      'zotero_metadata_used',
-      'notes',
-    ],
-    'source_screening_audit.csv': [
-      'record_id',
-      'title',
-      'year',
-      'source_bucket',
-      'source_name',
-      'source_type',
-      'venue_or_source',
-      'doi_or_url',
-      'corpus_layer',
-      'task_category',
-      'screening_decision',
-      'deduplication_status',
-      'source_trace_note',
-    ],
-    'official_source_followup_20260716_search_log.csv': [
-      'source_id',
-      'source_name',
-      'source_category',
-      'search_interface',
-      'query_string',
-      'date_searched',
-      'date_range',
-      'official_source_url',
-      'records_reviewed',
-      'existing_canonical_matches',
-      'new_candidate_records',
-      'new_study_level_additions',
-      'new_extended_synthesis_additions',
-      'new_background_or_excluded_records',
-      'notes',
-    ],
-    'official_source_followup_20260716_screening_audit.csv': [
-      'source_id',
-      'title',
-      'official_url',
-      'source_type',
-      'venue_or_source',
-      'match_status',
-      'existing_record_or_canonical_id',
-      'screening_status',
-      'decision_reason',
-      'analytical_implication',
-    ],
+EXPECTED = {
+    "source_records": 1785,
+    "canonical_studies": 1772,
+    "target_studies": 199,
+    "governance_cases": 1,
+    "extended_studies": 149,
+    "background_studies": 670,
+    "excluded_studies": 753,
+    "alternate_sources": 13,
+    "search_occurrences": 12090,
+    "search_records": 1642,
+    "reports_sought": 274,
+    "reports_assessed": 239,
+    "new_jointly_included": 132,
 }
-VALIDATED_CSVS = set()
-ERROR_COUNT = 0
 
-def status(kind, ok, msg):
-    global ERROR_COUNT
-    if not ok:
-        ERROR_COUNT += 1
-    print(f'{kind if not ok else "PASS"}: {msg}')
+EVIDENCE = {
+    "candidate judgment": 34,
+    "controlled task completion": 55,
+    "runtime safety signal": 21,
+    "reproducible validation": 83,
+    "externally traceable material": 6,
+}
+SHAPES = {
+    "candidate-analysis system": 46,
+    "feedback-driven fuzzing agent": 34,
+    "reproduction-, validation-, and repair-centered agent": 62,
+    "long-horizon pentest and CRS agent": 57,
+}
+LIFECYCLE = {
+    "candidate analysis": 150,
+    "path and input exploration": 116,
+    "execution observation": 157,
+    "reproduction and validation": 96,
+    "patch validation": 46,
+    "reporting and audit": 78,
+}
+CAPABILITY = {
+    "context aggregation / rule extraction": 164,
+    "tool routing / strategy routing": 150,
+    "feedback interpretation / loop adjustment": 186,
+    "validation organization / evidence packaging": 147,
+    "long-horizon state management": 125,
+    "failure reuse / strategy update": 94,
+    "governance / human gates / disclosure control": 18,
+}
+TRACE = {
+    "no external trace reported": 19,
+    "author-reported external clue": 33,
+    "benchmark ground truth / public material": 140,
+    "publicly aligned external trace": 7,
+}
+PUBLICATION_STATUS = {
+    "benchmark/system report": 3,
+    "conference": 18,
+    "journal": 13,
+    "preprint": 164,
+    "report/other": 1,
+}
 
-def parse_iso_date(value):
-    try:
-        return date.fromisoformat(value)
-    except Exception:
-        return None
 
-def load_manifest_product_snapshot_date():
-    path = ROOT / 'RELEASE_MANIFEST.md'
+def error(message: str) -> None:
+    ERRORS.append(message)
+    print(f"ERROR: {message}")
+
+
+def info(message: str) -> None:
+    INFOS.append(message)
+    print(f"INFO: {message}")
+
+
+def require(condition: bool, message: str) -> None:
+    if not condition:
+        error(message)
+
+
+def read_csv(path: Path) -> list[dict[str, str]]:
     if not path.exists():
-        return None
-    prefix = '- Product-ecosystem snapshot date:'
-    for line in path.read_text(encoding='utf-8').splitlines():
-        if line.startswith(prefix):
-            return line.split(':', 1)[1].strip()
-    return None
-
-def contains_private_material(value):
-    lowered = value.lower()
-    sensitive_tokens = [
-        'c:\\users\\',
-        'zotero\\storage',
-        '.sqlite',
-        '.sqlite-journal',
-        'local_private_working',
-        'zotero_private_paths',
-        'private working directory',
-    ]
-    return any(token in lowered for token in sensitive_tokens)
-
-
-
-def validate_submission_snapshot_files(original_results, rerun_results, sensitivity_rows, publication_status_rows, publication_distribution_rows):
-    status('ERROR', len(original_results) == 41, f'original submission-update independent labels rows = {len(original_results)}; expected 41')
-    status('ERROR', len(rerun_results) == 41, f'tightened-boundary rerun results rows = {len(rerun_results)}; expected 41')
-    status('ERROR', len(sensitivity_rows) >= 30, 'label-substitution sensitivity table is populated')
-    status('ERROR', len(publication_status_rows) == 68, f'publication-status study-level view rows = {len(publication_status_rows)}; expected 68')
-    status('ERROR', len(publication_distribution_rows) >= 1, 'publication-status distribution summary exists')
-    sens_fields = {(row.get('field', ''), row.get('label', '')) for row in sensitivity_rows}
-    required_sens = {
-        ('strongest_evidence_output', 'reproducible validation'),
-        ('strongest_evidence_output', 'externally traceable material'),
-        ('agentic_capabilities', 'feedback interpretation / loop adjustment'),
-        ('agentic_capabilities', 'validation organization / evidence packaging'),
-        ('agentic_capabilities', 'failure reuse / strategy update'),
-        ('agentic_capabilities', 'governance / human gates / disclosure control'),
-    }
-    status('ERROR', required_sens.issubset(sens_fields), 'sensitivity file covers headline evidence and capability labels')
-    statuses = Counter(row.get('publication_status_standardized', '') for row in publication_status_rows)
-    approved = {'journal', 'conference', 'workshop', 'preprint', 'benchmark/system report'}
-    status('ERROR', set(statuses).issubset(approved), 'publication-status view uses approved manuscript-facing categories')
-    target_rows = [row for row in publication_status_rows if row.get('analytical_role') == 'target_software_study']
-    governance_rows = [row for row in publication_status_rows if row.get('analytical_role') == 'governance_boundary_case']
-    status('ERROR', len(target_rows) == 67 and len(governance_rows) == 1, 'publication-status view preserves 67+1 analytical boundary')
-    print('SUBMISSION_SNAPSHOT_FILES: original=41 rerun=41 sensitivity=present publication_status_rows=68')
-
-
-def validate_publication_status_sensitivity(rows, publication_status_rows):
-    target = [row for row in publication_status_rows if row.get('analytical_role') == 'target_software_study']
-    groups = {
-        'all_target_software': target,
-        'peer_reviewed': [row for row in target if row.get('publication_status_standardized') in {'conference', 'journal', 'workshop'}],
-        'preprint': [row for row in target if row.get('publication_status_standardized') == 'preprint'],
-    }
-    fields = {
-        'primary_system_shape': 'primary_system_shape',
-        'strongest_evidence_output': 'strongest_evidence_output',
-        'external_traceability': 'external_traceability',
-    }
-    errors = []
-    for row in rows:
-        group = row.get('publication_status_group', '')
-        dimension = row.get('dimension', '')
-        label = row.get('label', '')
-        group_rows = groups.get(group)
-        if group_rows is None:
-            errors.append((group, dimension, label, 'unknown group'))
-            continue
-        if dimension == 'cross_stage_capability':
-            actual = sum(label in split_multilabel(item.get('cross_stage_capabilities', '')) for item in group_rows)
-        elif dimension in fields:
-            field = fields[dimension]
-            actual = sum(item.get(field, '') == label for item in group_rows)
-        else:
-            errors.append((group, dimension, label, 'unknown dimension'))
-            continue
-        denominator = len(group_rows)
-        expected_share = actual / denominator if denominator else 0.0
-        if int(row.get('count', -1)) != actual or int(row.get('denominator', -1)) != denominator or abs(float(row.get('share', -1)) - expected_share) > 0.0006:
-            errors.append((group, dimension, label, f"expected {actual}/{denominator}={expected_share:.3f}"))
-    status('ERROR', len(rows) == 63, f'publication-status sensitivity rows = {len(rows)}; expected 63')
-    status('ERROR', not errors, 'publication-status sensitivity counts reproduce the standardized study-level view')
-    if errors:
-        print('ERROR: publication-status sensitivity mismatches:', errors[:10])
-    print('PUBLICATION_STATUS_SENSITIVITY: all=67 peer_reviewed=14 preprint=50 benchmark_system_report=3')
-
-def validate_submission_update_rerun_notes():
-    path = ROOT / 'SUBMISSION_UPDATE_SECOND_CODER_RERUN_NOTES.md'
-    status('ERROR', path.exists(), 'submission-update rerun notes exist')
-    if not path.exists():
-        return
-    text = path.read_text(encoding='utf-8').lower()
-    required_phrases = [
-        '41-record submission-update second-coder pass',
-        'do not inspect author audit files',
-        'dominant evaluated role',
-        'item-level public alignment',
-        'row-level exact agreement',
-        'mean row jaccard',
-        'micro f1',
-        'do not tune labels to improve agreement',
-        'not an independent coder decision',
-    ]
-    missing = [phrase for phrase in required_phrases if phrase not in text]
-    status('ERROR', not missing, 'submission-update rerun notes record tightened boundary rules and field-appropriate metrics')
-    if missing:
-        print('ERROR: submission-update rerun notes missing phrases:', ', '.join(missing))
-
-
-def validate_submission_update_rerun_template(original_blind, rerun_blind):
-    status('ERROR', len(rerun_blind) == 41, f'submission-update rerun blind template rows = {len(rerun_blind)}; expected 41')
-    original_ids = [r.get('update_id', '') for r in original_blind]
-    rerun_ids = [r.get('update_id', '') for r in rerun_blind]
-    status('ERROR', rerun_ids == original_ids, 'submission-update rerun template preserves original update_id order')
-    if rerun_ids != original_ids:
-        print('ERROR: rerun update_id order differs from original blind template')
-    forbidden_columns = [c for c in (rerun_blind[0].keys() if rerun_blind else []) if c.startswith('author_') or c.startswith('original_') or 'adjudicat' in c.lower()]
-    status('ERROR', not forbidden_columns, 'submission-update rerun template hides author/original/adjudication fields')
-    if forbidden_columns:
-        print('ERROR: rerun template forbidden columns:', ', '.join(forbidden_columns))
-    coder_fields = [c for c in (rerun_blind[0].keys() if rerun_blind else []) if c.startswith('coder2_')]
-    filled = []
-    bad_materials = []
-    for idx, row in enumerate(rerun_blind, start=2):
-        for field in coder_fields:
-            if row.get(field, '').strip():
-                filled.append((idx, field))
-        materials = row.get('materials_to_review', '').lower()
-        if 'submission_update_second_coder_rerun_notes.md' not in materials or 'previous coder2 results' not in materials:
-            bad_materials.append(idx)
-    status('ERROR', not filled, 'submission-update rerun coder2 fields are blank')
-    if filled:
-        print('ERROR: rerun template pre-filled coder2 fields:', filled[:10])
-    status('ERROR', not bad_materials, 'submission-update rerun materials_to_review points to rerun notes and hides previous results')
-    if bad_materials:
-        print('ERROR: rerun template materials_to_review needs update on rows:', bad_materials[:10])
-
-def validate_csv_schema(name, reader, rows):
-    fieldnames = reader.fieldnames or []
-    required = CSV_REQUIRED_FIELDS.get(name, [])
-    status('ERROR', bool(fieldnames), f'{name} has a header row')
-    duplicate_fields = sorted({field for field in fieldnames if fieldnames.count(field) > 1})
-    status('ERROR', not duplicate_fields, f'{name} has unique header names')
-    if duplicate_fields:
-        print(f'ERROR: {name} duplicate header names:', ', '.join(duplicate_fields))
-    missing = [field for field in required if field not in fieldnames]
-    status('ERROR', not missing, f'{name} contains required fields: {", ".join(required) if required else "no file-specific required fields"}')
-    if missing:
-        print(f'ERROR: {name} missing fields:', ', '.join(missing))
-    required_non_empty = list(required)
-    if name == 'core31_second_coder_formal_blind_template.csv':
-        required_non_empty = [field for field in required_non_empty if field not in {
-            'coder2_strongest_evidence_output',
-            'coder2_decision_reason',
-            'coder2_uncertainty_note',
-        }]
-    if name == 'core31_second_coder_capability_traceability_blind_template.csv':
-        required_non_empty = [field for field in required_non_empty if not field.startswith('coder2_')]
-    if name == 'submission_update_20260715_full_coding_audit.csv':
-        required_non_empty = [field for field in required_non_empty if field != 'uncertainty_note']
-    if name in {'submission_update_20260715_second_coder_blind_template.csv', 'submission_update_20260715_second_coder_rerun_blind_template.csv'}:
-        required_non_empty = [field for field in required_non_empty if not field.startswith('coder2_')]
-    width_errors = []
-    required_errors = []
-    for idx, row in enumerate(rows, start=2):
-        if None in row:
-            width_errors.append(idx)
-        empty_required = [field for field in required_non_empty if row.get(field, '') == '']
-        if empty_required:
-            required_errors.append((idx, empty_required))
-    status('ERROR', not width_errors, f'{name} has consistent column width for {len(rows)} rows')
-    if width_errors:
-        print(f'ERROR: {name} column width errors at rows:', ', '.join(map(str, width_errors)))
-    status('ERROR', not required_errors, f'{name} required fields are non-empty for {len(rows)} rows')
-    if required_errors:
-        for idx, fields in required_errors[:10]:
-            print(f'ERROR: {name} row {idx} empty required fields:', ', '.join(fields))
-        if len(required_errors) > 10:
-            print(f'ERROR: {name} additional rows with empty required fields:', len(required_errors) - 10)
-    if name == 'record_classification_audit.csv':
-        expected = CSV_REQUIRED_FIELDS[name]
-        status('ERROR', fieldnames == expected, f'{name} schema matches expected 9 columns')
-    VALIDATED_CSVS.add(name)
-
-def validate_all_csv_files():
-    for path in sorted(DATA.glob('*.csv')):
-        with path.open(encoding='utf-8-sig', newline='') as f:
-            reader = csv.DictReader(f)
-            rows = list(reader)
-        validate_csv_schema(path.name, reader, rows)
-
-def read_csv(name):
-    path = DATA / name
-    if not path.exists():
-        print(f'ERROR: missing {name}')
+        error(f"missing file: {path.relative_to(ROOT)}")
         return []
-    with path.open(encoding='utf-8-sig', newline='') as f:
-        reader = csv.DictReader(f)
-        rows = list(reader)
-    if name not in VALIDATED_CSVS:
-        validate_csv_schema(name, reader, rows)
+    with path.open(encoding="utf-8-sig", newline="") as handle:
+        raw = csv.reader(handle)
+        try:
+            header = next(raw)
+        except StopIteration:
+            error(f"empty CSV: {path.relative_to(ROOT)}")
+            return []
+    duplicates = sorted({name for name in header if header.count(name) > 1})
+    require(not duplicates, f"duplicate CSV header(s) in {path.name}: {duplicates}")
+    with path.open(encoding="utf-8-sig", newline="") as handle:
+        rows = list(csv.DictReader(handle))
+    require(all(None not in row for row in rows), f"ragged row in {path.name}")
     return rows
 
-def expand_a_level(value):
-    if not value or value == 'NA':
-        return []
-    value = value.replace(' ', '')
-    if '+' in value:
-        expanded = []
-        for part in value.split('+'):
-            expanded.extend(expand_a_level(part))
-        return expanded
-    if '--' in value:
-        left, right = value.split('--', 1)
-        try:
-            start = int(left[1:]); end = int(right[1:])
-            return [f'A{i}' for i in range(start, end + 1)]
-        except Exception:
-            return [value]
-    if '-' in value and value.count('A') >= 2:
-        left, right = value.split('-', 1)
-        try:
-            start = int(left[1:]); end = int(right[1:])
-            return [f'A{i}' for i in range(start, end + 1)]
-        except Exception:
-            return [value]
-    return [value]
 
-def validate_product_ecosystem_snapshot(rows):
-    manifest_snapshot_date = load_manifest_product_snapshot_date()
-    status('ERROR', bool(rows), 'product_ecosystem_snapshot.csv has at least one row')
-    status('ERROR', bool(manifest_snapshot_date), 'RELEASE_MANIFEST.md records product snapshot date')
-    if not rows:
-        return
-
-    allowed_roles = {'Background', 'Supporting', 'Emerging boundary case', 'Core candidate', 'Excluded'}
-    allowed_update_required = {'yes', 'no', 'true', 'false'}
-    product_doc_markers = [
-        'product',
-        'documentation',
-        'help',
-        'faq',
-        'use-case',
-        'use case',
-        'blog',
-        'model',
-        'policy',
-    ]
-
-    invalid_snapshot_dates = []
-    manifest_mismatches = []
-    invalid_access_dates = []
-    invalid_roles = []
-    invalid_update_flags = []
-    missing_public_urls = []
-    empty_urls = []
-    private_material_rows = []
-    unconfirmed_core_rows = []
-
-    for idx, row in enumerate(rows, start=2):
-        snapshot_value = row.get('snapshot_date', '')
-        parsed_snapshot = parse_iso_date(snapshot_value)
-        if not parsed_snapshot:
-            invalid_snapshot_dates.append(idx)
-        if manifest_snapshot_date and snapshot_value != manifest_snapshot_date:
-            manifest_mismatches.append(idx)
-
-        access_value = row.get('access_date', '')
-        if not parse_iso_date(access_value):
-            invalid_access_dates.append(idx)
-
-        role = row.get('manuscript_role', '')
-        if role not in allowed_roles:
-            invalid_roles.append((idx, role))
-
-        update_required = row.get('update_required', '').strip().lower()
-        if update_required not in allowed_update_required:
-            invalid_update_flags.append((idx, row.get('update_required', '')))
-
-        source_url = row.get('source_url', '').strip()
-        if source_url == '':
-            empty_urls.append(idx)
-        if role != 'Excluded' and not source_url.startswith(('http://', 'https://')):
-            missing_public_urls.append(idx)
-
-        joined = ' '.join(str(v) for v in row.values())
-        if contains_private_material(joined):
-            private_material_rows.append(idx)
-
-        evidence_type = row.get('public_evidence_type', '').lower()
-        core_eligibility = row.get('core_eligibility', '').lower()
-        manual_text = ' '.join([
-            row.get('core_eligibility', ''),
-            row.get('evidence_caveat', ''),
-            row.get('notes', ''),
-        ]).lower()
-        looks_like_product_doc = any(marker in evidence_type for marker in product_doc_markers)
-        if looks_like_product_doc and role == 'Core candidate' and 'manual' not in manual_text and 'author' not in manual_text:
-            unconfirmed_core_rows.append(idx)
-        if looks_like_product_doc and 'not core' not in core_eligibility and role != 'Excluded' and role != 'Core candidate':
-            unconfirmed_core_rows.append(idx)
-
-    status('ERROR', not invalid_snapshot_dates, 'product snapshot dates parse as ISO dates')
-    if invalid_snapshot_dates:
-        print('ERROR: invalid product snapshot date rows:', ', '.join(map(str, invalid_snapshot_dates)))
-    status('ERROR', not manifest_mismatches, 'product snapshot dates match RELEASE_MANIFEST.md')
-    if manifest_mismatches:
-        print('ERROR: product snapshot date mismatch rows:', ', '.join(map(str, manifest_mismatches)))
-    status('ERROR', not invalid_access_dates, 'product access dates parse as ISO dates')
-    if invalid_access_dates:
-        print('ERROR: invalid product access date rows:', ', '.join(map(str, invalid_access_dates)))
-    status('ERROR', not invalid_roles, 'product manuscript_role values use the approved enumeration')
-    if invalid_roles:
-        print('ERROR: invalid product manuscript_role rows:', invalid_roles[:10])
-    status('ERROR', not invalid_update_flags, 'product update_required values are parseable booleans')
-    if invalid_update_flags:
-        print('ERROR: invalid update_required rows:', invalid_update_flags[:10])
-    status('ERROR', not empty_urls, 'product source_url values are non-empty')
-    if empty_urls:
-        print('ERROR: empty product source_url rows:', ', '.join(map(str, empty_urls)))
-    status('ERROR', not missing_public_urls, 'non-Excluded product rows have public source URLs')
-    if missing_public_urls:
-        print('ERROR: non-Excluded product rows missing public URLs:', ', '.join(map(str, missing_public_urls)))
-    status('ERROR', not private_material_rows, 'product snapshot contains no local Zotero/PDF/SQLite/private path material')
-    if private_material_rows:
-        print('ERROR: product private-material rows:', ', '.join(map(str, private_material_rows)))
-    status('ERROR', not unconfirmed_core_rows, 'product/vendor documentation is not promoted to Core without manual confirmation')
-    if unconfirmed_core_rows:
-        print('ERROR: product Core-eligibility rows needing review:', ', '.join(map(str, sorted(set(unconfirmed_core_rows)))))
-    print(f'product_ecosystem_snapshot.csv rows: {len(rows)}')
+def split_labels(value: str) -> set[str]:
+    return {item.strip() for item in (value or "").split(";") if item.strip()}
 
 
-def cohen_kappa(first, second):
-    if not first or len(first) != len(second):
-        return None
-    total = len(first)
-    observed = sum(1 for a, b in zip(first, second) if a == b) / total
-    first_counts = Counter(first)
-    second_counts = Counter(second)
-    categories = set(first_counts) | set(second_counts)
-    expected = sum((first_counts[c] / total) * (second_counts[c] / total) for c in categories)
+def count_multilabel(rows: list[dict[str, str]], field: str) -> Counter[str]:
+    counts: Counter[str] = Counter()
+    for row in rows:
+        counts.update(split_labels(row.get(field, "")))
+    return counts
+
+
+def metric_map(path: Path) -> dict[str, int]:
+    output: dict[str, int] = {}
+    for row in read_csv(path):
+        key = row.get("metric") or row.get("stage")
+        value = row.get("count") or row.get("value")
+        if key and value and str(value).isdigit():
+            output[key] = int(value)
+    return output
+
+
+def raw_agreement(first: list[str], second: list[str]) -> float:
+    return sum(a == b for a, b in zip(first, second)) / len(first)
+
+
+def kappa(first: list[str], second: list[str]) -> float:
+    observed = raw_agreement(first, second)
+    n = len(first)
+    ca, cb = Counter(first), Counter(second)
+    expected = sum((ca[key] / n) * (cb[key] / n) for key in set(ca) | set(cb))
     if expected == 1:
-        return 1.0 if observed == 1 else None
+        return 1.0 if observed == 1.0 else 0.0
     return (observed - expected) / (1 - expected)
 
-def split_multilabel(value):
-    if not value:
-        return set()
-    return {item.strip() for item in value.replace('；', ';').split(';') if item.strip()}
 
-def set_agreement_metrics(baseline_rows, coder_rows, baseline_field, coder_field):
-    baseline_by_id = {row.get('core_id', ''): row for row in baseline_rows}
-    compared = []
-    missing = []
-    for row in coder_rows:
-        core_id = row.get('core_id', '')
-        if core_id not in baseline_by_id:
-            missing.append(core_id or '?')
-            continue
-        base_set = split_multilabel(baseline_by_id[core_id].get(baseline_field, ''))
-        coder_set = split_multilabel(row.get(coder_field, ''))
-        compared.append((core_id, row.get('system_alias', ''), base_set, coder_set))
+def jaccard(a: set[str], b: set[str]) -> float:
+    return 1.0 if not (a | b) else len(a & b) / len(a | b)
 
-    if not compared:
-        return {
-            'missing': missing,
-            'rows': 0,
-            'exact': 0,
-            'row_exact': 0,
-            'mean_jaccard': 0,
-            'micro_precision': 0,
-            'micro_recall': 0,
-            'micro_f1': 0,
-            'per_label': [],
-            'disagreements': [],
-        }
 
-    exact = 0
-    jaccards = []
-    tp = fp = fn = 0
-    disagreements = []
-    all_labels = set()
-    for core_id, system_alias, base_set, coder_set in compared:
-        all_labels.update(base_set)
-        all_labels.update(coder_set)
-        if base_set == coder_set:
-            exact += 1
-        else:
-            disagreements.append((core_id, system_alias, base_set, coder_set))
-        union = base_set | coder_set
-        intersection = base_set & coder_set
-        jaccards.append(1.0 if not union else len(intersection) / len(union))
-        tp += len(intersection)
-        fp += len(coder_set - base_set)
-        fn += len(base_set - coder_set)
+def micro_f1(pairs: list[tuple[set[str], set[str]]]) -> float:
+    tp = sum(len(a & b) for a, b in pairs)
+    fp = sum(len(a - b) for a, b in pairs)
+    fn = sum(len(b - a) for a, b in pairs)
+    return 2 * tp / (2 * tp + fp + fn)
 
-    per_label = []
-    core_ids = [core_id for core_id, *_ in compared]
-    for label in sorted(all_labels):
-        baseline_positive = {core_id for core_id, _, base_set, _ in compared if label in base_set}
-        coder_positive = {core_id for core_id, _, _, coder_set in compared if label in coder_set}
-        label_tp = len(baseline_positive & coder_positive)
-        label_fp = len(coder_positive - baseline_positive)
-        label_fn = len(baseline_positive - coder_positive)
-        label_tn = len(core_ids) - label_tp - label_fp - label_fn
-        label_union = baseline_positive | coder_positive
-        per_label.append({
-            'label': label,
-            'baseline_rows': len(baseline_positive),
-            'coder2_rows': len(coder_positive),
-            'agreement': (label_tp + label_tn) / len(core_ids),
-            'jaccard': 1.0 if not label_union else label_tp / len(label_union),
-        })
 
-    precision = 1.0 if (tp + fp) == 0 else tp / (tp + fp)
-    recall = 1.0 if (tp + fn) == 0 else tp / (tp + fn)
-    f1 = 1.0 if (precision + recall) == 0 else 2 * precision * recall / (precision + recall)
-    return {
-        'missing': missing,
-        'rows': len(compared),
-        'exact': exact,
-        'row_exact': exact / len(compared),
-        'mean_jaccard': sum(jaccards) / len(jaccards),
-        'micro_precision': precision,
-        'micro_recall': recall,
-        'micro_f1': f1,
-        'per_label': per_label,
-        'disagreements': disagreements,
-    }
-
-def validate_formal_agreement_report(formal_results_rows, adjudication_rows, allowed_outputs):
-    report_path = REPORTS / 'FORMAL_SECOND_CODER_AGREEMENT_REPORT.md'
-    status('ERROR', report_path.exists(), 'formal second-coder agreement report exists')
-    if not formal_results_rows or not adjudication_rows:
+def check_manifest() -> None:
+    manifest = ROOT / "manuscript_artifact_paths.txt"
+    require(manifest.exists(), "missing manuscript_artifact_paths.txt")
+    if not manifest.exists():
         return
-
-    baseline_by_id = {row.get('core_id', ''): row for row in adjudication_rows}
-    missing_baselines = [row.get('core_id', '?') for row in formal_results_rows if row.get('core_id', '') not in baseline_by_id]
-    status('ERROR', not missing_baselines, 'formal results rows all have adjudication-template baselines')
-    if missing_baselines:
-        print('ERROR: formal results missing baselines:', ', '.join(missing_baselines))
-        return
-
-    baseline = []
-    coder2 = []
-    disagreements = []
-    for row in formal_results_rows:
-        core_id = row.get('core_id', '')
-        base_label = baseline_by_id[core_id].get('original_strongest_evidence_output', '').strip()
-        coder_label = row.get('coder2_strongest_evidence_output', '').strip()
-        baseline.append(base_label)
-        coder2.append(coder_label)
-        if base_label != coder_label:
-            disagreements.append((core_id, row.get('system_alias', ''), base_label, coder_label))
-
-    rows_compared = len(formal_results_rows)
-    agreements = sum(1 for a, b in zip(baseline, coder2) if a == b)
-    raw_agreement = agreements / rows_compared if rows_compared else 0
-    kappa = cohen_kappa(baseline, coder2)
-    status('ERROR', all(label in allowed_outputs for label in baseline), 'formal agreement baseline labels use approved values')
-    status('ERROR', all(label in allowed_outputs for label in coder2), 'formal agreement coder2 labels use approved values')
-
-    expected_disagreements = {'C12', 'C17', 'C24'}
-    actual_disagreements = {core_id for core_id, *_ in disagreements}
-    status('ERROR', rows_compared == 31, f'formal agreement rows compared = {rows_compared}; expected 31')
-    status('ERROR', len(disagreements) == 3, f'formal agreement disagreements = {len(disagreements)}; expected 3')
-    status('ERROR', actual_disagreements == expected_disagreements, 'formal disagreement rows are C12, C17, and C24')
-    if actual_disagreements != expected_disagreements:
-        print('ERROR: formal disagreement rows:', ', '.join(sorted(actual_disagreements)))
-    print(f'FORMAL_SECOND_CODER_AGREEMENT: rows={rows_compared} raw={raw_agreement:.3f} kappa={kappa:.3f} disagreements={len(disagreements)}')
-
-    if report_path.exists():
-        report_text = report_path.read_text(encoding='utf-8')
-        required_snippets = [
-            f'Rows compared: {rows_compared}',
-            f'Raw agreement: {raw_agreement:.3f}',
-            f"Cohen's kappa: {kappa:.3f}",
-            f'Disagreements: {len(disagreements)}',
-            'formal pre-adjudication agreement',
-            'No adjudicated labels are claimed',
-        ]
-        missing_snippets = [snippet for snippet in required_snippets if snippet not in report_text]
-        missing_disagreement_ids = [core_id for core_id, *_ in disagreements if core_id not in report_text]
-        status('ERROR', not missing_snippets, 'formal report contains computed raw agreement, kappa, and pre-adjudication note')
-        if missing_snippets:
-            print('ERROR: formal report missing snippets:', '; '.join(missing_snippets))
-        status('ERROR', not missing_disagreement_ids, 'formal report lists computed disagreement rows')
-        if missing_disagreement_ids:
-            print('ERROR: formal report missing disagreement rows:', ', '.join(missing_disagreement_ids))
-
-
-def validate_second_coder_files(blind_rows, adjudication_rows, formal_rows=None, formal_results_rows=None):
-    formal_rows = formal_rows or []
-    formal_results_rows = formal_results_rows or []
-    blind_path = DATA / 'core31_second_coder_blind.csv'
-    formal_path = DATA / 'core31_second_coder_formal_blind_template.csv'
-    formal_results_path = DATA / 'core31_second_coder_formal_results.csv'
-    adjudication_path = DATA / 'core31_second_coder_adjudication_template.csv'
-    pilot_dir = ROOT / 'archive' / 'pilot_second_coder_round_1'
-    pilot_report = pilot_dir / 'SECOND_CODER_AGREEMENT_REPORT.md'
-    pilot_results = pilot_dir / 'core31_second_coder_results.csv'
-    status('ERROR', blind_path.exists(), 'core31_second_coder_blind.csv exists')
-    status('ERROR', formal_path.exists(), 'core31_second_coder_formal_blind_template.csv exists')
-    status('ERROR', formal_results_path.exists(), 'core31_second_coder_formal_results.csv exists')
-    status('ERROR', adjudication_path.exists(), 'core31_second_coder_adjudication_template.csv exists')
-    if not blind_rows:
-        return
-
-    allowed_outputs = {
-        'candidate judgment',
-        'controlled task completion',
-        'runtime safety signal',
-        'reproducible validation',
-        'externally traceable material',
-        'claim-level audit material',
-        'governance boundary case',
-    }
-    allowed_boundary_roles = {'standard_core_entry', 'governance_boundary_case'}
-    coder2_fields = [
-        'coder2_strongest_evidence_output',
-        'coder2_decision_reason',
-        'coder2_uncertainty_note',
+    paths = [
+        line.strip()
+        for line in manifest.read_text(encoding="utf-8-sig").splitlines()
+        if line.strip() and not line.lstrip().startswith("#")
     ]
-
-    def check_blind_like(rows, label, require_blank=True):
-        fields = set(rows[0].keys()) if rows else set()
-        required = {
-            'core_id',
-            'record_id',
-            'system_alias',
-            'title',
-            'publication_status',
-            'boundary_role',
-            'materials_to_review',
-            *coder2_fields,
-        }
-        missing = sorted(required - fields)
-        original_fields = sorted(field for field in fields if field.startswith('original_'))
-        status('ERROR', len(rows) == 31, f'{label} rows = {len(rows)}; expected 31')
-        status('ERROR', not missing, f'{label} contains required fields')
-        if missing:
-            print(f'ERROR: {label} missing fields:', ', '.join(missing))
-        status('ERROR', not original_fields, f'{label} contains no original_* answer-key columns')
-        if original_fields:
-            print(f'ERROR: {label} exposes original fields:', ', '.join(original_fields))
-        boundary_roles = sorted(set(row.get('boundary_role', '').strip() for row in rows))
-        invalid_boundary_roles = [role for role in boundary_roles if role not in allowed_boundary_roles]
-        status('ERROR', not invalid_boundary_roles, f'{label} boundary_role values use approved labels')
-        if invalid_boundary_roles:
-            print(f'ERROR: invalid {label} boundary_role values:', ', '.join(invalid_boundary_roles))
-        if require_blank:
-            filled = []
-            for row in rows:
-                for field in coder2_fields:
-                    if row.get(field, '').strip():
-                        filled.append((row.get('core_id', '?'), field))
-            status('ERROR', not filled, f'{label} coder2 fields are blank for formal rerun')
-            if filled:
-                print(f'ERROR: {label} nonblank coder2 fields:', filled[:10])
-
-    check_blind_like(blind_rows, 'core31_second_coder_blind.csv', require_blank=True)
-    if formal_rows:
-        check_blind_like(formal_rows, 'core31_second_coder_formal_blind_template.csv', require_blank=True)
-
-    if formal_results_rows:
-        check_blind_like(formal_results_rows, 'core31_second_coder_formal_results.csv', require_blank=False)
-        missing_formal_values = []
-        invalid_formal_values = []
-        for row in formal_results_rows:
-            for field in coder2_fields:
-                if not row.get(field, '').strip():
-                    missing_formal_values.append((row.get('core_id', '?'), field))
-            label = row.get('coder2_strongest_evidence_output', '').strip()
-            if label and label not in allowed_outputs:
-                invalid_formal_values.append((row.get('core_id', '?'), label))
-        status('ERROR', not missing_formal_values, 'formal results coder2 labels, rationale, and uncertainty notes are populated')
-        if missing_formal_values:
-            print('ERROR: missing formal results fields:', missing_formal_values[:10])
-        status('ERROR', not invalid_formal_values, 'formal results coder2 labels use approved evidence-output labels')
-        if invalid_formal_values:
-            print('ERROR: invalid formal results labels:', invalid_formal_values[:10])
-
-    adjudication_fields = set(adjudication_rows[0].keys()) if adjudication_rows else set()
-    required_adjudication_fields = {
-        'boundary_role',
-        'original_strongest_evidence_output',
-        'coder2_strongest_evidence_output',
-        'coder2_decision_reason',
-        'coder2_uncertainty_note',
-    }
-    missing_adjudication_fields = sorted(required_adjudication_fields - adjudication_fields)
-    status('ERROR', not missing_adjudication_fields, 'adjudication template contains current second-coder workflow fields')
-    if missing_adjudication_fields:
-        print('ERROR: adjudication template missing fields:', ', '.join(missing_adjudication_fields))
-    if adjudication_rows:
-        baseline_values = [row.get('original_strongest_evidence_output', '').strip() for row in adjudication_rows]
-        invalid_baselines = sorted(set(value for value in baseline_values if value not in allowed_outputs))
-        missing_baselines = [row.get('core_id', '?') for row in adjudication_rows if not row.get('original_strongest_evidence_output', '').strip()]
-        status('ERROR', not missing_baselines, 'adjudication template original_strongest_evidence_output is populated for all rows')
-        if missing_baselines:
-            print('ERROR: missing original_strongest_evidence_output for:', ', '.join(missing_baselines))
-        status('ERROR', not invalid_baselines, 'adjudication template original_strongest_evidence_output values use approved labels')
-        if invalid_baselines:
-            print('ERROR: invalid original_strongest_evidence_output labels:', ', '.join(invalid_baselines))
-        status('ERROR', any(field.startswith('original_') for field in adjudication_fields), 'adjudication template retains original_* fields for post-coding comparison')
-        adjudication_boundary_roles = sorted(set(row.get('boundary_role', '').strip() for row in adjudication_rows))
-        invalid_adjudication_boundary_roles = [role for role in adjudication_boundary_roles if role not in allowed_boundary_roles]
-        status('ERROR', not invalid_adjudication_boundary_roles, 'adjudication template boundary_role values use approved labels')
-        if invalid_adjudication_boundary_roles:
-            print('ERROR: invalid adjudication boundary_role values:', ', '.join(invalid_adjudication_boundary_roles))
-        status('ERROR', len(adjudication_rows) == 31, f'core31_second_coder_adjudication_template.csv rows = {len(adjudication_rows)}; expected 31')
-        formal_filled = []
-        for row in adjudication_rows:
-            for field in coder2_fields + ['disagreement_note', 'adjudication_result']:
-                if row.get(field, '').strip():
-                    formal_filled.append((row.get('core_id', '?'), field))
-        status('ERROR', not formal_filled, 'adjudication template coder2/adjudication fields remain blank until adjudication is explicitly recorded')
-        if formal_filled:
-            print('ERROR: nonblank formal adjudication fields:', formal_filled[:10])
-
-    validate_formal_agreement_report(formal_results_rows, adjudication_rows, allowed_outputs)
-
-    status('ERROR', pilot_dir.exists(), 'pilot second-coder calibration archive exists')
-    status('ERROR', pilot_report.exists(), 'pilot agreement report is archived outside the formal report path')
-    status('ERROR', pilot_results.exists(), 'pilot coder2 results are archived outside the formal data path')
-    pilot_readme = pilot_dir / 'README.md'
-    status('ERROR', pilot_readme.exists(), 'pilot archive README exists')
-    if pilot_readme.exists():
-        archive_text = pilot_readme.read_text(encoding='utf-8')
-        status('ERROR', 'formal intercoder reliability' in archive_text and 'should not be cited' in archive_text, 'pilot archive warns against formal reliability citation')
-    print('PILOT_SECOND_CODER_ARCHIVE: archived for calibration only; formal reliability uses data/core31_second_coder_formal_results.csv and reports/FORMAL_SECOND_CODER_AGREEMENT_REPORT.md')
+    require(len(paths) == len(set(paths)), "duplicate path in manuscript artifact manifest")
+    for relative in paths:
+        require((ROOT / relative).is_file(), f"manifest path is missing: {relative}")
+    info(f"manifest paths verified: {len(paths)}")
 
 
-def validate_second_coder_extension_template(rows, results_rows, baseline_rows):
-    path = DATA / 'core31_second_coder_capability_traceability_blind_template.csv'
-    results_path = DATA / 'core31_second_coder_capability_traceability_results.csv'
-    report_path = REPORTS / 'SECOND_CODER_CAPABILITY_TRACEABILITY_AGREEMENT_REPORT.md'
-    status('ERROR', path.exists(), 'capability/traceability second-coder blind template exists')
-    status('ERROR', results_path.exists(), 'capability/traceability second-coder formal results file exists')
-    status('ERROR', report_path.exists(), 'capability/traceability second-coder agreement report exists')
-    if not rows:
-        return
+def check_corpus() -> tuple[list[dict[str, str]], list[dict[str, str]]]:
+    corpus = read_csv(DATA / "corpus.csv")
+    crosswalk = read_csv(DATA / "study_version_crosswalk.csv")
+    require(len(corpus) == EXPECTED["source_records"], "corpus.csv must contain 1,785 source records")
+    require(len(crosswalk) == EXPECTED["source_records"], "crosswalk must contain 1,785 source records")
+    corpus_ids = [row.get("record_id", "") for row in corpus]
+    crosswalk_ids = [row.get("record_id", "") for row in crosswalk]
+    require(len(set(corpus_ids)) == len(corpus_ids), "duplicate record_id in corpus.csv")
+    require(set(corpus_ids) == set(crosswalk_ids), "corpus and crosswalk record IDs differ")
 
-    fields = set(rows[0].keys())
-    original_fields = sorted(field for field in fields if field.startswith('original_'))
-    coder2_fields = [field for field in fields if field.startswith('coder2_')]
-    status('ERROR', len(rows) == 31, f'capability/traceability blind template rows = {len(rows)}; expected 31')
-    status('ERROR', not original_fields, 'capability/traceability blind template exposes no original_* answer-key columns')
-    if original_fields:
-        print('ERROR: exposed original fields:', ', '.join(original_fields))
-    filled = []
-    for row in rows:
-        for field in coder2_fields:
-            if row.get(field, '').strip():
-                filled.append((row.get('core_id', '?'), field))
-    status('ERROR', not filled, 'capability/traceability blind template coder2 fields remain blank for future reruns')
-    if filled:
-        print('ERROR: nonblank capability/traceability coder2 template fields:', filled[:10])
-
-    def check_extension_materials(material_rows, label):
-        forbidden = []
-        missing_scope = []
-        for row in material_rows:
-            material = row.get('materials_to_review', '')
-            lower = material.lower()
-            if 'strongest evidence output' in lower:
-                forbidden.append(row.get('core_id', '?'))
-            has_capability = 'cross-stage capability labels' in lower or 'capability definitions' in lower
-            has_traceability = 'external traceability' in lower or 'external-audit-material' in lower or 'external audit material' in lower
-            if not (has_capability and has_traceability):
-                missing_scope.append(row.get('core_id', '?'))
-        status('ERROR', not forbidden, f'{label} materials_to_review does not mention strongest evidence output')
-        if forbidden:
-            print(f'ERROR: {label} rows with strongest evidence output wording:', ', '.join(forbidden[:20]))
-        status('ERROR', not missing_scope, f'{label} materials_to_review describes cross-stage capability labels and external traceability')
-        if missing_scope:
-            print(f'ERROR: {label} rows missing capability/traceability scope wording:', ', '.join(missing_scope[:20]))
-
-    check_extension_materials(rows, 'capability/traceability blind template')
-
-    if not results_rows or not baseline_rows:
-        return
-
-    check_extension_materials(results_rows, 'capability/traceability results')
-
-    result_fields = set(results_rows[0].keys())
-    result_original_fields = sorted(field for field in result_fields if field.startswith('original_'))
-    required_result_fields = {
-        'coder2_cross_stage_capability_label',
-        'coder2_capability_decision_reason',
-        'coder2_capability_uncertainty_note',
-        'coder2_external_traceability_label',
-        'coder2_external_traceability_decision_reason',
-        'coder2_external_traceability_uncertainty_note',
-    }
-    status('ERROR', len(results_rows) == 31, f'capability/traceability results rows = {len(results_rows)}; expected 31')
-    status('ERROR', not result_original_fields, 'capability/traceability results expose no original_* answer-key columns')
-    if result_original_fields:
-        print('ERROR: capability/traceability result original fields:', ', '.join(result_original_fields))
-    missing_values = []
-    for row in results_rows:
-        for field in required_result_fields:
-            if not row.get(field, '').strip():
-                missing_values.append((row.get('core_id', '?'), field))
-    status('ERROR', not missing_values, 'capability/traceability results coder2 labels, rationales, and uncertainty notes are populated')
-    if missing_values:
-        print('ERROR: missing capability/traceability result values:', missing_values[:10])
-
-    baseline_fields = set(baseline_rows[0].keys()) if baseline_rows else set()
-    status('ERROR', {'agent_capabilities', 'external_audit_materials'} <= baseline_fields, 'Core synthesis matrix contains capability and external-audit baseline fields')
-    cap = set_agreement_metrics(baseline_rows, results_rows, 'agent_capabilities', 'coder2_cross_stage_capability_label')
-    ext = set_agreement_metrics(baseline_rows, results_rows, 'external_audit_materials', 'coder2_external_traceability_label')
-    status('ERROR', not cap['missing'], 'capability results rows all have Core synthesis baselines')
-    status('ERROR', not ext['missing'], 'external-traceability results rows all have Core synthesis baselines')
-    status('ERROR', cap['rows'] == 31, f'capability agreement rows compared = {cap["rows"]}; expected 31')
-    status('ERROR', ext['rows'] == 31, f'external-traceability agreement rows compared = {ext["rows"]}; expected 31')
-    print(f'CAPABILITY_SECOND_CODER_AGREEMENT: rows={cap["rows"]} exact={cap["row_exact"]:.3f} mean_jaccard={cap["mean_jaccard"]:.3f} micro_f1={cap["micro_f1"]:.3f} disagreements={len(cap["disagreements"])}')
-    print(f'EXTERNAL_TRACEABILITY_SECOND_CODER_AGREEMENT: rows={ext["rows"]} exact={ext["row_exact"]:.3f} mean_jaccard={ext["mean_jaccard"]:.3f} micro_f1={ext["micro_f1"]:.3f} disagreements={len(ext["disagreements"])}')
-
-    if report_path.exists():
-        report_text = report_path.read_text(encoding='utf-8')
-        required_snippets = [
-            f'Rows compared: {cap["rows"]}',
-            f'Row-level exact agreement: {cap["exact"]} / {cap["rows"]} = {cap["row_exact"]:.3f}',
-            f'Mean row Jaccard: {cap["mean_jaccard"]:.3f}',
-            f'Rows compared: {ext["rows"]}',
-            f'Row-level exact agreement: {ext["exact"]} / {ext["rows"]} = {ext["row_exact"]:.3f}',
-            f'Mean row Jaccard: {ext["mean_jaccard"]:.3f}',
-            'does not use single-label Cohen',
-            'no adjudicated labels are claimed',
-        ]
-        missing_snippets = [snippet for snippet in required_snippets if snippet not in report_text]
-        status('ERROR', not missing_snippets, 'capability/traceability report contains computed Jaccard/per-label agreement and boundary notes')
-        if missing_snippets:
-            print('ERROR: capability/traceability report missing snippets:', '; '.join(missing_snippets))
-        missing_labels = [item['label'] for item in cap['per_label'] + ext['per_label'] if item['label'] not in report_text]
-        status('ERROR', not missing_labels, 'capability/traceability report lists computed per-label rows')
-        if missing_labels:
-            print('ERROR: capability/traceability report missing labels:', ', '.join(sorted(set(missing_labels))))
-
-def validate_source_search_audit(corpus, source_log, source_audit):
-    status('ERROR', bool(source_log), 'source_search_log.csv has at least one source row')
-    status('ERROR', bool(source_audit), 'source_screening_audit.csv has at least one record row')
-    if not corpus or not source_log or not source_audit:
-        return
-
-    corpus_ids = {row.get('record_id', '') for row in corpus}
-    audit_ids = [row.get('record_id', '') for row in source_audit]
-    status('ERROR', len(source_audit) == 253, f'source_screening_audit rows = {len(source_audit)}; expected 253')
-    status('ERROR', set(audit_ids) == corpus_ids, 'source_screening_audit covers exactly the corpus record_ids')
-    status('ERROR', len(audit_ids) == len(set(audit_ids)), 'source_screening_audit record_id values are unique')
-
-    audit_layer_counts = Counter(row.get('corpus_layer', 'NA') for row in source_audit)
-    expected_layers = {'Core': 68, 'Supporting': 69, 'Background': 95, 'Excluded': 21}
-    for layer, expected in expected_layers.items():
-        status('ERROR', audit_layer_counts.get(layer, 0) == expected, f'legacy source-record layer {layer} = {audit_layer_counts.get(layer, 0)}; expected {expected}')
-
-    def to_int(row, field):
-        try:
-            return int(row.get(field, '0'))
-        except Exception:
-            return -999999
-
-    totals = {
-        'captured': sum(to_int(row, 'records_captured_before_dedup') for row in source_log),
-        'variants_removed': sum(to_int(row, 'duplicates_or_variants_removed') for row in source_log),
-        'unique': sum(to_int(row, 'unique_candidate_records_after_dedup') for row in source_log),
-        'core': sum(to_int(row, 'core_records') for row in source_log),
-        'supporting': sum(to_int(row, 'supporting_records') for row in source_log),
-        'background': sum(to_int(row, 'background_records') for row in source_log),
-        'excluded': sum(to_int(row, 'excluded_records') for row in source_log),
-    }
-    status('ERROR', totals['captured'] == 253, f'source_search_log source records = {totals["captured"]}; expected 253')
-    status('ERROR', totals['variants_removed'] == 5, f'source_search_log source variants removed from canonical counts = {totals["variants_removed"]}; expected 5')
-    status('ERROR', totals['unique'] == 248, f'source_search_log canonical candidate studies = {totals["unique"]}; expected 248')
-    status('ERROR', totals['core'] == 68, f'source_search_log study-level coded records = {totals["core"]}; expected 68')
-    status('ERROR', totals['supporting'] == 65, f'source_search_log extended synthesis studies = {totals["supporting"]}; expected 65')
-    status('ERROR', totals['background'] == 95, f'source_search_log Background records = {totals["background"]}; expected 95')
-    status('ERROR', totals['excluded'] == 20, f'source_search_log canonical Excluded records = {totals["excluded"]}; expected 20')
-
-    missing_trace = [row.get('record_id', '?') for row in source_audit if row.get('source_bucket', '') in ('', 'NA') or row.get('source_name', '') in ('', 'NA')]
-    status('ERROR', not missing_trace, 'all source_screening_audit rows include a source bucket and source name')
-    if missing_trace:
-        print('ERROR: source rows missing source bucket/name:', ', '.join(missing_trace[:20]))
-
-    volatile_hit_claims = [
-        row.get('source_id', '?') for row in source_log
-        if 'source records from canonical study counts' not in row.get('notes', '') and 'source records' not in row.get('notes', '')
-    ]
-    status('ERROR', not volatile_hit_claims, 'source_search_log notes distinguish source records from canonical study counts')
-
-
-
-def validate_official_source_followup(search_rows, screening_rows):
-    report_path = ROOT / 'OFFICIAL_SOURCE_FOLLOWUP_REPORT.md'
-    status('ERROR', bool(search_rows), 'official-source follow-up search log exists and has rows')
-    status('ERROR', bool(screening_rows), 'official-source follow-up screening audit exists and has rows')
-    if not search_rows or not screening_rows:
-        return
-    def to_int(row, field):
-        try:
-            return int(row.get(field, '0'))
-        except Exception:
-            return -999999
-    additions = sum(to_int(row, 'new_candidate_records') for row in search_rows)
-    study_additions = sum(to_int(row, 'new_study_level_additions') for row in search_rows)
-    ext_additions = sum(to_int(row, 'new_extended_synthesis_additions') for row in search_rows)
-    other_additions = sum(to_int(row, 'new_background_or_excluded_records') for row in search_rows)
-    matches = sum(to_int(row, 'existing_canonical_matches') for row in search_rows)
-    status('ERROR', additions == 0, 'official-source follow-up introduced no new canonical candidate records')
-    status('ERROR', study_additions == 0 and ext_additions == 0 and other_additions == 0, 'official-source follow-up introduced no new analytical-layer records')
-    status('ERROR', matches >= 2, 'official-source follow-up records at least two existing canonical matches')
-    titles = ' | '.join(row.get('title', '') for row in screening_rows).lower()
-    status('ERROR', 'pangolin' in titles and 'firmagent' in titles, 'official-source follow-up screening records PANGOLIN and FirmAgent formal-source matches')
-    bad_urls = [row.get('source_id', '?') for row in search_rows if not row.get('official_source_url', '').startswith('http')]
-    bad_urls += [row.get('title', '?') for row in screening_rows if not row.get('official_url', '').startswith('http')]
-    status('ERROR', not bad_urls, 'official-source follow-up rows use public URLs rather than local locators')
-    status('ERROR', report_path.exists(), 'OFFICIAL_SOURCE_FOLLOWUP_REPORT.md exists')
-    if report_path.exists():
-        text = report_path.read_text(encoding='utf-8').lower()
-        required = ['official-source follow-up', '2026-07-16', 'no corpus counts changed', 'pangolin', 'firmagent']
-        missing = [item for item in required if item not in text]
-        status('ERROR', not missing, 'official-source follow-up report records date, no-count-change result, and formal-source matches')
-        if missing:
-            print('ERROR: official-source follow-up report missing:', ', '.join(missing))
-
-
-def norm_text(value):
-    value = (value or '').lower().replace('’', "'")
-    return re.sub(r'[^a-z0-9]+', ' ', value).strip()
-
-def normalize_locator(value):
-    return (value or '').strip().lower().rstrip('/')
-
-def arxiv_from_text(value):
-    match = re.search(r'(\d{4}\.\d{4,5})(v\d+)?', value or '', re.IGNORECASE)
-    return match.group(1).lower() if match else ''
-
-def validate_study_version_crosswalk(corpus, ref, crosswalk, mapping_rows):
-    status('ERROR', bool(crosswalk), 'study_version_crosswalk.csv has at least one row')
-    if not corpus or not crosswalk:
-        return
-    corpus_ids = {row.get('record_id', '') for row in corpus}
-    cross_ids = {row.get('record_id', '') for row in crosswalk}
-    status('ERROR', cross_ids == corpus_ids, 'study_version_crosswalk covers exactly the 253 source records')
-    status('ERROR', len(crosswalk) == 253, f'study_version_crosswalk rows = {len(crosswalk)}; expected 253')
-
-    allowed_status = {'canonical_counted', 'alternate_version_not_counted', 'exact_duplicate_removed', 'source_variant_not_counted', 'needs_manual_review'}
-    allowed_layers = {'study_level_coded', 'extended_synthesis', 'background_reference', 'excluded_near_neighbor', 'alternate_version', 'needs_manual_review'}
-    allowed_version = {'preprint', 'conference_version', 'journal_version', 'project_report', 'exact_duplicate', 'other'}
-    invalid = []
-    for row in crosswalk:
-        if row.get('counting_status') not in allowed_status:
-            invalid.append((row.get('record_id'), 'counting_status', row.get('counting_status')))
-        if row.get('analytical_layer') not in allowed_layers:
-            invalid.append((row.get('record_id'), 'analytical_layer', row.get('analytical_layer')))
-        if row.get('version_type') not in allowed_version:
-            invalid.append((row.get('record_id'), 'version_type', row.get('version_type')))
-    status('ERROR', not invalid, 'study_version_crosswalk uses approved status/layer/version vocabularies')
-    if invalid:
-        print('ERROR: invalid crosswalk values:', invalid[:10])
-
-    counted = [row for row in crosswalk if row.get('counting_status') == 'canonical_counted']
-    status('ERROR', len(counted) == 248, f'canonical counted studies = {len(counted)}; expected 248')
-    layer_counts = Counter(row.get('analytical_layer') for row in counted)
+    canonical = [row for row in crosswalk if row.get("counting_status") == "canonical_counted"]
+    alternates = [row for row in crosswalk if row.get("counting_status") != "canonical_counted"]
+    require(len(canonical) == EXPECTED["canonical_studies"], "canonical-study count must be 1,772")
+    require(len(alternates) == EXPECTED["alternate_sources"], "alternate/version source count must be 13")
+    canonical_ids = [row.get("canonical_study_id", "") for row in canonical]
+    require(len(set(canonical_ids)) == len(canonical_ids), "a canonical study is counted more than once")
+    layers = Counter(row.get("analytical_layer", "") for row in canonical)
     expected_layers = {
-        'study_level_coded': 68,
-        'extended_synthesis': 65,
-        'background_reference': 95,
-        'excluded_near_neighbor': 20,
+        "study_level_coded": EXPECTED["target_studies"] + EXPECTED["governance_cases"],
+        "extended_synthesis": EXPECTED["extended_studies"],
+        "background_reference": EXPECTED["background_studies"],
+        "excluded_near_neighbor": EXPECTED["excluded_studies"],
     }
-    for layer, expected in expected_layers.items():
-        status('ERROR', layer_counts.get(layer, 0) == expected, f'canonical {layer} = {layer_counts.get(layer, 0)}; expected {expected}')
-    alt_count = sum(1 for row in crosswalk if row.get('counting_status') != 'canonical_counted')
-    status('ERROR', alt_count == 5, f'non-counted alternate/source-variant records = {alt_count}; expected 5')
+    require(layers == expected_layers, f"canonical analytical layers differ: {dict(layers)}")
+    info("corpus: 1,785 source records -> 1,772 canonical studies")
+    return corpus, crosswalk
 
-    layers_by_study = defaultdict(set)
-    counted_records_by_study = defaultdict(list)
-    for row in crosswalk:
-        sid = row.get('canonical_study_id')
-        if row.get('counting_status') == 'canonical_counted':
-            layers_by_study[sid].add(row.get('analytical_layer'))
-            counted_records_by_study[sid].append(row.get('record_id'))
-    multi_layer = {sid: layers for sid, layers in layers_by_study.items() if len(layers) > 1}
-    multi_counted = {sid: ids for sid, ids in counted_records_by_study.items() if len(ids) > 1}
-    status('ERROR', not multi_layer, 'each canonical study has one primary analytical layer')
-    status('ERROR', not multi_counted, 'each canonical study has one counted record')
-    if multi_layer:
-        print('ERROR: canonical studies with multiple layers:', dict(list(multi_layer.items())[:10]))
-    if multi_counted:
-        print('ERROR: canonical studies with multiple counted records:', dict(list(multi_counted.items())[:10]))
 
-    # duplicate keys among counted records
-    ref_by_id = {row.get('record_id'): row for row in ref}
-    corpus_by_id = {row.get('record_id'): row for row in corpus}
-    def key_values(record_id):
-        ref_row = ref_by_id.get(record_id, {})
-        corpus_row = corpus_by_id.get(record_id, {})
-        title = norm_text(ref_row.get('canonical_title') or corpus_row.get('title'))
-        doi = normalize_locator(ref_row.get('doi'))
-        if doi in {'', 'na', 'n/a'}:
-            doi = normalize_locator(corpus_row.get('doi_or_url')) if 'doi.org' in corpus_row.get('doi_or_url', '').lower() else ''
-        arxiv = normalize_locator(ref_row.get('arxiv_id'))
-        if arxiv in {'', 'na', 'n/a'}:
-            arxiv = arxiv_from_text((ref_row.get('official_url','') + ' ' + corpus_row.get('doi_or_url','')))
-        url = normalize_locator(ref_row.get('official_url') or corpus_row.get('doi_or_url'))
-        if url.startswith('#'):
-            url = ''
-        return title, doi, arxiv, url
-    for label, idx in [('normalized title',0), ('DOI',1), ('arXiv ID',2), ('URL',3)]:
-        groups = defaultdict(list)
-        for row in counted:
-            vals = key_values(row.get('record_id'))
-            v = vals[idx]
-            if v and v not in {'na','n/a'}:
-                groups[v].append(row.get('record_id'))
-        dup = {k:v for k,v in groups.items() if len(v)>1}
-        status('ERROR', not dup, f'no duplicate counted records by {label}')
-        if dup:
-            print(f'ERROR: duplicate counted {label} groups:', dict(list(dup.items())[:10]))
+def check_matrix() -> list[dict[str, str]]:
+    matrix = read_csv(DATA / "current_study_level_coding_matrix_harmonized.csv")
+    require(len(matrix) == 200, "study-level matrix must contain 200 rows")
+    require(len({row.get("matrix_id", "") for row in matrix}) == 200, "matrix_id values must be unique")
+    target = [row for row in matrix if row.get("analytical_role") == "target_software_study"]
+    governance = [row for row in matrix if row.get("analytical_role") != "target_software_study"]
+    require(len(target) == EXPECTED["target_studies"], "target-software denominator must be 199")
+    require(len(governance) == EXPECTED["governance_cases"], "governance boundary count must be 1")
+    require(Counter(row.get("strongest_evidence_output", "") for row in target) == EVIDENCE, "principal evidence counts differ")
+    require(Counter(row.get("primary_system_shape", "") for row in target) == SHAPES, "system-shape counts differ")
+    require(count_multilabel(target, "lifecycle_coverage") == LIFECYCLE, "lifecycle counts differ")
+    require(count_multilabel(target, "cross_stage_capabilities") == CAPABILITY, "capability counts differ")
+    require(Counter(row.get("external_traceability", "") for row in target) == TRACE, "external-trace counts differ")
+    require(all(row.get("claim_boundary", "").strip() for row in target), "missing claim-boundary note")
+    info("study-level coding: 199 target studies + 1 governance boundary case")
+    return target
 
-    final_rows = [row for row in mapping_rows if row.get('view') == 'final_canonical_stratification']
-    final_total = sum(int(row.get('count', '0')) for row in final_rows)
-    status('ERROR', final_total == 248, f'mapping final canonical stratification total = {final_total}; expected 248')
-    print('CANONICAL_STUDY_COUNTS: ' + str(dict(sorted(layer_counts.items()))))
 
-def validate_extended_synthesis_audit(corpus, extended, crosswalk):
-    status('ERROR', bool(extended), 'extended_synthesis_audit.csv has at least one row')
-    if not corpus or not extended or not crosswalk:
-        return
-    counted_extended_ids = {row.get('record_id', '') for row in crosswalk if row.get('counting_status') == 'canonical_counted' and row.get('analytical_layer') == 'extended_synthesis'}
-    study_level_canonical_ids = {row.get('canonical_study_id', '') for row in crosswalk if row.get('counting_status') == 'canonical_counted' and row.get('analytical_layer') == 'study_level_coded'}
-    cross_by_record = {row.get('record_id'): row for row in crosswalk}
-    extended_ids = {row.get('record_id', '') for row in extended}
-    status('ERROR', len(extended) == 65, f'extended_synthesis_audit rows = {len(extended)}; expected 65')
-    status('ERROR', extended_ids == counted_extended_ids, 'extended synthesis audit covers exactly canonical counted extended synthesis studies')
-    overlap = [rid for rid in extended_ids if cross_by_record.get(rid, {}).get('canonical_study_id') in study_level_canonical_ids]
-    status('ERROR', not overlap, 'extended_synthesis_audit contains no study-level coded study alternate versions')
-    if overlap:
-        print('ERROR: extended synthesis rows overlapping study-level canonical studies:', ', '.join(overlap[:20]))
+def check_extended(target: list[dict[str, str]]) -> None:
+    rows = read_csv(DATA / "extended_synthesis_audit.csv")
+    require(len(rows) == EXPECTED["extended_studies"], "extended synthesis must contain 149 studies")
+    require(len({row.get("record_id", "") for row in rows}) == len(rows), "duplicate extended-synthesis record")
+    target_records = {row.get("record_id", "") for row in target}
+    require(not (target_records & {row.get("record_id", "") for row in rows}), "study-level and extended layers overlap")
+    require(all(row.get("extracted_contribution", "").strip() for row in rows), "missing extended-synthesis contribution")
+    require(all(row.get("reason_not_study_level_coded", "").strip() for row in rows), "missing extended-synthesis boundary reason")
+    require(all(row.get("public_material_basis", "").strip() for row in rows), "missing extended-synthesis source basis")
+    info("extended synthesis: 149 full-text-supported adjacent studies")
 
-    allowed_roles = {
-        'lower_level_primitive',
-        'adjacent_candidate_analysis',
-        'adjacent_fuzzing_or_testing',
-        'benchmark_or_evaluation',
-        'agent_orchestration',
-        'governance_or_safety',
-        'evidence_or_reproducibility',
+
+def check_search_and_dedup() -> None:
+    results = read_csv(DATA / "final_multisource_search_20260730_results.csv")
+    screened = read_csv(DATA / "final_multisource_search_20260730_screening_audit.csv")
+    require(len(results) == EXPECTED["search_occurrences"], "search export must contain 12,090 source occurrences")
+    require(len(screened) == EXPECTED["search_records"], "screening audit must contain 1,642 unique records")
+    prisma = {row["metric"]: int(row["count"]) for row in read_csv(DATA / "final_multisource_search_20260730_prisma_counts.csv")}
+    checks = {
+        "exported_source_occurrences": 12090,
+        "unique_search_records_screened": 1642,
+        "reports_sought": 274,
+        "reports_assessed_at_full_text": 239,
+        "integrated_source_records": 1785,
+        "integrated_canonical_studies": 1772,
+        "target_software_studies": 199,
+        "governance_boundary_cases": 1,
+        "extended_synthesis_studies": 149,
+        "background_reference_studies": 670,
+        "excluded_studies": 753,
     }
-    allowed_rq = {'RQ1', 'RQ2_context', 'evaluation_agenda', 'governance_agenda'}
-    invalid_roles = []
-    invalid_secondary = []
-    invalid_rq = []
-    generic_contrib = []
-    generic_reason = []
-    invalid_locator = []
-    contribution_counter = Counter()
-    reason_counter = Counter()
-    unresolved = []
-    for idx, row in enumerate(extended, start=2):
-        rid = row.get('record_id', '?')
-        role = row.get('primary_synthesis_role', '')
-        if role not in allowed_roles:
-            invalid_roles.append((idx, rid, role))
-        secondary = row.get('secondary_synthesis_roles', '')
-        if secondary and secondary != 'NA':
-            for item in secondary.split(';'):
-                if item and item not in allowed_roles:
-                    invalid_secondary.append((idx, rid, item))
-        rq = row.get('rq_contribution', '')
-        if rq not in allowed_rq:
-            invalid_rq.append((idx, rid, rq))
-        contrib = row.get('extracted_contribution', '').strip()
-        reason = row.get('reason_not_study_level_coded', '').strip()
-        contribution_counter[contrib] += 1
-        reason_counter[reason] += 1
-        title_tokens = {tok for tok in norm_text(row.get('title','')).split() if len(tok) >= 5}
-        contrib_tokens = set(norm_text(contrib).split())
-        if contrib.lower() in ('', 'provides context', 'context') or len(title_tokens & contrib_tokens) < 1:
-            generic_contrib.append((idx, rid))
-        if 'Existing screening classified this record as Supporting' in reason or len(reason) < 40:
-            generic_reason.append((idx, rid))
-        basis = row.get('public_material_basis', '')
-        if '#item_' in basis or not re.search(r'(https?://|10\.\d{4,9}/|isbn|official)', basis, re.IGNORECASE):
-            invalid_locator.append((idx, rid, basis[:80]))
-        if 'manual_review' in row.get('reviewer_note','').lower() or 'needs_manual_review' in row.get('reviewer_note','').lower():
-            unresolved.append(rid)
-    duplicate_contribs = {k:v for k,v in contribution_counter.items() if v > 1}
-    duplicate_reasons = {k:v for k,v in reason_counter.items() if v > 1}
-    unique_ratio = len(contribution_counter) / len(extended) if extended else 0
-    status('ERROR', not invalid_roles, 'extended synthesis primary roles use approved vocabulary')
-    status('ERROR', not invalid_secondary, 'extended synthesis secondary roles use approved vocabulary')
-    status('ERROR', not invalid_rq, 'extended synthesis rq_contribution uses approved vocabulary')
-    status('ERROR', not generic_contrib, 'extended synthesis extracted_contribution values contain study-specific terms')
-    status('ERROR', not duplicate_contribs, 'extended synthesis extracted_contribution values are unique')
-    status('ERROR', not generic_reason, 'extended synthesis reason_not_study_level_coded values are study-specific')
-    status('ERROR', not duplicate_reasons, 'extended synthesis reason_not_study_level_coded values are unique')
-    status('ERROR', unique_ratio >= 0.95, f'extended synthesis unique contribution ratio = {unique_ratio:.3f}; expected >= 0.950')
-    status('ERROR', not invalid_locator, 'extended synthesis public_material_basis contains public URL, DOI, ISBN, or official source and no local fragments')
-    if invalid_roles: print('ERROR: invalid extended synthesis roles:', invalid_roles[:10])
-    if invalid_secondary: print('ERROR: invalid secondary roles:', invalid_secondary[:10])
-    if invalid_rq: print('ERROR: invalid RQ values:', invalid_rq[:10])
-    if generic_contrib: print('ERROR: generic contribution rows:', generic_contrib[:10])
-    if duplicate_contribs: print('ERROR: duplicate contribution groups:', list(duplicate_contribs.items())[:5])
-    if generic_reason: print('ERROR: generic reason rows:', generic_reason[:10])
-    if duplicate_reasons: print('ERROR: duplicate reason groups:', list(duplicate_reasons.items())[:5])
-    if invalid_locator: print('ERROR: invalid locator rows:', invalid_locator[:10])
-    role_counts = Counter(row.get('primary_synthesis_role', 'NA') for row in extended)
-    rq_counts = Counter(row.get('rq_contribution', 'NA') for row in extended)
-    material_counts = Counter(row.get('material_type', 'NA') for row in extended)
-    print(f'EXTENDED_SYNTHESIS_AUDIT: rows={len(extended)} roles=' + str(dict(sorted(role_counts.items()))))
-    print('EXTENDED_SYNTHESIS_RQ_USE: ' + str(dict(sorted(rq_counts.items()))))
-    print('EXTENDED_SYNTHESIS_MATERIAL_TYPES: ' + str(dict(sorted(material_counts.items()))))
-    print(f'EXTENDED_SYNTHESIS_UNIQUE_CONTRIBUTION_RATIO: {unique_ratio:.3f}')
-    print('EXTENDED_SYNTHESIS_UNRESOLVED_ROWS: ' + (','.join(unresolved) if unresolved else 'none'))
+    require(all(prisma.get(key) == value for key, value in checks.items()), "PRISMA counts differ from integrated corpus")
+    resolutions = read_csv(DATA / "final_multisource_search_20260730_dedup_resolutions.csv")
+    require(len(resolutions) == 124, "dedup audit must contain 124 candidate pairs")
+    require(not any(row.get("audit_decision") == "needs_author_confirmation" for row in resolutions), "unresolved dedup pair remains")
+    require(sum(row.get("audit_decision") == "same_study_or_version" for row in resolutions) == 119, "same-study/version resolution count differs")
+    info("search and PRISMA ledger verified through 2026-07-30")
 
 
-def validate_submission_update_screening(rows):
-    status('ERROR', len(rows) == 432, f'submission update screening rows = {len(rows)}; expected 432')
-    if not rows:
-        return
-    ids = [row.get('arxiv_id', '') for row in rows]
-    status('ERROR', len(ids) == len(set(ids)), 'submission update arXiv identifiers are unique')
+def check_supplementary_extractions(target: list[dict[str, str]]) -> None:
+    primitives = read_csv(DATA / "traditional_security_primitives.csv")
+    require(len(primitives) == EXPECTED["target_studies"], "traditional-security-primitives extraction must contain 199 rows")
+    require({row.get("matrix_id", "") for row in primitives} == {row.get("matrix_id", "") for row in target}, "primitive extraction IDs differ from target matrix")
     allowed = {
-        'existing_corpus_match',
-        'outside_date_window',
-        'potentially_eligible_update_record',
-        'contextual_or_background_update',
-        'excluded_at_title_abstract_update',
+        "static_taint_specification", "fuzzing_input_harness", "symbolic_constraint",
+        "runtime_oracle", "replay_poc_pov", "patch_build_test",
+        "recon_scan_pentest", "not specified",
     }
-    invalid = [row.get('arxiv_id', '?') for row in rows if row.get('screening_status') not in allowed]
-    status('ERROR', not invalid, 'submission update screening statuses use the approved vocabulary')
-    missing_reason = [row.get('arxiv_id', '?') for row in rows if len(row.get('decision_reason', '').strip()) < 30]
-    status('ERROR', not missing_reason, 'submission update rows contain explicit decision reasons')
-    counts = Counter(row.get('screening_status', 'NA') for row in rows)
-    expected = {
-        'existing_corpus_match': 12,
-        'outside_date_window': 26,
-        'potentially_eligible_update_record': 41,
-        'contextual_or_background_update': 30,
-        'excluded_at_title_abstract_update': 323,
-    }
-    status('ERROR', counts == Counter(expected), 'submission update screening counts match the frozen audit')
-    print('SUBMISSION_UPDATE_SCREENING: ' + str(dict(sorted(counts.items()))))
-    print('SUBMISSION_UPDATE_METHOD_NOTE: the 41 potentially eligible records have author and independent coding plus an author-confirmed resolution; corpus integration is complete, and manuscript alignment is validated separately.')
-def validate_submission_update_full_audit(screening_rows, audit_rows, blind_rows):
-    potential_ids = {
-        row.get('arxiv_id', '')
-        for row in screening_rows
-        if row.get('screening_status') == 'potentially_eligible_update_record'
-    }
-    audit_ids = [row.get('arxiv_id', '') for row in audit_rows]
-    blind_ids = [row.get('arxiv_id', '') for row in blind_rows]
-    status('ERROR', len(audit_rows) == 41, f'submission update full-text audit rows = {len(audit_rows)}; expected 41')
-    status('ERROR', len(blind_rows) == 41, f'submission update blind-review rows = {len(blind_rows)}; expected 41')
-    status('ERROR', set(audit_ids) == potential_ids and len(audit_ids) == len(set(audit_ids)), 'full-text audit covers each potentially eligible update record exactly once')
-    status('ERROR', set(blind_ids) == potential_ids and len(blind_ids) == len(set(blind_ids)), 'blind-review template covers each potentially eligible update record exactly once')
+    observed = set().union(*(split_labels(row.get("primitive_tags", "")) for row in primitives))
+    require(observed <= allowed, f"unknown primitive tag(s): {sorted(observed - allowed)}")
+    require(all(row.get("source_location", "").strip() for row in primitives), "primitive extraction missing source location")
 
-    allowed_layers = {
-        'provisional_study_level_candidate_pending_independent_review',
-        'extended_synthesis',
-    }
-    invalid_layers = [row.get('arxiv_id', '?') for row in audit_rows if row.get('author_analysis_layer') not in allowed_layers]
-    status('ERROR', not invalid_layers, 'author full-text audit uses the approved provisional layer vocabulary')
-    layer_counts = Counter(row.get('author_analysis_layer', 'NA') for row in audit_rows)
-    expected_layers = Counter({
-        'provisional_study_level_candidate_pending_independent_review': 38,
-        'extended_synthesis': 3,
-    })
-    status('ERROR', layer_counts == expected_layers, 'author full-text audit has 38 provisional study-level candidates and 3 extended-synthesis records')
+    refs = read_csv(DATA / "reference_audit.csv")
+    require(len(refs) == 402, "reference audit must contain 402 rows")
+    new_refs = read_csv(DATA / "final_multisource_new_study_reference_metadata_20260730.csv")
+    require(len(new_refs) == 132, "new target-study reference metadata must contain 132 rows")
+    require(all(row.get("official_url", "").strip() for row in new_refs), "new reference metadata missing official URL")
+    refs_by_id = {row.get("record_id", ""): row for row in refs}
+    for row in new_refs:
+        audited = refs_by_id.get(row.get("record_id", ""), {})
+        require(
+            audited.get("publication_status") == row.get("publication_status")
+            and audited.get("official_url") == row.get("official_url"),
+            f"reference audit differs from generated metadata: {row.get('record_id', '')}",
+        )
+    info("supplementary primitive and reference extractions verified")
 
-    allowed_outputs = {
-        'candidate judgment',
-        'controlled task completion',
-        'runtime safety signal',
-        'reproducible validation',
-        'externally traceable material',
-        'claim-level audit material',
-        'governance boundary case',
-    }
-    invalid_outputs = [row.get('arxiv_id', '?') for row in audit_rows if row.get('strongest_evidence_output') not in allowed_outputs]
-    status('ERROR', not invalid_outputs, 'author update audit uses approved evidence-output labels')
-    status('ERROR', all(row.get('full_text_status') == 'full_text_reviewed' for row in audit_rows), 'all 41 update candidates have full-text author review')
-    status('ERROR', all(row.get('formal_second_coder_status') == 'pending_independent_blind_review' for row in audit_rows), 'author update audit preserves its pre-review freeze status')
 
-    blind_columns = set(blind_rows[0].keys()) if blind_rows else set()
-    leaked_author_columns = sorted(column for column in blind_columns if column.startswith('author_'))
-    status('ERROR', not leaked_author_columns, 'submission update blind template contains no author_* columns')
-    coder2_fields = sorted(column for column in blind_columns if column.startswith('coder2_'))
-    populated = [
-        (row.get('update_id', '?'), field)
-        for row in blind_rows
-        for field in coder2_fields
-        if row.get(field, '').strip()
-    ]
-    status('ERROR', not populated, 'submission update blind template coder2 fields are blank')
-    safe_instructions = all(
-        'independently decide' in row.get('materials_to_review', '').lower()
-        and 'do not consult' in row.get('materials_to_review', '').lower()
-        for row in blind_rows
+def check_publication_status(target: list[dict[str, str]]) -> None:
+    rows = read_csv(DATA / "publication_status_standardized.csv")
+    target_rows = [row for row in rows if row.get("analytical_role") == "target_software_study"]
+    require(len(rows) == 200, "publication-status view must contain 200 coded records")
+    require(len(target_rows) == EXPECTED["target_studies"], "publication-status target denominator must be 199")
+    require(
+        Counter(row.get("publication_status_standardized", "") for row in target_rows) == PUBLICATION_STATUS,
+        "publication-status counts differ",
     )
-    status('ERROR', safe_instructions, 'submission update blind instructions require independent coding and hide the author audit')
+    require(
+        {row.get("matrix_id", "") for row in target_rows} == {row.get("matrix_id", "") for row in target},
+        "publication-status IDs differ from target matrix",
+    )
+    distribution = {row["publication_status_standardized"]: row for row in read_csv(DATA / "publication_status_distribution_by_layer.csv")}
+    require(set(distribution) == set(PUBLICATION_STATUS), "publication-status distribution categories differ")
+    for status, count in PUBLICATION_STATUS.items():
+        require(int(distribution[status]["target_software_studies"]) == count, f"publication-status total differs: {status}")
+    peer = [row for row in target_rows if row["publication_status_standardized"] in {"conference", "journal"}]
+    preprints = [row for row in target_rows if row["publication_status_standardized"] == "preprint"]
+    require(len(peer) == 31 and len(preprints) == 164, "publication-status manuscript denominators differ")
+    require(sum(row["strongest_evidence_output"] == "reproducible validation" for row in peer) == 13, "peer-reviewed RV count differs")
+    require(sum(row["strongest_evidence_output"] == "reproducible validation" for row in preprints) == 69, "preprint RV count differs")
+    require(sum(row["strongest_evidence_output"] == "externally traceable material" for row in peer) == 1, "peer-reviewed ET count differs")
+    require(sum(row["strongest_evidence_output"] == "externally traceable material" for row in preprints) == 5, "preprint ET count differs")
+    info("publication-status assignments and manuscript-facing stratification verified")
 
-    results_path = DATA / 'submission_update_20260715_second_coder_results.csv'
-    if results_path.exists():
-        print('SUBMISSION_UPDATE_METHOD_NOTE: the independent second-coder pass is complete; pre-adjudication agreement and the preserved working draft are validated below.')
-    else:
-        print('WARNING: submission update independent second-coder pass is pending; no agreement statistic or expanded manuscript denominator is reported.')
-    print('SUBMISSION_UPDATE_FULL_AUDIT: ' + str(dict(sorted(layer_counts.items()))))
 
-def validate_submission_update_second_coder(audit_rows, blind_rows, result_rows, adjudication_rows):
-    status('ERROR', len(result_rows) == 41, f'submission update coder2 result rows = {len(result_rows)}; expected 41')
-    status('ERROR', len(adjudication_rows) == 41, f'submission update adjudication working-draft rows = {len(adjudication_rows)}; expected 41')
-    if not result_rows or not adjudication_rows:
-        return
+def check_second_coder(target: list[dict[str, str]]) -> None:
+    new = read_csv(DATA / "final_multisource_search_20260730_all_coder_comparison.csv")
+    require(len(new) == 136, "new-search coder comparison must contain 136 reviewed records")
+    require(sum(row.get("jointly_included") == "true" for row in new) == 132, "jointly included new studies must equal 132")
+    integrated = read_csv(DATA / "integrated_199_second_coder_comparison_20260730.csv")
+    require(len(integrated) == EXPECTED["target_studies"], "integrated coder comparison must contain 199 studies")
+    require({row.get("record_id", "") for row in integrated} == {row.get("matrix_id", "") for row in target}, "integrated coder IDs differ from target matrix")
 
-    audit_by_arxiv = {row.get('arxiv_id', ''): row for row in audit_rows}
-    blind_by_arxiv = {row.get('arxiv_id', ''): row for row in blind_rows}
-    result_ids = [row.get('arxiv_id', '') for row in result_rows]
-    update_ids = [row.get('update_id', '') for row in result_rows]
-    status('ERROR', len(result_ids) == len(set(result_ids)) == 41, 'submission update coder2 arXiv identifiers are unique')
-    status('ERROR', set(result_ids) == set(audit_by_arxiv) == set(blind_by_arxiv), 'submission update coder2 results cover the frozen 41-record audit')
-    status('ERROR', set(update_ids) == {f'U{i:02d}' for i in range(1, 42)}, 'submission update coder2 results use U01-U41 exactly once')
-
-    leaked = sorted(field for field in result_rows[0] if field.startswith('author_') or field.startswith('original_'))
-    status('ERROR', not leaked, 'submission update coder2 results expose no author_* or original_* fields')
-    fixed_fields = ['update_id', 'arxiv_id', 'title', 'publication_status', 'materials_to_review']
-    fixed_mismatches = []
-    for row in result_rows:
-        blind = blind_by_arxiv.get(row.get('arxiv_id', ''), {})
-        if any(row.get(field, '') != blind.get(field, '') for field in fixed_fields):
-            fixed_mismatches.append(row.get('update_id', '?'))
-    status('ERROR', not fixed_mismatches, 'submission update coder2 fixed fields match the blind template')
-
-    coder_fields = [
-        'coder2_analysis_layer_decision', 'coder2_inclusion_reason', 'coder2_lifecycle_coverage',
-        'coder2_primary_system_shape', 'coder2_cross_stage_capability_label',
-        'coder2_strongest_evidence_output', 'coder2_external_traceability_label',
-        'coder2_claim_boundary', 'coder2_uncertainty_note',
-    ]
-    incomplete = [row.get('update_id', '?') for row in result_rows if any(not row.get(field, '').strip() for field in coder_fields)]
-    status('ERROR', not incomplete, 'all 41 submission update coder2 decisions, reasons, and uncertainty notes are populated')
-
-    allowed_layers = {'study_level_candidate', 'extended_synthesis'}
-    current_shape_vocab = {
-        'candidate-analysis system', 'feedback-driven fuzzing agent',
-        'reproduction-, validation-, and repair-centered agent',
-        'long-horizon pentest and CRS agent',
+    expected_single = {
+        "primary_shape": (0.884, 0.843),
+        "principal_evidence": (0.759, 0.665),
+        "external_traceability": (0.724, 0.448),
     }
-    legacy_shape_aliases = {
-        'PoC/PoV validation agent': 'reproduction-, validation-, and repair-centered agent',
+    for field, expected in expected_single.items():
+        first = [row[f"first_{field}"] for row in integrated]
+        second = [row[f"second_{field}"] for row in integrated]
+        actual = (raw_agreement(first, second), kappa(first, second))
+        require(all(abs(a - e) < 0.0006 for a, e in zip(actual, expected)), f"{field} reliability differs: {actual}")
+
+    expected_multi = {
+        "lifecycle": (0.261, 0.726, 0.831),
+        "capability": (0.312, 0.782, 0.874),
     }
-    allowed_shapes = current_shape_vocab | set(legacy_shape_aliases)
-    def normalize_shape_label(value):
-        return legacy_shape_aliases.get(value, value)
-    allowed_outputs = {
-        'candidate judgment', 'controlled task completion', 'runtime safety signal',
-        'reproducible validation', 'externally traceable material',
-        'claim-level audit material', 'governance boundary case',
-    }
-    allowed_trace = {
-        'not reported', 'benchmark ground truth / public material',
-        'author-reported external clue', 'publicly aligned external trace',
-    }
-    status('ERROR', all(row.get('coder2_analysis_layer_decision') in allowed_layers for row in result_rows), 'submission update coder2 layer labels use the approved vocabulary')
-    status('ERROR', all(row.get('coder2_primary_system_shape') in allowed_shapes for row in result_rows), 'submission update coder2 system-shape labels use approved current or preserved legacy vocabulary')
-    status('ERROR', all(row.get('coder2_strongest_evidence_output') in allowed_outputs for row in result_rows), 'submission update coder2 evidence-output labels use the approved vocabulary')
-    status('ERROR', all(row.get('coder2_external_traceability_label') in allowed_trace for row in result_rows), 'submission update coder2 traceability labels use the approved vocabulary')
-
-    def author_layer(value):
-        return value.removeprefix('provisional_').removesuffix('_pending_independent_review')
-
-    def normalized_set(value, lifecycle=False):
-        labels = split_multilabel(value)
-        if lifecycle and 'path exploration' in labels:
-            labels.remove('path exploration')
-            labels.add('path and input exploration')
-        return labels
-
-    def update_set_metrics(author_field, coder_field, lifecycle=False):
-        compared = []
-        for row in result_rows:
-            author = audit_by_arxiv[row.get('arxiv_id', '')]
-            compared.append((
-                normalized_set(author.get(author_field, ''), lifecycle=lifecycle),
-                normalized_set(row.get(coder_field, ''), lifecycle=lifecycle),
-            ))
-        exact = sum(a == b for a, b in compared)
-        jaccards = [1.0 if not (a | b) else len(a & b) / len(a | b) for a, b in compared]
-        tp = sum(len(a & b) for a, b in compared)
-        fp = sum(len(b - a) for a, b in compared)
-        fn = sum(len(a - b) for a, b in compared)
-        f1 = 1.0 if 2 * tp + fp + fn == 0 else 2 * tp / (2 * tp + fp + fn)
-        return exact, exact / len(compared), sum(jaccards) / len(jaccards), f1
-
-    author_layers = [author_layer(audit_by_arxiv[row['arxiv_id']].get('author_analysis_layer', '')) for row in result_rows]
-    coder_layers = [row.get('coder2_analysis_layer_decision', '') for row in result_rows]
-    author_shapes = [normalize_shape_label(audit_by_arxiv[row['arxiv_id']].get('primary_system_shape', '')) for row in result_rows]
-    coder_shapes = [normalize_shape_label(row.get('coder2_primary_system_shape', '')) for row in result_rows]
-    author_outputs = [audit_by_arxiv[row['arxiv_id']].get('strongest_evidence_output', '') for row in result_rows]
-    coder_outputs = [row.get('coder2_strongest_evidence_output', '') for row in result_rows]
-    author_trace = [audit_by_arxiv[row['arxiv_id']].get('external_traceability', '') for row in result_rows]
-    coder_trace = [row.get('coder2_external_traceability_label', '') for row in result_rows]
-
-    layer_agree = sum(a == b for a, b in zip(author_layers, coder_layers))
-    shape_agree = sum(a == b for a, b in zip(author_shapes, coder_shapes))
-    output_agree = sum(a == b for a, b in zip(author_outputs, coder_outputs))
-    trace_agree = sum(a == b for a, b in zip(author_trace, coder_trace))
-    layer_kappa = cohen_kappa(author_layers, coder_layers)
-    shape_kappa = cohen_kappa(author_shapes, coder_shapes)
-    output_kappa = cohen_kappa(author_outputs, coder_outputs)
-    trace_kappa = cohen_kappa(author_trace, coder_trace)
-    life = update_set_metrics('lifecycle_coverage', 'coder2_lifecycle_coverage', lifecycle=True)
-    cap = update_set_metrics('agentic_capabilities', 'coder2_cross_stage_capability_label')
-
-    status('ERROR', layer_agree == 40 and abs(layer_kappa - 0.844) < 0.001, 'submission update layer agreement reproduces 40/41 and kappa 0.844')
-    status('ERROR', shape_agree == 26 and abs(shape_kappa - 0.513) < 0.001, 'submission update system-shape agreement reproduces 26/41 and kappa 0.513')
-    status('ERROR', output_agree == 28 and abs(output_kappa - 0.551) < 0.001, 'submission update evidence-output agreement reproduces 28/41 and kappa 0.551')
-    status('ERROR', trace_agree == 28 and abs(trace_kappa - 0.420) < 0.001, 'submission update traceability agreement reproduces 28/41 and kappa 0.420')
-    status('ERROR', life[0] == 7 and abs(life[2] - 0.666) < 0.001 and abs(life[3] - 0.783) < 0.001, 'submission update lifecycle agreement reproduces exact 7/41, Jaccard 0.666, and micro F1 0.783')
-    status('ERROR', cap[0] == 11 and abs(cap[2] - 0.772) < 0.001 and abs(cap[3] - 0.872) < 0.001, 'submission update capability agreement reproduces exact 11/41, Jaccard 0.772, and micro F1 0.872')
-    print(f'SUBMISSION_UPDATE_SECOND_CODER: layer={layer_agree}/41 kappa={layer_kappa:.3f}; shape={shape_agree}/41 kappa={shape_kappa:.3f}; evidence={output_agree}/41 kappa={output_kappa:.3f}; trace={trace_agree}/41 kappa={trace_kappa:.3f}')
-    print(f'SUBMISSION_UPDATE_MULTILABEL: lifecycle exact={life[0]}/41 jaccard={life[2]:.3f} micro_f1={life[3]:.3f}; capabilities exact={cap[0]}/41 jaccard={cap[2]:.3f} micro_f1={cap[3]:.3f}')
-
-    report_path = REPORTS / 'SUBMISSION_UPDATE_SECOND_CODER_PRE_ADJUDICATION_REPORT.md'
-    summary_path = ROOT / 'SUBMISSION_UPDATE_ADJUDICATION_SUMMARY.md'
-    generator_path = ROOT / 'prepare_submission_update_adjudication.py'
-    status('ERROR', report_path.exists(), 'submission update pre-adjudication agreement report exists')
-    status('ERROR', summary_path.exists(), 'submission update adjudication summary exists')
-    status('ERROR', generator_path.exists(), 'submission update adjudication generator exists')
-    if report_path.exists():
-        report_text = report_path.read_text(encoding='utf-8')
-        required = ['40 / 41', '0.844', '26 / 41', '0.513', '28 / 41', '0.551', '28 / 41', '0.420', '7 / 41', '0.666', '11 / 41', '0.872', 'No adjudicated labels or post-adjudication agreement statistic are claimed']
-        status('ERROR', all(item in report_text for item in required), 'submission update agreement report contains computed metrics and preserves pre-adjudication scope')
-
-    draft_ids = [row.get('update_id', '') for row in adjudication_rows]
-    status('ERROR', set(draft_ids) == set(update_ids) and len(draft_ids) == len(set(draft_ids)), 'adjudication working draft covers U01-U41 exactly once')
-    status('ERROR', all(row.get('adjudication_status') == 'assistant_proposed_pending_author_confirmation' for row in adjudication_rows), 'adjudication working draft remains pending author confirmation')
-    proposed_layers = Counter(row.get('proposed_analysis_layer', '') for row in adjudication_rows)
-    status('ERROR', proposed_layers == Counter({'study_level_candidate': 37, 'extended_synthesis': 4}), 'proposed update layer counts are 37 study-level candidates and 4 extended-synthesis records')
-    u24 = next((row for row in adjudication_rows if row.get('update_id') == 'U24'), {})
-    status('ERROR', u24.get('proposed_analysis_layer') == 'extended_synthesis', 'U24 SynthFix is proposed as extended synthesis under the observable-workflow rule')
-    print('SUBMISSION_UPDATE_WORKING_DRAFT: the assistant-prepared proposal remains preserved; author confirmation is validated separately.')
-
-
-def validate_submission_update_finalization(adjudication_rows, final_rows, integration_rows):
-    status('ERROR', len(final_rows) == 41, f'author-confirmed submission update adjudication rows = {len(final_rows)}; expected 41')
-    status('ERROR', len(integration_rows) == 41, f'submission update canonical-integration rows = {len(integration_rows)}; expected 41')
-    if not final_rows or not integration_rows:
-        return
-
-    final_ids = [row.get('update_id', '') for row in final_rows]
-    integration_ids = [row.get('update_id', '') for row in integration_rows]
-    expected_ids = {f'U{i:02d}' for i in range(1, 42)}
-    status('ERROR', set(final_ids) == expected_ids and len(final_ids) == len(set(final_ids)), 'author-confirmed adjudication covers U01-U41 exactly once')
-    status('ERROR', set(integration_ids) == expected_ids and len(integration_ids) == len(set(integration_ids)), 'canonical-integration crosswalk covers U01-U41 exactly once')
-    status('ERROR', all(row.get('adjudication_status') == 'author_confirmed_evidence_based_resolution' for row in final_rows), 'submission update adjudication is marked author-confirmed without claiming human consensus')
-
-    draft_by_id = {row.get('update_id', ''): row for row in adjudication_rows}
-    comparison_fields = [
-        'proposed_analysis_layer', 'proposed_lifecycle_coverage', 'proposed_primary_system_shape',
-        'proposed_agentic_capabilities', 'proposed_strongest_evidence_output',
-        'proposed_external_traceability', 'proposed_claim_boundary',
-    ]
-    mismatches = []
-    controlled_normalizations = []
-    for row in final_rows:
-        draft = draft_by_id.get(row.get('update_id', ''), {})
-        differing_fields = [
-            field for field in comparison_fields
-            if row.get(field, '') != draft.get(field, '')
+    for field, expected in expected_multi.items():
+        pairs = [
+            (split_labels(row[f"first_{field}"]), split_labels(row[f"second_{field}"]))
+            for row in integrated
         ]
-        if not differing_fields:
-            continue
-        is_u22_trace_normalization = (
-            row.get('update_id') == 'U22'
-            and differing_fields == ['proposed_external_traceability']
-            and draft.get('proposed_external_traceability') == 'not reported'
-            and row.get('proposed_external_traceability') == 'no external trace reported'
-            and 'trace=controlled_vocabulary_normalization' in row.get('field_resolution_trace', '')
+        actual = (
+            sum(a == b for a, b in pairs) / len(pairs),
+            sum(jaccard(a, b) for a, b in pairs) / len(pairs),
+            micro_f1(pairs),
         )
-        if is_u22_trace_normalization:
-            controlled_normalizations.append('U22:proposed_external_traceability')
-        else:
-            mismatches.append(row.get('update_id', '?'))
-    status('ERROR', not mismatches, 'author-confirmed adjudication preserves the reviewed working-draft labels')
-    status(
-        'ERROR',
-        controlled_normalizations == ['U22:proposed_external_traceability'],
-        'post-review controlled-vocabulary normalization is limited to the audited U22 external-trace value',
+        require(all(abs(a - e) < 0.0006 for a, e in zip(actual, expected)), f"{field} reliability differs: {actual}")
+    require(len(read_csv(DATA / "integrated_199_per_label_reliability_20260730.csv")) > 0, "missing per-label reliability")
+    require(len(read_csv(DATA / "integrated_199_label_substitution_sensitivity_20260730.csv")) > 0, "missing substitution sensitivity")
+    info("complete independent coding comparison verified for 199 target studies")
+
+
+def check_private_paths() -> None:
+    needles = ("C:\\Users\\oldph", "/Users/oldph", "artifact_public_release_candidate/data/")
+    for path in [ROOT / "README.md", ROOT / "ARTIFACT_INDEX.md", ROOT / "RELEASE_MANIFEST.md", ROOT / "data_dictionary.md"]:
+        if not path.exists():
+            continue
+        text = path.read_text(encoding="utf-8-sig", errors="replace")
+        for needle in needles:
+            require(needle not in text, f"private or stale path in {path.name}: {needle}")
+
+
+def check_manuscript(path: Path) -> None:
+    if not path.is_file():
+        error(f"manuscript not found: {path}")
+        return
+    text = path.read_text(encoding="utf-8-sig", errors="replace")
+    for required in ("1,772", "199", "149"):
+        require(required in text, f"manuscript does not contain integrated value/date: {required}")
+    require(
+        "2026-07-30" in text or "July 30, 2026" in text,
+        "manuscript does not contain the integrated search cutoff date",
     )
-
-    final_layers = Counter(row.get('proposed_analysis_layer', '') for row in final_rows)
-    status('ERROR', final_layers == Counter({'study_level_candidate': 37, 'extended_synthesis': 4}), 'author-confirmed update layer counts are 37 study-level candidates and 4 extended-synthesis records')
-    status('ERROR', all(row.get('integration_status') == 'new_canonical_study' for row in integration_rows), 'canonical integration finds all 41 update records to be new canonical studies')
-    status('ERROR', all(row.get('counted_after_integration') == 'yes' for row in integration_rows), 'all update records are countable after canonical integration')
-
-    final_report = REPORTS / 'SUBMISSION_UPDATE_ADJUDICATION_REPORT.md'
-    integration_report = ROOT / 'SUBMISSION_UPDATE_CANONICAL_INTEGRATION_REPORT.md'
-    finalizer = ROOT / 'finalize_submission_update_adjudication.py'
-    integration_generator = ROOT / 'prepare_submission_update_canonical_integration.py'
-    for path, description in [
-        (final_report, 'author-confirmed update adjudication report exists'),
-        (integration_report, 'submission update canonical-integration report exists'),
-        (finalizer, 'submission update finalization script exists'),
-        (integration_generator, 'submission update canonical-integration generator exists'),
-    ]:
-        status('ERROR', path.exists(), description)
-    if final_report.exists():
-        report_text = final_report.read_text(encoding='utf-8')
-        required = ['author-confirmed analytical decision', 'not represented as a discussion between two human coders', 'No post-adjudication agreement statistic is reported']
-        status('ERROR', all(item in report_text for item in required), 'final adjudication report states the confirmation and consensus boundary accurately')
-    if integration_report.exists():
-        report_text = integration_report.read_text(encoding='utf-8')
-        required = ['Source records | 212 | 253', 'Canonical candidate studies | 207 | 248', '67 target-software studies plus the existing governance boundary case']
-        status('ERROR', all(item in report_text for item in required), 'canonical-integration report records projected counts without changing the frozen corpus')
-    print('SUBMISSION_UPDATE_FINALIZATION: author-confirmed 37/4 resolution and pre-integration assessment preserved; current corpus integration is validated separately.')
+    for match in re.findall(r"\\path\{([^}]+)\}", text):
+        if match.startswith("data/") or match.endswith((".md", ".py", ".txt")):
+            require((ROOT / match).exists(), f"manuscript artifact path is missing: {match}")
+    info(f"manuscript checked: {path}")
 
 
-def validate_current_study_level_matrix(current_matrix, additions):
-    status('ERROR', len(current_matrix) == 68, f'current study-level matrix rows = {len(current_matrix)}; expected 68')
-    if not current_matrix:
-        return
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--manuscript", type=Path, help="optional path to main_acm_csur.tex")
+    args = parser.parse_args()
 
-    matrix_ids = [row.get('matrix_id', '') for row in current_matrix]
-    record_ids = [row.get('record_id', '') for row in current_matrix]
-    canonical_ids = [row.get('canonical_study_id', '') for row in current_matrix]
-    status('ERROR', len(matrix_ids) == len(set(matrix_ids)), 'current matrix IDs are unique')
-    status('ERROR', len(record_ids) == len(set(record_ids)), 'current matrix record IDs are unique')
-    status('ERROR', len(canonical_ids) == len(set(canonical_ids)), 'current matrix canonical study IDs are unique')
-    status('ERROR', set(matrix_ids) == {f'C{i:02d}' for i in range(1, 32)} | {row.get('update_id', '') for row in additions}, 'current matrix covers the frozen 31 rows and all 37 update additions')
-
-    roles = Counter(row.get('analytical_role', '') for row in current_matrix)
-    rounds = Counter(row.get('coding_round', '') for row in current_matrix)
-    evidence = Counter(row.get('strongest_evidence_output', '') for row in current_matrix)
-    status('ERROR', roles == Counter({'target_software_study': 67, 'governance_boundary_case': 1}), 'current matrix uses the 67+1 analytical-role boundary')
-    status('ERROR', rounds == Counter({'initial_frozen_round': 31, 'submission_update_20260715': 37}), 'current matrix preserves the 31+37 coding-round provenance')
-    status('ERROR', evidence == Counter({'reproducible validation': 31, 'runtime safety signal': 13, 'controlled task completion': 13, 'candidate judgment': 6, 'externally traceable material': 4, 'governance boundary case': 1}), 'current matrix reproduces the combined strongest-evidence distribution')
-    status('ERROR', not any(field.startswith('a_level') or field.startswith('e_level') for field in current_matrix[0]), 'current matrix does not reintroduce legacy A/E fields')
-    status('ERROR', all(row.get('official_url', '').startswith(('http://', 'https://', 'urn:isbn:')) for row in current_matrix), 'current matrix rows contain public URLs or ISBN locators')
-    status('ERROR', all(row.get('claim_boundary', '').strip() and row.get('claim_boundary_original', '').strip() for row in current_matrix), 'current matrix retains current and original claim-boundary text')
-
-    by_id = {row.get('matrix_id', ''): row for row in current_matrix}
-    c27 = by_id.get('C27', {})
-    status('ERROR', c27.get('record_id') == 'CP114' and c27.get('canonical_study_id') == 'CS_CP114', 'C27 governance case resolves to canonical record CP114')
-    status('ERROR', c27.get('analytical_role') == 'governance_boundary_case', 'C27 remains outside the target-software denominator')
-
-    additions_by_id = {row.get('update_id', ''): row for row in additions}
-    comparable = {
-        'record_id': 'record_id',
-        'canonical_study_id': 'canonical_study_id',
-        'system_alias': 'system_alias',
-        'title': 'title',
-        'lifecycle_coverage': 'lifecycle_coverage',
-        'system_shape': 'primary_system_shape',
-        'agentic_capabilities': 'agentic_capabilities',
-        'strongest_evidence_output': 'strongest_evidence_output',
-        'external_traceability': 'external_traceability',
-        'claim_boundary': 'claim_boundary',
-        'official_url': 'official_url',
-    }
-    mismatches = []
-    controlled_normalizations = []
-    for update_id, addition in additions_by_id.items():
-        row = by_id.get(update_id, {})
-        for matrix_field, addition_field in comparable.items():
-            if row.get(matrix_field) != addition.get(addition_field):
-                is_u22_trace_normalization = (
-                    update_id == 'U22'
-                    and matrix_field == 'external_traceability'
-                    and row.get(matrix_field) == 'not reported'
-                    and addition.get(addition_field) == 'no external trace reported'
-                )
-                if is_u22_trace_normalization:
-                    controlled_normalizations.append('U22:external_traceability')
-                else:
-                    mismatches.append(f'{update_id}:{matrix_field}')
-    status('ERROR', not mismatches, 'current matrix update rows match the 37 author-confirmed additions except audited post-freeze normalizations')
-    status(
-        'ERROR',
-        controlled_normalizations == ['U22:external_traceability'],
-        'the pre-harmonization matrix preserves U22 while the current addition uses the audited controlled value',
-    )
-    if mismatches:
-        print('ERROR: current matrix mismatches:', ', '.join(mismatches))
-    print('CURRENT_STUDY_LEVEL_MATRIX: rows=68 target=67 governance=1 initial_round=31 update_round=37')
-
-
-def validate_unified_second_coder_template(template, harmonized_matrix):
-    codebook = ROOT / 'unified_second_coder_codebook.md'
-    guide = ROOT / 'UNIFIED_SECOND_CODER_REVIEW_GUIDE.md'
-    helper = ROOT / 'unified_second_coder_review.py'
-    for path, description in [
-        (codebook, 'unified second-coder codebook exists'),
-        (guide, 'unified second-coder review guide exists'),
-        (helper, 'unified second-coder preparation/validation helper exists'),
-    ]:
-        status('ERROR', path.exists(), description)
-
-    status('ERROR', len(template) == 68, f'unified second-coder blind template rows = {len(template)}; expected 68')
-    if not template or not harmonized_matrix:
-        return
-    ids = [row.get('matrix_id', '') for row in template]
-    matrix_ids = {row.get('matrix_id', '') for row in harmonized_matrix}
-    status('ERROR', len(ids) == len(set(ids)), 'unified second-coder template matrix IDs are unique')
-    status('ERROR', set(ids) == matrix_ids, 'unified second-coder template covers the complete 67+1 matrix')
-    status('ERROR', [int(row.get('review_order', '0')) for row in template] == list(range(1, 69)), 'unified second-coder review order is stable from 1 to 68')
-    roles = Counter(row.get('review_scope', '') for row in template)
-    status('ERROR', roles == Counter({'target-software study': 67, 'governance boundary case': 1}), 'unified second-coder template preserves the 67+1 scope boundary')
-
-    headers = set(template[0])
-    forbidden = [name for name in headers if any(token in name.lower() for token in ('author_', 'original_', 'harmonized', 'adjudicat'))]
-    status('ERROR', not forbidden, 'unified second-coder template exposes no author, original, harmonized, or adjudication fields')
-    if forbidden:
-        print('ERROR: forbidden unified-template fields:', ', '.join(forbidden))
-
-    coder_fields = [
-        'final_lifecycle_coverage',
-        'lifecycle_review_status',
-        'final_cross_stage_capabilities',
-        'capability_review_status',
-        'final_primary_system_shape',
-        'shape_review_status',
-        'final_strongest_evidence_output',
-        'evidence_review_status',
-        'final_external_traceability',
-        'traceability_review_status',
-        'final_claim_boundary',
-        'claim_boundary_review_status',
-        'material_checked',
-        'decision_note',
-        'uncertainty_note',
-        'row_status',
-    ]
-    status('ERROR', all(not row.get(field, '').strip() for row in template for field in coder_fields), 'unified second-coder public template keeps all coder decision fields blank')
-    status('ERROR', all('unified_second_coder_codebook.md' in row.get('materials_to_review', '') for row in template), 'unified second-coder material instructions point to the frozen unified codebook')
-    status('ERROR', all('do not consult author-label' in row.get('materials_to_review', '').lower() for row in template), 'unified second-coder instructions preserve author-label blinding')
-
-    matrix_by_id = {row.get('matrix_id', ''): row for row in harmonized_matrix}
-    metadata_mismatches = []
-    for row in template:
-        source = matrix_by_id.get(row.get('matrix_id', ''), {})
-        for field in ('record_id', 'system_alias', 'title', 'official_url'):
-            if row.get(field, '') != source.get(field, ''):
-                metadata_mismatches.append(f"{row.get('matrix_id', '?')}:{field}")
-    status('ERROR', not metadata_mismatches, 'unified second-coder template metadata matches the harmonized matrix without exposing labels')
-    if metadata_mismatches:
-        print('ERROR: unified-template metadata mismatches:', ', '.join(metadata_mismatches))
-    print('UNIFIED_SECOND_CODER_TEMPLATE: rows=68 target=67 governance=1 status=prepared_blank')
-
-
-def validate_unified_second_coder_results(results, sensitivity, harmonized_matrix):
-    report_path = ROOT / 'reports' / 'UNIFIED_SECOND_CODER_PRE_ADJUDICATION_REPORT.md'
-    disagreement_path = DATA / 'unified_second_coder_pre_adjudication_disagreements.csv'
-    status('ERROR', report_path.exists(), 'unified second-coder pre-adjudication report exists')
-    status('ERROR', disagreement_path.exists(), 'unified second-coder disagreement audit exists')
-    status('ERROR', len(results) == 68, f'unified second-coder completed rows = {len(results)}; expected 68')
-    status('ERROR', len(sensitivity) == 26, f'unified label-substitution rows = {len(sensitivity)}; expected 26')
-    if not results or not harmonized_matrix:
-        return
-
-    matrix_ids = {row.get('matrix_id', '') for row in harmonized_matrix}
-    result_ids = {row.get('matrix_id', '') for row in results}
-    status('ERROR', result_ids == matrix_ids, 'unified second-coder results cover the complete 67+1 matrix')
-    status('ERROR', all(row.get('row_status') == 'complete' for row in results), 'all unified second-coder rows are complete')
-    status('ERROR', all(row.get('material_checked', '').strip() and row.get('decision_note', '').strip() for row in results), 'all unified second-coder rows retain material and decision provenance')
-    status('ERROR', all(row.get('scope_n') == '67' for row in sensitivity), 'unified label-substitution sensitivity uses the 67 target-software denominator')
-
-    sensitivity_by_key = {(row.get('field', ''), row.get('label', '')): row for row in sensitivity}
-    expected_pairs = {
-        ('strongest_evidence_output', 'reproducible validation'): ('31', '31'),
-        ('strongest_evidence_output', 'candidate judgment'): ('6', '6'),
-        ('strongest_evidence_output', 'controlled task completion'): ('13', '13'),
-        ('primary_system_shape', 'feedback-driven fuzzing agent'): ('17', '17'),
-        ('strongest_evidence_output', 'externally traceable material'): ('4', '11'),
-        ('cross_stage_capabilities', 'failure reuse / strategy update'): ('15', '25'),
-        ('lifecycle_coverage', 'reporting and audit'): ('24', '57'),
-    }
-    for key, expected in expected_pairs.items():
-        row = sensitivity_by_key.get(key, {})
-        observed = (row.get('author_harmonized_count'), row.get('coder2_substitution_count'))
-        status('ERROR', observed == expected, f'unified sensitivity {key[0]} / {key[1]} = {observed}; expected {expected}')
-
-    if report_path.exists():
-        report = report_path.read_text(encoding='utf-8')
-        for marker in [
-            'exact = 18/67 = 0.269',
-            'mean row Jaccard = 0.746; micro F1 = 0.848',
-            'exact = 25/67 = 0.373',
-            'mean row Jaccard = 0.793; micro F1 = 0.877',
-            "raw agreement = 53/67 = 0.791; Cohen's kappa = 0.720",
-            "raw agreement = 51/67 = 0.761; Cohen's kappa = 0.665",
-            "raw agreement = 42/67 = 0.627; Cohen's kappa = 0.482",
-            'no consensus or post-adjudication reliability is claimed',
-        ]:
-            status('ERROR', marker in report, f'unified second-coder report preserves: {marker}')
-    print('UNIFIED_SECOND_CODER_RESULTS: rows=68 target_denominator=67 adjudication=not_planned')
-
-def validate_integrated_submission_update(corpus, crosswalk, extended, final_rows, additions, current_stats):
-    status('ERROR', len(corpus) == 253, f'integrated corpus source rows = {len(corpus)}; expected 253')
-    status('ERROR', len(crosswalk) == 253, f'integrated canonical crosswalk rows = {len(crosswalk)}; expected 253')
-    status('ERROR', len(additions) == 37, f'current-field update study-level additions = {len(additions)}; expected 37')
-    status('ERROR', len(extended) == 65, f'integrated extended-synthesis rows = {len(extended)}; expected 65')
-    if not final_rows or not additions:
-        return
-
-    final_study_ids = {row.get('update_id', '') for row in final_rows if row.get('proposed_analysis_layer') == 'study_level_candidate'}
-    addition_ids = {row.get('update_id', '') for row in additions}
-    status('ERROR', addition_ids == final_study_ids, 'study-level additions match the 37 author-confirmed update records')
-    status('ERROR', not any(field.startswith('a_level') or field.startswith('e_level') for field in additions[0]), 'update additions do not impute legacy A/E fields')
-    status('ERROR', all(row.get('coding_status') == 'author_confirmed_adjudicated' for row in additions), 'update additions retain author-confirmed coding status')
-
-    update_record_ids = {f'CP{i:03d}' for i in range(213, 254)}
-    corpus_ids = {row.get('record_id', '') for row in corpus}
-    cross_by_id = {row.get('record_id', ''): row for row in crosswalk}
-    status('ERROR', update_record_ids <= corpus_ids, 'integrated corpus contains CP213-CP253')
-    status('ERROR', update_record_ids <= set(cross_by_id), 'canonical crosswalk contains CP213-CP253')
-    update_layers = Counter(cross_by_id[rid].get('analytical_layer', '') for rid in update_record_ids)
-    status('ERROR', update_layers == Counter({'study_level_coded': 37, 'extended_synthesis': 4}), 'integrated update canonical layers reproduce the confirmed 37/4 resolution')
-    status('ERROR', all(cross_by_id[rid].get('counting_status') == 'canonical_counted' for rid in update_record_ids), 'all integrated update records count once as canonical studies')
-
-    expected = {
-        ('lifecycle_coverage', 'candidate analysis'): 48,
-        ('lifecycle_coverage', 'path and input exploration'): 46,
-        ('lifecycle_coverage', 'execution observation'): 56,
-        ('lifecycle_coverage', 'reproduction and validation'): 36,
-        ('lifecycle_coverage', 'patch validation'): 12,
-        ('lifecycle_coverage', 'reporting and audit'): 24,
-        ('agentic_capabilities', 'context aggregation / rule extraction'): 51,
-        ('agentic_capabilities', 'tool routing / strategy routing'): 44,
-        ('agentic_capabilities', 'feedback interpretation / loop adjustment'): 58,
-        ('agentic_capabilities', 'validation organization / evidence packaging'): 55,
-        ('agentic_capabilities', 'long-horizon state management'): 30,
-        ('agentic_capabilities', 'failure reuse / strategy update'): 15,
-        ('agentic_capabilities', 'governance / human gates / disclosure control'): 4,
-        ('strongest_evidence_output', 'candidate judgment'): 6,
-        ('strongest_evidence_output', 'controlled task completion'): 13,
-        ('strongest_evidence_output', 'runtime safety signal'): 13,
-        ('strongest_evidence_output', 'reproducible validation'): 31,
-        ('strongest_evidence_output', 'externally traceable material'): 4,
-        ('strongest_evidence_output', 'governance boundary case'): 1,
-        ('primary_system_shape', 'candidate-analysis system'): 16,
-        ('primary_system_shape', 'feedback-driven fuzzing agent'): 17,
-        ('primary_system_shape', 'reproduction-, validation-, and repair-centered agent'): 20,
-        ('primary_system_shape', 'long-horizon pentest and CRS agent'): 14,
-    }
-    actual = {(row.get('dimension', ''), row.get('category', '')): int(row.get('count', '-1')) for row in current_stats}
-    status('ERROR', actual == expected, 'current synthesis statistics reproduce the integrated lifecycle, capability, and evidence-output counts')
-
-    report = ROOT / 'SUBMISSION_UPDATE_CORPUS_INTEGRATION_REPORT.md'
-    integrator = ROOT / 'integrate_submission_update_corpus.py'
-    status('ERROR', report.exists(), 'submission update corpus integration report exists')
-    status('ERROR', integrator.exists(), 'submission update corpus integration script exists')
-    if report.exists():
-        report_text = report.read_text(encoding='utf-8')
-        required = ['Source records: 253', 'Canonical candidate studies: 248', 'Target-software study-level coded studies: 67', 'Extended-synthesis studies: 65', "No combined Cohen's kappa is inferred"]
-        status('ERROR', all(item in report_text for item in required), 'corpus integration report records current counts and the two-round reliability boundary')
-    print('SUBMISSION_UPDATE_CORPUS_INTEGRATION: source=253 canonical=248 target_studies=67 governance=1 extended=65 background=95 excluded=20')
-
-
-
-
-def validate_harmonized_coding_matrix(pre_matrix, harmonized, audit_rows, round_stats, extended_rows):
-    lifecycle_vocab = {'candidate analysis', 'path and input exploration', 'execution observation', 'reproduction and validation', 'patch validation', 'reporting and audit'}
-    shape_vocab = {'candidate-analysis system', 'feedback-driven fuzzing agent', 'reproduction-, validation-, and repair-centered agent', 'long-horizon pentest and CRS agent', 'governance boundary case'}
-    overlay_vocab = {'multi-agent orchestration', 'iterative optimization', 'failure-memory reuse', 'governance control'}
-    capability_vocab = {'context aggregation / rule extraction', 'tool routing / strategy routing', 'feedback interpretation / loop adjustment', 'validation organization / evidence packaging', 'long-horizon state management', 'failure reuse / strategy update', 'governance / human gates / disclosure control'}
-    status('ERROR', len(harmonized) == 68, f'harmonized study-level matrix rows = {len(harmonized)}; expected 68')
-    status('ERROR', len(audit_rows) == 408, f'harmonization audit rows = {len(audit_rows)}; expected 408')
-    status('ERROR', all(row.get('harmonization_status') == 'author_confirmed_2026-07-16' for row in harmonized), 'combined counts use only the author-confirmed harmonized matrix')
-    status('ERROR', all(split_multilabel(row.get('lifecycle_coverage', '')) <= lifecycle_vocab for row in harmonized), 'harmonized lifecycle fields use the controlled vocabulary')
-    status('ERROR', all(row.get('primary_system_shape', '') in shape_vocab for row in harmonized), 'harmonized primary shapes use approved values')
-    status('ERROR', all(split_multilabel(row.get('overlay_tags', '')) <= overlay_vocab for row in harmonized), 'overlay tags use approved values and remain outside primary shapes')
-    status('ERROR', all(split_multilabel(row.get('cross_stage_capabilities', '')) <= capability_vocab for row in harmonized), 'formal capability fields use the controlled vocabulary')
-    status('ERROR', all('role discussion / textual reflection' not in row.get('cross_stage_capabilities', '') for row in harmonized), 'formal capability fields contain no legacy textual-reflection label')
-    pre_by_id = {row.get('matrix_id', ''): row for row in pre_matrix}
-    harm_by_id = {row.get('matrix_id', ''): row for row in harmonized}
-    status('ERROR', set(pre_by_id) == set(harm_by_id) and len(harm_by_id) == 68, 'all 68 harmonized records preserve matrix identity')
-    status('ERROR', all(pre_by_id[mid].get('canonical_study_id') == harm_by_id[mid].get('canonical_study_id') for mid in harm_by_id), 'all harmonized records preserve canonical-study mapping')
-    status('ERROR', all(row.get('author_review_status') != 'pending_author_review' and (row.get('field') == 'overlay_tags' or row.get('final_harmonized_label', '')) for row in audit_rows), 'harmonization audit contains no pending decisions; blank overlay tags are allowed')
-    audit_fields = Counter((row.get('matrix_id', ''), row.get('field', '')) for row in audit_rows)
-    status('ERROR', all(value == 1 for value in audit_fields.values()) and len(audit_fields) == 408, 'harmonization audit covers six fields for each matrix row exactly once')
-    source_map = {'lifecycle_coverage': 'lifecycle_coverage', 'primary_system_shape': 'system_shape', 'overlay_tags': 'system_shape', 'cross_stage_capabilities': 'agentic_capabilities', 'strongest_evidence_output': 'strongest_evidence_output', 'external_traceability': 'external_traceability'}
-    status('ERROR', all(row.get('original_label', '') == pre_by_id.get(row.get('matrix_id', ''), {}).get(source_map.get(row.get('field', ''), ''), '') for row in audit_rows), 'all frozen/pre-harmonization labels remain preserved in the audit')
-    coded_canonical = {row.get('canonical_study_id', '') for row in harmonized}
-    extended_canonical = {row.get('canonical_study_id', '') for row in extended_rows}
-    status('ERROR', not (coded_canonical & extended_canonical), 'extended synthesis does not overlap the harmonized coded set')
-    target = [row for row in harmonized if row.get('analytical_role') == 'target_software_study']
-    initial = [row for row in target if row.get('coding_round') == 'initial_frozen_round']
-    update = [row for row in target if row.get('coding_round') == 'submission_update_20260715']
-    status('ERROR', len(initial) == 30 and len(update) == 37, 'round-wise target-software totals reconcile to 30 + 37 = 67')
-    expected_shape_by_round = {
-        'initial': Counter({'candidate-analysis system': 4, 'feedback-driven fuzzing agent': 9, 'reproduction-, validation-, and repair-centered agent': 8, 'long-horizon pentest and CRS agent': 9}),
-        'update': Counter({'candidate-analysis system': 12, 'feedback-driven fuzzing agent': 8, 'reproduction-, validation-, and repair-centered agent': 12, 'long-horizon pentest and CRS agent': 5}),
-        'combined': Counter({'candidate-analysis system': 16, 'feedback-driven fuzzing agent': 17, 'reproduction-, validation-, and repair-centered agent': 20, 'long-horizon pentest and CRS agent': 14}),
-    }
-    expected_evidence_by_round = {
-        'initial': Counter({'candidate judgment': 3, 'controlled task completion': 5, 'runtime safety signal': 8, 'reproducible validation': 14, 'externally traceable material': 0}),
-        'update': Counter({'candidate judgment': 3, 'controlled task completion': 8, 'runtime safety signal': 5, 'reproducible validation': 17, 'externally traceable material': 4}),
-        'combined': Counter({'candidate judgment': 6, 'controlled task completion': 13, 'runtime safety signal': 13, 'reproducible validation': 31, 'externally traceable material': 4}),
-    }
-    shape_initial = Counter(row.get('primary_system_shape') for row in initial)
-    shape_update = Counter(row.get('primary_system_shape') for row in update)
-    shape_combined = Counter(row.get('primary_system_shape') for row in target)
-    evidence_initial = Counter(row.get('strongest_evidence_output') for row in initial)
-    evidence_update = Counter(row.get('strongest_evidence_output') for row in update)
-    evidence_combined = Counter(row.get('strongest_evidence_output') for row in target)
-    status('ERROR', shape_initial == expected_shape_by_round['initial'], 'initial-round primary-shape counts are 4/9/8/9')
-    status('ERROR', shape_update == expected_shape_by_round['update'], 'recall-recovery primary-shape counts are 12/8/12/5')
-    status('ERROR', shape_combined == expected_shape_by_round['combined'], 'combined primary-shape counts are 16/17/20/14')
-    status('ERROR', evidence_initial == expected_evidence_by_round['initial'], 'initial-round evidence counts are CJ3/TC5/RS8/RV14/ET0')
-    status('ERROR', evidence_update == expected_evidence_by_round['update'], 'recall-recovery evidence counts are CJ3/TC8/RS5/RV17/ET4')
-    status('ERROR', evidence_combined == expected_evidence_by_round['combined'], 'combined evidence counts are CJ6/TC13/RS13/RV31/ET4')
-
-    substantive = [row for row in audit_rows if row.get('change_required') == 'yes']
-    changed_record_ids = sorted({row.get('matrix_id') for row in substantive})
-    changed_fields = Counter(row.get('field') for row in substantive)
-    missing_basis = [row.get('matrix_id', '?') + ':' + row.get('field', '?') for row in substantive if len(row.get('evidence_basis', '').strip()) < 20]
-    unresolved = [row.get('matrix_id', '?') + ':' + row.get('field', '?') for row in audit_rows if 'pending' in row.get('author_review_status', '').lower()]
-    status('ERROR', not missing_basis, 'every substantive harmonization change has an evidence basis')
-    status('ERROR', not unresolved, 'harmonization audit has no unresolved fields')
-    if missing_basis:
-        print('ERROR: harmonization changes missing evidence basis:', ', '.join(missing_basis[:20]))
-    if unresolved:
-        print('ERROR: unresolved harmonization fields:', ', '.join(unresolved[:20]))
-    print('HARMONIZATION_CHANGE_SUMMARY: changed_records=' + str(len(changed_record_ids)) + ' changed_fields=' + str(dict(sorted(changed_fields.items()))))
-    stat_lookup = {(row.get('category', ''), row.get('label', '')): row for row in round_stats}
-    for category, field in [('lifecycle_coverage', 'lifecycle_coverage'), ('cross_stage_capability', 'cross_stage_capabilities'), ('primary_system_shape', 'primary_system_shape')]:
-        all_labels = set().union(*(split_multilabel(row.get(field, '')) for row in target))
-        for label in all_labels:
-            expected_initial = sum(label in split_multilabel(row.get(field, '')) for row in initial)
-            expected_update = sum(label in split_multilabel(row.get(field, '')) for row in update)
-            stat = stat_lookup.get((category, label), {})
-            status('ERROR', int(stat.get('initial_cohort_count', -1)) == expected_initial and int(stat.get('submission_update_cohort_count', -1)) == expected_update and int(stat.get('combined_harmonized_count', -1)) == expected_initial + expected_update, f'round statistics reconcile for {category}: {label}')
-    print('CODING_ROUND_HARMONIZATION: rows=68 target=67 governance=1 audit_fields=408 status=author_confirmed')
-
-
-
-
-def validate_representative_reported_results(rows, matrix_rows, reference_rows, sensitivity_rows):
-    status('ERROR', len(rows) == 12, f'representative reported results rows = {len(rows)}; expected 12')
-    matrix_by_system = {row.get('system_alias', '').strip().lower(): row for row in matrix_rows if row.get('analytical_role') == 'target_software_study'}
-    reference_keys = {row.get('citation_key', '').strip() for row in reference_rows if row.get('citation_key', '').strip()}
-    errors = []
-    for row in rows:
-        system_key = row.get('system', '').strip().lower()
-        matches = [m for name, m in matrix_by_system.items() if system_key == name or system_key in name or name in system_key]
-        if not matches:
-            errors.append((row.get('system'), 'missing study-level matrix row'))
-            continue
-        matrix_row = matches[0]
-        if matrix_row.get('primary_system_shape') != row.get('primary_shape'):
-            errors.append((row.get('system'), f"shape mismatch: {row.get('primary_shape')} vs {matrix_row.get('primary_system_shape')}"))
-        if row.get('citation_key', '').strip() not in reference_keys:
-            errors.append((row.get('system'), 'citation key missing from reference_audit.csv'))
-        if not row.get('source_location', '').strip():
-            errors.append((row.get('system'), 'empty source_location'))
-    status('ERROR', not errors, 'representative reported results map to study-level matrix, citation keys, and source locations')
-    if errors:
-        print('ERROR: representative reported result problems:', errors[:10])
-    represented_shapes = {row.get('primary_shape', '').strip() for row in rows}
-    expected_shapes = {
-        'candidate-analysis system',
-        'feedback-driven fuzzing agent',
-        'reproduction-, validation-, and repair-centered agent',
-        'long-horizon pentest and CRS agent',
-    }
-    status('ERROR', represented_shapes == expected_shapes, 'representative reported results cover all four primary system shapes')
-    if MANUSCRIPT_PATH is not None and MANUSCRIPT_PATH.exists():
-        manuscript = read_manuscript_bundle(MANUSCRIPT_PATH)
-        table_match = re.search(
-            r'\\caption\{Representative reported results by system shape\.\}'
-            r'.*?\\label\{tab:appendix-reported-results\}(.*?)\\end\{table\}',
-            manuscript,
-            flags=re.S,
-        )
-        status('ERROR', bool(table_match), 'manuscript Table 14 representative-results block is locatable')
-        if table_match:
-            table_keys = set()
-            for group in re.findall(r'\\cite\{([^}]+)\}', table_match.group(1)):
-                table_keys.update(key.strip() for key in group.split(',') if key.strip())
-            csv_keys = {row.get('citation_key', '').strip() for row in rows}
-            status('ERROR', table_keys == csv_keys and len(table_keys) == 12, 'manuscript Table 14 contains the same 12 citation-linked rows as the CSV')
-    scopes = {row.get('scope', '') for row in sensitivity_rows}
-    required_scopes = {'all_41_full_text_records', '37_final_target_software_update_records', '67_target_software_with_rerun_substitution'}
-    status('ERROR', required_scopes.issubset(scopes), 'sensitivity file contains all_41, 37-target, and 67-target substitution scopes')
-    target_rows = [row for row in sensitivity_rows if row.get('scope') in {'37_final_target_software_update_records', '67_target_software_with_rerun_substitution'}]
-    target_fields = {row.get('field') for row in target_rows}
-    required_fields = {'primary_system_shape', 'strongest_evidence_output', 'lifecycle_coverage', 'agentic_capabilities', 'external_traceability'}
-    status('ERROR', required_fields.issubset(target_fields), 'target-only sensitivity scopes cover shape, evidence, lifecycle, capability, and traceability fields')
-    shape_labels = {row.get('label') for row in target_rows if row.get('field') == 'primary_system_shape'}
-    evidence_labels = {row.get('label') for row in target_rows if row.get('field') == 'strongest_evidence_output'}
-    status('ERROR', len(shape_labels) >= 4, 'target-only sensitivity includes the four primary system shapes')
-    status('ERROR', len(evidence_labels) >= 5, 'target-only sensitivity includes the five principal reported evidence outputs')
-
-
-def validate_empirical_reporting(extraction_rows, summary_rows, matrix_rows, reference_rows):
-    target_rows = [row for row in matrix_rows if row.get('analytical_role') == 'target_software_study']
-    target_by_id = {row.get('matrix_id'): row for row in target_rows}
-    extraction_by_id = {row.get('matrix_id'): row for row in extraction_rows}
-    status('ERROR', len(extraction_rows) == 67, f'empirical reporting extraction rows = {len(extraction_rows)}; expected 67')
-    status('ERROR', set(extraction_by_id) == set(target_by_id), 'empirical reporting extraction covers exactly the 67 target-software studies')
-    reference_keys = {row.get('citation_key', '').strip() for row in reference_rows if row.get('citation_key', '').strip()}
-    allowed = {'reported', 'not located'}
-    allowed_endpoint_types = {
-        'performance',
-        'result_yield',
-        'performance_and_result_yield',
-        'evaluation_scale',
-        'resource_or_input',
-        'mixed_or_other_result',
-        'not_located',
-    }
-    allowed_endpoint_audit = {
-        'source_verified_2026-07-29',
-        'existing_source_location_retained',
-        'not_located',
-    }
-    status_fields = [
-        'model_version_status', 'evaluation_scale_status', 'quantitative_result_status',
-        'baseline_status', 'validation_material_status', 'runtime_status', 'cost_status',
-        'ablation_status', 'failure_reporting_status',
-    ]
-    errors = []
-    for matrix_id, row in extraction_by_id.items():
-        matrix_row = target_by_id.get(matrix_id, {})
-        if row.get('record_id') != matrix_row.get('record_id'):
-            errors.append((matrix_id, 'record_id mismatch'))
-        if row.get('primary_shape') != matrix_row.get('primary_system_shape'):
-            errors.append((matrix_id, 'primary shape mismatch'))
-        if row.get('citation_key', '').strip() not in reference_keys:
-            errors.append((matrix_id, 'citation key missing from reference audit'))
-        if not row.get('source_location', '').strip():
-            errors.append((matrix_id, 'empty source location'))
-        endpoint_type = row.get('quantitative_endpoint_type', '')
-        endpoint_audit = row.get('quantitative_endpoint_audit_status', '')
-        if endpoint_type not in allowed_endpoint_types:
-            errors.append((matrix_id, f'invalid quantitative_endpoint_type: {endpoint_type}'))
-        if endpoint_audit not in allowed_endpoint_audit:
-            errors.append((matrix_id, f'invalid quantitative_endpoint_audit_status: {endpoint_audit}'))
-        if row.get('quantitative_result_status') == 'reported' and endpoint_type == 'not_located':
-            errors.append((matrix_id, 'reported result cannot use not_located endpoint type'))
-        if row.get('quantitative_result_status') == 'not located' and endpoint_type != 'not_located':
-            errors.append((matrix_id, 'not-located result must use not_located endpoint type'))
-        result_text = ' '.join(row.get('reported_result', '').split())
-        if endpoint_audit == 'source_verified_2026-07-29':
-            if len(result_text) < 45:
-                errors.append((matrix_id, 'source-verified result summary is too short'))
-            if re.match(r'(?i)^(table|figure|fig\.|section|sec\.)\s*\d', result_text):
-                errors.append((matrix_id, 'source-verified result begins with a table/figure/section locator'))
-            if re.search(r'(?i)(conference.?17|figure\s+\d+\s*:|table\s+\d+\s*:|section\s+\d+\s+(reports|presents))', result_text):
-                errors.append((matrix_id, 'source-verified result contains placeholder or locator text'))
-        if not row.get('source_location', '').strip():
-            errors.append((matrix_id, 'empty source location'))
-        for field in status_fields:
-            if row.get(field) not in allowed:
-                errors.append((matrix_id, f'invalid {field}: {row.get(field)}'))
-    verified_n = sum(row.get('quantitative_endpoint_audit_status') == 'source_verified_2026-07-29' for row in extraction_rows)
-    status('ERROR', verified_n == 29, f'targeted quantitative endpoint recheck covers 29 rows: {verified_n}')
-    status('ERROR', not errors, 'empirical reporting rows match matrix, references, source locations, and controlled audit fields')
-    if errors:
-        print('ERROR: empirical reporting extraction problems:', errors[:12])
-
-    summary_index = {(row.get('scope'), row.get('reporting_item')): row for row in summary_rows}
-    scopes = {'all target-software studies': extraction_rows}
-    for shape in sorted({row.get('primary_shape') for row in extraction_rows}):
-        scopes[shape] = [row for row in extraction_rows if row.get('primary_shape') == shape]
-    summary_errors = []
-    for scope, scoped_rows in scopes.items():
-        for field in status_fields:
-            item = field.removesuffix('_status')
-            expected_n = sum(row.get(field) == 'reported' for row in scoped_rows)
-            summary_row = summary_index.get((scope, item))
-            if not summary_row:
-                summary_errors.append((scope, item, 'missing summary row'))
-                continue
-            if int(summary_row.get('reported_n', -1)) != expected_n or int(summary_row.get('denominator', -1)) != len(scoped_rows):
-                summary_errors.append((scope, item, 'count mismatch'))
-    status('ERROR', not summary_errors, 'empirical reporting completeness recomputes from the 67-row extraction')
-    if summary_errors:
-        print('ERROR: empirical reporting summary problems:', summary_errors[:12])
-
-
-def validate_traditional_security_primitives(rows, matrix_rows):
-    target_rows = [row for row in matrix_rows if row.get('analytical_role') == 'target_software_study']
-    target_by_id = {row.get('matrix_id'): row for row in target_rows}
-    by_id = {row.get('matrix_id'): row for row in rows}
-    allowed = {
-        'static_taint_specification',
-        'fuzzing_input_harness',
-        'symbolic_constraint',
-        'runtime_oracle',
-        'replay_poc_pov',
-        'patch_build_test',
-        'recon_scan_pentest',
-    }
-    expected_counts = {
-        'static_taint_specification': 29,
-        'fuzzing_input_harness': 27,
-        'symbolic_constraint': 6,
-        'runtime_oracle': 58,
-        'replay_poc_pov': 42,
-        'patch_build_test': 14,
-        'recon_scan_pentest': 10,
-    }
-    status('ERROR', len(rows) == 67 and len(by_id) == 67, 'traditional-security-primitives extraction contains 67 unique rows')
-    status('ERROR', set(by_id) == set(target_by_id), 'traditional-security-primitives extraction covers exactly the target-software studies')
-    problems = []
-    counts = Counter()
-    for matrix_id, row in by_id.items():
-        tags = split_multilabel(row.get('primitive_tags', ''))
-        counts.update(tags)
-        if not tags or not tags.issubset(allowed):
-            problems.append((matrix_id, 'invalid or empty primitive tags'))
-        if row.get('system', '').strip() != target_by_id[matrix_id].get('system_alias', '').strip():
-            problems.append((matrix_id, 'system name mismatch'))
-        if not row.get('named_tools', '').strip():
-            problems.append((matrix_id, 'empty named_tools'))
-        if not row.get('source_location', '').strip():
-            problems.append((matrix_id, 'empty source_location'))
-        note = row.get('extraction_note', '').lower()
-        if 'workflow or evaluation' not in note or 'not necessarily dynamically selected' not in note:
-            problems.append((matrix_id, 'extraction note does not state the workflow/evaluation construct boundary'))
-    status('ERROR', not problems, 'traditional-security-primitives rows use controlled tags and source-located study identities')
-    if problems:
-        print('ERROR: traditional-security-primitives problems:', problems[:12])
-    status('ERROR', dict(counts) == expected_counts, f'traditional-security-primitives counts reproduce manuscript RQ1 table: {dict(counts)}')
-    if MANUSCRIPT_PATH is not None and MANUSCRIPT_PATH.exists():
-        manuscript = read_manuscript_bundle(MANUSCRIPT_PATH)
-        table_match = re.search(
-            r'\\caption\{Traditional security primitives explicitly used in the workflows or evaluations of the 67 target-software studies\.\}'
-            r'.*?\\label\{tab:traditional-primitives\}(.*?)\\end\{table\}',
-            manuscript,
-            flags=re.S,
-        )
-        status('ERROR', bool(table_match), 'manuscript Table 6 traditional-primitives block is locatable')
-        if table_match:
-            body = table_match.group(1)
-            expected_rows = {
-                'Static, taint, or specification analysis': 29,
-                'Fuzzing, input, or harness generation': 27,
-                'Symbolic or constraint execution': 6,
-                'Runtime checks, sanitizers, or oracles': 58,
-                'Replay, PoC, or PoV execution': 42,
-                'Patch, build, or test validation': 14,
-                'Reconnaissance, scanning, or pentest tools': 10,
-            }
-            row_errors = []
-            for label, count in expected_rows.items():
-                if not re.search(re.escape(label) + r'.*?&\s*' + str(count) + r'\s*&', body, flags=re.S):
-                    row_errors.append((label, count))
-            status('ERROR', not row_errors, 'manuscript Table 6 reproduces the seven artifact counts')
-            if row_errors:
-                print('ERROR: manuscript Table 6 count mismatches:', row_errors)
-
-
-def validate_structured_claim_boundaries(matrix_rows):
-    problems = []
-    for row in matrix_rows:
-        note = row.get('claim_boundary', '').strip()
-        if not note.startswith('Supported claim and conditions:'):
-            problems.append((row.get('matrix_id'), 'missing supported-claim prefix'))
-        if 'Stronger-claim boundary:' not in note:
-            problems.append((row.get('matrix_id'), 'missing stronger-claim boundary prefix'))
-        if len(note) < 120:
-            problems.append((row.get('matrix_id'), 'claim-boundary note too short for structured review'))
-    status('ERROR', not problems, 'all 68 claim-boundary notes use the structured non-ordered template')
-    if problems:
-        print('ERROR: structured claim-boundary problems:', problems[:12])
-
-
-def validate_per_label_reliability(rows, matrix_rows, coder_rows):
-    target = [row for row in matrix_rows if row.get('analytical_role') == 'target_software_study']
-    author_by_id = {row.get('matrix_id'): row for row in target}
-    coder_by_id = {
-        row.get('matrix_id'): row for row in coder_rows
-        if row.get('review_scope') == 'target-software study'
-    }
-    status('ERROR', len(rows) == 13, 'per-label reliability table contains six lifecycle and seven capability rows')
-    status('ERROR', set(author_by_id) == set(coder_by_id) and len(author_by_id) == 67, 'per-label reliability uses the complete 67-study target-software review')
-    field_map = {
-        'lifecycle_coverage': ('lifecycle_coverage', 'final_lifecycle_coverage'),
-        'cross_stage_capabilities': ('cross_stage_capabilities', 'final_cross_stage_capabilities'),
-    }
-    problems = []
-    for row in rows:
-        field = row.get('field')
-        label = row.get('label')
-        if field not in field_map or not label:
-            problems.append((field, label, 'invalid field or label'))
-            continue
-        author_field, coder_field = field_map[field]
-        author_binary = [label in split_multilabel(author_by_id[mid].get(author_field, '')) for mid in sorted(author_by_id)]
-        coder_binary = [label in split_multilabel(coder_by_id[mid].get(coder_field, '')) for mid in sorted(author_by_id)]
-        author_n = sum(author_binary)
-        coder_n = sum(coder_binary)
-        agreement_n = sum(a == b for a, b in zip(author_binary, coder_binary))
-        kappa = cohen_kappa(author_binary, coder_binary)
-        expected = {
-            'scope_n': '67',
-            'author_positive_n': str(author_n),
-            'coder2_positive_n': str(coder_n),
-            'raw_agreement_n': str(agreement_n),
-            'raw_agreement': f'{agreement_n / 67:.3f}',
-            'cohens_kappa': f'{kappa:.3f}',
-        }
-        for key, value in expected.items():
-            if row.get(key) != value:
-                problems.append((field, label, key, row.get(key), value))
-    status('ERROR', not problems, 'per-label reliability recomputes from harmonized and complete independent labels')
-    if problems:
-        print('ERROR: per-label reliability problems:', problems[:12])
-
-
-def validate_cohort_sensitivity(rows):
-    expected = {
-        ('principal_reported_evidence_output', 'externally traceable material', 'harmonized'): (0, 4, 4),
-        ('principal_reported_evidence_output', 'externally traceable material', 'second_coder'): (6, 5, 11),
-        ('external_traceability', 'publicly aligned external trace', 'harmonized'): (0, 4, 4),
-        ('external_traceability', 'publicly aligned external trace', 'second_coder'): (6, 6, 12),
-    }
-    observed = {}
-    problems = []
-    for row in rows:
-        key = (row.get('field'), row.get('label'), row.get('label_source'))
-        try:
-            values = (
-                int(row.get('initial_cohort_n', -1)),
-                int(row.get('update_cohort_n', -1)),
-                int(row.get('total_n', -1)),
-            )
-        except ValueError:
-            problems.append((key, 'non-integer cohort count'))
-            continue
-        observed[key] = values
-        if values[0] + values[1] != values[2]:
-            problems.append((key, 'cohort counts do not sum to total'))
-        if 'temporal trend' not in row.get('interpretation', '') and key[2] == 'harmonized':
-            problems.append((key, 'harmonized interpretation must reject a temporal-trend reading'))
-    status('ERROR', observed == expected and not problems, 'cohort sensitivity reproduces ET 0/4 vs 6/5 and public-alignment 0/4 vs 6/6')
-    if observed != expected:
-        print('ERROR: cohort sensitivity mismatch:', observed)
-    if problems:
-        print('ERROR: cohort sensitivity problems:', problems)
-
-
-def validate_representative_system_mechanisms(rows, matrix_rows, reference_rows):
-    target_by_id = {
-        row.get('matrix_id'): row for row in matrix_rows
-        if row.get('analytical_role') == 'target_software_study'
-    }
-    reference_keys = {row.get('citation_key', '').strip() for row in reference_rows if row.get('citation_key', '').strip()}
-    required_shapes = {
-        'candidate-analysis system',
-        'feedback-driven fuzzing agent',
-        'reproduction-, validation-, and repair-centered agent',
-        'long-horizon pentest and CRS agent',
-    }
-    problems = []
-    for row in rows:
-        matrix_id = row.get('matrix_id')
-        matrix_row = target_by_id.get(matrix_id)
-        if not matrix_row:
-            problems.append((matrix_id, 'missing target-software matrix row'))
-            continue
-        if row.get('system') != matrix_row.get('system_alias'):
-            problems.append((matrix_id, 'system alias mismatch'))
-        if row.get('primary_shape') != matrix_row.get('primary_system_shape'):
-            problems.append((matrix_id, 'primary shape mismatch'))
-        if row.get('citation_key') not in reference_keys:
-            problems.append((matrix_id, 'citation key missing from reference audit'))
-        for field in (
-            'input_and_context', 'llm_decision', 'runtime_and_fixed_control',
-            'state_feedback_and_recovery', 'principal_output', 'source_location', 'extraction_note',
-        ):
-            if not row.get(field, '').strip():
-                problems.append((matrix_id, f'empty {field}'))
-    status('ERROR', len(rows) == 8 and len({row.get("matrix_id") for row in rows}) == 8, 'representative mechanism extraction contains eight unique systems')
-    status('ERROR', {row.get('primary_shape') for row in rows} == required_shapes, 'representative mechanism extraction covers all four system shapes')
-    status('ERROR', not problems, 'representative mechanism rows map to the matrix, references, and source locations')
-    if problems:
-        print('ERROR: representative mechanism problems:', problems[:12])
-    if MANUSCRIPT_PATH is not None and MANUSCRIPT_PATH.exists():
-        manuscript = read_manuscript_bundle(MANUSCRIPT_PATH)
-        table_match = re.search(
-            r'\\caption\{Representative system mechanisms across the four system shapes\.\}'
-            r'.*?\\label\{tab:shape-matrix\}(.*?)\\end\{table\}',
-            manuscript,
-            flags=re.S,
-        )
-        status('ERROR', bool(table_match), 'manuscript mechanism-comparison table is locatable')
-        if table_match:
-            table_keys = set()
-            for group in re.findall(r'\\cite\{([^}]+)\}', table_match.group(1)):
-                table_keys.update(key.strip() for key in group.split(',') if key.strip())
-            csv_keys = {row.get('citation_key') for row in rows}
-            status('ERROR', table_keys == csv_keys, 'manuscript mechanism table and artifact use the same eight citation keys')
-
-
-def validate_mechanism_cost_ablation(rows, reference_rows):
-    reference_keys = {row.get('citation_key', '').strip() for row in reference_rows if row.get('citation_key', '').strip()}
-    allowed_dimensions = {'cost_and_runtime', 'cost', 'resource_control', 'ablation', 'ablation_and_cost', 'failure_recovery', 'failure_analysis'}
-    problems = []
-    for index, row in enumerate(rows, start=1):
-        if row.get('citation_key') not in reference_keys:
-            problems.append((index, 'citation key missing from reference audit'))
-        if row.get('dimension') not in allowed_dimensions:
-            problems.append((index, f"invalid dimension: {row.get('dimension')}"))
-        for field in ('system', 'reported_observation', 'unit_or_comparison', 'source_location', 'synthesis_use'):
-            if not row.get(field, '').strip():
-                problems.append((index, f'empty {field}'))
-    required_systems = {'RFCAUDIT', 'LLAMA', 'PBFuzz', 'ReForge', 'LLMVD.js', 'PentestAgent', 'OSS-CRS'}
-    status('ERROR', len(rows) >= 10, f'mechanism/cost/ablation synthesis contains {len(rows)} source-located observations')
-    status('ERROR', required_systems.issubset({row.get('system') for row in rows}), 'mechanism/cost/ablation synthesis covers the selected cross-shape systems')
-    status('ERROR', not problems, 'mechanism/cost/ablation rows use controlled dimensions and source locations')
-    if problems:
-        print('ERROR: mechanism/cost/ablation problems:', problems[:12])
-
-
-def validate_manuscript_artifact_paths():
-    manifest_missing = []
-    manifest_paths = []
-    status('ERROR', MANIFEST_PATH.exists(), 'manuscript_artifact_paths.txt exists for public-clone artifact path validation')
-    if MANIFEST_PATH.exists():
-        for raw in MANIFEST_PATH.read_text(encoding='utf-8').splitlines():
-            rel = raw.strip()
-            if not rel or rel.startswith('#'):
-                continue
-            normalized = rel.replace('\\', '/')
-            manifest_paths.append(normalized)
-            if normalized.startswith('/') or re.match(r'^[A-Za-z]:', normalized):
-                manifest_missing.append(normalized + ' (absolute paths are not allowed)')
-                continue
-            if '..' in Path(normalized).parts:
-                manifest_missing.append(normalized + ' (parent traversal is not allowed)')
-                continue
-            if not (ROOT / normalized).exists():
-                manifest_missing.append(normalized)
-        status('ERROR', not manifest_missing, 'manifest artifact paths exist inside the public artifact')
-        if manifest_missing:
-            print('ERROR: missing or invalid manifest artifact paths:', ', '.join(manifest_missing))
-        print(f'MANUSCRIPT_ARTIFACT_MANIFEST: paths={len(manifest_paths)} source={MANIFEST_PATH.name}')
-
-    if MANUSCRIPT_PATH is None:
-        print('INFO: no --manuscript path supplied; skipping LaTeX \\path{} source validation for standalone public artifact mode.')
-        return
-
-    status('ERROR', MANUSCRIPT_PATH.exists(), 'explicit --manuscript path exists for LaTeX artifact-path validation')
-    if not MANUSCRIPT_PATH.exists():
-        return
-    text = MANUSCRIPT_PATH.read_text(encoding='utf-8')
-    paths = re.findall(r'\\path\{([^}]+)\}', text)
-    missing = []
-    for rel in paths:
-        if rel.startswith(('data/', 'reports/')) or rel.endswith('.md') or rel.endswith('.py'):
-            normalized = rel.replace('\\', '/')
-            candidate = ROOT / normalized
-            if not candidate.exists():
-                missing.append(rel)
-    status('ERROR', not missing, 'Data and Code Availability artifact paths from --manuscript exist in the public artifact')
-    if missing:
-        print('ERROR: missing artifact paths from manuscript:', ', '.join(missing))
-def validate_tracked_file_boundary():
-    try:
-        result = subprocess.run(['git', 'ls-files'], cwd=ROOT, check=True, capture_output=True, text=True)
-    except Exception as exc:
-        print(f'WARNING: could not run git ls-files for tracked-file boundary check: {exc}')
-        return
-    tracked = [line.strip() for line in result.stdout.splitlines() if line.strip()]
-    forbidden_path_tokens = [
-        'local_private_working/',
-        'zotero_private_paths',
-        '.sqlite',
-        '.sqlite-journal',
-    ]
-    forbidden_suffixes = ('.pdf', '.sqlite', '.sqlite-journal')
-    forbidden_paths = []
-    private_content_hits = []
-    for rel in tracked:
-        normalized = rel.replace('\\', '/').lower()
-        if normalized.endswith(forbidden_suffixes) or any(token in normalized for token in forbidden_path_tokens):
-            forbidden_paths.append(rel)
-            continue
-        path = ROOT / rel
-        try:
-            content = path.read_text(encoding='utf-8')
-        except Exception:
-            continue
-        lowered = content.lower()
-        actual_private_markers = ['c:\\users\\', 'zotero\\storage', 'zotero/storage']
-        if rel != 'reproduce_tables.py' and any(marker in lowered for marker in actual_private_markers):
-            private_content_hits.append(rel)
-    status('ERROR', not forbidden_paths, 'no tracked PDFs, SQLite files, local_private_working files, or private Zotero path files')
-    if forbidden_paths:
-        print('ERROR: forbidden tracked paths:', ', '.join(forbidden_paths))
-    status('ERROR', not private_content_hits, 'tracked text files contain no absolute local Zotero paths or Zotero storage references')
-    if private_content_hits:
-        print('ERROR: tracked files needing security-boundary review:', ', '.join(sorted(set(private_content_hits))))
-
-validate_all_csv_files()
-validate_submission_update_rerun_notes()
-
-corpus = read_csv('corpus.csv')
-core = read_csv('core_coding.csv')
-core_synthesis = read_csv('v13_core_synthesis_matrix.csv')
-summary = read_csv('screening_summary.csv')
-ref = read_csv('reference_audit.csv')
-product_snapshot = read_csv('product_ecosystem_snapshot.csv')
-second_coder_blind = read_csv('core31_second_coder_blind.csv')
-second_coder_formal = read_csv('core31_second_coder_formal_blind_template.csv')
-second_coder_formal_results = read_csv('core31_second_coder_formal_results.csv')
-second_coder_extension_template = read_csv('core31_second_coder_capability_traceability_blind_template.csv')
-second_coder_extension_results = read_csv('core31_second_coder_capability_traceability_results.csv')
-second_coder_adjudication = read_csv('core31_second_coder_adjudication_template.csv')
-record_classification = read_csv('record_classification_audit.csv')
-repro_audit = read_csv('core_reproducibility_audit.csv')
-repro_summary = read_csv('core_reproducibility_audit_summary.csv')
-source_search_log = read_csv('source_search_log.csv')
-source_screening_audit = read_csv('source_screening_audit.csv')
-official_source_followup_log = read_csv('official_source_followup_20260716_search_log.csv')
-official_source_followup_screening = read_csv('official_source_followup_20260716_screening_audit.csv')
-extended_synthesis = read_csv('extended_synthesis_audit.csv')
-study_version_crosswalk = read_csv('study_version_crosswalk.csv')
-mapping_snapshot_counts = read_csv('mapping_snapshot_counts.csv')
-submission_update_screening = read_csv('submission_update_20260715_screening_audit.csv')
-submission_update_full_audit = read_csv('submission_update_20260715_full_coding_audit.csv')
-submission_update_blind = read_csv('submission_update_20260715_second_coder_blind_template.csv')
-submission_update_rerun_blind = read_csv('submission_update_20260715_second_coder_rerun_blind_template.csv')
-submission_update_initial_results = read_csv('submission_update_20260715_second_coder_initial_results.csv')
-submission_update_results = read_csv('submission_update_20260715_second_coder_results.csv')
-submission_update_sensitivity = read_csv('submission_update_20260715_rerun_sensitivity_analysis.csv')
-publication_status_rows = read_csv('publication_status_standardized.csv')
-publication_distribution_rows = read_csv('publication_status_distribution_by_layer.csv')
-publication_status_sensitivity = read_csv('publication_status_sensitivity_analysis.csv')
-representative_reported_results = read_csv('representative_reported_results.csv')
-empirical_reporting_extraction = read_csv('empirical_reporting_extraction.csv')
-empirical_reporting_completeness = read_csv('empirical_reporting_completeness.csv')
-traditional_security_primitives = read_csv('traditional_security_primitives.csv')
-unified_per_label_reliability = read_csv('unified_second_coder_per_label_reliability.csv')
-unified_cohort_sensitivity = read_csv('unified_second_coder_cohort_sensitivity.csv')
-representative_system_mechanisms = read_csv('representative_system_mechanisms.csv')
-mechanism_cost_ablation_synthesis = read_csv('mechanism_cost_ablation_synthesis.csv')
-submission_update_adjudication = read_csv('submission_update_20260715_adjudication_working_draft.csv')
-submission_update_adjudicated = read_csv('submission_update_20260715_adjudicated.csv')
-submission_update_integration = read_csv('submission_update_20260715_canonical_integration_crosswalk.csv')
-submission_update_additions = read_csv('submission_update_20260715_study_level_additions.csv')
-current_synthesis_statistics = read_csv('current_synthesis_statistics.csv')
-current_study_level_matrix = read_csv('current_study_level_coding_matrix.csv')
-harmonized_study_level_matrix = read_csv('current_study_level_coding_matrix_harmonized.csv')
-unified_second_coder_template = read_csv('unified_second_coder_final_blind_template.csv')
-unified_second_coder_results = read_csv('unified_second_coder_final_results.csv')
-unified_second_coder_sensitivity = read_csv('unified_second_coder_label_substitution_sensitivity.csv')
-coding_round_harmonization_audit = read_csv('coding_round_harmonization_audit.csv')
-current_synthesis_statistics_by_round = read_csv('current_synthesis_statistics_by_round.csv')
-
-validate_product_ecosystem_snapshot(product_snapshot)
-validate_second_coder_files(second_coder_blind, second_coder_adjudication, second_coder_formal, second_coder_formal_results)
-validate_second_coder_extension_template(second_coder_extension_template, second_coder_extension_results, core_synthesis)
-validate_source_search_audit(corpus, source_search_log, source_screening_audit)
-validate_official_source_followup(official_source_followup_log, official_source_followup_screening)
-validate_study_version_crosswalk(corpus, ref, study_version_crosswalk, mapping_snapshot_counts)
-validate_extended_synthesis_audit(corpus, extended_synthesis, study_version_crosswalk)
-validate_submission_update_screening(submission_update_screening)
-validate_submission_update_full_audit(submission_update_screening, submission_update_full_audit, submission_update_blind)
-validate_submission_update_second_coder(submission_update_full_audit, submission_update_rerun_blind, submission_update_results, submission_update_adjudication)
-validate_submission_update_rerun_template(submission_update_blind, submission_update_rerun_blind)
-validate_submission_update_finalization(submission_update_adjudication, submission_update_adjudicated, submission_update_integration)
-validate_current_study_level_matrix(current_study_level_matrix, submission_update_additions)
-validate_harmonized_coding_matrix(current_study_level_matrix, harmonized_study_level_matrix, coding_round_harmonization_audit, current_synthesis_statistics_by_round, extended_synthesis)
-validate_unified_second_coder_template(unified_second_coder_template, harmonized_study_level_matrix)
-validate_unified_second_coder_results(unified_second_coder_results, unified_second_coder_sensitivity, harmonized_study_level_matrix)
-validate_integrated_submission_update(corpus, study_version_crosswalk, extended_synthesis, submission_update_adjudicated, submission_update_additions, current_synthesis_statistics)
-validate_representative_reported_results(representative_reported_results, harmonized_study_level_matrix, ref, submission_update_sensitivity)
-validate_empirical_reporting(empirical_reporting_extraction, empirical_reporting_completeness, harmonized_study_level_matrix, ref)
-validate_traditional_security_primitives(traditional_security_primitives, harmonized_study_level_matrix)
-validate_structured_claim_boundaries(harmonized_study_level_matrix)
-validate_per_label_reliability(unified_per_label_reliability, harmonized_study_level_matrix, unified_second_coder_results)
-validate_cohort_sensitivity(unified_cohort_sensitivity)
-validate_representative_system_mechanisms(representative_system_mechanisms, harmonized_study_level_matrix, ref)
-validate_mechanism_cost_ablation(mechanism_cost_ablation_synthesis, ref)
-validate_submission_snapshot_files(submission_update_initial_results, submission_update_results, submission_update_sensitivity, publication_status_rows, publication_distribution_rows)
-validate_publication_status_sensitivity(publication_status_sensitivity, publication_status_rows)
-validate_manuscript_artifact_paths()
-validate_tracked_file_boundary()
-
-expected_layers = {'Core': 68, 'Supporting': 69, 'Background': 95, 'Excluded': 21}
-if corpus:
-    status('ERROR', len(corpus) == 253, f'source records = {len(corpus)}; expected 253')
-    layer_counts = Counter(r.get('corpus_layer', 'NA') for r in corpus)
-    for layer, expected in expected_layers.items():
-        status('ERROR', layer_counts.get(layer, 0) == expected, f'legacy source-record layer {layer} = {layer_counts.get(layer, 0)}; expected {expected}')
-
-if core:
-    status('ERROR', len(core) == 31, f'study-level coding rows = {len(core)}; expected 31')
-    core_ids = [r.get('core_id', '') for r in core]
-    record_ids = [r.get('record_id', '') for r in core]
-    status('ERROR', len(core_ids) == len(set(core_ids)), 'core_id values are unique')
-    status('ERROR', len(record_ids) == len(set(record_ids)), 'record_id values are unique in core_coding.csv')
-    for required_core in ['C28', 'C29', 'C30', 'C31']:
-        status('ERROR', required_core in core_ids, f'{required_core} exists in core_coding.csv')
-    missing_reason = [r.get('core_id','?') for r in core if r.get('a_level_reason','NA') in ('', 'NA') or r.get('e_level_reason','NA') in ('', 'NA')]
-    if missing_reason:
-        print('WARNING: missing A/E reason fields for:', ', '.join(missing_reason))
+    check_manifest()
+    _, _ = check_corpus()
+    target = check_matrix()
+    check_extended(target)
+    check_search_and_dedup()
+    check_supplementary_extractions(target)
+    check_publication_status(target)
+    check_second_coder(target)
+    check_private_paths()
+    if args.manuscript:
+        check_manuscript(args.manuscript.resolve())
     else:
-        print('PASS: all legacy first-round rows include A/E reason fields')
+        info("public mode: manuscript source was not requested and no external LaTeX path was used")
 
-    a_counts = Counter()
-    for r in core:
-        for a in expand_a_level(r.get('a_level','')):
-            a_counts[a] += 1
-    print('A-profile occurrence counts:', dict(sorted(a_counts.items())))
-
-    e_counts = Counter(r.get('e_level','NA') for r in core)
-    expected_e = {'E0':3, 'E1':5, 'E2':8, 'E3':14, 'N/A':1}
-    for e, expected in expected_e.items():
-        status('ERROR', e_counts.get(e, 0) == expected, f'{e} = {e_counts.get(e, 0)}; expected {expected}')
-    e4c_count = sum(1 for r in core if 'E4c' in (r.get('external_evidence_profile', '') or ''))
-    status('ERROR', e4c_count == 0, f'E4c external profile = {e4c_count}; expected 0')
-
-if summary:
-    stage_counts = {r.get('stage'): r.get('count') for r in summary}
-    print('screening_summary.csv stages:', stage_counts)
-
-if ref:
-    missing_url = sum(1 for r in ref if r.get('official_url','NA') in ('', 'NA'))
-    missing_doi = sum(1 for r in ref if r.get('doi','NA') in ('', 'NA'))
-    missing_verified = sum(1 for r in ref if r.get('last_verified_date','NA') in ('', 'NA'))
-    print(f'WARNING: reference_audit missing official_url in {missing_url} rows')
-    print(f'WARNING: reference_audit missing doi in {missing_doi} rows')
-    print(f'WARNING: reference_audit missing last_verified_date in {missing_verified} rows')
-
-if record_classification:
-    expected_records = {
-        'FuzzingBrain V2': 'Core',
-        'DrillAgent': 'Core',
-        'AIxCC SoK': 'Background',
-        'OSS-CRS': 'Core',
-        'GONDAR': 'Core',
-        'COTTONTAIL': 'Supporting',
-        'Wan et al.': 'Background',
-    }
-    status('ERROR', len(record_classification) == 7, f'record_classification_audit rows = {len(record_classification)}; expected 7')
-    actual = {r.get('record', ''): r.get('classification', '') for r in record_classification}
-    for record, expected in expected_records.items():
-        status('ERROR', actual.get(record) == expected, f'{record} classification = {actual.get(record, "MISSING")}; expected {expected}')
-
-if repro_audit:
-    repro_ids = [r.get('core_id', '') for r in repro_audit]
-    status('ERROR', len(repro_audit) == 30, f'core_reproducibility_audit rows = {len(repro_audit)}; expected 30 vulnerability-mining Core rows')
-    status('ERROR', 'C27' not in repro_ids, 'C27 governance boundary case is excluded from reproducibility audit')
-    core_ids = {r.get('core_id', '') for r in core if r.get('core_id') != 'C27'} if core else set()
-    status('ERROR', set(repro_ids) == core_ids, 'core_reproducibility_audit core_id values align with core_coding.csv excluding C27')
-    status_fields = [f for f in (CSV_REQUIRED_FIELDS['core_reproducibility_audit.csv']) if f.endswith('_status')]
-    source_errors = []
-    private_leaks = []
-    for row in repro_audit:
-        joined = ' '.join(str(v) for v in row.values())
-        if 'C:\\\\Users\\\\' in joined or 'Zotero\\\\storage' in joined or joined.lower().endswith('.pdf'):
-            private_leaks.append(row.get('core_id', '?'))
-        for field in status_fields:
-            value = row.get(field, '')
-            if value in ('reported_yes', 'reported_partial'):
-                evidence_field = field.replace('_status', '_evidence_public')
-                if field == 'public_artifact_status':
-                    evidence_field = 'public_artifact_public_reference'
-                if row.get(evidence_field, '') in ('', 'NA'):
-                    source_errors.append((row.get('core_id', '?'), field))
-    status('ERROR', not source_errors, 'reported_yes/reported_partial reproducibility fields include public source notes')
-    status('ERROR', not private_leaks, 'public reproducibility audit contains no private Zotero/PDF paths')
-    unknown_counts = Counter()
-    for row in repro_audit:
-        for field in status_fields:
-            if row.get(field) == 'unknown_not_audited':
-                unknown_counts[field] += 1
-    print('Reproducibility audit unknown_not_audited counts:', dict(sorted(unknown_counts.items())))
-
-if repro_summary:
-    print('core_reproducibility_audit_summary rows:', len(repro_summary))
-
-if ERROR_COUNT:
-    print(f'DONE with {ERROR_COUNT} error(s)')
-    sys.exit(1)
-
-print('DONE')
+    if ERRORS:
+        print(f"VALIDATION_FAILED errors={len(ERRORS)}")
+        return 1
+    print("VALIDATION_OK")
+    return 0
 
 
-
-
-
-
-
-
-
-
+if __name__ == "__main__":
+    raise SystemExit(main())

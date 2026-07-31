@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/KjKgw1CDw7+kc8eqbA/Dred4WhI</id>
+  <title>arXiv Query: search_query=submittedDate:"202301010000 TO 202607302359" AND (all:"proof of vulnerability" OR all:PoV OR all:"cyber reasoning system" OR all:CRS) AND (all:LLM OR all:"large language model" OR all:agent)&amp;id_list=&amp;start=200&amp;max_results=100</title>
+  <updated>2026-07-31T09:00:36Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=submittedDate:%22202301010000+TO+202607302359%22+AND+((all:%22proof+of+vulnerability%22+OR+(all:PoV+OR+(all:%22cyber+reasoning+system%22+OR+all:CRS)))+AND+(all:LLM+OR+(all:%22large+language+model%22+OR+all:agent)))&amp;start=200&amp;max_results=100&amp;id_list=" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>100</opensearch:itemsPerPage>
+  <opensearch:totalResults>202</opensearch:totalResults>
+  <opensearch:startIndex>200</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2305.08130v1</id>
+    <title>Inverse Reinforcement Learning With Constraint Recovery</title>
+    <updated>2023-05-14T11:49:37Z</updated>
+    <link href="https://arxiv.org/abs/2305.08130v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2305.08130v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>In this work, we propose a novel inverse reinforcement learning (IRL) algorithm for constrained Markov decision process (CMDP) problems. In standard IRL problems, the inverse learner or agent seeks to recover the reward function of the MDP, given a set of trajectory demonstrations for the optimal policy. In this work, we seek to infer not only the reward functions of the CMDP, but also the constraints. Using the principle of maximum entropy, we show that the IRL with constraint recovery (IRL-CR) problem can be cast as a constrained non-convex optimization problem. We reduce it to an alternating constrained optimization problem whose sub-problems are convex. We use exponentiated gradient descent algorithm to solve it. Finally, we demonstrate the efficacy of our algorithm for the grid world environment.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2023-05-14T11:49:37Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Nirjhar Das</name>
+    </author>
+    <author>
+      <name>Arpan Chattopadhyay</name>
+    </author>
+    <arxiv:doi>10.1007/978-3-031-45170-6_19</arxiv:doi>
+    <link rel="related" href="https://doi.org/10.1007/978-3-031-45170-6_19" title="doi"/>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2305.07961v2</id>
+    <title>Leveraging Large Language Models in Conversational Recommender Systems</title>
+    <updated>2023-05-16T21:21:46Z</updated>
+    <link href="https://arxiv.org/abs/2305.07961v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2305.07961v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>A Conversational Recommender System (CRS) offers increased transparency and control to users by enabling them to engage with the system through a real-time multi-turn dialogue. Recently, Large Language Models (LLMs) have exhibited an unprecedented ability to converse naturally and incorporate world knowledge and common-sense reasoning into language understanding, unlocking the potential of this paradigm. However, effectively leveraging LLMs within a CRS introduces new technical challenges, including properly understanding and controlling a complex conversation and retrieving from external sources of information. These issues are exacerbated by a large, evolving item corpus and a lack of conversational data for training. In this paper, we provide a roadmap for building an end-to-end large-scale CRS using LLMs. In particular, we propose new implementations for user preference understanding, flexible dialogue management and explainable recommendations as part of an integrated architecture powered by LLMs. For improved personalization, we describe how an LLM can consume interpretable natural language user profiles and use them to modulate session-level context. To overcome conversational data limitations in the absence of an existing production CRS, we propose techniques for building a controllable LLM-based user simulator to generate synthetic conversations. As a proof of concept we introduce RecLLM, a large-scale CRS for YouTube videos built on LaMDA, and demonstrate its fluency and diverse functionality through some illustrative example conversations.</summary>
+    <category term="cs.IR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2023-05-13T16:40:07Z</published>
+    <arxiv:primary_category term="cs.IR"/>
+    <author>
+      <name>Luke Friedman</name>
+    </author>
+    <author>
+      <name>Sameer Ahuja</name>
+    </author>
+    <author>
+      <name>David Allen</name>
+    </author>
+    <author>
+      <name>Zhenning Tan</name>
+    </author>
+    <author>
+      <name>Hakim Sidahmed</name>
+    </author>
+    <author>
+      <name>Changbo Long</name>
+    </author>
+    <author>
+      <name>Jun Xie</name>
+    </author>
+    <author>
+      <name>Gabriel Schubiner</name>
+    </author>
+    <author>
+      <name>Ajay Patel</name>
+    </author>
+    <author>
+      <name>Harsh Lara</name>
+    </author>
+    <author>
+      <name>Brian Chu</name>
+    </author>
+    <author>
+      <name>Zexi Chen</name>
+    </author>
+    <author>
+      <name>Manoj Tiwari</name>
+    </author>
+  </entry>
+</feed>

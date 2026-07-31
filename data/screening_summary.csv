@@ -1,9 +1,11 @@
 stage,count,note
-Source-specific search ledger,253,Source records retained in corpus.csv and source_screening_audit.csv; versions remain traceable.
-Canonical study/version resolution,5,Alternate or duplicate source records are linked to canonical studies in study_version_crosswalk.csv.
-Canonical candidate studies after version deduplication,248,Analytical study counts use canonical studies rather than source-record rows.
-Study-level coded records,68,67 target-software studies plus one governance boundary record; reliability is reported separately for the frozen 31-record and 41-record update rounds.
-Extended synthesis studies,65,Canonical extended-synthesis studies after version resolution and submission-update integration.
-Background references,95,"Background/reference canonical records for primitives, concepts, tools, benchmarks, methods, and ecosystem context."
-Excluded near-neighbor studies,20,Canonical excluded studies after version deduplication; source-level excluded rows remain traceable.
-Product ecosystem snapshot,23,Independent boundary layer in product_ecosystem_snapshot.csv; not part of source-record or canonical-study counts.
+Exported source occurrences,12090,Saved API/interface exports before deterministic query-specific filtering.
+Unique multi-source search records screened,1642,Exact-title-deduplicated records from the full-range search through 2026-07-30.
+Integrated source records,1785,Search and supplementary source records; versions remain traceable.
+Version or duplicate source records,13,Alternate source/version records not counted as separate studies.
+Canonical studies after version reconciliation,1772,Analytical counts use one canonical study per study/version group.
+Study-level coded records,200,199 target-software studies plus one governance boundary case.
+Extended synthesis studies,149,Full-text-supported adjacent mechanism and evaluation synthesis.
+Background/reference studies,670,"Conceptual, benchmark, tool, method, and ecosystem context."
+Excluded studies,753,"Title/abstract exclusions, near-neighbors, and unavailable potentially eligible reports."
+Product ecosystem snapshot,23,Independent deployment-context layer; not part of canonical study counts.
