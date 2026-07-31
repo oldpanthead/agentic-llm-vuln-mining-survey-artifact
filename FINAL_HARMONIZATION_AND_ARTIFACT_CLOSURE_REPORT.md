@@ -51,7 +51,7 @@ The adapted PRISMA-ScR figure presents one integrated flow rather than a sequenc
 - `python reproduce_tables.py`: exit code 0 in the working artifact directory.
 - `python build_final_multisource_prisma_20260730.py`: regenerates the PRISMA ledger from the frozen complete-screening audit and the tracked pre-integration corpus/crosswalk.
 - `data/final_multisource_exclusion_summary.csv` closes the 753 exclusions by screening stage; `data/final_multisource_cohort_stability.csv` records the retained-67 versus new-132 schema comparison.
-- Public standalone mode: exit code 0 in a fresh 24-path manifest-only copy with no manuscript checkout or external LaTeX directory.
+- Public standalone mode: exit code 0 in a fresh clone with all 27 manifest paths and no manuscript checkout or external LaTeX directory.
 - LaTeX compilation: successful; current PDF is 36 pages and includes bibliography entries for the newly integrated study-level records.
 - New-study BibTeX validation: 132/132 entries structurally valid; official metadata corrects two ACL conference records and one Research Square preprint.
 - Undefined citations/references: none.
