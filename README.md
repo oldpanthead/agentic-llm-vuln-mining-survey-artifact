@@ -9,7 +9,7 @@ This repository contains the non-sensitive public artifact for a mapping-oriente
 3. Use `ARTIFACT_INDEX.md` as the compact file map.
 4. Use `data_dictionary.md` for field-level definitions.
 
-Versioned submission snapshot: `csur-submission-2026-07-final-v5`.
+Versioned submission snapshot: `csur-submission-2026-07-final-v6`.
 
 Expected validation highlights:
 
@@ -32,6 +32,7 @@ Expected validation highlights:
 
 The current corpus contains 68 study-level coded records (67 target-software studies plus one governance boundary case) and 65 extended-synthesis studies. `data/current_study_level_coding_matrix_harmonized.csv` is the author-confirmed current study-level view; `data/current_study_level_coding_matrix.csv` preserves the pre-harmonization combined view. Legacy files with `core31` or `v13` names retain the frozen first-round coding and its formal reliability results, while the 37-row additions file preserves update-round provenance without imputed A/E labels. Source-layer values retain `Core` and `Supporting` for script compatibility and record analytical role rather than study quality.
 
+The current shape and capability schema consolidates historical coding terms through the legacy crosswalk and cross-round harmonization. `LEGACY_CODE_CROSSWALK.md`, `CODING_ROUND_HARMONIZATION_REPORT.md`, and `data/coding_round_harmonization_audit.csv` preserve that lineage; the integrated update-study labels use the unified schema.
 
 The current reliability view applies one frozen codebook to all 67 target-software studies plus the governance boundary case. The manuscript's descriptive counts use the author-confirmed harmonized matrix, while the complete independent second-coder labels and label-substitution sensitivity table show which conclusions persist under an alternative coding assignment. Historical round-specific files remain available as codebook and provenance records.
 

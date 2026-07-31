@@ -98,7 +98,7 @@ The current formal reliability result is the unified independent review of all 6
 
 ## Release State
 
-- Submission snapshot: `csur-submission-2026-07-final-v5`.
+- Submission snapshot: `csur-submission-2026-07-final-v6`.
 - The analytical corpus is frozen. Subsequent corrections are limited to bibliographic metadata, formal-version reconciliation, and artifact consistency.
 
 ## Extended synthesis terminology note

@@ -7,6 +7,8 @@ This dictionary describes the non-sensitive audit artifact used by the survey ma
 
 Current terminology maps legacy artifact values as follows: `Core` identifies study-level coded source records and `Supporting` identifies extended-synthesis source records. The current corpus contains 68 study-level coded records (67 target-software studies plus one governance boundary case) and 65 extended-synthesis studies. `data/current_study_level_coding_matrix_harmonized.csv` is the author-confirmed current study-level view; `data/current_study_level_coding_matrix.csv` preserves the pre-harmonization combined view. Legacy `core31` and `v13_` files preserve the frozen first coding round; the additions file preserves update-round provenance without imputed A/E labels.
 
+The current shape and capability schema consolidates historical coding terms through `LEGACY_CODE_CROSSWALK.md` and the cross-round harmonization documented in `CODING_ROUND_HARMONIZATION_REPORT.md` and `data/coding_round_harmonization_audit.csv`. The integrated update-study labels use the unified schema; historical files retain the earlier labels and their provenance.
+
 ## Unified second-coder review files
 
 `unified_second_coder_codebook.md` and `UNIFIED_SECOND_CODER_REVIEW_GUIDE.md` define the single frozen review boundary applied across all 67 target-software studies plus the governance boundary case. `data/unified_second_coder_final_blind_template.csv` is the blank public input, and `data/unified_second_coder_final_results.csv` contains the completed independent labels and row-level material/decision provenance. `data/unified_second_coder_pre_adjudication_disagreements.csv` compares those labels with the manuscript-facing harmonized matrix without creating consensus labels. `data/unified_second_coder_label_substitution_sensitivity.csv` reports, for each lifecycle, capability, system-shape, evidence-output, and external-traceability label, the author-harmonized count, complete coder2 substitution count, absolute difference, and direction on the 67-study target-software denominator. `reports/UNIFIED_SECOND_CODER_PRE_ADJUDICATION_REPORT.md` reports field-specific agreement before adjudication; adjudication is not planned and no post-adjudication reliability is claimed. Historical 31-record and 41-record files remain as codebook-development and round-provenance records rather than a synthetic combined reliability result.
@@ -30,7 +32,7 @@ Lightweight boundary notes for an adopted tightened-boundary rerun of the 41-rec
 - `cross_stage_capabilities`: current controlled multi-label capability field.
 - `legacy_notes`: historical textual labels retained outside formal capability coding.
 - `strongest_evidence_output`: historical schema field name retained for compatibility; it stores the manuscript's principal reported evidence-output category. Candidate judgment, controlled task completion, runtime safety signal, and reproducible validation mainly describe system-produced results; externally traceable material is a combined state that aligns a concrete result with a public external-process record.
-- `external_traceability`: presence, type, and item-level alignment of external material, recorded independently from the principal category.
+- `external_traceability`: presence, type, and item-level alignment of external material, recorded independently from the principal category. Controlled values are `no external trace reported`, `author-reported external clue`, `benchmark ground truth / public material`, and `publicly aligned external trace`; `not reported` is reserved for a governance-boundary row when the field is not applicable.
 - `claim_boundary`: current structured English note using `Supported claim and conditions` and `Stronger-claim boundary`; it is a derived interpretation field rather than an ordered category.
 - `claim_boundary_original`: source-round wording retained for traceability; it may match `claim_boundary` for update rows.
 - `coding_status`: frozen initial-round or author-confirmed update status.
@@ -494,6 +496,8 @@ Source-located audit file for the representative reported-results table in Appen
 ## `data/empirical_reporting_extraction.csv`
 
 One source-scoped row for each of the 67 target-software studies. This table is parallel to the coding matrix and does not add or revise lifecycle, capability, shape, evidence-output, or claim-boundary labels.
+
+Every column name is unique. `reproduce_tables.py` treats duplicate CSV header names as an error.
 
 - `matrix_id`, `record_id`, `system`, `citation_key`: links to the current study-level matrix and reference audit.
 - `primary_shape`: copied from the harmonized study-level matrix for grouped summaries.

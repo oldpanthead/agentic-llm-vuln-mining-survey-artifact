@@ -12,7 +12,7 @@ The unified review covers all 67 target-software studies plus the governance bou
 | Cross-stage capability | 67 | exact = 25/67 = 0.373; mean row Jaccard = 0.793; micro F1 = 0.877 |
 | Primary system shape | 67 | raw agreement = 53/67 = 0.791; Cohen's kappa = 0.720 |
 | Principal reported evidence output | 67 | raw agreement = 51/67 = 0.761; Cohen's kappa = 0.665 |
-| External traceability | 67 | raw agreement = 41/67 = 0.612; Cohen's kappa = 0.463 |
+| External traceability | 67 | raw agreement = 42/67 = 0.627; Cohen's kappa = 0.482 |
 
 ## Review Actions
 
@@ -25,7 +25,7 @@ The unified review covers all 67 target-software studies plus the governance bou
 | External traceability | 43 | 25 | 0 |
 | Claim boundary | 34 | 3 | 31 |
 
-The disagreement file contains 147 field-level rows. These are pre-adjudication differences; no consensus or post-adjudication reliability is claimed.
+The disagreement file contains 146 field-level rows. These are pre-adjudication differences; no consensus or post-adjudication reliability is claimed.
 
 ## Label-Substitution Sensitivity
 

@@ -23,6 +23,5 @@ strongest_evidence_output,reproducible validation,67,31,31,0,same
 strongest_evidence_output,runtime safety signal,67,13,6,7,coder2_lower
 external_traceability,author-reported external clue,67,22,18,4,coder2_lower
 external_traceability,benchmark ground truth / public material,67,23,29,6,coder2_higher
-external_traceability,no external trace reported,67,17,8,9,coder2_lower
-external_traceability,not reported,67,1,0,1,coder2_lower
+external_traceability,no external trace reported,67,18,8,10,coder2_lower
 external_traceability,publicly aligned external trace,67,4,12,8,coder2_higher

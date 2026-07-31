@@ -752,6 +752,10 @@ def validate_csv_schema(name, reader, rows):
     fieldnames = reader.fieldnames or []
     required = CSV_REQUIRED_FIELDS.get(name, [])
     status('ERROR', bool(fieldnames), f'{name} has a header row')
+    duplicate_fields = sorted({field for field in fieldnames if fieldnames.count(field) > 1})
+    status('ERROR', not duplicate_fields, f'{name} has unique header names')
+    if duplicate_fields:
+        print(f'ERROR: {name} duplicate header names:', ', '.join(duplicate_fields))
     missing = [field for field in required if field not in fieldnames]
     status('ERROR', not missing, f'{name} contains required fields: {", ".join(required) if required else "no file-specific required fields"}')
     if missing:
@@ -1873,11 +1877,32 @@ def validate_submission_update_finalization(adjudication_rows, final_rows, integ
         'proposed_external_traceability', 'proposed_claim_boundary',
     ]
     mismatches = []
+    controlled_normalizations = []
     for row in final_rows:
         draft = draft_by_id.get(row.get('update_id', ''), {})
-        if any(row.get(field, '') != draft.get(field, '') for field in comparison_fields):
+        differing_fields = [
+            field for field in comparison_fields
+            if row.get(field, '') != draft.get(field, '')
+        ]
+        if not differing_fields:
+            continue
+        is_u22_trace_normalization = (
+            row.get('update_id') == 'U22'
+            and differing_fields == ['proposed_external_traceability']
+            and draft.get('proposed_external_traceability') == 'not reported'
+            and row.get('proposed_external_traceability') == 'no external trace reported'
+            and 'trace=controlled_vocabulary_normalization' in row.get('field_resolution_trace', '')
+        )
+        if is_u22_trace_normalization:
+            controlled_normalizations.append('U22:proposed_external_traceability')
+        else:
             mismatches.append(row.get('update_id', '?'))
     status('ERROR', not mismatches, 'author-confirmed adjudication preserves the reviewed working-draft labels')
+    status(
+        'ERROR',
+        controlled_normalizations == ['U22:proposed_external_traceability'],
+        'post-review controlled-vocabulary normalization is limited to the audited U22 external-trace value',
+    )
 
     final_layers = Counter(row.get('proposed_analysis_layer', '') for row in final_rows)
     status('ERROR', final_layers == Counter({'study_level_candidate': 37, 'extended_synthesis': 4}), 'author-confirmed update layer counts are 37 study-level candidates and 4 extended-synthesis records')
@@ -1949,12 +1974,27 @@ def validate_current_study_level_matrix(current_matrix, additions):
         'official_url': 'official_url',
     }
     mismatches = []
+    controlled_normalizations = []
     for update_id, addition in additions_by_id.items():
         row = by_id.get(update_id, {})
         for matrix_field, addition_field in comparable.items():
             if row.get(matrix_field) != addition.get(addition_field):
-                mismatches.append(f'{update_id}:{matrix_field}')
-    status('ERROR', not mismatches, 'current matrix update rows match the 37 author-confirmed additions field by field')
+                is_u22_trace_normalization = (
+                    update_id == 'U22'
+                    and matrix_field == 'external_traceability'
+                    and row.get(matrix_field) == 'not reported'
+                    and addition.get(addition_field) == 'no external trace reported'
+                )
+                if is_u22_trace_normalization:
+                    controlled_normalizations.append('U22:external_traceability')
+                else:
+                    mismatches.append(f'{update_id}:{matrix_field}')
+    status('ERROR', not mismatches, 'current matrix update rows match the 37 author-confirmed additions except audited post-freeze normalizations')
+    status(
+        'ERROR',
+        controlled_normalizations == ['U22:external_traceability'],
+        'the pre-harmonization matrix preserves U22 while the current addition uses the audited controlled value',
+    )
     if mismatches:
         print('ERROR: current matrix mismatches:', ', '.join(mismatches))
     print('CURRENT_STUDY_LEVEL_MATRIX: rows=68 target=67 governance=1 initial_round=31 update_round=37')
@@ -2029,7 +2069,7 @@ def validate_unified_second_coder_results(results, sensitivity, harmonized_matri
     status('ERROR', report_path.exists(), 'unified second-coder pre-adjudication report exists')
     status('ERROR', disagreement_path.exists(), 'unified second-coder disagreement audit exists')
     status('ERROR', len(results) == 68, f'unified second-coder completed rows = {len(results)}; expected 68')
-    status('ERROR', len(sensitivity) == 27, f'unified label-substitution rows = {len(sensitivity)}; expected 27')
+    status('ERROR', len(sensitivity) == 26, f'unified label-substitution rows = {len(sensitivity)}; expected 26')
     if not results or not harmonized_matrix:
         return
 
@@ -2064,7 +2104,7 @@ def validate_unified_second_coder_results(results, sensitivity, harmonized_matri
             'mean row Jaccard = 0.793; micro F1 = 0.877',
             "raw agreement = 53/67 = 0.791; Cohen's kappa = 0.720",
             "raw agreement = 51/67 = 0.761; Cohen's kappa = 0.665",
-            "raw agreement = 41/67 = 0.612; Cohen's kappa = 0.463",
+            "raw agreement = 42/67 = 0.627; Cohen's kappa = 0.482",
             'no consensus or post-adjudication reliability is claimed',
         ]:
             status('ERROR', marker in report, f'unified second-coder report preserves: {marker}')

@@ -199,7 +199,7 @@ PROPOSED_TRACE = {
     "U15": "benchmark ground truth / public material", "U16": "benchmark ground truth / public material",
     "U17": "publicly aligned external trace", "U18": "benchmark ground truth / public material",
     "U19": "benchmark ground truth / public material", "U20": "not reported",
-    "U21": "benchmark ground truth / public material", "U22": "not reported",
+    "U21": "benchmark ground truth / public material", "U22": "no external trace reported",
     "U23": "benchmark ground truth / public material", "U24": "benchmark ground truth / public material",
     "U25": "benchmark ground truth / public material", "U26": "benchmark ground truth / public material",
     "U27": "author-reported external clue", "U28": "benchmark ground truth / public material",

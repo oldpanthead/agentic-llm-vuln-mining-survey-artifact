@@ -8,8 +8,8 @@ This closure pass synchronizes the public artifact with the current ACM CSUR man
 
 - Repository: `oldpanthead/agentic-llm-vuln-mining-survey-artifact`
 - Official-source follow-up: 2026-07-16, with final metadata verification on 2026-07-22; no corpus-count changes
-- Submission tag: `csur-submission-2026-07-final-v4`.
-- Final artifact sync closes the RQ1 primitive construct, the evidence-output/external-trace distinction, source-level endpoint review, structured claim-boundary notes, and manuscript-to-artifact checks without changing corpus counts, evidence labels, or reliability metrics.
+- Submission tag: `csur-submission-2026-07-final-v6`.
+- Final artifact sync closes the RQ1 primitive construct, the evidence-output/external-trace distinction, source-level endpoint review, structured claim-boundary notes, and manuscript-to-artifact checks without changing corpus counts or principal evidence-output labels. A controlled-vocabulary normalization of U22 updates the external-traceability agreement reported below.
 
 ## Corpus Counts
 
@@ -24,13 +24,13 @@ This closure pass synchronizes the public artifact with the current ACM CSUR man
 
 ## Harmonization Changes
 
-The author-confirmed harmonization audit contains 408 field rows for 68 study-level coded records. Substantive harmonization changed 25 records and 39 field entries:
+The author-confirmed harmonization audit contains 408 field rows for 68 study-level coded records. Harmonization or controlled-vocabulary normalization changed 26 records and 40 field entries:
 
 - `lifecycle_coverage`: 15 changed field entries
 - `cross_stage_capabilities`: 24 changed field entries
 - `primary_system_shape`: no substantive label changes; schema normalization separates primary shape from overlay tags
 - `strongest_evidence_output`: no substantive label changes in the harmonization pass; the legacy field name stores the principal reported evidence output
-- `external_traceability`: no substantive changes in the harmonization pass
+- `external_traceability`: one controlled-vocabulary normalization (`not reported` to `no external trace reported` for U22)
 
 Label-level changes computed from `data/coding_round_harmonization_audit.csv`:
 
@@ -49,7 +49,7 @@ The current reliability result applies one frozen codebook to the complete study
 1. The unified independent review covers all 67 target-software studies plus the governance boundary case; target-software reliability uses the 67-study denominator.
 2. Lifecycle coverage reached exact agreement 18/67 = 0.269, mean row Jaccard = 0.746, and micro F1 = 0.848.
 3. Cross-stage capability reached exact agreement 25/67 = 0.373, mean row Jaccard = 0.793, and micro F1 = 0.877.
-4. Primary system shape reached raw agreement 53/67 = 0.791 and Cohen's kappa = 0.720; principal reported evidence output reached 51/67 = 0.761 and kappa = 0.665; external traceability reached 41/67 = 0.612 and kappa = 0.463.
+4. Primary system shape reached raw agreement 53/67 = 0.791 and Cohen's kappa = 0.720; principal reported evidence output reached 51/67 = 0.761 and kappa = 0.665; external traceability reached 42/67 = 0.627 and kappa = 0.482.
 5. The harmonized matrix supplies descriptive counts, and the complete independent label-substitution table supplies the sensitivity view. No consensus labels, synthetic combined kappa, or post-adjudication reliability are claimed.
 6. Historical 31-record and 41-record files remain preserved as codebook-development and provenance records.
 7. No AI output is treated as an independent human coding decision.
@@ -113,4 +113,4 @@ The current PDF compiles to 34 pages. The LaTeX log reports no undefined citatio
 
 ## Public-Artifact Snapshot
 
-The synchronized public snapshot is identified by the immutable `csur-submission-2026-07-final-v4` tag. The tag resolves to the commit containing this report; standalone artifact validation and optional manuscript-path validation are recorded above.
+The synchronized public snapshot is identified by the immutable `csur-submission-2026-07-final-v6` tag. The tag resolves to the commit containing this report; standalone artifact validation and optional manuscript-path validation are recorded above.
