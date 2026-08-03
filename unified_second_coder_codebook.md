@@ -39,7 +39,7 @@ Long-horizon state preservation is one capability, not the definition of the ent
 
 ## 3. Primary System Shape (single-label)
 
-Choose the dominant evaluated role around which the study's main contribution and reported output are organized. Secondary roles belong in the uncertainty note rather than as a second primary label.
+Choose the dominant location and objective of agent control in the study's main evaluated contribution. This field describes how the workflow is organized, not which result category is ultimately reported. Secondary roles belong in the uncertainty note rather than as a second primary label.
 
 - `candidate-analysis system`
 - `feedback-driven fuzzing agent`
@@ -51,7 +51,7 @@ Long-horizon orchestration can overlay the other roles. Assign it as primary onl
 
 ## 4. Principal Reported Evidence Output (single-label)
 
-Code the strongest system-produced output demonstrated in the reviewed material.
+Code the observable result that most directly supports the study's main evaluated finding. The historical CSV field name is retained for compatibility, but the analytical concept is the principal reported output rather than a universal strength ranking.
 
 - `candidate judgment`: label, score, ranking, explanation, warning, hypothesis, or candidate report without stronger execution evidence.
 - `controlled task completion`: benchmark, CTF, cyber-range, or bounded task success without a stronger vulnerability-specific output.

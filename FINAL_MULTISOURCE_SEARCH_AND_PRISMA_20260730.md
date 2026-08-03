@@ -40,6 +40,20 @@ ArXiv and OpenAlex occurrences entered deduplication under their source-query bo
 | integration | new or reconciled source records added | 1532 |
 | integration | supplementary source records not reidentified | 143 |
 | integration | prior canonical studies not reidentified | 138 |
+| prior_path | prior source records | 253 |
+| prior_path | prior canonical studies | 248 |
+| prior_path | prior target software studies | 67 |
+| prior_path | prior extended synthesis studies | 65 |
+| prior_path | prior governance boundary record | 1 |
+| current_path | new canonical studies | 1524 |
+| current_path | new target software studies | 132 |
+| current_path | new extended synthesis studies | 84 |
+| current_path | new extended full text supported | 83 |
+| current_path | new extended metadata supported | 1 |
+| current_path | new background reference studies | 575 |
+| current_path | new excluded studies | 733 |
+| final | extended synthesis full text supported | 88 |
+| final | extended synthesis metadata supported | 62 |
 | final | integrated source records | 1785 |
 | final | integrated canonical studies | 1772 |
 | final | target software studies | 199 |
@@ -50,5 +64,11 @@ ArXiv and OpenAlex occurrences entered deduplication under their source-query bo
 ## Final Analytical Allocation
 
 After version reconciliation, the integrated corpus contains **1772 canonical studies** from **1785 source records**: **199 target-software studies**, **150 extended-synthesis studies with record-level public-material audit**, **670 background/reference studies**, and **753 excluded studies**.
+
+## Dual-Path Closure
+
+The prior retained path contains **248 studies** from **253 source records**: 67 target-software studies, 65 extended-synthesis studies, one governance boundary record, 95 background/reference studies, and 20 exclusions. The current interface path contributes 1524 new studies after overlap and version reconciliation. The final analytical sets therefore close as **67 + 132 = 199 target-software studies** and **65 + 84 + 1 = 150 extended-synthesis studies**.
+
+The values 143 and 138 use different units: 143 is the number of prior source records not reidentified by the current interfaces, whereas 138 is the corresponding number of prior canonical studies. For extended synthesis, 83 is the number of current-interface records assessed at full text, while 84 is the number of new canonical extended-synthesis studies after one title-and-abstract-supported record is included. The earlier 89 full-text figure arose when that metadata-supported row inherited a generic full-text note; the corrected final material-basis account is 88 full-text-supported and 62 metadata-supported studies.
 
 Historical search files remain unchanged as provenance. The manuscript-facing method can report the integrated source coverage, date range, screening rules, version reconciliation, and final allocation without narrating internal search rounds.

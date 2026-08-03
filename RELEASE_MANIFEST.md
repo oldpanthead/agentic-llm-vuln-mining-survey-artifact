@@ -4,7 +4,7 @@
 
 This public release contains non-sensitive data and scripts supporting the ACM CSUR manuscript. It includes the integrated multi-source search through 2026-07-30, study/version reconciliation, analytical-layer allocation, the 199-study target-software coding matrix, the 150-study extended synthesis audit, complete independent second-coder files, and source-located supplementary extractions.
 
-The immutable synchronized submission tag is `csur-submission-2026-07-final-v7`. Earlier tags remain unchanged.
+The immutable synchronized submission tag is `csur-submission-2026-07-final-v8`. Earlier tags remain unchanged.
 
 ## Current Counts
 
@@ -29,9 +29,10 @@ The authoritative list is `manuscript_artifact_paths.txt`. It includes:
 - the stage-level exclusion account and pre-final/new-study cohort-stability audit;
 - `data/corpus.csv` and `data/study_version_crosswalk.csv`;
 - `data/current_study_level_coding_matrix_harmonized.csv`;
-- `data/extended_synthesis_audit.csv` (89 full-text-supported and 61 title/abstract-metadata-supported records);
+- `data/extended_synthesis_audit.csv` (88 full-text-supported and 62 title/abstract-metadata-supported records);
 - study-level publication-status assignments and stratified distributions;
-- `data/traditional_security_primitives.csv`;
+- the study-level primitive extraction, workflow-active/evaluation role split, and primitive--output cross-tab;
+- target-domain/year, publication-status, public-artifact, and training-overlap reporting audits;
 - `data/final_multisource_cohort_stability.csv`;
 - integrated 199-study second-coder comparison, per-label reliability, and substitution sensitivity;
 - representative mechanism, reported-result, cost, ablation, and failure-recovery extractions;
@@ -45,7 +46,7 @@ Run:
 python reproduce_tables.py
 ```
 
-The default public mode has no dependency on a manuscript checkout. It verifies file presence, unique CSV headers, corpus and layer counts, study/version uniqueness, shape and evidence distributions, lifecycle and capability counts, external-traceability counts, primitive extraction counts, PRISMA arithmetic, deduplication resolutions, reference metadata, and the complete 199-study reliability files. Optional manuscript validation is available through `--manuscript`.
+The default public mode has no dependency on a manuscript checkout. It verifies file presence, unique CSV headers, corpus and layer counts, study/version uniqueness, shape and evidence distributions, lifecycle and capability counts, external traceability, dual-path PRISMA arithmetic, primitive-use roles and output coupling, publication-status sensitivity, target-domain/year cross-tabs, public-artifact indicators, training-overlap reporting, reference metadata, per-label AC1, and the complete 199-study reliability files. Optional manuscript validation is available through `--manuscript`.
 
 ## Historical Provenance
 

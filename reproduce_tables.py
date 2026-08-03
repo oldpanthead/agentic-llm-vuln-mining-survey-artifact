@@ -148,6 +148,17 @@ def kappa(first: list[str], second: list[str]) -> float:
     return (observed - expected) / (1 - expected)
 
 
+def gwet_ac1_binary(first: list[str], second: list[str]) -> float:
+    observed = raw_agreement(first, second)
+    positive_prevalence = (
+        sum(value == "1" for value in first) + sum(value == "1" for value in second)
+    ) / (2 * len(first))
+    expected = 2 * positive_prevalence * (1 - positive_prevalence)
+    if expected == 1:
+        return 1.0 if observed == 1.0 else 0.0
+    return (observed - expected) / (1 - expected)
+
+
 def jaccard(a: set[str], b: set[str]) -> float:
     return 1.0 if not (a | b) else len(a & b) / len(a | b)
 
@@ -232,11 +243,11 @@ def check_extended(target: list[dict[str, str]]) -> None:
     require(sum(row.get("record_id") == "CP114" for row in rows) == 1, "AgentFuzz must appear once in extended synthesis")
     metadata_only = [
         row for row in rows
-        if "title/abstract metadata" in row.get("reviewer_note", "").casefold()
+        if re.search(r"title(?:/|-and-)?abstract metadata", row.get("reviewer_note", ""), re.I)
     ]
-    require(len(metadata_only) == 61, "extended-synthesis metadata-supported count must be 61")
-    require(len(rows) - len(metadata_only) == 89, "extended-synthesis full-text-supported count must be 89")
-    info("extended synthesis: 89 full-text-supported and 61 metadata-supported studies")
+    require(len(metadata_only) == 62, "extended-synthesis metadata-supported count must be 62")
+    require(len(rows) - len(metadata_only) == 88, "extended-synthesis full-text-supported count must be 88")
+    info("extended synthesis: 88 full-text-supported and 62 metadata-supported studies")
 
 
 def check_search_and_dedup() -> None:
@@ -298,6 +309,20 @@ def check_search_and_dedup() -> None:
         "new_or_reconciled_source_records_added": 1532,
         "supplementary_source_records_not_reidentified": 143,
         "prior_canonical_studies_not_reidentified": 138,
+        "prior_source_records": 253,
+        "prior_canonical_studies": 248,
+        "prior_target_software_studies": 67,
+        "prior_extended_synthesis_studies": 65,
+        "prior_governance_boundary_record": 1,
+        "new_canonical_studies": 1524,
+        "new_target_software_studies": 132,
+        "new_extended_synthesis_studies": 84,
+        "new_extended_full_text_supported": 83,
+        "new_extended_metadata_supported": 1,
+        "new_background_reference_studies": 575,
+        "new_excluded_studies": 733,
+        "extended_synthesis_full_text_supported": 88,
+        "extended_synthesis_metadata_supported": 62,
         "integrated_source_records": 1785,
         "integrated_canonical_studies": 1772,
         "target_software_studies": 199,
@@ -325,6 +350,48 @@ def check_supplementary_extractions(target: list[dict[str, str]]) -> None:
     observed = set().union(*(split_labels(row.get("primitive_tags", "")) for row in primitives))
     require(observed <= allowed, f"unknown primitive tag(s): {sorted(observed - allowed)}")
     require(all(row.get("source_location", "").strip() for row in primitives), "primitive extraction missing source location")
+
+    detailed = read_csv(DATA / "traditional_security_primitives_by_use_role.csv")
+    require(len(detailed) == 503, "study-primitive role extraction must contain 503 rows")
+    target_ids = {row.get("matrix_id", "") for row in target}
+    require({row.get("matrix_id", "") for row in detailed} <= target_ids, "study-primitive role extraction contains a non-target ID")
+    require(
+        len({(row.get("matrix_id", ""), row.get("primitive_family", "")) for row in detailed}) == len(detailed),
+        "duplicate study-primitive pair in role extraction",
+    )
+    require(
+        {row.get("use_role", "") for row in detailed} <= {"workflow-active use", "evaluation/support use", "both"},
+        "unknown primitive use role",
+    )
+    require(all(row.get("source_location", "").strip() for row in detailed), "role extraction missing source location")
+    role_summary = {row["primitive_family"]: row for row in read_csv(DATA / "traditional_security_primitive_use_role_counts.csv")}
+    require(len(role_summary) == 7, "primitive role summary must contain seven families")
+    for family, summary in role_summary.items():
+        rows = [row for row in detailed if row["primitive_family"] == family]
+        active = {row["matrix_id"] for row in rows if row["use_role"] in {"workflow-active use", "both"}}
+        support = {row["matrix_id"] for row in rows if row["use_role"] in {"evaluation/support use", "both"}}
+        both = active & support
+        union = active | support
+        require(int(summary["workflow_active_studies"]) == len(active), f"workflow-active primitive count differs: {family}")
+        require(int(summary["evaluation_support_studies"]) == len(support), f"evaluation/support primitive count differs: {family}")
+        require(int(summary["both_roles"]) == len(both), f"both-role primitive count differs: {family}")
+        require(int(summary["union_studies"]) == len(union), f"primitive union count differs: {family}")
+        require(int(summary["denominator"]) == 199, f"primitive denominator differs: {family}")
+    unspecified = read_csv(DATA / "traditional_security_primitives_not_specified.csv")
+    require(len(unspecified) == 3, "primitive-not-specified audit must contain three studies")
+    require({row["matrix_id"] for row in unspecified} == target_ids - {row["matrix_id"] for row in detailed}, "primitive-not-specified IDs do not close")
+
+    output_by_id = {row["matrix_id"]: row["strongest_evidence_output"] for row in target}
+    primitive_output = read_csv(DATA / "traditional_security_primitive_by_output.csv")
+    require(len(primitive_output) == 35, "primitive-output cross-tab must contain 35 rows")
+    for family, summary in role_summary.items():
+        family_ids = {row["matrix_id"] for row in detailed if row["primitive_family"] == family}
+        rows = [row for row in primitive_output if row["primitive_family"] == family]
+        require(len(rows) == 5, f"primitive-output cross-tab lacks output categories: {family}")
+        for row in rows:
+            actual = sum(output_by_id[matrix_id] == row["principal_reported_evidence_output"] for matrix_id in family_ids)
+            require(actual == int(row["count"]), f"primitive-output count differs: {family} {row['principal_reported_evidence_output']}")
+            require(int(row["primitive_union_denominator"]) == len(family_ids), f"primitive-output denominator differs: {family}")
 
     refs = read_csv(DATA / "reference_audit.csv")
     require(len(refs) == 402, "reference audit must contain 402 rows")
@@ -384,7 +451,7 @@ def check_supplementary_extractions(target: list[dict[str, str]]) -> None:
         all(int(row["count"]) > 0 for row in cohort_rows if row["dimension"] in {"primary_system_shape", "principal_reported_evidence_output"}),
         "a cohort does not populate every shape and evidence category",
     )
-    info("supplementary primitive, reference, and cohort-stability extractions verified")
+    info("supplementary primitive roles, output coupling, references, and cohort stability verified")
 
 
 def check_publication_status(target: list[dict[str, str]]) -> None:
@@ -411,7 +478,87 @@ def check_publication_status(target: list[dict[str, str]]) -> None:
     require(sum(row["strongest_evidence_output"] == "reproducible validation" for row in preprints) == 69, "preprint RV count differs")
     require(sum(row["strongest_evidence_output"] == "externally traceable material" for row in peer) == 1, "peer-reviewed ET count differs")
     require(sum(row["strongest_evidence_output"] == "externally traceable material" for row in preprints) == 5, "preprint ET count differs")
+    sensitivity = read_csv(DATA / "publication_status_sensitivity_analysis.csv")
+    require(len(sensitivity) == 31, "publication-status sensitivity view must contain 31 rows")
+    require({row["publication_status_group"] for row in sensitivity} == {
+        "all_target_software", "conference_or_journal", "preprint", "benchmark_report_or_other"
+    }, "publication-status sensitivity groups differ")
+    for group, denominator in {
+        "all_target_software": 199,
+        "conference_or_journal": 31,
+        "preprint": 164,
+        "benchmark_report_or_other": 4,
+    }.items():
+        subset = [row for row in sensitivity if row["publication_status_group"] == group]
+        require(all(int(row["denominator"]) == denominator for row in subset), f"publication sensitivity denominator differs: {group}")
+        require(sum(int(row["count"]) for row in subset if row["dimension"] == "primary_system_shape") == denominator, f"publication shape counts do not close: {group}")
+        require(sum(int(row["count"]) for row in subset if row["dimension"] == "principal_reported_evidence_output") == denominator, f"publication output counts do not close: {group}")
     info("publication-status assignments and manuscript-facing stratification verified")
+
+
+def check_domain_and_reporting_extractions(target: list[dict[str, str]]) -> None:
+    target_by_id = {row["matrix_id"]: row for row in target}
+    target_ids = set(target_by_id)
+
+    domains = read_csv(DATA / "target_domain_extraction.csv")
+    require(len(domains) == 199, "target-domain extraction must contain 199 rows")
+    require({row["matrix_id"] for row in domains} == target_ids, "target-domain IDs differ from target matrix")
+    require(all(row["source_location"].strip() for row in domains), "target-domain extraction missing source location")
+    allowed_domains = {
+        "repository, package, or source code", "cyber range, CTF, or penetration testing",
+        "mixed or general software targets", "smart contract and blockchain",
+        "web application, API, or database", "native binary, compiler, or operating system",
+        "firmware, embedded, IoT, or OT", "protocol and networked service",
+    }
+    require({row["target_domain"] for row in domains} == allowed_domains, "target-domain categories differ")
+    for row in domains:
+        coded = target_by_id[row["matrix_id"]]
+        require(row["primary_system_shape"] == coded["primary_system_shape"], f"domain shape differs: {row['matrix_id']}")
+        require(row["principal_reported_evidence_output"] == coded["strongest_evidence_output"], f"domain output differs: {row['matrix_id']}")
+
+    domain_cross = read_csv(DATA / "target_domain_by_principal_output.csv")
+    require(len(domain_cross) == 40, "domain-output cross-tab must contain 40 rows")
+    for row in domain_cross:
+        subset = [item for item in domains if item["target_domain"] == row["target_domain"]]
+        actual = sum(item["principal_reported_evidence_output"] == row["principal_reported_evidence_output"] for item in subset)
+        require(actual == int(row["count"]), f"domain-output count differs: {row['target_domain']} {row['principal_reported_evidence_output']}")
+        require(len(subset) == int(row["domain_denominator"]), f"domain denominator differs: {row['target_domain']}")
+
+    year_cross = read_csv(DATA / "publication_year_by_primary_shape.csv")
+    require(len(year_cross) == 16, "year-shape cross-tab must contain 16 rows")
+    for row in year_cross:
+        subset = [item for item in domains if item["publication_year"] == row["publication_year"]]
+        actual = sum(item["primary_system_shape"] == row["primary_system_shape"] for item in subset)
+        require(actual == int(row["count"]), f"year-shape count differs: {row['publication_year']} {row['primary_system_shape']}")
+        require(len(subset) == int(row["year_denominator"]), f"year denominator differs: {row['publication_year']}")
+
+    artifacts = read_csv(DATA / "public_artifact_availability.csv")
+    require(len(artifacts) == 199, "public-artifact extraction must contain 199 rows")
+    require({row["matrix_id"] for row in artifacts} == target_ids, "public-artifact IDs differ from target matrix")
+    artifact_fields = (
+        "public_implementation_located", "environment_or_build_instructions",
+        "trigger_replay_poc_pov_artifact", "execution_trace_or_log", "patch_artifact",
+    )
+    require(all(row["source_location"].strip() for row in artifacts), "public-artifact extraction missing source location")
+    require(all(row[field] in {"located", "not located"} for row in artifacts for field in artifact_fields), "unknown public-artifact status")
+    require(all(row["principal_reported_evidence_output"] == target_by_id[row["matrix_id"]]["strongest_evidence_output"] for row in artifacts), "public-artifact output labels differ")
+    artifact_summary = {row["principal_reported_evidence_output"]: row for row in read_csv(DATA / "principal_output_by_public_artifact_availability.csv")}
+    require(set(artifact_summary) == set(EVIDENCE), "public-artifact summary output categories differ")
+    for output, summary in artifact_summary.items():
+        subset = [row for row in artifacts if row["principal_reported_evidence_output"] == output]
+        require(len(subset) == int(summary["studies"]), f"public-artifact output denominator differs: {output}")
+        for field in artifact_fields:
+            require(sum(row[field] == "located" for row in subset) == int(summary[field]), f"public-artifact count differs: {output} {field}")
+
+    contamination = read_csv(DATA / "training_data_overlap_control.csv")
+    require(len(contamination) == 199, "training-overlap extraction must contain 199 rows")
+    require({row["matrix_id"] for row in contamination} == target_ids, "training-overlap IDs differ from target matrix")
+    require(all(row["source_location"].strip() for row in contamination), "training-overlap extraction missing source location")
+    contamination_counts = Counter(row["training_data_overlap_control"] for row in contamination)
+    require(contamination_counts == Counter({"explicit control": 6, "discussion only": 2, "not located": 191}), f"training-overlap counts differ: {dict(contamination_counts)}")
+    summary_counts = {row["status"]: int(row["count"]) for row in read_csv(DATA / "training_data_overlap_control_counts.csv")}
+    require(summary_counts == dict(contamination_counts), "training-overlap summary differs")
+    info("target-domain, year, public-artifact, and training-overlap extractions verified")
 
 
 def check_second_coder(target: list[dict[str, str]]) -> None:
@@ -448,9 +595,33 @@ def check_second_coder(target: list[dict[str, str]]) -> None:
             micro_f1(pairs),
         )
         require(all(abs(a - e) < 0.0006 for a, e in zip(actual, expected)), f"{field} reliability differs: {actual}")
-    require(len(read_csv(DATA / "integrated_199_per_label_reliability_20260730.csv")) > 0, "missing per-label reliability")
+    per_label = read_csv(DATA / "integrated_199_per_label_reliability_20260730.csv")
+    require(len(per_label) == 13, "per-label reliability must contain 13 controlled labels")
+    for row in per_label:
+        field = row["field"]
+        require(field in {"lifecycle", "capability"}, f"unknown per-label field: {field}")
+        label = row["label"]
+        first_binary = ["1" if label in split_labels(item[f"first_{field}"]) else "0" for item in integrated]
+        second_binary = ["1" if label in split_labels(item[f"second_{field}"]) else "0" for item in integrated]
+        actual = {
+            "first_positive": sum(value == "1" for value in first_binary),
+            "second_positive": sum(value == "1" for value in second_binary),
+            "raw_agreement": raw_agreement(first_binary, second_binary),
+            "cohen_kappa": kappa(first_binary, second_binary),
+            "gwet_ac1": gwet_ac1_binary(first_binary, second_binary),
+        }
+        require(int(row["n"]) == 199, f"per-label denominator differs: {field} {label}")
+        require(int(row["first_positive"]) == actual["first_positive"], f"first positive count differs: {field} {label}")
+        require(int(row["second_positive"]) == actual["second_positive"], f"second positive count differs: {field} {label}")
+        for metric in ("raw_agreement", "cohen_kappa", "gwet_ac1"):
+            require(abs(float(row[metric]) - actual[metric]) < 0.000002, f"{metric} differs: {field} {label}")
+    reporting = read_csv(DATA / "integrated_199_reporting_audit_disagreement_review.csv")
+    require(len(reporting) == 82, "reporting/audit disagreement audit must contain 82 rows")
+    require(Counter(row["disagreement_direction"] for row in reporting) == Counter({"second_only": 78, "first_only": 4}), "reporting/audit disagreement directions differ")
+    require({row["matrix_id"] for row in reporting} <= {row["record_id"] for row in integrated}, "reporting/audit audit contains an unknown study")
+    require(all(row["boundary_basis"].strip() for row in reporting), "reporting/audit disagreement missing boundary basis")
     require(len(read_csv(DATA / "integrated_199_label_substitution_sensitivity_20260730.csv")) > 0, "missing substitution sensitivity")
-    info("complete independent coding comparison verified for 199 target studies")
+    info("complete independent coding comparison, per-label AC1, and disagreement audit verified")
 
 
 def check_private_paths() -> None:
@@ -492,6 +663,7 @@ def main() -> int:
     check_search_and_dedup()
     check_supplementary_extractions(target)
     check_publication_status(target)
+    check_domain_and_reporting_extractions(target)
     check_second_coder(target)
     check_private_paths()
     if args.manuscript:

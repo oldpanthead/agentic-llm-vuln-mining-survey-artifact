@@ -15,6 +15,11 @@ RESULTS = DATA / "final_multisource_search_20260730_results.csv"
 SCREENING = DATA / "final_multisource_search_20260730_complete_screening.csv"
 OLD_CORPUS = DATA / "corpus_pre_final_multisource_20260730.csv"
 OLD_CROSSWALK = DATA / "study_version_crosswalk_pre_final_multisource_20260730.csv"
+OLD_MATRIX = DATA / "current_study_level_coding_matrix_harmonized_pre_final_multisource_20260730.csv"
+OLD_EXTENDED = DATA / "extended_synthesis_audit_pre_final_multisource_20260730.csv"
+NEW_MATRIX = DATA / "final_multisource_search_20260730_new_study_level_coding.csv"
+NEW_EXTENDED = DATA / "final_multisource_search_20260730_new_extended_synthesis_audit.csv"
+FINAL_EXTENDED = DATA / "extended_synthesis_audit.csv"
 CURRENT_CORPUS = DATA / "corpus.csv"
 CURRENT_CROSSWALK = DATA / "study_version_crosswalk.csv"
 OUTPUT = DATA / "final_multisource_search_20260730_prisma_counts.csv"
@@ -112,6 +117,37 @@ def main() -> int:
         - exact_existing
     )
 
+    old_canonical = [
+        row for row in read(OLD_CROSSWALK) if row["counting_status"] == "canonical_counted"
+    ]
+    old_layers = Counter(row["analytical_layer"] for row in old_canonical)
+    old_matrix = read(OLD_MATRIX)
+    prior_target = sum(row["analytical_role"] == "target_software_study" for row in old_matrix)
+    prior_governance = sum(row["analytical_role"] == "governance_boundary_case" for row in old_matrix)
+    prior_extended = len(read(OLD_EXTENDED))
+    new_target = len(read(NEW_MATRIX))
+    new_extended_rows = read(NEW_EXTENDED)
+    new_extended = len(new_extended_rows)
+    new_extended_full_text = cross[("full_text", "extended_synthesis")]
+    new_extended_metadata = new_extended - new_extended_full_text
+    final_extended_rows = read(FINAL_EXTENDED)
+    final_extended_full_text = sum(
+        "full-text" in row["reviewer_note"].lower()
+        or "full text" in row["reviewer_note"].lower()
+        for row in final_extended_rows
+    )
+    final_extended_metadata = len(final_extended_rows) - final_extended_full_text
+    new_canonical = integrated["canonical_studies"] - len(old_canonical)
+    new_background = integrated["canonical_layer_background_reference"] - old_layers["background_reference"]
+    new_excluded = integrated["canonical_layer_excluded_near_neighbor"] - old_layers["excluded_near_neighbor"]
+
+    if prior_target + new_target != integrated["target_software_studies"]:
+        raise SystemExit("ERROR: prior and new target-study paths do not close")
+    if prior_extended + new_extended + prior_governance != integrated["extended_synthesis_studies"]:
+        raise SystemExit("ERROR: prior, new, and transferred extended-synthesis paths do not close")
+    if final_extended_full_text + final_extended_metadata != integrated["extended_synthesis_studies"]:
+        raise SystemExit("ERROR: extended-synthesis material-basis account does not close")
+
     prisma = [
         ("identification", "exported_source_occurrences", raw_occurrences, "All saved API/interface exports before local query-specific filtering"),
         ("identification", "removed_by_deterministic_query_filter", query_filter_removed, "Broad ranked metadata outside the four-group query boundary"),
@@ -130,6 +166,20 @@ def main() -> int:
         ("integration", "new_or_reconciled_source_records_added", unique_search_records - exact_existing, "Includes new canonical studies and alternate source versions"),
         ("integration", "supplementary_source_records_not_reidentified", supplementary_source_records, "Previously retained seed, snowball, benchmark, project, or official-page records not reidentified by the current export interfaces"),
         ("integration", "prior_canonical_studies_not_reidentified", prior_canonical_not_reidentified, "Canonical studies retained from supplementary discovery sources"),
+        ("prior_path", "prior_source_records", len(read(OLD_CORPUS)), "Source records retained from the historical multi-source ledger"),
+        ("prior_path", "prior_canonical_studies", len(old_canonical), "Previously screened studies after version reconciliation"),
+        ("prior_path", "prior_target_software_studies", prior_target, "Previously retained target-software studies"),
+        ("prior_path", "prior_extended_synthesis_studies", prior_extended, "Previously retained extended-synthesis studies"),
+        ("prior_path", "prior_governance_boundary_record", prior_governance, "Previously separate governance exemplar transferred to extended synthesis"),
+        ("current_path", "new_canonical_studies", new_canonical, "New studies added after overlap and version reconciliation"),
+        ("current_path", "new_target_software_studies", new_target, "Full-text-assessed target-software studies added by the current interfaces"),
+        ("current_path", "new_extended_synthesis_studies", new_extended, "New extended-synthesis studies, including one title-and-abstract-supported record"),
+        ("current_path", "new_extended_full_text_supported", new_extended_full_text, "New extended-synthesis studies assessed at full text"),
+        ("current_path", "new_extended_metadata_supported", new_extended_metadata, "New extended-synthesis study retained from title and abstract metadata"),
+        ("current_path", "new_background_reference_studies", new_background, "New contextual studies"),
+        ("current_path", "new_excluded_studies", new_excluded, "New exclusions after screening, retrieval, and eligibility assessment"),
+        ("final", "extended_synthesis_full_text_supported", final_extended_full_text, "Final extended-synthesis studies supported by reviewed full text"),
+        ("final", "extended_synthesis_metadata_supported", final_extended_metadata, "Final extended-synthesis studies supported by public title and abstract metadata"),
         ("final", "integrated_source_records", integrated["source_records"], "Source versions remain traceable"),
         ("final", "integrated_canonical_studies", integrated["canonical_studies"], "Each study counted once after version reconciliation"),
         ("final", "target_software_studies", integrated["target_software_studies"], "Study-level analytical denominator"),
@@ -192,6 +242,12 @@ def main() -> int:
             "## Final Analytical Allocation",
             "",
             f"After version reconciliation, the integrated corpus contains **{integrated['canonical_studies']} canonical studies** from **{integrated['source_records']} source records**: **{integrated['target_software_studies']} target-software studies**, **{integrated['extended_synthesis_studies']} extended-synthesis studies with record-level public-material audit**, **{integrated['canonical_layer_background_reference']} background/reference studies**, and **{integrated['canonical_layer_excluded_near_neighbor']} excluded studies**.",
+            "",
+            "## Dual-Path Closure",
+            "",
+            f"The prior retained path contains **{len(old_canonical)} studies** from **{len(read(OLD_CORPUS))} source records**: {prior_target} target-software studies, {prior_extended} extended-synthesis studies, one governance boundary record, {old_layers['background_reference']} background/reference studies, and {old_layers['excluded_near_neighbor']} exclusions. The current interface path contributes {new_canonical} new studies after overlap and version reconciliation. The final analytical sets therefore close as **{prior_target} + {new_target} = {integrated['target_software_studies']} target-software studies** and **{prior_extended} + {new_extended} + {prior_governance} = {integrated['extended_synthesis_studies']} extended-synthesis studies**.",
+            "",
+            f"The values 143 and 138 use different units: 143 is the number of prior source records not reidentified by the current interfaces, whereas 138 is the corresponding number of prior canonical studies. For extended synthesis, 83 is the number of current-interface records assessed at full text, while 84 is the number of new canonical extended-synthesis studies after one title-and-abstract-supported record is included. The earlier 89 full-text figure arose when that metadata-supported row inherited a generic full-text note; the corrected final material-basis account is {final_extended_full_text} full-text-supported and {final_extended_metadata} metadata-supported studies.",
             "",
             "Historical search files remain unchanged as provenance. The manuscript-facing method can report the integrated source coverage, date range, screening rules, version reconciliation, and final allocation without narrating internal search rounds.",
         ]

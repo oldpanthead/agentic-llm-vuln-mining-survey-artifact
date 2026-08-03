@@ -26,7 +26,7 @@ Expected current counts: 1,785 source records; 1,772 studies after version recon
 - `data/corpus.csv`: integrated source-record ledger.
 - `data/study_version_crosswalk.csv`: source record to study/version mapping.
 - `data/current_study_level_coding_matrix_harmonized.csv`: 199 target-software rows.
-- `data/extended_synthesis_audit.csv`: 150-study thematic-use audit: 89 full-text-supported and 61 title/abstract-metadata-supported records, including cross-cutting governance context.
+- `data/extended_synthesis_audit.csv`: 150-study thematic-use audit: 88 full-text-supported and 62 title/abstract-metadata-supported records, including cross-cutting governance context.
 - `data/reference_audit.csv`: citation and source-role audit.
 - `data/publication_status_standardized.csv`: study-level publication-status assignments.
 - `data/publication_status_distribution_by_layer.csv`: publication-status-stratified evidence and shape counts.
@@ -36,7 +36,8 @@ Expected current counts: 1,785 source records; 1,772 studies after version recon
 ## Complete Independent Review
 
 - `data/integrated_199_second_coder_comparison_20260730.csv`: complete field comparison.
-- `data/integrated_199_per_label_reliability_20260730.csv`: lifecycle and capability label-level reliability.
+- `data/integrated_199_per_label_reliability_20260730.csv`: lifecycle and capability label-level reliability, including Gwet's AC1.
+- `data/integrated_199_reporting_audit_disagreement_review.csv`: reporting/audit disagreement directions and boundary basis.
 - `data/integrated_199_label_substitution_sensitivity_20260730.csv`: full-label substitution counts.
 - `INTEGRATED_199_SECOND_CODER_AGREEMENT_20260730.md`: report used by the manuscript.
 - `data/final_multisource_search_20260730_all_coder_comparison.csv`: detailed comparison for newly reviewed records.
@@ -44,6 +45,11 @@ Expected current counts: 1,785 source records; 1,772 studies after version recon
 ## Supplementary Extractions
 
 - `data/traditional_security_primitives.csv`: 199-study RQ1 extraction with source locations.
+- `data/traditional_security_primitives_by_use_role.csv`, `data/traditional_security_primitive_use_role_counts.csv`, and `data/traditional_security_primitive_by_output.csv`: workflow-active/evaluation role split and output co-occurrence.
+- `data/target_domain_extraction.csv`, `data/target_domain_by_principal_output.csv`, and `data/publication_year_by_primary_shape.csv`: target-domain and year cross-tabs used in the study-level figure.
+- `data/public_artifact_availability.csv` and `data/principal_output_by_public_artifact_availability.csv`: located public artifact indicators by output.
+- `data/training_data_overlap_control.csv` and `data/training_data_overlap_control_counts.csv`: training-overlap control reporting audit.
+- `data/publication_status_sensitivity_analysis.csv`: publication-status robustness counts for the 199-study set.
 - `data/final_multisource_cohort_stability.csv`: shape, evidence-output, and capability distributions for the retained 67-study baseline and 132 new target-software studies.
 - `data/representative_system_mechanisms.csv`: representative mechanism cases.
 - `data/mechanism_cost_ablation_synthesis.csv`: source-located cost, ablation, and recovery observations.

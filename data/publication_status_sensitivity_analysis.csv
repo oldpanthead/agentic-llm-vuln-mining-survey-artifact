@@ -1,64 +1,32 @@
 scope,publication_status_group,dimension,label,count,denominator,share
-67_target_software_studies,all_target_software,primary_system_shape,candidate-analysis system,16,67,0.239
-67_target_software_studies,all_target_software,primary_system_shape,feedback-driven fuzzing agent,17,67,0.254
-67_target_software_studies,all_target_software,primary_system_shape,"reproduction-, validation-, and repair-centered agent",20,67,0.299
-67_target_software_studies,all_target_software,primary_system_shape,long-horizon pentest and CRS agent,14,67,0.209
-67_target_software_studies,all_target_software,strongest_evidence_output,candidate judgment,6,67,0.090
-67_target_software_studies,all_target_software,strongest_evidence_output,controlled task completion,13,67,0.194
-67_target_software_studies,all_target_software,strongest_evidence_output,runtime safety signal,13,67,0.194
-67_target_software_studies,all_target_software,strongest_evidence_output,reproducible validation,31,67,0.463
-67_target_software_studies,all_target_software,strongest_evidence_output,externally traceable material,4,67,0.060
-67_target_software_studies,all_target_software,cross_stage_capability,context aggregation / rule extraction,51,67,0.761
-67_target_software_studies,all_target_software,cross_stage_capability,tool routing / strategy routing,44,67,0.657
-67_target_software_studies,all_target_software,cross_stage_capability,feedback interpretation / loop adjustment,58,67,0.866
-67_target_software_studies,all_target_software,cross_stage_capability,validation organization / evidence packaging,55,67,0.821
-67_target_software_studies,all_target_software,cross_stage_capability,long-horizon state management,30,67,0.448
-67_target_software_studies,all_target_software,cross_stage_capability,failure reuse / strategy update,15,67,0.224
-67_target_software_studies,all_target_software,cross_stage_capability,governance / human gates / disclosure control,4,67,0.060
-67_target_software_studies,all_target_software,external_traceability,no external trace reported,18,67,0.269
-67_target_software_studies,all_target_software,external_traceability,not reported,0,67,0.000
-67_target_software_studies,all_target_software,external_traceability,author-reported external clue,22,67,0.328
-67_target_software_studies,all_target_software,external_traceability,benchmark ground truth / public material,23,67,0.343
-67_target_software_studies,all_target_software,external_traceability,publicly aligned external trace,4,67,0.060
-67_target_software_studies,peer_reviewed,primary_system_shape,candidate-analysis system,2,14,0.143
-67_target_software_studies,peer_reviewed,primary_system_shape,feedback-driven fuzzing agent,6,14,0.429
-67_target_software_studies,peer_reviewed,primary_system_shape,"reproduction-, validation-, and repair-centered agent",5,14,0.357
-67_target_software_studies,peer_reviewed,primary_system_shape,long-horizon pentest and CRS agent,1,14,0.071
-67_target_software_studies,peer_reviewed,strongest_evidence_output,candidate judgment,2,14,0.143
-67_target_software_studies,peer_reviewed,strongest_evidence_output,controlled task completion,1,14,0.071
-67_target_software_studies,peer_reviewed,strongest_evidence_output,runtime safety signal,6,14,0.429
-67_target_software_studies,peer_reviewed,strongest_evidence_output,reproducible validation,5,14,0.357
-67_target_software_studies,peer_reviewed,strongest_evidence_output,externally traceable material,0,14,0.000
-67_target_software_studies,peer_reviewed,cross_stage_capability,context aggregation / rule extraction,10,14,0.714
-67_target_software_studies,peer_reviewed,cross_stage_capability,tool routing / strategy routing,7,14,0.500
-67_target_software_studies,peer_reviewed,cross_stage_capability,feedback interpretation / loop adjustment,10,14,0.714
-67_target_software_studies,peer_reviewed,cross_stage_capability,validation organization / evidence packaging,9,14,0.643
-67_target_software_studies,peer_reviewed,cross_stage_capability,long-horizon state management,3,14,0.214
-67_target_software_studies,peer_reviewed,cross_stage_capability,failure reuse / strategy update,1,14,0.071
-67_target_software_studies,peer_reviewed,cross_stage_capability,governance / human gates / disclosure control,0,14,0.000
-67_target_software_studies,peer_reviewed,external_traceability,no external trace reported,9,14,0.643
-67_target_software_studies,peer_reviewed,external_traceability,not reported,0,14,0.000
-67_target_software_studies,peer_reviewed,external_traceability,author-reported external clue,5,14,0.357
-67_target_software_studies,peer_reviewed,external_traceability,benchmark ground truth / public material,0,14,0.000
-67_target_software_studies,peer_reviewed,external_traceability,publicly aligned external trace,0,14,0.000
-67_target_software_studies,preprint,primary_system_shape,candidate-analysis system,14,50,0.280
-67_target_software_studies,preprint,primary_system_shape,feedback-driven fuzzing agent,11,50,0.220
-67_target_software_studies,preprint,primary_system_shape,"reproduction-, validation-, and repair-centered agent",14,50,0.280
-67_target_software_studies,preprint,primary_system_shape,long-horizon pentest and CRS agent,11,50,0.220
-67_target_software_studies,preprint,strongest_evidence_output,candidate judgment,4,50,0.080
-67_target_software_studies,preprint,strongest_evidence_output,controlled task completion,10,50,0.200
-67_target_software_studies,preprint,strongest_evidence_output,runtime safety signal,7,50,0.140
-67_target_software_studies,preprint,strongest_evidence_output,reproducible validation,25,50,0.500
-67_target_software_studies,preprint,strongest_evidence_output,externally traceable material,4,50,0.080
-67_target_software_studies,preprint,cross_stage_capability,context aggregation / rule extraction,41,50,0.820
-67_target_software_studies,preprint,cross_stage_capability,tool routing / strategy routing,34,50,0.680
-67_target_software_studies,preprint,cross_stage_capability,feedback interpretation / loop adjustment,45,50,0.900
-67_target_software_studies,preprint,cross_stage_capability,validation organization / evidence packaging,44,50,0.880
-67_target_software_studies,preprint,cross_stage_capability,long-horizon state management,24,50,0.480
-67_target_software_studies,preprint,cross_stage_capability,failure reuse / strategy update,14,50,0.280
-67_target_software_studies,preprint,cross_stage_capability,governance / human gates / disclosure control,4,50,0.080
-67_target_software_studies,preprint,external_traceability,no external trace reported,7,50,0.140
-67_target_software_studies,preprint,external_traceability,not reported,0,50,0.000
-67_target_software_studies,preprint,external_traceability,author-reported external clue,17,50,0.340
-67_target_software_studies,preprint,external_traceability,benchmark ground truth / public material,22,50,0.440
-67_target_software_studies,preprint,external_traceability,publicly aligned external trace,4,50,0.080
+199_target_software_studies,all_target_software,primary_system_shape,candidate-analysis system,46,199,0.231156
+199_target_software_studies,all_target_software,primary_system_shape,feedback-driven fuzzing agent,34,199,0.170854
+199_target_software_studies,all_target_software,primary_system_shape,long-horizon pentest and CRS agent,57,199,0.286432
+199_target_software_studies,all_target_software,primary_system_shape,"reproduction-, validation-, and repair-centered agent",62,199,0.311558
+199_target_software_studies,all_target_software,principal_reported_evidence_output,candidate judgment,34,199,0.170854
+199_target_software_studies,all_target_software,principal_reported_evidence_output,controlled task completion,55,199,0.276382
+199_target_software_studies,all_target_software,principal_reported_evidence_output,externally traceable material,6,199,0.030151
+199_target_software_studies,all_target_software,principal_reported_evidence_output,reproducible validation,83,199,0.417085
+199_target_software_studies,all_target_software,principal_reported_evidence_output,runtime safety signal,21,199,0.105528
+199_target_software_studies,conference_or_journal,primary_system_shape,candidate-analysis system,5,31,0.161290
+199_target_software_studies,conference_or_journal,primary_system_shape,feedback-driven fuzzing agent,9,31,0.290323
+199_target_software_studies,conference_or_journal,primary_system_shape,long-horizon pentest and CRS agent,4,31,0.129032
+199_target_software_studies,conference_or_journal,primary_system_shape,"reproduction-, validation-, and repair-centered agent",13,31,0.419355
+199_target_software_studies,conference_or_journal,principal_reported_evidence_output,candidate judgment,5,31,0.161290
+199_target_software_studies,conference_or_journal,principal_reported_evidence_output,controlled task completion,6,31,0.193548
+199_target_software_studies,conference_or_journal,principal_reported_evidence_output,externally traceable material,1,31,0.032258
+199_target_software_studies,conference_or_journal,principal_reported_evidence_output,reproducible validation,13,31,0.419355
+199_target_software_studies,conference_or_journal,principal_reported_evidence_output,runtime safety signal,6,31,0.193548
+199_target_software_studies,preprint,primary_system_shape,candidate-analysis system,41,164,0.250000
+199_target_software_studies,preprint,primary_system_shape,feedback-driven fuzzing agent,25,164,0.152439
+199_target_software_studies,preprint,primary_system_shape,long-horizon pentest and CRS agent,50,164,0.304878
+199_target_software_studies,preprint,primary_system_shape,"reproduction-, validation-, and repair-centered agent",48,164,0.292683
+199_target_software_studies,preprint,principal_reported_evidence_output,candidate judgment,29,164,0.176829
+199_target_software_studies,preprint,principal_reported_evidence_output,controlled task completion,46,164,0.280488
+199_target_software_studies,preprint,principal_reported_evidence_output,externally traceable material,5,164,0.030488
+199_target_software_studies,preprint,principal_reported_evidence_output,reproducible validation,69,164,0.420732
+199_target_software_studies,preprint,principal_reported_evidence_output,runtime safety signal,15,164,0.091463
+199_target_software_studies,benchmark_report_or_other,primary_system_shape,long-horizon pentest and CRS agent,3,4,0.750000
+199_target_software_studies,benchmark_report_or_other,primary_system_shape,"reproduction-, validation-, and repair-centered agent",1,4,0.250000
+199_target_software_studies,benchmark_report_or_other,principal_reported_evidence_output,controlled task completion,3,4,0.750000
+199_target_software_studies,benchmark_report_or_other,principal_reported_evidence_output,reproducible validation,1,4,0.250000

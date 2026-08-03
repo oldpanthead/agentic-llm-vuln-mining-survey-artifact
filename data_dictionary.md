@@ -259,7 +259,7 @@ This file links 1,785 source records to 1,772 studies. It preserves version hist
 
 ## `data/extended_synthesis_audit.csv`
 
-This file provides a record-level synthesis-use audit for the 150-study extended synthesis set. Eighty-nine records are supported by reviewed full text, including a formal canonical record whose alternate version supplied the reviewed report; 61 historical records are supported by public title/abstract metadata. It complements the study-level workflow--capability--evidence coding used for 199 target-software studies. Governance and agent-safety studies in this layer support cross-cutting discussion without entering target-software distributions.
+This file provides a record-level synthesis-use audit for the 150-study extended synthesis set. Eighty-eight records are supported by reviewed full text, including a formal canonical record whose alternate version supplied the reviewed report; 62 records are supported by public title/abstract metadata. It complements the study-level workflow--capability--evidence coding used for 199 target-software studies. Governance and agent-safety studies in this layer support cross-cutting discussion without entering target-software distributions.
 
 - `record_id`: stable identifier linked to `data/corpus.csv`.
 - `citation_key`: bibliography key extracted from the public reference audit when available; `NA` means no key was recorded in the source note.
@@ -502,7 +502,7 @@ Standardized publication-status view for the current study-level coding matrix. 
 Publication-status distribution summary for the target-software study-level set. It reports evidence-output counts, primary-shape counts, failure-reuse labels, and governance/human-gate labels by standardized publication status.
 
 ## publication_status_sensitivity_analysis.csv
-Historical 67-study publication-status sensitivity view. It is retained for provenance and is not the source of current 199-study distribution claims. `publication_status_standardized.csv` and `publication_status_distribution_by_layer.csv` contain the integrated status assignments and summary counts.
+Current 199-study publication-status sensitivity view. It reports primary-shape and principal-output counts for all target-software studies, conference/journal studies, preprints, and benchmark/report/other material. It is descriptive and does not attribute differences to publication status.
 
 - `scope`: fixed target-software denominator.
 - `publication_status_group`: `all_target_software`, `peer_reviewed`, or `preprint`.
@@ -511,7 +511,7 @@ Historical 67-study publication-status sensitivity view. It is retained for prov
 
 
 ## `data/representative_reported_results.csv`
-Source-located audit file for the representative reported-results table in Appendix B/Table 14. Each row corresponds to one manuscript table row and records the system, citation key, primary shape, evaluation setting, reported scale/result, validation material, source location, and extraction note. The file is descriptive and does not normalize or rank results across systems.
+Source-located audit file for the representative reported-results table in Section 5 of the manuscript. Each row corresponds to one manuscript table row and records the system, citation key, primary shape, evaluation setting, reported scale/result, validation material, source location, and extraction note. The file is descriptive and does not normalize or rank results across systems.
 
 ## `data/empirical_reporting_extraction.csv`
 
@@ -549,6 +549,20 @@ One source-located row for each of the 199 target-software studies. This multi-l
 - `source_location`: public-paper location supporting the extraction.
 - `extraction_note`: scope rule excluding related-work mentions and unsupported inference; explicit workflow or evaluation use is the coded construct.
 
+## `data/traditional_security_primitives_by_use_role.csv`
+
+One row per located study--primitive pair. `use_role` is `workflow-active use`, `evaluation/support use`, or `both`; the assignment does not imply dynamic agent selection. `source_location` and `role_assignment_basis` preserve the extraction evidence. The companion files `traditional_security_primitive_use_role_counts.csv` and `traditional_security_primitive_by_output.csv` contain the non-exclusive role counts and primitive--principal-output cross-tab. `traditional_security_primitives_not_specified.csv` closes the three studies for which no controlled primitive family was located.
+
+## Target-domain, artifact, and training-overlap extractions
+
+- `target_domain_extraction.csv`: one source-located descriptive target type for each of the 199 studies; this is an author extraction, not a new taxonomy or second-coded field.
+- `target_domain_by_principal_output.csv`: target-domain by principal-output counts used in the manuscript figure.
+- `publication_year_by_primary_shape.csv`: year by primary-shape counts; 2026 is explicitly an incomplete year.
+- `public_artifact_availability.csv`: located/not-located indicators for public implementation, environment/build instructions, trigger/replay/PoC/PoV artifact, execution trace/log, and patch artifact. Located does not mean executed or reproduced.
+- `principal_output_by_public_artifact_availability.csv`: principal-output summary of those indicators.
+- `training_data_overlap_control.csv`: `explicit control`, `discussion only`, or `not located`, with source location and evidence note. It audits reporting and does not test whether contamination occurred.
+- `training_data_overlap_control_counts.csv`: corresponding 199-study counts.
+
 ## `data/unified_second_coder_per_label_reliability.csv`
 
 This file preserves per-label binary agreement for the earlier 67-study review. Current label-level agreement for all 199 target-software studies is stored in `data/integrated_199_per_label_reliability_20260730.csv`.
@@ -564,7 +578,7 @@ One comparison row for each target-software study. It preserves the final and in
 
 ## `data/integrated_199_per_label_reliability_20260730.csv`
 
-Binary per-label agreement for the six lifecycle and seven capability labels across all 199 target-software studies. Fields include final/coder2 positive counts, raw agreement, and Cohen's kappa. Row-level exact agreement, Jaccard, and micro-F1 remain in `INTEGRATED_199_SECOND_CODER_AGREEMENT_20260730.md`.
+Binary per-label agreement for the six lifecycle and seven capability labels across all 199 target-software studies. Fields include final/coder2 positive counts, raw agreement, Cohen's kappa, Gwet's AC1, and a short interpretation note. Row-level exact agreement, Jaccard, and micro-F1 remain in `INTEGRATED_199_SECOND_CODER_AGREEMENT_20260730.md`. `integrated_199_reporting_audit_disagreement_review.csv` records the direction and boundary basis of all reporting/audit disagreements without changing either coder's labels.
 
 ## `data/integrated_199_label_substitution_sensitivity_20260730.csv`
 

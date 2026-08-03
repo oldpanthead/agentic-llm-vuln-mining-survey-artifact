@@ -9,7 +9,7 @@ This repository contains the non-sensitive artifact for a mapping-oriented scopi
 3. Use `ARTIFACT_INDEX.md` as the compact file map.
 4. Use `data_dictionary.md` for field definitions.
 
-The synchronized submission snapshot is identified by `csur-submission-2026-07-final-v7`. Earlier tags, including `csur-submission-2026-07-final-v6`, remain immutable historical snapshots.
+The synchronized submission snapshot is identified by `csur-submission-2026-07-final-v8`. Earlier tags, including `csur-submission-2026-07-final-v7`, remain immutable historical snapshots.
 
 ## Current Integrated Snapshot
 
@@ -52,8 +52,14 @@ The search used arXiv, OpenAlex, Crossref-backed publisher queries for ACM, IEEE
 ### Study-level and extended synthesis
 
 - `data/current_study_level_coding_matrix_harmonized.csv`: final 199-row target-software matrix.
-- `data/extended_synthesis_audit.csv`: record-level audit for 150 extended-synthesis studies, comprising 89 full-text-supported and 61 title/abstract-metadata-supported records; AgentFuzz supplies cross-cutting governance context.
+- `data/extended_synthesis_audit.csv`: record-level audit for 150 extended-synthesis studies, comprising 88 full-text-supported and 62 title/abstract-metadata-supported records; AgentFuzz supplies cross-cutting governance context.
 - `data/traditional_security_primitives.csv`: source-located, multi-label author extraction for the 199 target-software studies.
+- `data/traditional_security_primitives_by_use_role.csv` and `data/traditional_security_primitive_use_role_counts.csv`: study--primitive rows and counts separated into workflow-active and evaluation/support use.
+- `data/traditional_security_primitive_by_output.csv`: primitive-family by principal-output co-occurrence counts.
+- `data/target_domain_extraction.csv`, `data/target_domain_by_principal_output.csv`, and `data/publication_year_by_primary_shape.csv`: source-located target-domain and descriptive year cross-tabs.
+- `data/public_artifact_availability.csv` and `data/principal_output_by_public_artifact_availability.csv`: public artifact indicators located in reviewed material; no artifact execution is claimed.
+- `data/training_data_overlap_control.csv` and `data/training_data_overlap_control_counts.csv`: source-located reporting status for explicit training-overlap controls, discussion only, or no statement located.
+- `data/publication_status_sensitivity_analysis.csv`: 199-study shape and output distributions by publication-status group.
 - `data/final_multisource_cohort_stability.csv`: descriptive comparison of the retained 67-study baseline and 132 newly identified target-software studies under the same shape, evidence, and capability schema.
 - `data/representative_system_mechanisms.csv`: source-located mechanism extraction used by the representative system comparison.
 - `data/mechanism_cost_ablation_synthesis.csv`: source-located cost, ablation, and failure-recovery observations.
@@ -64,7 +70,8 @@ The search used arXiv, OpenAlex, Crossref-backed publisher queries for ACM, IEEE
 
 - `data/final_multisource_search_20260730_all_coder_comparison.csv`: author/coder2 comparison for the newly reviewed records.
 - `data/integrated_199_second_coder_comparison_20260730.csv`: complete comparison for all 199 target-software studies.
-- `data/integrated_199_per_label_reliability_20260730.csv`: lifecycle and capability label-level agreement.
+- `data/integrated_199_per_label_reliability_20260730.csv`: lifecycle and capability label-level agreement, including Gwet's AC1.
+- `data/integrated_199_reporting_audit_disagreement_review.csv`: source-linked direction and boundary basis for reporting/audit disagreements.
 - `data/integrated_199_label_substitution_sensitivity_20260730.csv`: complete coder2 substitution counts.
 - `INTEGRATED_199_SECOND_CODER_AGREEMENT_20260730.md`: integrated reliability summary.
 
