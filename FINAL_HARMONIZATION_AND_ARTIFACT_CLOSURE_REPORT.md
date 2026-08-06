@@ -6,8 +6,8 @@ This report records the single synchronized local manuscript/artifact state afte
 
 ## Closed Reviewer Issues
 
-- **Search and PRISMA closure.** The updated PRISMA-ScR figure now preserves two traceable paths: the current interface search and the previously screened multi-source path. Frozen ledgers reproduce 1,785 source records, 1,772 studies after version reconciliation, 199 target-software studies, 150 extended-synthesis studies, 670 background/reference studies, and 753 exclusions. The target set closes as 67 previously retained plus 132 newly integrated studies. Extended synthesis closes as 65 previously retained plus 84 newly integrated studies plus the governance exemplar reassigned to contextual synthesis.
-- **Unit reconciliation.** The 143 supplementary items are source records; their version-reconciled unit is 138 prior studies. For extended synthesis, 83 denotes current-interface full-text outcomes, 84 denotes new studies after adding one metadata-supported record, and the corrected final material basis is 88 full-text-supported plus 62 metadata-supported studies. The superseded 89 count resulted from a generic full-text note and is not used.
+- **Search and PRISMA closure.** The manuscript now presents one integrated review process through July 30, 2026. Frozen ledgers reproduce 1,785 source records, 1,772 studies after version reconciliation, 199 target-software studies, 150 extended-synthesis studies, 670 background/reference studies, and 753 exclusions. Each study enters one final analytical layer; 13 alternate versions, duplicates, or source variants remain traceable without independent counting.
+- **Material-basis reconciliation.** All 199 target-software studies have detailed public workflow and evaluation material for complete coding. Extended synthesis comprises 88 studies supported by full text or equivalent public material and 62 supported by audited title-and-abstract metadata. Source-specific query, retrieval, and historical integration fields remain available as provenance rather than manuscript cohorts.
 - **Reliability and sensitivity.** The 199-study comparison now reports positive counts, raw agreement, Cohen's kappa, and Gwet's AC1 for every lifecycle and capability label. Sensitivity ranges replace low-reliability point estimates in the abstract, synthesis, and conclusion: feedback interpretation 179--186, validation organization 147--180, failure reuse 81--94, governance control 18--27, and externally traceable material 6--18. The reporting-and-audit audit contains 82 disagreements: 78 second-coder-only and four author-only positives. Most second-coder-only cases treated a generated report or packaged finding as coverage, whereas the final coding required an observable packaging or routing transition.
 - **Shape/output construct relation.** Primary shape records the dominant organization and objective of agent control; principal output records the observable result supporting the main evaluated contribution. They intentionally share that analytical anchor. The joint table is presented as a construct-consistency and coupling check, not as a causal or independent-association result; non-diagonal cells show that the fields are not synonyms.
 - **Publication robustness.** The study set contains 31 conference/journal studies, 164 preprints, and four benchmark/report/other records. Reproducible validation is the modal principal output in both formal-publication and preprint subsets, while shape ordering is not identical. The manuscript treats this as a description of publicly reported systems rather than a causal publication-status effect.
@@ -36,14 +36,14 @@ The methods section identifies Shangru Zhao, University of Chinese Academy of Sc
 
 ## Validation
 
-- `python build_final_multisource_prisma_20260730.py`: exit code 0; reproduced `RAW=12090 FILTERED=2289 UNIQUE=1642 SOUGHT=274 ASSESSED=239 FINAL=1772` from frozen inputs.
-- `python reproduce_tables.py`: exit code 0 in standalone public mode; all 40 manifest paths and manuscript-facing statistics verified without an external LaTeX directory.
-- `python reproduce_tables.py --manuscript ../latex/latex_acm_csur_en/main_acm_csur.tex`: exit code 0; manuscript/artifact counts and paths verified together.
-- LaTeX/BibTeX compilation: exit code 0; 35-page PDF.
+- `python build_final_multisource_prisma_20260730.py`: exit code 0; regenerated the integrated manuscript-facing account and preserved source-specific provenance from frozen inputs.
+- `python reproduce_tables.py`: exit code 0 in standalone public mode; all 42 manifest paths and manuscript-facing statistics verified without an external LaTeX directory.
+- `python reproduce_tables.py --manuscript ../latex/latex_acm_csur_en/main_acm_csur.tex`: exit code 0; the recursive manuscript check verified the integrated counts, cutoff date, artifact paths, and absence of historical-round flow language.
+- LaTeX/BibTeX compilation: exit code 0; 36-page PDF. The final page contains only the end of the bibliography; no font, margin, or bibliography-size reduction was applied.
 - Undefined citations/references: none.
 - Overfull boxes: none.
-- Visual inspection: all 35 pages rendered; Figures 3--6, Tables 5, 8, and 12, the appendix, and the final reference page show no overlap, clipping, abnormal blank area, or interrupted sentence.
+- Visual inspection: all 36 pages rendered; the unified Figure 3 and adjacent methodology pages show no overlap, clipping, abnormal blank area, or interrupted sentence. Box 1 follows its Section 3.2 introduction, and the final reference page is not clipped.
 
 ## Snapshot
 
-Local immutable tag: `csur-submission-2026-07-final-v8`. Earlier tags are unchanged. Remote publication is intentionally deferred pending explicit approval.
+The immutable tag `csur-submission-2026-07-final-v8` remains unchanged. This local documentation and manuscript closure is intentionally untagged and unpushed, as required for the present pass.

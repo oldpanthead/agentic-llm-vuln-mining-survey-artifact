@@ -8,10 +8,6 @@ The immutable synchronized submission tag is `csur-submission-2026-07-final-v8`.
 
 ## Current Counts
 
-- Search occurrences exported: 12,090
-- Occurrences entering source-level deduplication: 2,289
-- Unique interface records screened: 1,642
-- Reports sought / assessed: 274 / 239
 - Source records: 1,785
 - Studies after version reconciliation: 1,772
 - Target-software studies: 199
@@ -46,11 +42,13 @@ Run:
 python reproduce_tables.py
 ```
 
-The default public mode has no dependency on a manuscript checkout. It verifies file presence, unique CSV headers, corpus and layer counts, study/version uniqueness, shape and evidence distributions, lifecycle and capability counts, external traceability, dual-path PRISMA arithmetic, primitive-use roles and output coupling, publication-status sensitivity, target-domain/year cross-tabs, public-artifact indicators, training-overlap reporting, reference metadata, per-label AC1, and the complete 199-study reliability files. Optional manuscript validation is available through `--manuscript`.
+The default public mode has no dependency on a manuscript checkout. It verifies file presence, unique CSV headers, corpus and layer counts, study/version uniqueness, shape and evidence distributions, lifecycle and capability counts, external traceability, integrated PRISMA allocation and source-specific acquisition provenance, primitive-use roles and output coupling, publication-status sensitivity, target-domain/year cross-tabs, public-artifact indicators, training-overlap reporting, reference metadata, per-label AC1, and the complete 199-study reliability files. Optional manuscript validation is available through `--manuscript`.
+
+Create a clean public directory with `python build_public_release.py <new-output-directory>`. The export is assembled from `public_release_files.txt` and `manuscript_artifact_paths.txt` and is validated after copying.
 
 ## Historical Provenance
 
-Legacy files retain earlier search and coding stages, including 31-record, 41-record, and 67-study views. Baseline files ending in `pre_final_multisource_20260730` are frozen inputs used to build the current integrated ledger. They are not current manuscript denominators. Legacy values such as `Core`, `Supporting`, `core31`, and `v13_` are preserved only for traceability and compatibility.
+The tagged source repository retains earlier search and coding stages, including 31-record, 41-record, and 67-study views. The clean public export excludes those historical build files except for the frozen pre-final matrix used by the current validator.
 
 ## Security Boundary
 

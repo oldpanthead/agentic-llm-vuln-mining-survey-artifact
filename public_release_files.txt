@@ -1,0 +1,23 @@
+# Static files included in the clean public export.
+# Manuscript-facing data paths are added from manuscript_artifact_paths.txt.
+README.md
+ARTIFACT_INDEX.md
+RELEASE_MANIFEST.md
+public_release_checklist.md
+SECURITY_BOUNDARY.md
+data_dictionary.md
+codebook.md
+evidence_output_codebook.md
+unified_second_coder_codebook.md
+INTEGRATED_199_SECOND_CODER_AGREEMENT_20260730.md
+FINAL_MULTISOURCE_SEARCH_PROTOCOL_20260730.md
+FINAL_MULTISOURCE_SEARCH_AND_PRISMA_20260730.md
+FINAL_HARMONIZATION_AND_ARTIFACT_CLOSURE_REPORT.md
+CITATION.cff
+LICENSE-CODE
+LICENSE-DATA
+manuscript_artifact_paths.txt
+reproduce_tables.py
+build_public_release.py
+public_release_files.txt
+data/product_ecosystem_snapshot.csv

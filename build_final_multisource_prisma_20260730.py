@@ -137,6 +137,7 @@ def main() -> int:
         for row in final_extended_rows
     )
     final_extended_metadata = len(final_extended_rows) - final_extended_full_text
+    non_independent_source_records = integrated["source_records"] - integrated["canonical_studies"]
     new_canonical = integrated["canonical_studies"] - len(old_canonical)
     new_background = integrated["canonical_layer_background_reference"] - old_layers["background_reference"]
     new_excluded = integrated["canonical_layer_excluded_near_neighbor"] - old_layers["excluded_near_neighbor"]
@@ -149,6 +150,15 @@ def main() -> int:
         raise SystemExit("ERROR: extended-synthesis material-basis account does not close")
 
     prisma = [
+        ("integrated_flow", "integrated_source_records", integrated["source_records"], "Integrated source-record ledger after occurrence-level deduplication"),
+        ("integrated_flow", "alternate_or_duplicate_source_versions_not_counted", non_independent_source_records, "Alternate versions, exact duplicates, and source variants retained in the crosswalk but not counted independently"),
+        ("integrated_flow", "version_reconciled_studies_screened", integrated["canonical_studies"], "Distinct studies assessed under the common eligibility and analytical-layer rules"),
+        ("integrated_flow", "target_software_studies_with_detailed_material", integrated["target_software_studies"], "Studies with detailed public workflow and evaluation material for complete coding"),
+        ("integrated_flow", "extended_synthesis_full_text_or_equivalent", final_extended_full_text, "Extended-synthesis studies supported by full text or equivalent public material"),
+        ("integrated_flow", "extended_synthesis_metadata_supported", final_extended_metadata, "Extended-synthesis studies supported by audited title and abstract metadata"),
+        ("integrated_flow", "final_extended_synthesis_studies", integrated["extended_synthesis_studies"], "Contextual mechanism, benchmark, evaluation, and governance synthesis"),
+        ("integrated_flow", "background_reference_studies", integrated["canonical_layer_background_reference"], "Contextual literature"),
+        ("integrated_flow", "excluded_studies", integrated["canonical_layer_excluded_near_neighbor"], "Studies outside the analytical layers"),
         ("identification", "exported_source_occurrences", raw_occurrences, "All saved API/interface exports before local query-specific filtering"),
         ("identification", "removed_by_deterministic_query_filter", query_filter_removed, "Broad ranked metadata outside the four-group query boundary"),
         ("deduplication", "source_occurrences_entering_deduplication", entered_dedup, "Occurrences retained by the documented query-specific rules"),
@@ -228,28 +238,39 @@ def main() -> int:
             "Publisher-filtered Crossref feeds were used for ACM, IEEE, Springer, and Elsevier metadata. Official ACM Digital Library, IEEE Xplore, SpringerLink, ScienceDirect, USENIX, NDSS, and DBLP pages were checked as supplementary interfaces; their access records are preserved even where no complete export count was available. Scopus and Web of Science were inaccessible without authenticated subscriptions, and Google Scholar automated access was blocked, so none is represented as a completed database export.",
             "ArXiv and OpenAlex occurrences entered deduplication under their source-query boundaries. Crossref-derived occurrences additionally required a vulnerability, security-testing, or offensive-security cue in the title; the source-count file records the resulting interface-specific reductions.",
             "",
-            "## PRISMA-ScR Account",
+            "## Manuscript-Facing Integrated PRISMA-ScR Account",
             "",
             "| Stage | Item | Count |",
             "|---|---|---:|",
         ]
     )
     for row in rows:
+        if row["stage"] != "integrated_flow":
+            continue
         lines.append(f"| {row['stage']} | {row['metric'].replace('_', ' ')} | {row['count']} |")
     lines.extend(
         [
             "",
             "## Final Analytical Allocation",
             "",
-            f"After version reconciliation, the integrated corpus contains **{integrated['canonical_studies']} canonical studies** from **{integrated['source_records']} source records**: **{integrated['target_software_studies']} target-software studies**, **{integrated['extended_synthesis_studies']} extended-synthesis studies with record-level public-material audit**, **{integrated['canonical_layer_background_reference']} background/reference studies**, and **{integrated['canonical_layer_excluded_near_neighbor']} excluded studies**.",
+            f"After version reconciliation, the integrated corpus contains **{integrated['canonical_studies']} studies** from **{integrated['source_records']} source records**: **{integrated['target_software_studies']} target-software studies**, **{integrated['extended_synthesis_studies']} extended-synthesis studies**, **{integrated['canonical_layer_background_reference']} background/reference studies**, and **{integrated['canonical_layer_excluded_near_neighbor']} excluded studies**. Each study enters one final layer.",
             "",
-            "## Dual-Path Closure",
+            "## Source-Specific Acquisition Provenance",
             "",
-            f"The prior retained path contains **{len(old_canonical)} studies** from **{len(read(OLD_CORPUS))} source records**: {prior_target} target-software studies, {prior_extended} extended-synthesis studies, one governance boundary record, {old_layers['background_reference']} background/reference studies, and {old_layers['excluded_near_neighbor']} exclusions. The current interface path contributes {new_canonical} new studies after overlap and version reconciliation. The final analytical sets therefore close as **{prior_target} + {new_target} = {integrated['target_software_studies']} target-software studies** and **{prior_extended} + {new_extended} + {prior_governance} = {integrated['extended_synthesis_studies']} extended-synthesis studies**.",
+            "The following rows preserve interface-specific query, filtering, retrieval, and historical integration provenance. Their stages were recorded under different acquisition workflows and are not presented as separate analytical cohorts or aggregated into manuscript-wide retrieval totals.",
             "",
-            f"The values 143 and 138 use different units: 143 is the number of prior source records not reidentified by the current interfaces, whereas 138 is the corresponding number of prior canonical studies. For extended synthesis, 83 is the number of current-interface records assessed at full text, while 84 is the number of new canonical extended-synthesis studies after one title-and-abstract-supported record is included. The earlier 89 full-text figure arose when that metadata-supported row inherited a generic full-text note; the corrected final material-basis account is {final_extended_full_text} full-text-supported and {final_extended_metadata} metadata-supported studies.",
+            "| Provenance stage | Item | Count |",
+            "|---|---|---:|",
+        ]
+    )
+    for row in rows:
+        if row["stage"] == "integrated_flow":
+            continue
+        lines.append(f"| {row['stage']} | {row['metric'].replace('_', ' ')} | {row['count']} |")
+    lines.extend(
+        [
             "",
-            "Historical search files remain unchanged as provenance. The manuscript-facing method can report the integrated source coverage, date range, screening rules, version reconciliation, and final allocation without narrating internal search rounds.",
+            f"Historical search files remain unchanged as provenance. The final extended-synthesis material basis is {final_extended_full_text} studies supported by full text or equivalent public material and {final_extended_metadata} supported by audited title-and-abstract metadata.",
         ]
     )
     REPORT.write_text("\n".join(lines) + "\n", encoding="utf-8")

@@ -9,17 +9,14 @@ This repository contains the non-sensitive artifact for a mapping-oriented scopi
 3. Use `ARTIFACT_INDEX.md` as the compact file map.
 4. Use `data_dictionary.md` for field definitions.
 
+For a public archive, run `python build_public_release.py <new-output-directory>`. The builder copies only the release allowlist and manuscript-facing manifest, then validates the exported copy. Do not archive the source working tree directly.
+
 The synchronized submission snapshot is identified by `csur-submission-2026-07-final-v8`. Earlier tags, including `csur-submission-2026-07-final-v7`, remain immutable historical snapshots.
 
 ## Current Integrated Snapshot
 
 The review integrates database and supplementary searches conducted through 2026-07-30.
 
-- Exported source occurrences: 12,090
-- Occurrences entering source-level deduplication: 2,289
-- Unique interface records screened: 1,642
-- Reports sought: 274
-- Reports assessed at full text: 239
 - Integrated source records: 1,785
 - Studies after version reconciliation: 1,772
 - Target-software studies with study-level coding: 199
@@ -41,7 +38,7 @@ The search used arXiv, OpenAlex, Crossref-backed publisher queries for ACM, IEEE
 - `data/final_multisource_search_20260730_fulltext_assessment.csv`: retrieval and assessment evidence retained from the eligibility workflow.
 - `data/final_multisource_search_20260730_complete_screening.csv`: frozen final screening stage, analytical allocation, and decision basis for all 1,642 records.
 - `data/final_multisource_exclusion_summary.csv`: high-level account of the 753 exclusions by screening stage and basis.
-- `data/final_multisource_search_20260730_prisma_counts.csv`: PRISMA-ScR counts regenerated from the frozen screening audit and pre-integration baselines.
+- `data/final_multisource_search_20260730_prisma_counts.csv`: manuscript-facing integrated PRISMA-ScR allocation plus source-specific acquisition provenance.
 - `data/final_multisource_search_20260730_source_counts.csv`: source-interface occurrence counts.
 - `data/final_multisource_search_20260730_dedup_resolutions.csv`: same-study/version decisions.
 - `data/corpus.csv`: integrated 1,785-source-record ledger.
@@ -60,7 +57,7 @@ The search used arXiv, OpenAlex, Crossref-backed publisher queries for ACM, IEEE
 - `data/public_artifact_availability.csv` and `data/principal_output_by_public_artifact_availability.csv`: public artifact indicators located in reviewed material; no artifact execution is claimed.
 - `data/training_data_overlap_control.csv` and `data/training_data_overlap_control_counts.csv`: source-located reporting status for explicit training-overlap controls, discussion only, or no statement located.
 - `data/publication_status_sensitivity_analysis.csv`: 199-study shape and output distributions by publication-status group.
-- `data/final_multisource_cohort_stability.csv`: descriptive comparison of the retained 67-study baseline and 132 newly identified target-software studies under the same shape, evidence, and capability schema.
+- `data/final_multisource_cohort_stability.csv`: provenance-only comparison of historical acquisition groups under the final schema; it does not define manuscript cohorts or denominators.
 - `data/representative_system_mechanisms.csv`: source-located mechanism extraction used by the representative system comparison.
 - `data/mechanism_cost_ablation_synthesis.csv`: source-located cost, ablation, and failure-recovery observations.
 - `data/representative_reported_results.csv`: source-located rows used by the representative reported-results table.
@@ -79,7 +76,7 @@ The complete review uses the same controlled fields across all 199 target-softwa
 
 ## Historical Provenance
 
-Files concerning the earlier 31-record, 41-record, 67-study, July 15 arXiv, and July 16 official-source checks are retained as provenance. They document codebook development, earlier search stages, and prior submission snapshots; they are not the current corpus denominators or the current reliability result. Files with legacy values such as `Core`, `Supporting`, `core31`, or `v13_` remain only where needed for traceability or script compatibility.
+The tagged source repository retains files concerning the earlier 31-record, 41-record, 67-study, July 15 arXiv, and July 16 official-source checks. They document codebook development, earlier search stages, and prior submission snapshots; they are not the current corpus denominators or the current reliability result. The clean public export omits these historical build files.
 
 ## Evidence and Security Boundaries
 

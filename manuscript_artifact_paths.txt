@@ -17,6 +17,7 @@ data/publication_status_standardized.csv
 data/publication_status_distribution_by_layer.csv
 data/publication_status_sensitivity_analysis.csv
 data/current_study_level_coding_matrix_harmonized.csv
+data/current_study_level_coding_matrix_harmonized_pre_final_multisource_20260730.csv
 data/extended_synthesis_audit.csv
 data/traditional_security_primitives.csv
 data/traditional_security_primitives_by_use_role.csv
@@ -30,6 +31,7 @@ data/public_artifact_availability.csv
 data/principal_output_by_public_artifact_availability.csv
 data/training_data_overlap_control.csv
 data/training_data_overlap_control_counts.csv
+data/mapping_snapshot_counts.csv
 data/final_multisource_cohort_stability.csv
 data/integrated_199_second_coder_comparison_20260730.csv
 data/integrated_199_per_label_reliability_20260730.csv

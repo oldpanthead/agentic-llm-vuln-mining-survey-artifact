@@ -1,4 +1,13 @@
 stage,metric,count,definition
+integrated_flow,integrated_source_records,1785,Integrated source-record ledger after occurrence-level deduplication
+integrated_flow,alternate_or_duplicate_source_versions_not_counted,13,"Alternate versions, exact duplicates, and source variants retained in the crosswalk but not counted independently"
+integrated_flow,version_reconciled_studies_screened,1772,Distinct studies assessed under the common eligibility and analytical-layer rules
+integrated_flow,target_software_studies_with_detailed_material,199,Studies with detailed public workflow and evaluation material for complete coding
+integrated_flow,extended_synthesis_full_text_or_equivalent,88,Extended-synthesis studies supported by full text or equivalent public material
+integrated_flow,extended_synthesis_metadata_supported,62,Extended-synthesis studies supported by audited title and abstract metadata
+integrated_flow,final_extended_synthesis_studies,150,"Contextual mechanism, benchmark, evaluation, and governance synthesis"
+integrated_flow,background_reference_studies,670,Contextual literature
+integrated_flow,excluded_studies,753,Studies outside the analytical layers
 identification,exported_source_occurrences,12090,All saved API/interface exports before local query-specific filtering
 identification,removed_by_deterministic_query_filter,9801,Broad ranked metadata outside the four-group query boundary
 deduplication,source_occurrences_entering_deduplication,2289,Occurrences retained by the documented query-specific rules

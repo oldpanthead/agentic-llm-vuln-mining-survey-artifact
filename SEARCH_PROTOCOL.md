@@ -14,7 +14,7 @@ Exportable results were collected through:
 - OpenAlex;
 - Crossref and publisher-prefix queries for ACM, IEEE, Springer, and Elsevier records.
 
-Supplementary discovery and formal-version checks used official ACM, IEEE, Springer, ScienceDirect, USENIX, NDSS, and DBLP pages where accessible, together with seed studies, backward and forward snowballing, benchmark pages, project pages, DOI/title checks, and prior retained records. These web checks are not represented as complete database exports. Google Scholar was blocked during execution; Scopus and Web of Science were unavailable without authenticated access. The access log records these limits directly.
+Supplementary discovery and formal-version checks used official ACM, IEEE, Springer, ScienceDirect, USENIX, NDSS, and DBLP pages where accessible, together with seed studies, backward and forward snowballing, benchmark pages, project pages, and DOI/title checks. These web checks are not represented as complete database exports. The access log records source-specific access and export status directly.
 
 ## Query Logic
 
@@ -29,18 +29,14 @@ The exact strings and pagination are stored in the access log and raw-export man
 
 ## Screening and Reconciliation
 
-Saved interfaces returned 12,090 source occurrences. Documented query-specific filtering retained 2,289 occurrences; exact source-level deduplication produced 1,642 unique interface records for title/abstract screening. Reports were sought for 274 records, 239 were assessed at full text, and 35 could not be retrieved from the documented public sources.
-
-Full-text assessment yielded 132 target-software studies, 83 extended-synthesis studies, 21 background records, and three exclusions from the interface search. Supplementary identification contributed 143 additional non-overlapping source records. Version reconciliation then combined preprints, formal publications, exact duplicates, and source variants at study level.
-
-The final ledger contains 1,785 source records and 1,772 studies. Analytical allocation is:
+All source records acquired through the searches above were integrated through the July 30, 2026 cutoff, deduplicated at the source-occurrence level, reconciled across study versions, and assessed under common eligibility and analytical-layer rules. The final ledger contains 1,785 source records representing 1,772 studies. Thirteen alternate versions, exact duplicates, or source variants remain in the crosswalk without independent counting. Analytical allocation is:
 
 - 199 target-software studies;
 - 150 extended-synthesis studies, including governance and agent-safety context outside the target-software denominator;
 - 670 background/reference studies;
 - 753 excluded studies.
 
-Thirteen alternate versions or source variants remain in the crosswalk without separate counting.
+The 199 target-software studies have detailed public workflow and evaluation material for complete coding. The 150-study extended synthesis comprises 88 studies supported by full text or equivalent public material and 62 supported by audited title-and-abstract metadata. Source-interface exports, query-specific filtering, retrieval decisions, and acquisition dates remain in the linked audit files as provenance; because these fields were not recorded uniformly across all acquisition sources, they are not aggregated into manuscript-wide retrieval totals.
 
 ## Inclusion Boundary
 

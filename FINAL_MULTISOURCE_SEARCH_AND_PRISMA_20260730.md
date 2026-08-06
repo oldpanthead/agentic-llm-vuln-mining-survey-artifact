@@ -19,9 +19,29 @@ The review integrates database, metadata-index, publisher, conference, seed, sno
 Publisher-filtered Crossref feeds were used for ACM, IEEE, Springer, and Elsevier metadata. Official ACM Digital Library, IEEE Xplore, SpringerLink, ScienceDirect, USENIX, NDSS, and DBLP pages were checked as supplementary interfaces; their access records are preserved even where no complete export count was available. Scopus and Web of Science were inaccessible without authenticated subscriptions, and Google Scholar automated access was blocked, so none is represented as a completed database export.
 ArXiv and OpenAlex occurrences entered deduplication under their source-query boundaries. Crossref-derived occurrences additionally required a vulnerability, security-testing, or offensive-security cue in the title; the source-count file records the resulting interface-specific reductions.
 
-## PRISMA-ScR Account
+## Manuscript-Facing Integrated PRISMA-ScR Account
 
 | Stage | Item | Count |
+|---|---|---:|
+| integrated_flow | integrated source records | 1785 |
+| integrated_flow | alternate or duplicate source versions not counted | 13 |
+| integrated_flow | version reconciled studies screened | 1772 |
+| integrated_flow | target software studies with detailed material | 199 |
+| integrated_flow | extended synthesis full text or equivalent | 88 |
+| integrated_flow | extended synthesis metadata supported | 62 |
+| integrated_flow | final extended synthesis studies | 150 |
+| integrated_flow | background reference studies | 670 |
+| integrated_flow | excluded studies | 753 |
+
+## Final Analytical Allocation
+
+After version reconciliation, the integrated corpus contains **1772 studies** from **1785 source records**: **199 target-software studies**, **150 extended-synthesis studies**, **670 background/reference studies**, and **753 excluded studies**. Each study enters one final layer.
+
+## Source-Specific Acquisition Provenance
+
+The following rows preserve interface-specific query, filtering, retrieval, and historical integration provenance. Their stages were recorded under different acquisition workflows and are not presented as separate analytical cohorts or aggregated into manuscript-wide retrieval totals.
+
+| Provenance stage | Item | Count |
 |---|---|---:|
 | identification | exported source occurrences | 12090 |
 | identification | removed by deterministic query filter | 9801 |
@@ -61,14 +81,4 @@ ArXiv and OpenAlex occurrences entered deduplication under their source-query bo
 | final | background reference studies | 670 |
 | final | excluded studies | 753 |
 
-## Final Analytical Allocation
-
-After version reconciliation, the integrated corpus contains **1772 canonical studies** from **1785 source records**: **199 target-software studies**, **150 extended-synthesis studies with record-level public-material audit**, **670 background/reference studies**, and **753 excluded studies**.
-
-## Dual-Path Closure
-
-The prior retained path contains **248 studies** from **253 source records**: 67 target-software studies, 65 extended-synthesis studies, one governance boundary record, 95 background/reference studies, and 20 exclusions. The current interface path contributes 1524 new studies after overlap and version reconciliation. The final analytical sets therefore close as **67 + 132 = 199 target-software studies** and **65 + 84 + 1 = 150 extended-synthesis studies**.
-
-The values 143 and 138 use different units: 143 is the number of prior source records not reidentified by the current interfaces, whereas 138 is the corresponding number of prior canonical studies. For extended synthesis, 83 is the number of current-interface records assessed at full text, while 84 is the number of new canonical extended-synthesis studies after one title-and-abstract-supported record is included. The earlier 89 full-text figure arose when that metadata-supported row inherited a generic full-text note; the corrected final material-basis account is 88 full-text-supported and 62 metadata-supported studies.
-
-Historical search files remain unchanged as provenance. The manuscript-facing method can report the integrated source coverage, date range, screening rules, version reconciliation, and final allocation without narrating internal search rounds.
+Historical search files remain unchanged as provenance. The final extended-synthesis material basis is 88 studies supported by full text or equivalent public material and 62 supported by audited title-and-abstract metadata.

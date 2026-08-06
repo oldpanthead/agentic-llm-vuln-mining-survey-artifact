@@ -291,7 +291,30 @@ def check_search_and_dedup() -> None:
     )
     require(sum(expected_exclusions.values()) == EXPECTED["excluded_studies"], "exclusion account does not close")
     prisma = {row["metric"]: int(row["count"]) for row in read_csv(DATA / "final_multisource_search_20260730_prisma_counts.csv")}
-    checks = {
+    integrated_checks = {
+        "integrated_source_records": 1785,
+        "alternate_or_duplicate_source_versions_not_counted": 13,
+        "version_reconciled_studies_screened": 1772,
+        "target_software_studies_with_detailed_material": 199,
+        "extended_synthesis_full_text_or_equivalent": 88,
+        "extended_synthesis_metadata_supported": 62,
+        "final_extended_synthesis_studies": 150,
+        "background_reference_studies": 670,
+        "excluded_studies": 753,
+    }
+    require(
+        all(prisma.get(key) == value for key, value in integrated_checks.items()),
+        "integrated manuscript-facing PRISMA counts differ from the final ledger",
+    )
+    require(
+        integrated_checks["target_software_studies_with_detailed_material"]
+        + integrated_checks["final_extended_synthesis_studies"]
+        + integrated_checks["background_reference_studies"]
+        + integrated_checks["excluded_studies"]
+        == integrated_checks["version_reconciled_studies_screened"],
+        "integrated analytical layers do not sum to the version-reconciled study count",
+    )
+    provenance_checks = {
         "exported_source_occurrences": 12090,
         "removed_by_deterministic_query_filter": 9801,
         "source_occurrences_entering_deduplication": 2289,
@@ -323,19 +346,19 @@ def check_search_and_dedup() -> None:
         "new_excluded_studies": 733,
         "extended_synthesis_full_text_supported": 88,
         "extended_synthesis_metadata_supported": 62,
-        "integrated_source_records": 1785,
         "integrated_canonical_studies": 1772,
         "target_software_studies": 199,
         "extended_synthesis_studies": 150,
-        "background_reference_studies": 670,
-        "excluded_studies": 753,
     }
-    require(all(prisma.get(key) == value for key, value in checks.items()), "PRISMA counts differ from integrated corpus")
+    require(
+        all(prisma.get(key) == value for key, value in provenance_checks.items()),
+        "source-specific acquisition provenance differs from frozen audit files",
+    )
     resolutions = read_csv(DATA / "final_multisource_search_20260730_dedup_resolutions.csv")
     require(len(resolutions) == 124, "dedup audit must contain 124 candidate pairs")
     require(not any(row.get("audit_decision") == "needs_author_confirmation" for row in resolutions), "unresolved dedup pair remains")
     require(sum(row.get("audit_decision") == "same_study_or_version" for row in resolutions) == 119, "same-study/version resolution count differs")
-    info("search and PRISMA ledger verified through 2026-07-30")
+    info("integrated PRISMA allocation and source-specific provenance verified through 2026-07-30")
 
 
 def check_supplementary_extractions(target: list[dict[str, str]]) -> None:
@@ -625,30 +648,64 @@ def check_second_coder(target: list[dict[str, str]]) -> None:
 
 
 def check_private_paths() -> None:
-    needles = ("C:\\Users\\oldph", "/Users/oldph", "artifact_public_release_candidate/data/")
+    private_path_patterns = (
+        re.compile(r"[A-Za-z]:\\Users\\[^\\\s]+"),
+        re.compile(r"/Users/[^/\s]+"),
+        re.compile(r"artifact_public_release_candidate/data/"),
+    )
     for path in [ROOT / "README.md", ROOT / "ARTIFACT_INDEX.md", ROOT / "RELEASE_MANIFEST.md", ROOT / "data_dictionary.md"]:
         if not path.exists():
             continue
         text = path.read_text(encoding="utf-8-sig", errors="replace")
-        for needle in needles:
-            require(needle not in text, f"private or stale path in {path.name}: {needle}")
+        for pattern in private_path_patterns:
+            require(not pattern.search(text), f"private or stale path in {path.name}: {pattern.pattern}")
+
+
+def read_manuscript_tree(path: Path, seen: set[Path] | None = None) -> str:
+    seen = set() if seen is None else seen
+    path = path.resolve()
+    if path in seen or not path.is_file():
+        return ""
+    seen.add(path)
+    text = path.read_text(encoding="utf-8-sig", errors="replace")
+    parts = [text]
+    for match in re.findall(r"\\(?:input|include)\{([^}]+)\}", text):
+        child = path.parent / match
+        if child.suffix == "":
+            child = child.with_suffix(".tex")
+        parts.append(read_manuscript_tree(child, seen))
+    return "\n".join(parts)
 
 
 def check_manuscript(path: Path) -> None:
     if not path.is_file():
         error(f"manuscript not found: {path}")
         return
-    text = path.read_text(encoding="utf-8-sig", errors="replace")
-    for required in ("1,772", "199", "150"):
+    text = read_manuscript_tree(path)
+    for required in ("1,785", "1,772", "199", "150", "670", "753"):
         require(required in text, f"manuscript does not contain integrated value/date: {required}")
     require(
         "2026-07-30" in text or "July 30, 2026" in text,
         "manuscript does not contain the integrated search cutoff date",
     )
+    lowered = text.lower().replace(" ", "")
+    forbidden = (
+        "currentinterfacesearch",
+        "priorretainedsearchpath",
+        "previouslyretainedstudies",
+        "67+132",
+        "65+84+1",
+        "30+37",
+        "notreidentified",
+        "143sourcerecords",
+        "138studies",
+    )
+    for phrase in forbidden:
+        require(phrase not in lowered, f"manuscript retains historical-round narrative: {phrase}")
     for match in re.findall(r"\\path\{([^}]+)\}", text):
         if match.startswith("data/") or match.endswith((".md", ".py", ".txt")):
             require((ROOT / match).exists(), f"manuscript artifact path is missing: {match}")
-    info(f"manuscript checked: {path}")
+    info(f"unified manuscript flow checked across included TeX files: {path}")
 
 
 def main() -> int:

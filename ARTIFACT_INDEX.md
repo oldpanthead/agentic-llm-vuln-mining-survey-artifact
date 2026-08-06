@@ -10,7 +10,7 @@ Expected current counts: 1,785 source records; 1,772 studies after version recon
 ## Integrated Search
 
 - `FINAL_MULTISOURCE_SEARCH_PROTOCOL_20260730.md`: protocol and source-access boundaries.
-- `FINAL_MULTISOURCE_SEARCH_AND_PRISMA_20260730.md`: search and PRISMA-ScR summary.
+- `FINAL_MULTISOURCE_SEARCH_AND_PRISMA_20260730.md`: manuscript-facing integrated PRISMA-ScR allocation with source-specific acquisition provenance.
 - `data/final_multisource_search_20260730_access_log.csv`: query attempts, interfaces, timestamps, status, and raw export paths.
 - `data/final_multisource_search_20260730_results.csv`: 12,090 saved source occurrences.
 - `data/final_multisource_search_20260730_source_counts.csv`: source-interface occurrence totals.
@@ -18,7 +18,7 @@ Expected current counts: 1,785 source records; 1,772 studies after version recon
 - `data/final_multisource_search_20260730_fulltext_assessment.csv`: retrieval and assessment evidence from the eligibility workflow.
 - `data/final_multisource_search_20260730_complete_screening.csv`: frozen final screening and analytical-allocation audit for all 1,642 records.
 - `data/final_multisource_exclusion_summary.csv`: stage-level closure of the 753 excluded studies.
-- `data/final_multisource_search_20260730_prisma_counts.csv`: flow counts regenerated from the frozen final audit and pre-integration baselines.
+- `data/final_multisource_search_20260730_prisma_counts.csv`: integrated flow counts and source-specific provenance regenerated from frozen audit files.
 - `data/final_multisource_search_20260730_dedup_resolutions.csv`: same-study/version resolutions.
 
 ## Corpus and Coding
@@ -26,6 +26,7 @@ Expected current counts: 1,785 source records; 1,772 studies after version recon
 - `data/corpus.csv`: integrated source-record ledger.
 - `data/study_version_crosswalk.csv`: source record to study/version mapping.
 - `data/current_study_level_coding_matrix_harmonized.csv`: 199 target-software rows.
+- `data/current_study_level_coding_matrix_harmonized_pre_final_multisource_20260730.csv`: frozen pre-final matrix used for provenance checks.
 - `data/extended_synthesis_audit.csv`: 150-study thematic-use audit: 88 full-text-supported and 62 title/abstract-metadata-supported records, including cross-cutting governance context.
 - `data/reference_audit.csv`: citation and source-role audit.
 - `data/publication_status_standardized.csv`: study-level publication-status assignments.
@@ -49,8 +50,9 @@ Expected current counts: 1,785 source records; 1,772 studies after version recon
 - `data/target_domain_extraction.csv`, `data/target_domain_by_principal_output.csv`, and `data/publication_year_by_primary_shape.csv`: target-domain and year cross-tabs used in the study-level figure.
 - `data/public_artifact_availability.csv` and `data/principal_output_by_public_artifact_availability.csv`: located public artifact indicators by output.
 - `data/training_data_overlap_control.csv` and `data/training_data_overlap_control_counts.csv`: training-overlap control reporting audit.
+- `data/mapping_snapshot_counts.csv`: source-record composition and current study-level distribution snapshot referenced by the manuscript.
 - `data/publication_status_sensitivity_analysis.csv`: publication-status robustness counts for the 199-study set.
-- `data/final_multisource_cohort_stability.csv`: shape, evidence-output, and capability distributions for the retained 67-study baseline and 132 new target-software studies.
+- `data/final_multisource_cohort_stability.csv`: provenance-only comparison of historical acquisition groups under the final schema.
 - `data/representative_system_mechanisms.csv`: representative mechanism cases.
 - `data/mechanism_cost_ablation_synthesis.csv`: source-located cost, ablation, and recovery observations.
 - `data/representative_reported_results.csv`: representative result rows.
@@ -66,6 +68,4 @@ Expected current counts: 1,785 source records; 1,772 studies after version recon
 
 ## Historical Files
 
-Earlier corpus snapshots, July 15/16 search files, 31-record and 41-record coding checks, and 67-study review files remain in the repository for provenance. Filenames containing `pre_final_multisource_20260730` are frozen inputs to the integrated build. They must not be interpreted as current counts or current manuscript-facing results.
-
-`archive/final_multisource_preintegration_20260730/` contains the superseded pending-status checklist and integration precheck created before the final corpus was closed.
+Earlier corpus snapshots, July 15/16 search files, 31-record and 41-record coding checks, and 67-study review files remain in the tagged source repository for provenance. The clean public export retains only the frozen pre-final matrix required by the current validator. Historical files must not be interpreted as current counts or current manuscript-facing results.

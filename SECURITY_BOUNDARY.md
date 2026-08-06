@@ -27,16 +27,11 @@ Claims involving CVEs, zero-days, bug bounty outcomes, vendor confirmation, expl
 
 Reviewers can use this artifact to inspect corpus construction, coding logic, and bibliographic traceability. The artifact should not be used as an exploit reproduction package.
 
-## Future Release
+## Release Export
 
-Before public release, authors should decide:
+Build the public directory with `build_public_release.py`. The allowlist-based export excludes local review files even when a user archives the directory outside Git. `.gitignore` remains a source-repository safeguard, not the release boundary.
 
-- which working/proposed audit files to include;
-- whether second-coder adjudication files are ready for release;
-- the public license;
-- the archival target, such as GitHub, Zenodo, or both.
-
-The reproducibility audit does not publish Zotero PDFs, private paths, undisclosed PoC, exploit payloads, sensitive crash inputs, private targets, credentials, or vendor communications. Local review files are excluded through `.gitignore`.
+The reproducibility audit does not publish Zotero PDFs, private paths, undisclosed PoC, exploit payloads, sensitive crash inputs, private targets, credentials, or vendor communications.
 
 The product-ecosystem snapshot records only official public product, model, help, blog, and policy materials. It is an independent boundary data layer, not part of the 212 candidate-record corpus, and product changes do not automatically alter Core statistics.
 
