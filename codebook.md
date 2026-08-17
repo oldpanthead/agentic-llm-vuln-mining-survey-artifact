@@ -36,6 +36,10 @@ A0--A3 describe the main interaction path. A4 and A5 are overlay capability tags
 
 E4a, E4b, and E4c are external-evidence profiles. They distinguish source, public verifiability, and audit readiness. They should not be read as a strictly linear scale of vulnerability discovery capability.
 
+## Third-Review Adjudication Rule
+
+For the final 199-study descriptive matrix, a third reviewer resolved every disagreement between the independent assignments using the prespecified controlled definitions and source evidence. Operational definitions take precedence over author terminology. Benchmark ground truth is not external confirmation; author-reported CVE/CNVD, vendor, maintainer, or bounty material is an external clue; and only a concrete system result aligned with a concrete public external record is a publicly aligned external trace. Retain only labels explicitly supported by the material; do not infer from a system name, promotion, or expected capability. See `ADJUDICATION_COMPLETION_20260812.md` and `adjudication/ADJUDICATION_RULES_20260812.md`.
+
 ## Boundary examples
 
 - **Cybench: A4 / E1**. The system or benchmark setting may involve long-horizon agentic behavior, but the result evidence is mainly controlled task completion.

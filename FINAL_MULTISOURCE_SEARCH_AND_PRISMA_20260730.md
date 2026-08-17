@@ -27,15 +27,15 @@ ArXiv and OpenAlex occurrences entered deduplication under their source-query bo
 | integrated_flow | alternate or duplicate source versions not counted | 13 |
 | integrated_flow | version reconciled studies screened | 1772 |
 | integrated_flow | target software studies with detailed material | 199 |
-| integrated_flow | extended synthesis full text or equivalent | 88 |
+| integrated_flow | extended synthesis full text or equivalent | 92 |
 | integrated_flow | extended synthesis metadata supported | 62 |
-| integrated_flow | final extended synthesis studies | 150 |
-| integrated_flow | background reference studies | 670 |
-| integrated_flow | excluded studies | 753 |
+| integrated_flow | final extended synthesis studies | 154 |
+| integrated_flow | background reference studies | 668 |
+| integrated_flow | excluded studies | 751 |
 
 ## Final Analytical Allocation
 
-After version reconciliation, the integrated corpus contains **1772 studies** from **1785 source records**: **199 target-software studies**, **150 extended-synthesis studies**, **670 background/reference studies**, and **753 excluded studies**. Each study enters one final layer.
+After version reconciliation, the integrated corpus contains **1772 studies** from **1785 source records**: **199 target-software studies**, **154 extended-synthesis studies**, **668 background/reference studies**, and **751 excluded studies**. Each study enters one final layer.
 
 ## Source-Specific Acquisition Provenance
 
@@ -48,12 +48,12 @@ The following rows preserve interface-specific query, filtering, retrieval, and 
 | deduplication | source occurrences entering deduplication | 2289 |
 | deduplication | duplicate source occurrences removed | 647 |
 | screening | unique search records screened | 1642 |
-| screening | records not advanced to report retrieval | 1368 |
-| retrieval | reports sought | 274 |
+| screening | records not advanced to report retrieval | 1364 |
+| retrieval | reports sought | 278 |
 | retrieval | reports not retrieved | 35 |
-| eligibility | reports assessed at full text | 239 |
+| eligibility | reports assessed at full text | 243 |
 | eligibility | full text study level | 132 |
-| eligibility | full text extended synthesis | 83 |
+| eligibility | full text extended synthesis | 87 |
 | eligibility | full text background reference | 21 |
 | eligibility | full text excluded near neighbor | 3 |
 | integration | current search matches to retained studies | 110 |
@@ -67,18 +67,18 @@ The following rows preserve interface-specific query, filtering, retrieval, and 
 | prior_path | prior governance boundary record | 1 |
 | current_path | new canonical studies | 1524 |
 | current_path | new target software studies | 132 |
-| current_path | new extended synthesis studies | 84 |
-| current_path | new extended full text supported | 83 |
+| current_path | new extended synthesis studies | 88 |
+| current_path | new extended full text supported | 87 |
 | current_path | new extended metadata supported | 1 |
-| current_path | new background reference studies | 575 |
-| current_path | new excluded studies | 733 |
-| final | extended synthesis full text supported | 88 |
+| current_path | new background reference studies | 573 |
+| current_path | new excluded studies | 731 |
+| final | extended synthesis full text supported | 92 |
 | final | extended synthesis metadata supported | 62 |
 | final | integrated source records | 1785 |
 | final | integrated canonical studies | 1772 |
 | final | target software studies | 199 |
-| final | extended synthesis studies | 150 |
-| final | background reference studies | 670 |
-| final | excluded studies | 753 |
+| final | extended synthesis studies | 154 |
+| final | background reference studies | 668 |
+| final | excluded studies | 751 |
 
-Historical search files remain unchanged as provenance. The final extended-synthesis material basis is 88 studies supported by full text or equivalent public material and 62 supported by audited title-and-abstract metadata.
+Historical search files remain unchanged as provenance. The final extended-synthesis material basis is 92 studies supported by full text or equivalent public material and 62 supported by audited title-and-abstract metadata.

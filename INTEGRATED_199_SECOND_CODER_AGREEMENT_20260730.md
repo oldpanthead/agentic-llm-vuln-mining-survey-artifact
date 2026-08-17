@@ -1,6 +1,6 @@
 # Integrated 199-Study Independent-Coder Agreement
 
-The calculation combines the released 67-study review with 132 studies jointly included from the final multi-source search. Both cohorts use the same controlled label vocabulary. Source assignments remain separate, and this report does not create consensus labels or score claim-boundary prose by exact textual agreement.
+The calculation combines the released 67-study review with 132 studies jointly included from the final multi-source search. Both cohorts use the same controlled label vocabulary. This report records independent assignments before adjudication; source assignments remain separate, and it does not score claim-boundary prose by exact textual agreement. Final descriptive distributions are reported separately from the adjudicated matrix.
 
 ## Coverage
 
@@ -34,3 +34,6 @@ Eligibility agreement for the new search is reported separately because the rele
 - `data/integrated_199_second_coder_comparison_20260730.csv`
 - `data/integrated_199_per_label_reliability_20260730.csv`
 - `data/integrated_199_label_substitution_sensitivity_20260730.csv`
+- `adjudication/adjudication_form_199_all_disagreements_20260812.completed_human_review.csv`
+- `data/adjudication_log_199_all_fields.csv`
+- `data/adjudicated_study_level_coding_matrix_199.csv`

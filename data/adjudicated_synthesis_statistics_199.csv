@@ -1,0 +1,27 @@
+field,label,count,denominator,share,unresolved,reportable_point_estimate
+lifecycle coverage,candidate analysis,150,199,0.753769,0,yes
+lifecycle coverage,path and input exploration,116,199,0.582915,0,yes
+lifecycle coverage,execution observation,157,199,0.788945,0,yes
+lifecycle coverage,reproduction and validation,96,199,0.482412,0,yes
+lifecycle coverage,patch validation,46,199,0.231156,0,yes
+lifecycle coverage,reporting and audit,78,199,0.391960,0,yes
+cross-stage capability,context aggregation / rule extraction,164,199,0.824121,0,yes
+cross-stage capability,tool routing / strategy routing,150,199,0.753769,0,yes
+cross-stage capability,feedback interpretation / loop adjustment,186,199,0.934673,0,yes
+cross-stage capability,validation organization / evidence packaging,147,199,0.738693,0,yes
+cross-stage capability,long-horizon state management,125,199,0.628141,0,yes
+cross-stage capability,failure reuse / strategy update,94,199,0.472362,0,yes
+cross-stage capability,governance / human gates / disclosure control,18,199,0.090452,0,yes
+primary system shape,candidate-analysis system,46,199,0.231156,0,yes
+primary system shape,feedback-driven fuzzing agent,34,199,0.170854,0,yes
+primary system shape,"reproduction-, validation-, and repair-centered agent",62,199,0.311558,0,yes
+primary system shape,long-horizon pentest and CRS agent,57,199,0.286432,0,yes
+principal reported evidence output,candidate judgment,34,199,0.170854,0,yes
+principal reported evidence output,controlled task completion,55,199,0.276382,0,yes
+principal reported evidence output,runtime safety signal,21,199,0.105528,0,yes
+principal reported evidence output,reproducible validation,83,199,0.417085,0,yes
+principal reported evidence output,externally traceable material,6,199,0.030151,0,yes
+external traceability,no external trace reported,19,199,0.095477,0,yes
+external traceability,author-reported external clue,33,199,0.165829,0,yes
+external traceability,benchmark ground truth / public material,140,199,0.703518,0,yes
+external traceability,publicly aligned external trace,7,199,0.035176,0,yes

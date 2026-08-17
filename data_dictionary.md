@@ -76,7 +76,8 @@ Detailed coding boundaries are defined in `unified_second_coder_codebook.md` and
 |---|---|---|
 | `data/corpus.csv` | Source record | Bibliographic ledger with legacy corpus layer, task category, exclusion reason, and note. |
 | `data/study_version_crosswalk.csv` | Source record | Mapping to canonical study and record, version type, counting status, and deduplication basis. |
-| `data/current_study_level_coding_matrix_harmonized.csv` | Target-software study | Current 199-row matrix covering lifecycle, output, traceability, claim boundary, shape, and capabilities. |
+| `data/adjudicated_study_level_coding_matrix_199.csv` | Target-software study | Final 199-row third-review adjudicated matrix used for descriptive distributions. |
+| `data/current_study_level_coding_matrix_harmonized.csv` | Target-software study | Preserved primary author matrix covering lifecycle, output, traceability, claim boundary, shape, and capabilities before adjudication. |
 | `data/current_study_level_coding_matrix_harmonized_pre_final_multisource_20260730.csv` | Historical target-software study | Frozen pre-final matrix used only for provenance and cohort-stability checks. |
 | `data/extended_synthesis_audit.csv` | Extended-synthesis study | Material basis, synthesis role, RQ contribution, manuscript use, and reason for not entering study-level coding. |
 | `data/reference_audit.csv` | Reference record | Canonical title, publication status, venue, verified URL, DOI/arXiv ID, and citation key. |
@@ -120,9 +121,13 @@ Legacy `Core`, `Supporting`, `Background`, and `Excluded` values remain in `corp
 | `data/integrated_199_per_label_reliability_20260730.csv` | Controlled label | Positive counts, raw agreement, Cohen's kappa, Gwet's AC1, and interpretation note. |
 | `data/integrated_199_reporting_audit_disagreement_review.csv` | Reporting/audit disagreement | Direction, assignments, and source-linked boundary basis. |
 | `data/integrated_199_label_substitution_sensitivity_20260730.csv` | Controlled label | First-coder and complete coder-substitution counts and difference. |
+| `adjudication/adjudication_form_199_all_disagreements_20260812.completed_human_review.csv` | Disagreement | Completed anonymized third-review decision, rationale, and verified evidence location for all 410 disagreements. |
+| `data/adjudication_log_199_all_fields.csv` | Study-field assignment | Full adjudication audit log for all 995 controlled study-field assignments. |
+| `data/adjudicated_synthesis_statistics_199.csv` | Controlled label | Final count, denominator, share, unresolved status, and reportability from the adjudicated matrix. |
+| `data/adjudication_completion_manifest.json` | Adjudication run | Inputs, outputs, disagreement count, unresolved count, and field reportability. |
 
-Final descriptive distributions use the harmonized author matrix. Independent assignments and substitution results remain separate; no consensus matrix is implied.
+Final descriptive distributions use the adjudicated matrix. Independent assignments and substitution results remain separate as pre-adjudication reliability and sensitivity records; the adjudicated matrix is not a new reliability test.
 
 ## Validation
 
-`reproduce_tables.py` verifies manifest completeness, unique headers, expected denominators, controlled distributions, search/reconciliation arithmetic, supplementary extraction closure, publication-status stratification, and complete second-coder statistics. It exits with `VALIDATION_OK` only when all checks pass.
+`reproduce_tables.py` verifies manifest completeness, the completed 410-row adjudication record, the final matrix and statistics, unique headers, expected denominators, controlled distributions, search/reconciliation arithmetic, supplementary extraction closure, publication-status stratification, and complete pre-adjudication second-coder statistics. It exits with `VALIDATION_OK` only when all checks pass.

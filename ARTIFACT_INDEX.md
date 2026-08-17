@@ -5,7 +5,7 @@
 - `reproduce_tables.py`: standalone validation of the integrated search, reconciliation, analytical layers, study-level distributions, primitive extraction, and complete second-coder files.
 - `manuscript_artifact_paths.txt`: repository-relative paths promised by the manuscript.
 
-Expected current counts: 1,785 source records; 1,772 studies after version reconciliation; 199 target-software studies; 150 extended-synthesis studies; 670 background/reference studies; 753 exclusions; and 13 alternate versions or source variants. AgentFuzz is retained in extended synthesis as governance and agent-safety context rather than as a separate analytical stratum.
+Expected current counts: 1,785 source records; 1,772 studies after version reconciliation; 199 target-software studies; 154 adjacent records retained for evidence or contextual mapping; 668 background/reference studies; 751 exclusions; and 13 alternate versions or source variants. AgentFuzz is retained in the adjacent evidence layer as governance and agent-safety context rather than as a separate analytical stratum.
 
 ## Integrated Search
 
@@ -17,7 +17,7 @@ Expected current counts: 1,785 source records; 1,772 studies after version recon
 - `data/final_multisource_search_20260730_screening_audit.csv`: deterministic triage for 1,642 unique interface records.
 - `data/final_multisource_search_20260730_fulltext_assessment.csv`: retrieval and assessment evidence from the eligibility workflow.
 - `data/final_multisource_search_20260730_complete_screening.csv`: frozen final screening and analytical-allocation audit for all 1,642 records.
-- `data/final_multisource_exclusion_summary.csv`: stage-level closure of the 753 excluded studies.
+- `data/final_multisource_exclusion_summary.csv`: stage-level closure of the 751 excluded studies.
 - `data/final_multisource_search_20260730_prisma_counts.csv`: integrated flow counts and source-specific provenance regenerated from frozen audit files.
 - `data/final_multisource_search_20260730_dedup_resolutions.csv`: same-study/version resolutions.
 
@@ -25,9 +25,10 @@ Expected current counts: 1,785 source records; 1,772 studies after version recon
 
 - `data/corpus.csv`: integrated source-record ledger.
 - `data/study_version_crosswalk.csv`: source record to study/version mapping.
-- `data/current_study_level_coding_matrix_harmonized.csv`: 199 target-software rows.
+- `data/adjudicated_study_level_coding_matrix_199.csv`: final 199-row adjudicated matrix used for descriptive distributions.
+- `data/current_study_level_coding_matrix_harmonized.csv`: preserved primary author matrix.
 - `data/current_study_level_coding_matrix_harmonized_pre_final_multisource_20260730.csv`: frozen pre-final matrix used for provenance checks.
-- `data/extended_synthesis_audit.csv`: 150-study thematic-use audit: 88 full-text-supported and 62 title/abstract-metadata-supported records, including cross-cutting governance context.
+- `data/extended_synthesis_audit.csv`: 154-study thematic-use audit: 92 records with detailed public material for substantive synthesis and 62 records supporting contextual coverage mapping, including cross-cutting governance context.
 - `data/reference_audit.csv`: citation and source-role audit.
 - `data/publication_status_standardized.csv`: study-level publication-status assignments.
 - `data/publication_status_distribution_by_layer.csv`: publication-status-stratified evidence and shape counts.
@@ -42,6 +43,10 @@ Expected current counts: 1,785 source records; 1,772 studies after version recon
 - `data/integrated_199_label_substitution_sensitivity_20260730.csv`: full-label substitution counts.
 - `INTEGRATED_199_SECOND_CODER_AGREEMENT_20260730.md`: report used by the manuscript.
 - `data/final_multisource_search_20260730_all_coder_comparison.csv`: detailed comparison for newly reviewed records.
+- `adjudication/adjudication_form_199_all_disagreements_20260812.completed_human_review.csv`: completed anonymized decisions for all 410 disagreements.
+- `data/adjudication_log_199_all_fields.csv`: final audit log covering 995 study-field assignments.
+- `data/adjudicated_synthesis_statistics_199.csv` and `data/adjudication_completion_manifest.json`: final descriptive statistics and completion metadata.
+- `ADJUDICATION_COMPLETION_20260812.md`: fixed rules and reporting boundary.
 
 ## Supplementary Extractions
 

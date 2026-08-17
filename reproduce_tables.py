@@ -23,14 +23,14 @@ EXPECTED = {
     "source_records": 1785,
     "canonical_studies": 1772,
     "target_studies": 199,
-    "extended_studies": 150,
-    "background_studies": 670,
-    "excluded_studies": 753,
+    "extended_studies": 154,
+    "background_studies": 668,
+    "excluded_studies": 751,
     "alternate_sources": 13,
     "search_occurrences": 12090,
     "search_records": 1642,
-    "reports_sought": 274,
-    "reports_assessed": 239,
+    "reports_sought": 278,
+    "reports_assessed": 243,
     "new_jointly_included": 132,
 }
 
@@ -215,7 +215,13 @@ def check_corpus() -> tuple[list[dict[str, str]], list[dict[str, str]]]:
 
 
 def check_matrix() -> list[dict[str, str]]:
-    matrix = read_csv(DATA / "current_study_level_coding_matrix_harmonized.csv")
+    source_matrix = read_csv(DATA / "current_study_level_coding_matrix_harmonized.csv")
+    matrix = read_csv(DATA / "adjudicated_study_level_coding_matrix_199.csv")
+    require(len(source_matrix) == EXPECTED["target_studies"], "preserved author matrix must contain 199 rows")
+    require(
+        {row.get("matrix_id", "") for row in source_matrix} == {row.get("matrix_id", "") for row in matrix},
+        "preserved author matrix and adjudicated matrix IDs differ",
+    )
     require(len(matrix) == EXPECTED["target_studies"], "study-level matrix must contain 199 rows")
     require(len({row.get("matrix_id", "") for row in matrix}) == len(matrix), "matrix_id values must be unique")
     target = [row for row in matrix if row.get("analytical_role") == "target_software_study"]
@@ -227,13 +233,50 @@ def check_matrix() -> list[dict[str, str]]:
     require(Counter(row.get("external_traceability", "") for row in target) == TRACE, "external-trace counts differ")
     require(all(row.get("claim_boundary", "").strip() for row in target), "missing claim-boundary note")
     require(not any(row.get("record_id") == "CP114" for row in matrix), "AgentFuzz must not enter target-software coding")
-    info("study-level coding: 199 target-software studies")
+    info("adjudicated study-level coding: 199 target-software studies")
     return target
+
+
+def check_adjudication(target: list[dict[str, str]]) -> None:
+    decisions = read_csv(ROOT / "adjudication" / "adjudication_form_199_all_disagreements_20260812.completed_human_review.csv")
+    log = read_csv(DATA / "adjudication_log_199_all_fields.csv")
+    statistics = read_csv(DATA / "adjudicated_synthesis_statistics_199.csv")
+    completion = DATA / "adjudication_completion_manifest.json"
+
+    require(len(decisions) == 410, "completed adjudication form must contain 410 disagreements")
+    require(len({row.get("disagreement_id", "") for row in decisions}) == len(decisions), "completed adjudication form has duplicate IDs")
+    require(all(row.get("human_final_label", "").strip() for row in decisions), "completed adjudication form has blank final labels")
+    require(all(row.get("brief_reason", "").strip() for row in decisions), "completed adjudication form has blank reasons")
+    require(all(row.get("evidence_location_verified", "").strip() for row in decisions), "completed adjudication form has blank evidence locations")
+    require(all(row.get("unresolved", "").strip().lower() == "no" for row in decisions), "completed adjudication form contains unresolved rows")
+    require(len(log) == 995, "adjudication log must contain one row per study-field assignment")
+    require(sum(bool(row.get("disagreement_id", "").strip()) for row in log) == 410, "adjudication log must contain 410 resolved disagreements")
+    require(all(row.get("final_label", "").strip() != "unresolved" for row in log), "adjudication log contains unresolved labels")
+    require(len(statistics) == 26, "adjudicated statistics must contain all controlled labels")
+    require(all(row.get("reportable_point_estimate") == "yes" for row in statistics), "adjudicated statistics contain a non-reportable field")
+    expected_statistics = {
+        ("lifecycle coverage", "reporting and audit"): 78,
+        ("cross-stage capability", "validation organization / evidence packaging"): 147,
+        ("principal reported evidence output", "externally traceable material"): 6,
+        ("external traceability", "publicly aligned external trace"): 7,
+    }
+    observed_statistics = {
+        (row.get("field", ""), row.get("label", "")): int(row["count"])
+        for row in statistics
+    }
+    require(all(observed_statistics.get(key) == value for key, value in expected_statistics.items()), "key adjudicated statistics differ")
+    require(completion.is_file(), "missing adjudication completion manifest")
+    if completion.is_file():
+        completion_text = completion.read_text(encoding="utf-8")
+        require('"disagreement_rows": 410' in completion_text, "completion manifest disagreement count differs")
+        require('"unresolved_total": 0' in completion_text, "completion manifest unresolved count differs")
+    require({row.get("matrix_id", "") for row in log} == {row.get("matrix_id", "") for row in target}, "adjudication log and matrix IDs differ")
+    info("third-review adjudication: 410 disagreements resolved; 0 unresolved")
 
 
 def check_extended(target: list[dict[str, str]]) -> None:
     rows = read_csv(DATA / "extended_synthesis_audit.csv")
-    require(len(rows) == EXPECTED["extended_studies"], "extended synthesis must contain 150 studies")
+    require(len(rows) == EXPECTED["extended_studies"], "extended synthesis must contain 154 studies")
     require(len({row.get("record_id", "") for row in rows}) == len(rows), "duplicate extended-synthesis record")
     target_records = {row.get("record_id", "") for row in target}
     require(not (target_records & {row.get("record_id", "") for row in rows}), "study-level and extended layers overlap")
@@ -246,8 +289,8 @@ def check_extended(target: list[dict[str, str]]) -> None:
         if re.search(r"title(?:/|-and-)?abstract metadata", row.get("reviewer_note", ""), re.I)
     ]
     require(len(metadata_only) == 62, "extended-synthesis metadata-supported count must be 62")
-    require(len(rows) - len(metadata_only) == 88, "extended-synthesis full-text-supported count must be 88")
-    info("extended synthesis: 88 full-text-supported and 62 metadata-supported studies")
+    require(len(rows) - len(metadata_only) == 92, "extended-synthesis full-text-supported count must be 92")
+    info("extended synthesis: 92 full-text-supported and 62 metadata-supported studies")
 
 
 def check_search_and_dedup() -> None:
@@ -262,11 +305,11 @@ def check_search_and_dedup() -> None:
     completed_layers = Counter(row["final_analytical_layer"] for row in completed)
     require(
         completed_layers == Counter({
-            "excluded_near_neighbor": 733,
-            "background_reference": 575,
+            "excluded_near_neighbor": 731,
+            "background_reference": 573,
             "study_level": 132,
             "existing_study_or_version": 110,
-            "extended_synthesis": 84,
+            "extended_synthesis": 88,
             "version_reconciliation": 8,
         }),
         f"complete screening layer counts differ: {dict(completed_layers)}",
@@ -279,7 +322,7 @@ def check_search_and_dedup() -> None:
     )
     exclusion_summary = read_csv(DATA / "final_multisource_exclusion_summary.csv")
     expected_exclusions = {
-        "interface_title_abstract_exclusions": 705,
+        "interface_title_abstract_exclusions": 703,
         "interface_full_text_exclusions": 3,
         "interface_retrieval_stage_exclusions": 25,
         "supplementary_retained_exclusions": 20,
@@ -296,11 +339,11 @@ def check_search_and_dedup() -> None:
         "alternate_or_duplicate_source_versions_not_counted": 13,
         "version_reconciled_studies_screened": 1772,
         "target_software_studies_with_detailed_material": 199,
-        "extended_synthesis_full_text_or_equivalent": 88,
+        "extended_synthesis_full_text_or_equivalent": 92,
         "extended_synthesis_metadata_supported": 62,
-        "final_extended_synthesis_studies": 150,
-        "background_reference_studies": 670,
-        "excluded_studies": 753,
+        "final_extended_synthesis_studies": 154,
+        "background_reference_studies": 668,
+        "excluded_studies": 751,
     }
     require(
         all(prisma.get(key) == value for key, value in integrated_checks.items()),
@@ -320,12 +363,12 @@ def check_search_and_dedup() -> None:
         "source_occurrences_entering_deduplication": 2289,
         "duplicate_source_occurrences_removed": 647,
         "unique_search_records_screened": 1642,
-        "records_not_advanced_to_report_retrieval": 1368,
-        "reports_sought": 274,
+        "records_not_advanced_to_report_retrieval": 1364,
+        "reports_sought": 278,
         "reports_not_retrieved": 35,
-        "reports_assessed_at_full_text": 239,
+        "reports_assessed_at_full_text": 243,
         "full_text_study_level": 132,
-        "full_text_extended_synthesis": 83,
+        "full_text_extended_synthesis": 87,
         "full_text_background_reference": 21,
         "full_text_excluded_near_neighbor": 3,
         "current_search_matches_to_retained_studies": 110,
@@ -339,16 +382,16 @@ def check_search_and_dedup() -> None:
         "prior_governance_boundary_record": 1,
         "new_canonical_studies": 1524,
         "new_target_software_studies": 132,
-        "new_extended_synthesis_studies": 84,
-        "new_extended_full_text_supported": 83,
+        "new_extended_synthesis_studies": 88,
+        "new_extended_full_text_supported": 87,
         "new_extended_metadata_supported": 1,
-        "new_background_reference_studies": 575,
-        "new_excluded_studies": 733,
-        "extended_synthesis_full_text_supported": 88,
+        "new_background_reference_studies": 573,
+        "new_excluded_studies": 731,
+        "extended_synthesis_full_text_supported": 92,
         "extended_synthesis_metadata_supported": 62,
         "integrated_canonical_studies": 1772,
         "target_software_studies": 199,
-        "extended_synthesis_studies": 150,
+        "extended_synthesis_studies": 154,
     }
     require(
         all(prisma.get(key) == value for key, value in provenance_checks.items()),
@@ -490,6 +533,13 @@ def check_publication_status(target: list[dict[str, str]]) -> None:
         {row.get("matrix_id", "") for row in target_rows} == {row.get("matrix_id", "") for row in target},
         "publication-status IDs differ from target matrix",
     )
+    target_by_id = {row["matrix_id"]: row for row in target}
+    for row in target_rows:
+        coded = target_by_id[row["matrix_id"]]
+        require(row["strongest_evidence_output"] == coded["strongest_evidence_output"], f"publication-status output differs: {row['matrix_id']}")
+        require(row["primary_system_shape"] == coded["primary_system_shape"], f"publication-status shape differs: {row['matrix_id']}")
+        require(row["cross_stage_capabilities"] == coded["cross_stage_capabilities"], f"publication-status capabilities differ: {row['matrix_id']}")
+        require(row["external_traceability"] == coded["external_traceability"], f"publication-status traceability differs: {row['matrix_id']}")
     distribution = {row["publication_status_standardized"]: row for row in read_csv(DATA / "publication_status_distribution_by_layer.csv")}
     require(set(distribution) == set(PUBLICATION_STATUS), "publication-status distribution categories differ")
     for status, count in PUBLICATION_STATUS.items():
@@ -682,7 +732,7 @@ def check_manuscript(path: Path) -> None:
         error(f"manuscript not found: {path}")
         return
     text = read_manuscript_tree(path)
-    for required in ("1,785", "1,772", "199", "150", "670", "753"):
+    for required in ("1,785", "1,772", "199", "154", "668", "751"):
         require(required in text, f"manuscript does not contain integrated value/date: {required}")
     require(
         "2026-07-30" in text or "July 30, 2026" in text,
@@ -702,6 +752,15 @@ def check_manuscript(path: Path) -> None:
     )
     for phrase in forbidden:
         require(phrase not in lowered, f"manuscript retains historical-round narrative: {phrase}")
+    for phrase in ("6--18/199", "78--83/199", "18--27/199", "147--180", "78--152"):
+        require(phrase not in text, f"manuscript retains superseded pre-adjudication range: {phrase}")
+    for phrase in (
+        "primaryauthor-codedmatrix",
+        "undercompletesecond-codersubstitution",
+        "descriptiverangesforthisstudyset",
+        "changesfromsixto18studies",
+    ):
+        require(phrase not in lowered, f"manuscript treats pre-adjudication assignments as descriptive results: {phrase}")
     for match in re.findall(r"\\path\{([^}]+)\}", text):
         if match.startswith("data/") or match.endswith((".md", ".py", ".txt")):
             require((ROOT / match).exists(), f"manuscript artifact path is missing: {match}")
@@ -718,6 +777,7 @@ def main() -> int:
     target = check_matrix()
     check_extended(target)
     check_search_and_dedup()
+    check_adjudication(target)
     check_supplementary_extractions(target)
     check_publication_status(target)
     check_domain_and_reporting_extractions(target)

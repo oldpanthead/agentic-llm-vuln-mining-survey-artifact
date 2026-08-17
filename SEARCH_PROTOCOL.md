@@ -32,11 +32,11 @@ The exact strings and pagination are stored in the access log and raw-export man
 All source records acquired through the searches above were integrated through the July 30, 2026 cutoff, deduplicated at the source-occurrence level, reconciled across study versions, and assessed under common eligibility and analytical-layer rules. The final ledger contains 1,785 source records representing 1,772 studies. Thirteen alternate versions, exact duplicates, or source variants remain in the crosswalk without independent counting. Analytical allocation is:
 
 - 199 target-software studies;
-- 150 extended-synthesis studies, including governance and agent-safety context outside the target-software denominator;
-- 670 background/reference studies;
-- 753 excluded studies.
+- 154 extended-synthesis studies, including governance and agent-safety context outside the target-software denominator;
+- 668 background/reference studies;
+- 751 excluded studies.
 
-The 199 target-software studies have detailed public workflow and evaluation material for complete coding. The 150-study extended synthesis comprises 88 studies supported by full text or equivalent public material and 62 supported by audited title-and-abstract metadata. Source-interface exports, query-specific filtering, retrieval decisions, and acquisition dates remain in the linked audit files as provenance; because these fields were not recorded uniformly across all acquisition sources, they are not aggregated into manuscript-wide retrieval totals.
+The 199 target-software studies have detailed public workflow and evaluation material for complete coding. The 154-study extended synthesis comprises 92 studies supported by full text or equivalent public material and 62 supported by audited title-and-abstract metadata. Source-interface exports, query-specific filtering, retrieval decisions, and acquisition dates remain in the linked audit files as provenance; because these fields were not recorded uniformly across all acquisition sources, they are not aggregated into manuscript-wide retrieval totals.
 
 ## Inclusion Boundary
 

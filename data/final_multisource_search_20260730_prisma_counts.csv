@@ -3,22 +3,22 @@ integrated_flow,integrated_source_records,1785,Integrated source-record ledger a
 integrated_flow,alternate_or_duplicate_source_versions_not_counted,13,"Alternate versions, exact duplicates, and source variants retained in the crosswalk but not counted independently"
 integrated_flow,version_reconciled_studies_screened,1772,Distinct studies assessed under the common eligibility and analytical-layer rules
 integrated_flow,target_software_studies_with_detailed_material,199,Studies with detailed public workflow and evaluation material for complete coding
-integrated_flow,extended_synthesis_full_text_or_equivalent,88,Extended-synthesis studies supported by full text or equivalent public material
+integrated_flow,extended_synthesis_full_text_or_equivalent,92,Extended-synthesis studies supported by full text or equivalent public material
 integrated_flow,extended_synthesis_metadata_supported,62,Extended-synthesis studies supported by audited title and abstract metadata
-integrated_flow,final_extended_synthesis_studies,150,"Contextual mechanism, benchmark, evaluation, and governance synthesis"
-integrated_flow,background_reference_studies,670,Contextual literature
-integrated_flow,excluded_studies,753,Studies outside the analytical layers
+integrated_flow,final_extended_synthesis_studies,154,"Contextual mechanism, benchmark, evaluation, and governance synthesis"
+integrated_flow,background_reference_studies,668,Contextual literature
+integrated_flow,excluded_studies,751,Studies outside the analytical layers
 identification,exported_source_occurrences,12090,All saved API/interface exports before local query-specific filtering
 identification,removed_by_deterministic_query_filter,9801,Broad ranked metadata outside the four-group query boundary
 deduplication,source_occurrences_entering_deduplication,2289,Occurrences retained by the documented query-specific rules
 deduplication,duplicate_source_occurrences_removed,647,Exact normalized-title source duplicates before record screening
 screening,unique_search_records_screened,1642,"Records screened by title/abstract and, where indicated, full text"
-screening,records_not_advanced_to_report_retrieval,1368,"Resolved at title/abstract stage, including background, existing-study, and exclusion decisions"
-retrieval,reports_sought,274,Reports selected for retrieval or already retrieved
+screening,records_not_advanced_to_report_retrieval,1364,"Resolved at title/abstract stage, including background, existing-study, and exclusion decisions"
+retrieval,reports_sought,278,Reports selected for retrieval or already retrieved
 retrieval,reports_not_retrieved,35,No accessible full report from documented public sources
-eligibility,reports_assessed_at_full_text,239,Downloaded and text-extracted reports
+eligibility,reports_assessed_at_full_text,243,Downloaded and text-extracted reports
 eligibility,full_text_study_level,132,New target-software study-level records
-eligibility,full_text_extended_synthesis,83,Adjacent studies with full-text-supported thematic extraction
+eligibility,full_text_extended_synthesis,87,Adjacent studies with full-text-supported thematic extraction
 eligibility,full_text_background_reference,21,Contextual studies retained outside analytical synthesis
 eligibility,full_text_excluded_near_neighbor,3,Full-text exclusions
 integration,current_search_matches_to_retained_studies,110,Search records already represented in the retained corpus
@@ -32,16 +32,16 @@ prior_path,prior_extended_synthesis_studies,65,Previously retained extended-synt
 prior_path,prior_governance_boundary_record,1,Previously separate governance exemplar transferred to extended synthesis
 current_path,new_canonical_studies,1524,New studies added after overlap and version reconciliation
 current_path,new_target_software_studies,132,Full-text-assessed target-software studies added by the current interfaces
-current_path,new_extended_synthesis_studies,84,"New extended-synthesis studies, including one title-and-abstract-supported record"
-current_path,new_extended_full_text_supported,83,New extended-synthesis studies assessed at full text
+current_path,new_extended_synthesis_studies,88,"New extended-synthesis studies, including one title-and-abstract-supported record"
+current_path,new_extended_full_text_supported,87,New extended-synthesis studies assessed at full text
 current_path,new_extended_metadata_supported,1,New extended-synthesis study retained from title and abstract metadata
-current_path,new_background_reference_studies,575,New contextual studies
-current_path,new_excluded_studies,733,"New exclusions after screening, retrieval, and eligibility assessment"
-final,extended_synthesis_full_text_supported,88,Final extended-synthesis studies supported by reviewed full text
+current_path,new_background_reference_studies,573,New contextual studies
+current_path,new_excluded_studies,731,"New exclusions after screening, retrieval, and eligibility assessment"
+final,extended_synthesis_full_text_supported,92,Final extended-synthesis studies supported by reviewed full text
 final,extended_synthesis_metadata_supported,62,Final extended-synthesis studies supported by public title and abstract metadata
 final,integrated_source_records,1785,Source versions remain traceable
 final,integrated_canonical_studies,1772,Each study counted once after version reconciliation
 final,target_software_studies,199,Study-level analytical denominator
-final,extended_synthesis_studies,150,Adjacent synthesis with record-level public-material audit
-final,background_reference_studies,670,Contextual literature
-final,excluded_studies,753,"Title/abstract exclusions, full-text near-neighbors, and unavailable potentially eligible reports"
+final,extended_synthesis_studies,154,Adjacent synthesis with record-level public-material audit
+final,background_reference_studies,668,Contextual literature
+final,excluded_studies,751,"Title/abstract exclusions, full-text near-neighbors, and unavailable potentially eligible reports"

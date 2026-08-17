@@ -11,7 +11,7 @@ This repository contains the non-sensitive artifact for a mapping-oriented scopi
 
 For a public archive, run `python build_public_release.py <new-output-directory>`. The builder copies only the release allowlist and manuscript-facing manifest, then validates the exported copy. Do not archive the source working tree directly.
 
-The synchronized submission snapshot is identified by `csur-submission-2026-07-final-v8`. Earlier tags, including `csur-submission-2026-07-final-v7`, remain immutable historical snapshots.
+The synchronized submission snapshot is identified by `csur-submission-2026-08-final-v9`. Earlier tags, including `csur-submission-2026-07-final-v8`, remain immutable historical snapshots.
 
 ## Current Integrated Snapshot
 
@@ -20,9 +20,9 @@ The review integrates database and supplementary searches conducted through 2026
 - Integrated source records: 1,785
 - Studies after version reconciliation: 1,772
 - Target-software studies with study-level coding: 199
-- Extended-synthesis studies: 150, including governance and agent-safety context outside the target-software denominator
-- Background/reference studies: 670
-- Excluded studies: 753
+- Extended-synthesis studies: 154, including governance and agent-safety context outside the target-software denominator
+- Background/reference studies: 668
+- Excluded studies: 751
 - Alternate versions or source variants retained without separate counting: 13
 
 The search used arXiv, OpenAlex, Crossref-backed publisher queries for ACM, IEEE, Springer, and Elsevier records, and supplementary checks of official conference, indexing, benchmark, project, seed, and citation sources. The access log distinguishes exportable interfaces from source-restricted web checks and records unavailable subscription services without claiming access.
@@ -37,7 +37,7 @@ The search used arXiv, OpenAlex, Crossref-backed publisher queries for ACM, IEEE
 - `data/final_multisource_search_20260730_screening_audit.csv`: deterministic title/abstract triage for the 1,642 unique interface records.
 - `data/final_multisource_search_20260730_fulltext_assessment.csv`: retrieval and assessment evidence retained from the eligibility workflow.
 - `data/final_multisource_search_20260730_complete_screening.csv`: frozen final screening stage, analytical allocation, and decision basis for all 1,642 records.
-- `data/final_multisource_exclusion_summary.csv`: high-level account of the 753 exclusions by screening stage and basis.
+- `data/final_multisource_exclusion_summary.csv`: high-level account of the 751 exclusions by screening stage and basis.
 - `data/final_multisource_search_20260730_prisma_counts.csv`: manuscript-facing integrated PRISMA-ScR allocation plus source-specific acquisition provenance.
 - `data/final_multisource_search_20260730_source_counts.csv`: source-interface occurrence counts.
 - `data/final_multisource_search_20260730_dedup_resolutions.csv`: same-study/version decisions.
@@ -48,8 +48,9 @@ The search used arXiv, OpenAlex, Crossref-backed publisher queries for ACM, IEEE
 
 ### Study-level and extended synthesis
 
-- `data/current_study_level_coding_matrix_harmonized.csv`: final 199-row target-software matrix.
-- `data/extended_synthesis_audit.csv`: record-level audit for 150 extended-synthesis studies, comprising 88 full-text-supported and 62 title/abstract-metadata-supported records; AgentFuzz supplies cross-cutting governance context.
+- `data/adjudicated_study_level_coding_matrix_199.csv`: final 199-row target-software matrix used for all descriptive distributions after third-review adjudication.
+- `data/current_study_level_coding_matrix_harmonized.csv`: preserved primary author matrix retained for pre-adjudication provenance.
+- `data/extended_synthesis_audit.csv`: record-level audit for 154 adjacent records, comprising 92 records with detailed public material for substantive synthesis and 62 records supporting contextual coverage mapping; AgentFuzz supplies cross-cutting governance context.
 - `data/traditional_security_primitives.csv`: source-located, multi-label author extraction for the 199 target-software studies.
 - `data/traditional_security_primitives_by_use_role.csv` and `data/traditional_security_primitive_use_role_counts.csv`: study--primitive rows and counts separated into workflow-active and evaluation/support use.
 - `data/traditional_security_primitive_by_output.csv`: primitive-family by principal-output co-occurrence counts.
@@ -70,9 +71,12 @@ The search used arXiv, OpenAlex, Crossref-backed publisher queries for ACM, IEEE
 - `data/integrated_199_per_label_reliability_20260730.csv`: lifecycle and capability label-level agreement, including Gwet's AC1.
 - `data/integrated_199_reporting_audit_disagreement_review.csv`: source-linked direction and boundary basis for reporting/audit disagreements.
 - `data/integrated_199_label_substitution_sensitivity_20260730.csv`: complete coder2 substitution counts.
-- `INTEGRATED_199_SECOND_CODER_AGREEMENT_20260730.md`: integrated reliability summary.
+- `INTEGRATED_199_SECOND_CODER_AGREEMENT_20260730.md`: integrated pre-adjudication reliability summary.
+- `adjudication/adjudication_form_199_all_disagreements_20260812.completed_human_review.csv`: anonymized completed third-review decisions for all 410 disagreements.
+- `data/adjudication_log_199_all_fields.csv`, `data/adjudicated_synthesis_statistics_199.csv`, and `data/adjudication_completion_manifest.json`: final decision audit log, descriptive statistics, and completion manifest.
+- `ADJUDICATION_COMPLETION_20260812.md`: adjudication rules, closure status, and reporting boundary.
 
-The complete review uses the same controlled fields across all 199 target-software studies. Final descriptive distributions use the final author matrix; independent labels and substitution results remain separate. No consensus or post-adjudication reliability is claimed.
+The complete review uses the same controlled fields across all 199 target-software studies. A third reviewer resolved all 410 independent-coding disagreements using the prespecified codebook and source evidence. Final descriptive distributions use the adjudicated matrix; raw agreement, Cohen's kappa, AC1, and substitution results remain pre-adjudication reliability and sensitivity records. No post-adjudication reliability statistic is claimed.
 
 ## Historical Provenance
 
