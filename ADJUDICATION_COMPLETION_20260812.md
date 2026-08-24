@@ -14,6 +14,8 @@
 
 Two coders independently assigned lifecycle coverage, cross-stage capability, primary system shape, principal reported evidence output, and external traceability. OY performed an external rereview of the disagreement and QC task package against the prespecified codebook and cited source evidence. Before the initial independent rereview OY had not seen this manuscript, the first-round materials, or old adjudication results; later material-identity corrections and targeted feedback were disclosed. We therefore report this as external third-party rereview, not fully blinded adjudication.
 
+LLM-assisted preparation and deterministic scripts were limited to material assembly, task--study--field--PDF cross-checking, SHA-256 calculation, table validation, and count regeneration. OY read the supplied material and entered every task judgment. The integration validator confirms 460 unique tasks, 410 disagreement and 50 QC strata, 196 unique studies represented by those tasks, the complete 199-study coder-to-matrix identity crosswalk, legal labels and nonempty evidence locators, and all seven corrected-material task paths.
+
 The review applied the rules in `adjudication/ADJUDICATION_RULES_20260812.md`: operational definitions control; benchmark ground truth is not external confirmation; author-reported CVE, CNVD, vendor, maintainer, or bounty material is an external clue unless a concrete system result aligns with a concrete public external record; multi-label fields retain only explicitly shown labels; and evidence-insufficient cases would have been recorded as unresolved. No unresolved case remained after review.
 
 ## Outputs And Reporting Boundary
@@ -27,6 +29,8 @@ The review applied the rules in `adjudication/ADJUDICATION_RULES_20260812.md`: o
 
 Agreement statistics, including raw agreement, Cohen's kappa, and AC1, describe the independent assignments before adjudication. The adjudicated matrix is not a new reliability test.
 
+The prior author-confirmed harmonized matrix had been carried forward as if it were the final adjudicated layer, which explains the formerly identical primary-coder and final marginal counts. OY's rereview decisions now replace that layer without modifying either coder's raw assignments. None of the 26 substantive label margins across the five rereviewed fields is identical to the corresponding primary-coder margin.
+
 ## Final Key Counts
 
 - Reporting and audit: 43/199.
@@ -35,3 +39,5 @@ Agreement statistics, including raw agreement, Cohen's kappa, and AC1, describe 
 - No qualifying cross-stage capability observed: 65/199.
 - Externally traceable material as principal output: 4/199.
 - Publicly aligned external trace: 5/199.
+
+The five retained public-alignment rows were checked separately from the MALF correction. Code-Augur's paper-level Bug 2/20 mappings correspond to published CVE-2026-48113 and CVE-2026-34830 records; Agentic Fuzzing identifies concrete Chromium issue/CVE records; QRS identifies concrete package/CVE or maintainer-patch records; and STITCH prints concrete issue/GHSA links, including a live maintainer issue. FunFuzz points to a public artifact that it says contains the failure-to-upstream-issue map; the artifact host returned an access challenge during the current check, so this network result was not treated as evidence of absence. None of these five rows rests only on an unlocated identifier analogous to CNVD-2024-16009.

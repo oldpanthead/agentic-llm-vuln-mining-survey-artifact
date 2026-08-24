@@ -2,13 +2,13 @@
 
 ## Scope
 
-This report records the synchronized local manuscript/artifact state after the major-revision closure and third-review adjudication pass. The review scope, workflow--capability--evidence framework, four system shapes, seven capabilities, and five principal outputs were not changed. No literature search or corpus expansion was performed; the final study-level descriptive labels are the adjudicated resolutions of the frozen independent assignments.
+This report records the synchronized local manuscript/artifact state after the major-revision closure and OY external-rereview integration. The review scope, workflow--capability--evidence framework, four system shapes, seven capabilities, and five principal outputs were not changed. No literature search or corpus expansion was performed; the final study-level descriptive labels combine 585 frozen agreements with OY's resolutions of 410 frozen disagreements.
 
 ## Closed Reviewer Issues
 
 - **Search and PRISMA closure.** The manuscript now presents one integrated review process through July 30, 2026. Frozen ledgers reproduce 1,785 source records, 1,772 studies after version reconciliation, 199 target-software studies, 154 extended-synthesis studies, 668 background/reference studies, and 751 exclusions. Each study enters one final analytical layer; 13 alternate versions, duplicates, or source variants remain traceable without independent counting.
 - **Material-basis reconciliation.** All 199 target-software studies have detailed public workflow and evaluation material for complete coding. Extended synthesis comprises 92 studies supported by full text or equivalent public material and 62 supported by audited title-and-abstract metadata. Source-specific query, retrieval, and historical integration fields remain available as provenance rather than manuscript cohorts.
-- **Reliability and adjudication.** The 199-study comparison reports positive counts, raw agreement, Cohen's kappa, and Gwet's AC1 for every lifecycle and capability label before adjudication. A third reviewer resolved all 410 field-level disagreements under the prespecified codebook and source evidence. The final matrix reports 78 reporting-and-audit studies, 147 validation-organization studies, six studies with externally traceable material as principal output, and seven with a publicly aligned external trace. The reporting-and-audit audit retains its 82 disagreement directions (78 second-coder-only and four author-only positives) as a pre-adjudication boundary record.
+- **Reliability and external rereview.** The 199-study comparison reports positive counts, raw agreement, Cohen's kappa, and Gwet's AC1 for every lifecycle and capability label before adjudication. OY externally rereviewed 410 field-level disagreements under the prespecified codebook and source evidence; 50 QC tasks remain separate. The final matrix reports 43 reporting-and-audit studies, 69 validation-organization studies, four studies with externally traceable material as principal output, and five with a publicly aligned external trace. The reporting-and-audit disagreement record remains a pre-adjudication boundary record.
 - **Shape/output construct relation.** Primary shape records the dominant organization and objective of agent control; principal output records the observable result supporting the main evaluated contribution. They intentionally share that analytical anchor. The joint table is presented as a construct-consistency and coupling check, not as a causal or independent-association result; non-diagonal cells show that the fields are not synonyms.
 - **Publication robustness.** The study set contains 31 conference/journal studies, 164 preprints, and four benchmark/report/other records. Reproducible validation is the modal principal output in both formal-publication and preprint subsets, while shape ordering is not identical. The manuscript treats this as a description of publicly reported systems rather than a causal publication-status effect.
 - **RQ1 empirical support.** A source-located study--primitive extraction separates workflow-active use, evaluation/support use, and both. Table 5 reports these non-exclusive roles. Co-occurrence checks show that reconnaissance/pentest machinery accompanies controlled task completion in 44 of 49 studies, patch/build/test validation accompanies reproducible validation in 28 of 35, and replay/PoC/PoV execution accompanies reproducible validation in 51 of 75. These observations describe technical dependence, not dynamic tool selection or causation.
@@ -20,8 +20,8 @@ This report records the synchronized local manuscript/artifact state after the m
 ## Recomputed Statistics
 
 - Corpus: 1,785 source records; 1,772 studies; 199 target-software; 154 extended synthesis (92 full text, 62 metadata); 668 background/reference; 751 excluded.
-- Primary shapes: 46 candidate analysis; 34 feedback-driven fuzzing; 62 reproduction/validation/repair; 57 long-horizon penetration testing or CRS.
-- Principal outputs: 34 candidate judgment; 55 controlled task completion; 21 runtime safety signal; 83 reproducible validation; six externally traceable material.
+- Primary shapes: 41 candidate analysis; 33 feedback-driven fuzzing; 70 reproduction/validation/repair; 55 long-horizon penetration testing or CRS.
+- Principal outputs: 51 candidate judgment; 56 controlled task completion; 19 runtime safety signal; 69 reproducible validation; four externally traceable material.
 - Publication status: 31 formal publications; 164 preprints; four benchmark/report/other.
 - Public-artifact and training-overlap counts are recorded above and in their source-located CSVs.
 - Complete per-label reliability and the reporting-and-audit disagreement audit are indexed in `ARTIFACT_INDEX.md`.
@@ -29,7 +29,7 @@ This report records the synchronized local manuscript/artifact state after the m
 
 ## Preserved And Final Data
 
-The corpus scope and analytical-layer assignments are 199 target-software and 154 extended-synthesis studies. The original author matrix and complete independent second-coder matrix remain unchanged and separate. The third-review decisions produce a distinct adjudicated 199-study matrix for descriptive distributions; they do not overwrite either independent source or create a post-adjudication reliability statistic.
+The corpus scope and analytical-layer assignments are 199 target-software and 154 extended-synthesis studies. The original author matrix and complete independent second-coder matrix remain unchanged and separate. OY's external-rereview decisions produce a distinct adjudicated 199-study matrix for descriptive distributions; they do not overwrite either independent source or create a post-adjudication reliability statistic.
 
 ## Screening And Coding Reliability Record
 

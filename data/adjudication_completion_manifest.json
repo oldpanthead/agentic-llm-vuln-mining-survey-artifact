@@ -50,6 +50,27 @@
     "qc_export": "data/third_party_rereview_qc_20260824.csv",
     "cnvd_post_check_task": "R2-159",
     "cnvd_final_label": "author-reported external clue",
-    "final_statistics": "data/adjudicated_synthesis_statistics_199.csv"
+    "final_statistics": "data/adjudicated_synthesis_statistics_199.csv",
+    "task_material_validation": {
+      "status": "passed",
+      "task_count": 460,
+      "disagreement_task_count": 410,
+      "qc_task_count": 50,
+      "unique_task_case_count": 196,
+      "coder_crosswalk_study_count": 199,
+      "corrected_task_count": 7,
+      "material_hash_count": 460
+    },
+    "coder_material_identity_validation": {
+      "status": "passed",
+      "first_coder_core_materials": 67,
+      "second_coder_core_materials": 67,
+      "multisource_materials": 132,
+      "corpus_studies": 199,
+      "files_checked": 266,
+      "minimum_title_identity_score": 0.8,
+      "low_score_files": 0,
+      "validator": "validate_coder_material_identity.py"
+    }
   }
 }
