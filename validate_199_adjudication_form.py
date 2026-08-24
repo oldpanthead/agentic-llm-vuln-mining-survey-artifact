@@ -59,6 +59,8 @@ FIELD_RULES = {
     },
 }
 
+EMPTY_SET_LABEL = "no qualifying label observed"
+
 EXPECTED_COUNTS = {
     "lifecycle coverage": 147,
     "cross-stage capability": 137,
@@ -149,6 +151,8 @@ def validate(path, allow_pending):
             if final_label not in rule["allowed"]:
                 errors.append(f"{row_id}: invalid single label {final_label!r}")
         else:
+            if final_label == EMPTY_SET_LABEL:
+                continue
             labels, unknown, duplicates, wrong_order = normalize_multilabel(final_label, rule["allowed"])
             if not labels:
                 errors.append(f"{row_id}: at least one multi-label value is required")

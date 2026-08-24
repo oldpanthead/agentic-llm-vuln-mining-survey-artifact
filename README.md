@@ -72,11 +72,12 @@ The search used arXiv, OpenAlex, Crossref-backed publisher queries for ACM, IEEE
 - `data/integrated_199_reporting_audit_disagreement_review.csv`: source-linked direction and boundary basis for reporting/audit disagreements.
 - `data/integrated_199_label_substitution_sensitivity_20260730.csv`: complete coder2 substitution counts.
 - `INTEGRATED_199_SECOND_CODER_AGREEMENT_20260730.md`: integrated pre-adjudication reliability summary.
-- `adjudication/adjudication_form_199_all_disagreements_20260812.completed_human_review.csv`: anonymized completed third-review decisions for all 410 disagreements.
-- `data/adjudication_log_199_all_fields.csv`, `data/adjudicated_synthesis_statistics_199.csv`, and `data/adjudication_completion_manifest.json`: final decision audit log, descriptive statistics, and completion manifest.
+- `third_party_rereview_oy_20260824.csv`: raw 460-row OY rereview export (410 disagreements plus 50 QC rows).
+- `data/third_party_rereview_decisions_20260824.csv` and `data/third_party_rereview_qc_20260824.csv`: integrated disagreement decisions and separately retained QC results.
+- `data/adjudication_log_199_all_fields.csv`, `data/adjudicated_synthesis_statistics_199.csv`, and `data/adjudication_completion_manifest.json`: final external-rereview log, descriptive statistics, and completion manifest.
 - `ADJUDICATION_COMPLETION_20260812.md`: adjudication rules, closure status, and reporting boundary.
 
-The complete review uses the same controlled fields across all 199 target-software studies. A third reviewer resolved all 410 independent-coding disagreements using the prespecified codebook and source evidence. Final descriptive distributions use the adjudicated matrix; raw agreement, Cohen's kappa, AC1, and substitution results remain pre-adjudication reliability and sensitivity records. No post-adjudication reliability statistic is claimed.
+The complete review uses the same controlled fields across all 199 target-software studies. OY performed an external rereview of all 410 independent-coding disagreements plus 50 hidden-reference QC rows using the prespecified codebook and source evidence. Only disagreement decisions enter the final matrix; QC remains separate. The first- and second-coder files are preserved unchanged, and raw agreement, Cohen's kappa, AC1, and substitution results remain pre-adjudication reliability records. No post-adjudication reliability statistic is claimed.
 
 ## Historical Provenance
 

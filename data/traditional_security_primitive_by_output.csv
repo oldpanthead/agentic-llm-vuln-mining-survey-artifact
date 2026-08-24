@@ -1,36 +1,36 @@
 primitive_family,principal_reported_evidence_output,count,primitive_union_denominator
-static_taint_specification,candidate judgment,32,103
-static_taint_specification,controlled task completion,8,103
-static_taint_specification,externally traceable material,3,103
-static_taint_specification,reproducible validation,53,103
-static_taint_specification,runtime safety signal,7,103
-fuzzing_input_harness,candidate judgment,1,68
+fuzzing_input_harness,candidate judgment,11,68
 fuzzing_input_harness,controlled task completion,14,68
-fuzzing_input_harness,externally traceable material,5,68
-fuzzing_input_harness,reproducible validation,31,68
-fuzzing_input_harness,runtime safety signal,17,68
-symbolic_constraint,candidate judgment,19,62
-symbolic_constraint,controlled task completion,4,62
-symbolic_constraint,externally traceable material,0,62
-symbolic_constraint,reproducible validation,35,62
-symbolic_constraint,runtime safety signal,4,62
-runtime_oracle,candidate judgment,4,111
-runtime_oracle,controlled task completion,25,111
-runtime_oracle,externally traceable material,5,111
-runtime_oracle,reproducible validation,59,111
-runtime_oracle,runtime safety signal,18,111
-replay_poc_pov,candidate judgment,0,75
-replay_poc_pov,controlled task completion,18,75
-replay_poc_pov,externally traceable material,2,75
-replay_poc_pov,reproducible validation,51,75
-replay_poc_pov,runtime safety signal,4,75
-patch_build_test,candidate judgment,0,35
+fuzzing_input_harness,runtime safety signal,16,68
+fuzzing_input_harness,reproducible validation,24,68
+fuzzing_input_harness,externally traceable material,3,68
+patch_build_test,candidate judgment,3,35
 patch_build_test,controlled task completion,5,35
+patch_build_test,runtime safety signal,3,35
+patch_build_test,reproducible validation,23,35
 patch_build_test,externally traceable material,1,35
-patch_build_test,reproducible validation,28,35
-patch_build_test,runtime safety signal,1,35
-recon_scan_pentest,candidate judgment,0,49
-recon_scan_pentest,controlled task completion,44,49
-recon_scan_pentest,externally traceable material,0,49
+recon_scan_pentest,candidate judgment,4,49
+recon_scan_pentest,controlled task completion,42,49
+recon_scan_pentest,runtime safety signal,0,49
 recon_scan_pentest,reproducible validation,3,49
-recon_scan_pentest,runtime safety signal,2,49
+recon_scan_pentest,externally traceable material,0,49
+replay_poc_pov,candidate judgment,8,75
+replay_poc_pov,controlled task completion,16,75
+replay_poc_pov,runtime safety signal,4,75
+replay_poc_pov,reproducible validation,46,75
+replay_poc_pov,externally traceable material,1,75
+runtime_oracle,candidate judgment,17,111
+runtime_oracle,controlled task completion,23,111
+runtime_oracle,runtime safety signal,18,111
+runtime_oracle,reproducible validation,50,111
+runtime_oracle,externally traceable material,3,111
+static_taint_specification,candidate judgment,42,103
+static_taint_specification,controlled task completion,8,103
+static_taint_specification,runtime safety signal,8,103
+static_taint_specification,reproducible validation,43,103
+static_taint_specification,externally traceable material,2,103
+symbolic_constraint,candidate judgment,23,62
+symbolic_constraint,controlled task completion,5,62
+symbolic_constraint,runtime safety signal,6,62
+symbolic_constraint,reproducible validation,28,62
+symbolic_constraint,externally traceable material,0,62

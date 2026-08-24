@@ -1,17 +1,17 @@
 publication_year,primary_system_shape,count,year_denominator,interpretation_note
 2023,candidate-analysis system,1,2,Descriptive count; 2026 is an incomplete publication year.
 2023,feedback-driven fuzzing agent,0,2,Descriptive count; 2026 is an incomplete publication year.
-2023,long-horizon pentest and CRS agent,0,2,Descriptive count; 2026 is an incomplete publication year.
 2023,"reproduction-, validation-, and repair-centered agent",1,2,Descriptive count; 2026 is an incomplete publication year.
+2023,long-horizon pentest and CRS agent,0,2,Descriptive count; 2026 is an incomplete publication year.
 2024,candidate-analysis system,1,13,Descriptive count; 2026 is an incomplete publication year.
 2024,feedback-driven fuzzing agent,1,13,Descriptive count; 2026 is an incomplete publication year.
-2024,long-horizon pentest and CRS agent,4,13,Descriptive count; 2026 is an incomplete publication year.
 2024,"reproduction-, validation-, and repair-centered agent",7,13,Descriptive count; 2026 is an incomplete publication year.
-2025,candidate-analysis system,20,84,Descriptive count; 2026 is an incomplete publication year.
-2025,feedback-driven fuzzing agent,12,84,Descriptive count; 2026 is an incomplete publication year.
-2025,long-horizon pentest and CRS agent,27,84,Descriptive count; 2026 is an incomplete publication year.
-2025,"reproduction-, validation-, and repair-centered agent",25,84,Descriptive count; 2026 is an incomplete publication year.
-2026,candidate-analysis system,24,100,Descriptive count; 2026 is an incomplete publication year.
+2024,long-horizon pentest and CRS agent,4,13,Descriptive count; 2026 is an incomplete publication year.
+2025,candidate-analysis system,18,84,Descriptive count; 2026 is an incomplete publication year.
+2025,feedback-driven fuzzing agent,11,84,Descriptive count; 2026 is an incomplete publication year.
+2025,"reproduction-, validation-, and repair-centered agent",29,84,Descriptive count; 2026 is an incomplete publication year.
+2025,long-horizon pentest and CRS agent,26,84,Descriptive count; 2026 is an incomplete publication year.
+2026,candidate-analysis system,21,100,Descriptive count; 2026 is an incomplete publication year.
 2026,feedback-driven fuzzing agent,21,100,Descriptive count; 2026 is an incomplete publication year.
-2026,long-horizon pentest and CRS agent,26,100,Descriptive count; 2026 is an incomplete publication year.
-2026,"reproduction-, validation-, and repair-centered agent",29,100,Descriptive count; 2026 is an incomplete publication year.
+2026,"reproduction-, validation-, and repair-centered agent",33,100,Descriptive count; 2026 is an incomplete publication year.
+2026,long-horizon pentest and CRS agent,25,100,Descriptive count; 2026 is an incomplete publication year.

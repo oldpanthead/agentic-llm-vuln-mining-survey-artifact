@@ -121,7 +121,10 @@ Legacy `Core`, `Supporting`, `Background`, and `Excluded` values remain in `corp
 | `data/integrated_199_per_label_reliability_20260730.csv` | Controlled label | Positive counts, raw agreement, Cohen's kappa, Gwet's AC1, and interpretation note. |
 | `data/integrated_199_reporting_audit_disagreement_review.csv` | Reporting/audit disagreement | Direction, assignments, and source-linked boundary basis. |
 | `data/integrated_199_label_substitution_sensitivity_20260730.csv` | Controlled label | First-coder and complete coder-substitution counts and difference. |
-| `adjudication/adjudication_form_199_all_disagreements_20260812.completed_human_review.csv` | Disagreement | Completed anonymized third-review decision, rationale, and verified evidence location for all 410 disagreements. |
+| `third_party_rereview_oy_20260824.csv` | Rereview task | Raw OY export for 410 disagreement tasks and 50 hidden-reference QC tasks. |
+| `data/third_party_rereview_decisions_20260824.csv` | Disagreement | OY decision, rationale, locator, and integration provenance for 410 disagreements. |
+| `data/third_party_rereview_qc_20260824.csv` | QC task | Fifty rule-application checks retained separately from final decisions and reliability statistics. |
+| `data/third_party_rereview_material_crosswalk_20260824.csv` | Corrected case material | Identity correction and SHA-256 record for A104, A139, A011, and A137. |
 | `data/adjudication_log_199_all_fields.csv` | Study-field assignment | Full adjudication audit log for all 995 controlled study-field assignments. |
 | `data/adjudicated_synthesis_statistics_199.csv` | Controlled label | Final count, denominator, share, unresolved status, and reportability from the adjudicated matrix. |
 | `data/adjudication_completion_manifest.json` | Adjudication run | Inputs, outputs, disagreement count, unresolved count, and field reportability. |

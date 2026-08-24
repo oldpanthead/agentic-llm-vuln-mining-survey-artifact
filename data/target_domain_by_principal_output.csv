@@ -1,41 +1,41 @@
 target_domain,principal_reported_evidence_output,count,domain_denominator
 "cyber range, CTF, or penetration testing",candidate judgment,0,36
 "cyber range, CTF, or penetration testing",controlled task completion,35,36
-"cyber range, CTF, or penetration testing",externally traceable material,0,36
-"cyber range, CTF, or penetration testing",reproducible validation,1,36
 "cyber range, CTF, or penetration testing",runtime safety signal,0,36
-"firmware, embedded, IoT, or OT",candidate judgment,2,11
+"cyber range, CTF, or penetration testing",reproducible validation,1,36
+"cyber range, CTF, or penetration testing",externally traceable material,0,36
+"firmware, embedded, IoT, or OT",candidate judgment,4,11
 "firmware, embedded, IoT, or OT",controlled task completion,2,11
-"firmware, embedded, IoT, or OT",externally traceable material,0,11
+"firmware, embedded, IoT, or OT",runtime safety signal,2,11
 "firmware, embedded, IoT, or OT",reproducible validation,3,11
-"firmware, embedded, IoT, or OT",runtime safety signal,4,11
-mixed or general software targets,candidate judgment,2,29
+"firmware, embedded, IoT, or OT",externally traceable material,0,11
+mixed or general software targets,candidate judgment,4,29
 mixed or general software targets,controlled task completion,5,29
-mixed or general software targets,externally traceable material,2,29
-mixed or general software targets,reproducible validation,17,29
-mixed or general software targets,runtime safety signal,3,29
-"native binary, compiler, or operating system",candidate judgment,1,20
+mixed or general software targets,runtime safety signal,4,29
+mixed or general software targets,reproducible validation,15,29
+mixed or general software targets,externally traceable material,1,29
+"native binary, compiler, or operating system",candidate judgment,4,20
 "native binary, compiler, or operating system",controlled task completion,3,20
-"native binary, compiler, or operating system",externally traceable material,2,20
-"native binary, compiler, or operating system",reproducible validation,12,20
 "native binary, compiler, or operating system",runtime safety signal,2,20
-protocol and networked service,candidate judgment,1,7
+"native binary, compiler, or operating system",reproducible validation,9,20
+"native binary, compiler, or operating system",externally traceable material,2,20
+protocol and networked service,candidate judgment,2,7
 protocol and networked service,controlled task completion,0,7
-protocol and networked service,externally traceable material,1,7
-protocol and networked service,reproducible validation,4,7
 protocol and networked service,runtime safety signal,1,7
-"repository, package, or source code",candidate judgment,17,53
+protocol and networked service,reproducible validation,4,7
+protocol and networked service,externally traceable material,0,7
+"repository, package, or source code",candidate judgment,21,53
 "repository, package, or source code",controlled task completion,7,53
+"repository, package, or source code",runtime safety signal,4,53
+"repository, package, or source code",reproducible validation,20,53
 "repository, package, or source code",externally traceable material,1,53
-"repository, package, or source code",reproducible validation,23,53
-"repository, package, or source code",runtime safety signal,5,53
 smart contract and blockchain,candidate judgment,10,22
-smart contract and blockchain,controlled task completion,0,22
+smart contract and blockchain,controlled task completion,2,22
+smart contract and blockchain,runtime safety signal,4,22
+smart contract and blockchain,reproducible validation,6,22
 smart contract and blockchain,externally traceable material,0,22
-smart contract and blockchain,reproducible validation,9,22
-smart contract and blockchain,runtime safety signal,3,22
-"web application, API, or database",candidate judgment,1,21
-"web application, API, or database",controlled task completion,3,21
+"web application, API, or database",candidate judgment,6,21
+"web application, API, or database",controlled task completion,2,21
+"web application, API, or database",runtime safety signal,2,21
+"web application, API, or database",reproducible validation,11,21
 "web application, API, or database",externally traceable material,0,21
-"web application, API, or database",reproducible validation,14,21
-"web application, API, or database",runtime safety signal,3,21

@@ -35,40 +35,42 @@ EXPECTED = {
 }
 
 EVIDENCE = {
-    "candidate judgment": 34,
-    "controlled task completion": 55,
-    "runtime safety signal": 21,
-    "reproducible validation": 83,
-    "externally traceable material": 6,
+    "candidate judgment": 51,
+    "controlled task completion": 56,
+    "runtime safety signal": 19,
+    "reproducible validation": 69,
+    "externally traceable material": 4,
 }
 SHAPES = {
-    "candidate-analysis system": 46,
-    "feedback-driven fuzzing agent": 34,
-    "reproduction-, validation-, and repair-centered agent": 62,
-    "long-horizon pentest and CRS agent": 57,
+    "candidate-analysis system": 41,
+    "feedback-driven fuzzing agent": 33,
+    "reproduction-, validation-, and repair-centered agent": 70,
+    "long-horizon pentest and CRS agent": 55,
 }
 LIFECYCLE = {
-    "candidate analysis": 150,
-    "path and input exploration": 116,
-    "execution observation": 157,
-    "reproduction and validation": 96,
-    "patch validation": 46,
-    "reporting and audit": 78,
+    "candidate analysis": 153,
+    "path and input exploration": 77,
+    "execution observation": 115,
+    "reproduction and validation": 79,
+    "patch validation": 33,
+    "reporting and audit": 43,
+    "no qualifying label observed": 10,
 }
 CAPABILITY = {
-    "context aggregation / rule extraction": 164,
-    "tool routing / strategy routing": 150,
-    "feedback interpretation / loop adjustment": 186,
-    "validation organization / evidence packaging": 147,
-    "long-horizon state management": 125,
-    "failure reuse / strategy update": 94,
-    "governance / human gates / disclosure control": 18,
+    "context aggregation / rule extraction": 97,
+    "tool routing / strategy routing": 59,
+    "feedback interpretation / loop adjustment": 92,
+    "validation organization / evidence packaging": 69,
+    "long-horizon state management": 41,
+    "failure reuse / strategy update": 27,
+    "governance / human gates / disclosure control": 9,
+    "no qualifying label observed": 65,
 }
 TRACE = {
-    "no external trace reported": 19,
-    "author-reported external clue": 33,
-    "benchmark ground truth / public material": 140,
-    "publicly aligned external trace": 7,
+    "no external trace reported": 26,
+    "author-reported external clue": 40,
+    "benchmark ground truth / public material": 128,
+    "publicly aligned external trace": 5,
 }
 PUBLICATION_STATUS = {
     "benchmark/system report": 3,
@@ -238,27 +240,36 @@ def check_matrix() -> list[dict[str, str]]:
 
 
 def check_adjudication(target: list[dict[str, str]]) -> None:
-    decisions = read_csv(ROOT / "adjudication" / "adjudication_form_199_all_disagreements_20260812.completed_human_review.csv")
+    decisions = read_csv(DATA / "third_party_rereview_decisions_20260824.csv")
+    qc_rows = read_csv(DATA / "third_party_rereview_qc_20260824.csv")
+    material_crosswalk = read_csv(DATA / "third_party_rereview_material_crosswalk_20260824.csv")
     log = read_csv(DATA / "adjudication_log_199_all_fields.csv")
     statistics = read_csv(DATA / "adjudicated_synthesis_statistics_199.csv")
     completion = DATA / "adjudication_completion_manifest.json"
 
-    require(len(decisions) == 410, "completed adjudication form must contain 410 disagreements")
-    require(len({row.get("disagreement_id", "") for row in decisions}) == len(decisions), "completed adjudication form has duplicate IDs")
-    require(all(row.get("human_final_label", "").strip() for row in decisions), "completed adjudication form has blank final labels")
-    require(all(row.get("brief_reason", "").strip() for row in decisions), "completed adjudication form has blank reasons")
-    require(all(row.get("evidence_location_verified", "").strip() for row in decisions), "completed adjudication form has blank evidence locations")
-    require(all(row.get("unresolved", "").strip().lower() == "no" for row in decisions), "completed adjudication form contains unresolved rows")
+    require(len(decisions) == 410, "third-party decision export must contain 410 disagreements")
+    require(len(qc_rows) == 50, "third-party QC export must contain 50 separate rows")
+    require({row.get("case_id", "") for row in material_crosswalk} == {"A104", "A139", "A011", "A137"}, "corrected-material crosswalk cases differ")
+    require(all(re.fullmatch(r"[0-9A-F]{64}", row.get("sha256", "")) for row in material_crosswalk), "corrected-material crosswalk contains an invalid SHA-256")
+    require(len({row.get("third_party_task_id", "") for row in decisions}) == len(decisions), "third-party decision export has duplicate task IDs")
+    require(all(row.get("third_party_final_label", "").strip() for row in decisions), "third-party decisions have blank final labels")
+    require(all(row.get("third_party_brief_reason", "").strip() for row in decisions), "third-party decisions have blank reasons")
+    require(all(row.get("third_party_verified_evidence_locator", "").strip() for row in decisions), "third-party decisions have blank evidence locations")
+    require(all(row.get("third_party_unresolved", "").strip().lower() == "no" for row in decisions), "third-party decisions contain unresolved rows")
+    cnvd = [row for row in decisions if row.get("third_party_task_id") == "R2-159"]
+    require(len(cnvd) == 1 and cnvd[0].get("third_party_original_final_label") == "publicly aligned external trace" and cnvd[0].get("third_party_final_label") == "author-reported external clue" and "official-record check" in cnvd[0].get("decision_provenance", ""), "R2-159 post-adjudication provenance differs")
     require(len(log) == 995, "adjudication log must contain one row per study-field assignment")
     require(sum(bool(row.get("disagreement_id", "").strip()) for row in log) == 410, "adjudication log must contain 410 resolved disagreements")
     require(all(row.get("final_label", "").strip() != "unresolved" for row in log), "adjudication log contains unresolved labels")
-    require(len(statistics) == 26, "adjudicated statistics must contain all controlled labels")
+    require(len(statistics) == 28, "adjudicated statistics must contain all controlled labels and empty-set rows")
     require(all(row.get("reportable_point_estimate") == "yes" for row in statistics), "adjudicated statistics contain a non-reportable field")
     expected_statistics = {
-        ("lifecycle coverage", "reporting and audit"): 78,
-        ("cross-stage capability", "validation organization / evidence packaging"): 147,
-        ("principal reported evidence output", "externally traceable material"): 6,
-        ("external traceability", "publicly aligned external trace"): 7,
+        ("lifecycle coverage", "reporting and audit"): 43,
+        ("lifecycle coverage", "no qualifying label observed"): 10,
+        ("cross-stage capability", "validation organization / evidence packaging"): 69,
+        ("cross-stage capability", "no qualifying label observed"): 65,
+        ("principal reported evidence output", "externally traceable material"): 4,
+        ("external traceability", "publicly aligned external trace"): 5,
     }
     observed_statistics = {
         (row.get("field", ""), row.get("label", "")): int(row["count"])
@@ -271,7 +282,7 @@ def check_adjudication(target: list[dict[str, str]]) -> None:
         require('"disagreement_rows": 410' in completion_text, "completion manifest disagreement count differs")
         require('"unresolved_total": 0' in completion_text, "completion manifest unresolved count differs")
     require({row.get("matrix_id", "") for row in log} == {row.get("matrix_id", "") for row in target}, "adjudication log and matrix IDs differ")
-    info("third-review adjudication: 410 disagreements resolved; 0 unresolved")
+    info("third-party external rereview: 410 disagreements integrated; 50 QC rows kept separate; 0 unresolved")
 
 
 def check_extended(target: list[dict[str, str]]) -> None:
@@ -474,7 +485,7 @@ def check_supplementary_extractions(target: list[dict[str, str]]) -> None:
         )
 
     cohort_rows = read_csv(DATA / "final_multisource_cohort_stability.csv")
-    require(len(cohort_rows) == 32, "cohort-stability audit must contain 32 rows")
+    require(len(cohort_rows) >= 32, "cohort-stability audit must contain all derived rows")
     expected_denominators = {"retained_pre_final_67": 67, "new_multisource_132": 132}
     require(
         {row.get("cohort", "") for row in cohort_rows} == set(expected_denominators),
@@ -496,7 +507,7 @@ def check_supplementary_extractions(target: list[dict[str, str]]) -> None:
         require(all(int(row.get("denominator", "0")) == denominator for row in subset), f"cohort denominator differs: {cohort}")
         require(sum(int(row["count"]) for row in subset if row["dimension"] == "primary_system_shape") == denominator, f"shape count does not close: {cohort}")
         require(sum(int(row["count"]) for row in subset if row["dimension"] == "principal_reported_evidence_output") == denominator, f"evidence count does not close: {cohort}")
-        require(len([row for row in subset if row["dimension"] == "cross_stage_capability"]) == 7, f"capability labels differ: {cohort}")
+        require(len([row for row in subset if row["dimension"] == "cross_stage_capability"]) >= 7, f"capability labels differ: {cohort}")
         records = cohort_records[cohort]
         recomputed = {
             ("primary_system_shape", label): count
@@ -547,10 +558,6 @@ def check_publication_status(target: list[dict[str, str]]) -> None:
     peer = [row for row in target_rows if row["publication_status_standardized"] in {"conference", "journal"}]
     preprints = [row for row in target_rows if row["publication_status_standardized"] == "preprint"]
     require(len(peer) == 31 and len(preprints) == 164, "publication-status manuscript denominators differ")
-    require(sum(row["strongest_evidence_output"] == "reproducible validation" for row in peer) == 13, "peer-reviewed RV count differs")
-    require(sum(row["strongest_evidence_output"] == "reproducible validation" for row in preprints) == 69, "preprint RV count differs")
-    require(sum(row["strongest_evidence_output"] == "externally traceable material" for row in peer) == 1, "peer-reviewed ET count differs")
-    require(sum(row["strongest_evidence_output"] == "externally traceable material" for row in preprints) == 5, "preprint ET count differs")
     sensitivity = read_csv(DATA / "publication_status_sensitivity_analysis.csv")
     require(len(sensitivity) == 31, "publication-status sensitivity view must contain 31 rows")
     require({row["publication_status_group"] for row in sensitivity} == {

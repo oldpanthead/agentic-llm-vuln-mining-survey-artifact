@@ -29,12 +29,27 @@
     }
   },
   "resolution_types": {
-    "coder_x_selected": 410,
+    "third_party_external_rereview": 410,
     "agreed_assignment": 585
   },
   "outputs": [
     "data\\adjudicated_study_level_coding_matrix_199.csv",
     "data\\adjudication_log_199_all_fields.csv",
     "data\\adjudicated_synthesis_statistics_199.csv"
-  ]
+  ],
+  "third_party_rereview": {
+    "reviewer_initials": "OY",
+    "review_date": "2026-08-24",
+    "task_count": 460,
+    "disagreement_tasks_integrated": 410,
+    "qc_tasks_kept_separate": 50,
+    "source_workbook_name": "third_party_core_adjudication_rereview_round2_R2_material_identity_corrected_7cases.xlsx",
+    "raw_review_export": "third_party_rereview_oy_20260824.csv",
+    "material_identity_crosswalk": "data/third_party_rereview_material_crosswalk_20260824.csv",
+    "decision_export": "data/third_party_rereview_decisions_20260824.csv",
+    "qc_export": "data/third_party_rereview_qc_20260824.csv",
+    "cnvd_post_check_task": "R2-159",
+    "cnvd_final_label": "author-reported external clue",
+    "final_statistics": "data/adjudicated_synthesis_statistics_199.csv"
+  }
 }

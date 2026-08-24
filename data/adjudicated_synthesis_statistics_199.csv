@@ -1,27 +1,29 @@
 field,label,count,denominator,share,unresolved,reportable_point_estimate
-lifecycle coverage,candidate analysis,150,199,0.753769,0,yes
-lifecycle coverage,path and input exploration,116,199,0.582915,0,yes
-lifecycle coverage,execution observation,157,199,0.788945,0,yes
-lifecycle coverage,reproduction and validation,96,199,0.482412,0,yes
-lifecycle coverage,patch validation,46,199,0.231156,0,yes
-lifecycle coverage,reporting and audit,78,199,0.391960,0,yes
-cross-stage capability,context aggregation / rule extraction,164,199,0.824121,0,yes
-cross-stage capability,tool routing / strategy routing,150,199,0.753769,0,yes
-cross-stage capability,feedback interpretation / loop adjustment,186,199,0.934673,0,yes
-cross-stage capability,validation organization / evidence packaging,147,199,0.738693,0,yes
-cross-stage capability,long-horizon state management,125,199,0.628141,0,yes
-cross-stage capability,failure reuse / strategy update,94,199,0.472362,0,yes
-cross-stage capability,governance / human gates / disclosure control,18,199,0.090452,0,yes
-primary system shape,candidate-analysis system,46,199,0.231156,0,yes
-primary system shape,feedback-driven fuzzing agent,34,199,0.170854,0,yes
-primary system shape,"reproduction-, validation-, and repair-centered agent",62,199,0.311558,0,yes
-primary system shape,long-horizon pentest and CRS agent,57,199,0.286432,0,yes
-principal reported evidence output,candidate judgment,34,199,0.170854,0,yes
-principal reported evidence output,controlled task completion,55,199,0.276382,0,yes
-principal reported evidence output,runtime safety signal,21,199,0.105528,0,yes
-principal reported evidence output,reproducible validation,83,199,0.417085,0,yes
-principal reported evidence output,externally traceable material,6,199,0.030151,0,yes
-external traceability,no external trace reported,19,199,0.095477,0,yes
-external traceability,author-reported external clue,33,199,0.165829,0,yes
-external traceability,benchmark ground truth / public material,140,199,0.703518,0,yes
-external traceability,publicly aligned external trace,7,199,0.035176,0,yes
+lifecycle coverage,candidate analysis,153,199,0.768844,0,yes
+lifecycle coverage,path and input exploration,77,199,0.386935,0,yes
+lifecycle coverage,execution observation,115,199,0.577889,0,yes
+lifecycle coverage,reproduction and validation,79,199,0.396985,0,yes
+lifecycle coverage,patch validation,33,199,0.165829,0,yes
+lifecycle coverage,reporting and audit,43,199,0.216080,0,yes
+lifecycle coverage,no qualifying label observed,10,199,0.050251,0,yes
+cross-stage capability,context aggregation / rule extraction,97,199,0.487437,0,yes
+cross-stage capability,tool routing / strategy routing,59,199,0.296482,0,yes
+cross-stage capability,feedback interpretation / loop adjustment,92,199,0.462312,0,yes
+cross-stage capability,validation organization / evidence packaging,69,199,0.346734,0,yes
+cross-stage capability,long-horizon state management,41,199,0.206030,0,yes
+cross-stage capability,failure reuse / strategy update,27,199,0.135678,0,yes
+cross-stage capability,governance / human gates / disclosure control,9,199,0.045226,0,yes
+cross-stage capability,no qualifying label observed,65,199,0.326633,0,yes
+primary system shape,candidate-analysis system,41,199,0.206030,0,yes
+primary system shape,feedback-driven fuzzing agent,33,199,0.165829,0,yes
+primary system shape,"reproduction-, validation-, and repair-centered agent",70,199,0.351759,0,yes
+primary system shape,long-horizon pentest and CRS agent,55,199,0.276382,0,yes
+principal reported evidence output,candidate judgment,51,199,0.256281,0,yes
+principal reported evidence output,controlled task completion,56,199,0.281407,0,yes
+principal reported evidence output,runtime safety signal,19,199,0.095477,0,yes
+principal reported evidence output,reproducible validation,69,199,0.346734,0,yes
+principal reported evidence output,externally traceable material,4,199,0.020101,0,yes
+external traceability,no external trace reported,26,199,0.130653,0,yes
+external traceability,author-reported external clue,40,199,0.201005,0,yes
+external traceability,benchmark ground truth / public material,128,199,0.643216,0,yes
+external traceability,publicly aligned external trace,5,199,0.025126,0,yes
