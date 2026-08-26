@@ -142,6 +142,58 @@ def read_derived_table(name: str) -> list[dict[str, str]]:
         return []
 
 
+def read_derived_metadata(name: str) -> dict[str, object]:
+    bundle = DERIVED / "derived_summary_tables.json"
+    if not bundle.exists():
+        error(f"missing derived-summary bundle: {bundle.relative_to(ROOT)}")
+        return {}
+    try:
+        payload = json.loads(bundle.read_text(encoding="utf-8-sig"))
+        require(payload.get("format") == "derived-summary-tables-v1", "invalid derived-summary bundle format")
+        metadata = payload.get("metadata", {})
+        value = metadata.get(name) if isinstance(metadata, dict) else None
+        require(isinstance(value, dict), f"derived metadata missing from bundle: {name}")
+        return value if isinstance(value, dict) else {}
+    except (json.JSONDecodeError, OSError, TypeError) as exc:
+        error(f"cannot read derived-summary metadata: {exc}")
+        return {}
+
+
+SYNTHESIS_VIEW_PREFIXES = {
+    "publication_status_standardized": "pub",
+    "traditional_security_primitives": "prim",
+    "target_domain_extraction": "domain",
+    "public_artifact_availability": "artifact",
+    "controlled_task_only_membership": "task",
+    "training_data_overlap_control": "overlap",
+}
+
+
+def read_study_synthesis_view(name: str) -> list[dict[str, str]]:
+    prefix = SYNTHESIS_VIEW_PREFIXES[name]
+    merged = read_csv(SYNTHESIS / "study_synthesis_199.csv")
+    marker = f"{prefix}__"
+    view = []
+    for row in merged:
+        projected = {"matrix_id": row.get("matrix_id", "")}
+        projected.update({key[len(marker):]: value for key, value in row.items() if key.startswith(marker)})
+        view.append(projected)
+    return view
+
+
+def read_new_reference_metadata() -> list[dict[str, str]]:
+    rows = read_csv(CORPUS / "reference_audit.csv")
+    marker = "new__"
+    view = []
+    for row in rows:
+        if row.get("new__present") != "yes":
+            continue
+        projected = {"record_id": row.get("record_id", "")}
+        projected.update({key[len(marker):]: value for key, value in row.items() if key.startswith(marker) and key != "new__present"})
+        view.append(projected)
+    return view
+
+
 def split_labels(value: str) -> set[str]:
     return {item.strip() for item in (value or "").split(";") if item.strip()}
 
@@ -200,19 +252,26 @@ def micro_f1(pairs: list[tuple[set[str], set[str]]]) -> float:
 
 
 def check_manifest() -> None:
-    manifest = ROOT / "manifests" / "manuscript_artifact_paths.txt"
-    require(manifest.exists(), "missing manifests/manuscript_artifact_paths.txt")
+    manifest = ROOT / "manifests" / "release_manifest.json"
+    require(manifest.exists(), "missing manifests/release_manifest.json")
     if not manifest.exists():
         return
-    paths = [
-        line.strip()
-        for line in manifest.read_text(encoding="utf-8-sig").splitlines()
-        if line.strip() and not line.lstrip().startswith("#")
-    ]
-    require(len(paths) == len(set(paths)), "duplicate path in manuscript artifact manifest")
+    try:
+        payload = json.loads(manifest.read_text(encoding="utf-8-sig"))
+    except (json.JSONDecodeError, OSError) as exc:
+        error(f"cannot read release manifest: {exc}")
+        return
+    manuscript_paths = payload.get("manuscript_artifact_paths", [])
+    static_paths = payload.get("static_release_files", [])
+    require(isinstance(manuscript_paths, list), "release manifest manuscript paths must be a list")
+    require(isinstance(static_paths, list), "release manifest static paths must be a list")
+    paths = [*manuscript_paths, *static_paths]
+    require(len(manuscript_paths) == len(set(manuscript_paths)), "duplicate path in manuscript artifact manifest")
+    require(len(static_paths) == len(set(static_paths)), "duplicate path in static release manifest")
+    require(len(paths) == len(set(paths)), "path appears in both release manifest sections")
     for relative in paths:
         require((ROOT / relative).is_file(), f"manifest path is missing: {relative}")
-    info(f"manifest paths verified: {len(paths)}")
+    info(f"release manifest paths verified: {len(paths)} ({len(manuscript_paths)} manuscript-facing, {len(static_paths)} static)")
 
 
 def check_corpus() -> tuple[list[dict[str, str]], list[dict[str, str]]]:
@@ -272,7 +331,7 @@ def check_adjudication(target: list[dict[str, str]]) -> None:
     material_crosswalk = read_csv(ADJUDICATION / "third_party_rereview_material_crosswalk_20260824.csv")
     log = read_csv(ADJUDICATION / "adjudication_log_199_all_fields.csv")
     statistics = read_derived_table("adjudicated_synthesis_statistics_199.csv")
-    completion = ADJUDICATION / "adjudication_completion_manifest.json"
+    completion = read_derived_metadata("adjudication_completion_manifest")
 
     require(len(decisions) == 410, "third-party decision export must contain 410 disagreements")
     historical_fields = (
@@ -331,12 +390,11 @@ def check_adjudication(target: list[dict[str, str]]) -> None:
         for row in statistics
     }
     require(all(observed_statistics.get(key) == value for key, value in expected_statistics.items()), "key adjudicated statistics differ")
-    require(completion.is_file(), "missing adjudication completion manifest")
-    if completion.is_file():
-        completion_data = json.loads(completion.read_text(encoding="utf-8"))
-        require(completion_data.get("disagreement_rows") == 410, "completion manifest disagreement count differs")
-        require(completion_data.get("unresolved_total") == 0, "completion manifest unresolved count differs")
-        final_matrix = completion_data.get("current_final_matrix", {})
+    require(completion, "missing adjudication completion metadata")
+    if completion:
+        require(completion.get("disagreement_rows") == 410, "completion manifest disagreement count differs")
+        require(completion.get("unresolved_total") == 0, "completion manifest unresolved count differs")
+        final_matrix = completion.get("current_final_matrix", {})
         matrix_path = CODING / "adjudicated_study_level_coding_matrix_199.csv"
         # Git stores the CSV with LF endings, while Windows checkouts may use
         # CRLF.  Hash the canonical LF representation so validation is
@@ -482,7 +540,7 @@ def check_search_and_dedup() -> None:
 
 
 def check_supplementary_extractions(target: list[dict[str, str]]) -> None:
-    primitives = read_csv(SYNTHESIS / "traditional_security_primitives.csv")
+    primitives = read_study_synthesis_view("traditional_security_primitives")
     require(len(primitives) == EXPECTED["target_studies"], "traditional-security-primitives extraction must contain 199 rows")
     require({row.get("matrix_id", "") for row in primitives} == {row.get("matrix_id", "") for row in target}, "primitive extraction IDs differ from target matrix")
     allowed = {
@@ -538,7 +596,7 @@ def check_supplementary_extractions(target: list[dict[str, str]]) -> None:
 
     refs = read_csv(CORPUS / "reference_audit.csv")
     require(len(refs) == 402, "reference audit must contain 402 rows")
-    new_refs = read_csv(SEARCH / "final_multisource_new_study_reference_metadata_20260730.csv")
+    new_refs = read_new_reference_metadata()
     require(len(new_refs) == 132, "new target-study reference metadata must contain 132 rows")
     require(all(row.get("official_url", "").strip() for row in new_refs), "new reference metadata missing official URL")
     refs_by_id = {row.get("record_id", ""): row for row in refs}
@@ -550,7 +608,7 @@ def check_supplementary_extractions(target: list[dict[str, str]]) -> None:
             f"reference audit differs from generated metadata: {row.get('record_id', '')}",
         )
 
-    cohort_rows = read_csv(SYNTHESIS / "final_multisource_cohort_stability.csv")
+    cohort_rows = read_derived_table("final_multisource_cohort_stability.csv")
     require(len(cohort_rows) >= 32, "cohort-stability audit must contain all derived rows")
     expected_denominators = {"retained_pre_final_67": 67, "new_multisource_132": 132}
     require(
@@ -598,7 +656,7 @@ def check_supplementary_extractions(target: list[dict[str, str]]) -> None:
 
 
 def check_publication_status(target: list[dict[str, str]]) -> None:
-    rows = read_csv(CORPUS / "publication_status_standardized.csv")
+    rows = read_study_synthesis_view("publication_status_standardized")
     target_rows = [row for row in rows if row.get("analytical_role") == "target_software_study"]
     require(len(rows) == 199, "publication-status view must contain 199 target-software records")
     require(len(target_rows) == EXPECTED["target_studies"], "publication-status target denominator must be 199")
@@ -646,7 +704,7 @@ def check_domain_and_reporting_extractions(target: list[dict[str, str]]) -> None
     target_by_id = {row["matrix_id"]: row for row in target}
     target_ids = set(target_by_id)
 
-    domains = read_csv(SYNTHESIS / "target_domain_extraction.csv")
+    domains = read_study_synthesis_view("target_domain_extraction")
     require(len(domains) == 199, "target-domain extraction must contain 199 rows")
     require({row["matrix_id"] for row in domains} == target_ids, "target-domain IDs differ from target matrix")
     require(all(row["source_location"].strip() for row in domains), "target-domain extraction missing source location")
@@ -678,7 +736,7 @@ def check_domain_and_reporting_extractions(target: list[dict[str, str]]) -> None
         require(actual == int(row["count"]), f"year-shape count differs: {row['publication_year']} {row['primary_system_shape']}")
         require(len(subset) == int(row["year_denominator"]), f"year denominator differs: {row['publication_year']}")
 
-    artifacts = read_csv(SYNTHESIS / "public_artifact_availability.csv")
+    artifacts = read_study_synthesis_view("public_artifact_availability")
     require(len(artifacts) == 199, "public-artifact extraction must contain 199 rows")
     require({row["matrix_id"] for row in artifacts} == target_ids, "public-artifact IDs differ from target matrix")
     artifact_fields = (
@@ -709,7 +767,7 @@ def check_domain_and_reporting_extractions(target: list[dict[str, str]]) -> None
     require(included_triggers == located_triggers == {"C02"}, "strict public trigger/replay index and artifact table differ")
     require(all(row.get("trigger_replay_evidence_scope", "") for row in artifacts), "missing trigger/replay evidence scope")
 
-    membership = read_csv(SYNTHESIS / "controlled_task_only_membership.csv")
+    membership = read_study_synthesis_view("controlled_task_only_membership")
     require(len(membership) == 199, "controlled-task membership must contain 199 rows")
     require({row["matrix_id"] for row in membership} == target_ids, "controlled-task membership IDs differ from final matrix")
     domain_by_id = {row["matrix_id"]: row for row in domains}
@@ -763,7 +821,7 @@ def check_domain_and_reporting_extractions(target: list[dict[str, str]]) -> None
     required_alignment_fields = ("system_output", "exact_item", "software_and_version", "validation_material", "public_external_record", "attribution", "local_evidence_locator")
     require(all(all(row.get(field, "").strip() for field in required_alignment_fields) for row in alignment), "public-alignment index lacks a structured local evidence chain")
 
-    contamination = read_csv(SYNTHESIS / "training_data_overlap_control.csv")
+    contamination = read_study_synthesis_view("training_data_overlap_control")
     require(len(contamination) == 199, "training-overlap extraction must contain 199 rows")
     require({row["matrix_id"] for row in contamination} == target_ids, "training-overlap IDs differ from target matrix")
     require(all(row["source_location"].strip() for row in contamination), "training-overlap extraction missing source location")
@@ -843,7 +901,7 @@ def check_private_paths() -> None:
         re.compile(r"/Users/[^/\s]+"),
         re.compile(r"artifact_public_release_candidate/data/"),
     )
-    for path in [ROOT / "README.md", ROOT / "ARTIFACT_INDEX.md", ROOT / "docs/release/RELEASE_MANIFEST.md", ROOT / "docs/coding/data_dictionary.md"]:
+    for path in [ROOT / "README.md", ROOT / "SECURITY_BOUNDARY.md", ROOT / "docs/release/RELEASE_MANIFEST.md", ROOT / "docs/coding/data_dictionary.md"]:
         if not path.exists():
             continue
         text = path.read_text(encoding="utf-8-sig", errors="replace")

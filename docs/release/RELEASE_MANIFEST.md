@@ -19,19 +19,19 @@ The immutable synchronized submission tag is `csur-submission-2026-08-final-v10`
 
 ## Manuscript-Facing Files
 
-The authoritative list is `manifests/manuscript_artifact_paths.txt`. It includes:
+The authoritative lists are the `manuscript_artifact_paths` and `static_release_files` arrays in `manifests/release_manifest.json`. They include:
 
 - integrated search, source-count, frozen complete-screening, retrieval/full-text, PRISMA, and deduplication audits;
 - the stage-level exclusion account and pre-final/new-study cohort-stability audit;
 - `data/corpus/corpus.csv` and `data/corpus/study_version_crosswalk.csv`;
 - `data/coding/adjudicated_study_level_coding_matrix_199.csv` as the final descriptive source, with `data/coding/current_study_level_coding_matrix_harmonized.csv` preserved as the primary pre-adjudication matrix;
 - `data/coding/extended_synthesis_audit.csv` (92 full-text-supported and 62 title/abstract-metadata-supported records);
-- study-level publication-status assignments and stratified distributions;
-- the study-level primitive extraction, workflow-active/evaluation role split, and primitive--output cross-tab;
+- the joined `data/synthesis/study_synthesis_199.csv` view containing study-level publication status, primitive extraction, target domain, public-artifact, controlled-task membership, and training-overlap fields;
+- the workflow-active/evaluation role split and primitive--output cross-tab;
 - target-domain/year, publication-status, public-artifact, controlled-task membership and denominator sensitivity, public-alignment, and training-overlap reporting audits;
-- `data/synthesis/final_multisource_cohort_stability.csv`;
+- the provenance-only `final_multisource_cohort_stability.csv` table inside `data/derived/derived_summary_tables.json`;
 - integrated 199-study pre-adjudication second-coder comparison, per-label reliability, and substitution sensitivity;
-- the raw 460-row OY external rereview export, consolidated 410-row decision layer (including the earlier completed-form fields), separate 50-row QC layer, full 995-row log, completion manifest, and the derived-summary bundle containing adjudicated statistics;
+- the raw 460-row OY external rereview export, consolidated 410-row decision layer (including the earlier completed-form fields), separate 50-row QC layer, full 995-row log, embedded completion metadata, and the derived-summary bundle containing adjudicated statistics;
 - representative mechanism, reported-result, cost, ablation, and failure-recovery extractions;
 - reference metadata for newly integrated study-level records.
 
@@ -45,15 +45,15 @@ python reproduce_tables.py
 
 The default public mode has no dependency on a manuscript checkout. It verifies file presence, the complete 410-row adjudication record, the final 199-study matrix and adjudicated statistics, unique CSV headers, corpus and layer counts, study/version uniqueness, shape and evidence distributions, lifecycle and capability counts, external traceability, integrated PRISMA allocation and source-specific acquisition provenance, primitive-use roles and output coupling, publication-status sensitivity, target-domain/year cross-tabs, public-artifact indicators, training-overlap reporting, reference metadata, and complete pre-adjudication reliability files. Optional manuscript validation is available through `--manuscript`.
 
-Create a clean public directory with `python scripts/build_public_release.py <new-output-directory>`. The export is assembled from `manifests/public_release_files.txt` and `manifests/manuscript_artifact_paths.txt` and is validated after copying.
+Create a clean public directory with `python scripts/build_public_release.py <new-output-directory>`. The export is assembled from `manifests/release_manifest.json` and is validated after copying.
 
 ## Release Gate
 
 - The release cutoff is 2026-07-30 and the synchronized submission tag is `csur-submission-2026-08-final-v10`.
-- `README.md`, `ARTIFACT_INDEX.md`, this manifest, `docs/coding/data_dictionary.md`, and `docs/coding/codebook.md` describe the current release.
-- `manifests/manuscript_artifact_paths.txt` lists the manuscript-facing files; all paths must exist and be unique.
+- `README.md`, this manifest, `docs/coding/data_dictionary.md`, and `docs/coding/codebook.md` describe the current release.
+- `manifests/release_manifest.json` lists the manuscript-facing and static release files; all paths must exist and be unique.
 - `reproduce_tables.py` validates the integrated corpus, adjudicated distributions, provenance, and pre-adjudication independent-coder files in standalone mode. Re-run it after staging a clean export.
-- The raw 460-row OY export, 410-row decision layer, separate 50-row QC layer, 995-row decision log, completion manifest, and final matrix are present and validated.
+- The raw 460-row OY export, 410-row decision layer, separate 50-row QC layer, 995-row decision log, embedded completion metadata, and final matrix are present and validated.
 - Publish only an allowlisted export. Exclude `.git/`, caches, logs, full-text PDFs, private paths, proposed or unresolved working files, credentials, private targets, exploit payloads, sensitive crash inputs, and vendor-private communications.
 - Before release, confirm the repository URL, release date, and author-approved disclosure metadata. `SECURITY_BOUNDARY.md` defines the disclosure boundary.
 
@@ -97,7 +97,7 @@ This section records the synchronized manuscript/artifact state after major-revi
 - Primary shapes: 41 candidate analysis; 33 feedback-driven fuzzing; 70 reproduction/validation/repair; 55 long-horizon penetration testing or CRS.
 - Principal outputs: 51 candidate judgment; 56 controlled task completion; 19 runtime safety signal; 70 reproducible validation; three externally traceable material.
 - Publication status: 31 formal publications; 164 preprints; four benchmark/report/other.
-- Complete per-label reliability, disagreement review, the 995-row decision log, completion manifest, and final statistics are indexed by `ARTIFACT_INDEX.md`.
+- Complete per-label reliability, disagreement review, the 995-row decision log, completion metadata, and final statistics are indexed by `README.md` and the data dictionary.
 
 ### Preserved Data And Reliability Boundary
 

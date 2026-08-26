@@ -14,7 +14,8 @@
     "traditional_security_primitive_use_role_counts.csv",
     "traditional_security_primitive_by_output.csv",
     "traditional_security_primitives_not_specified.csv",
-    "training_data_overlap_control_counts.csv"
+    "training_data_overlap_control_counts.csv",
+    "final_multisource_cohort_stability.csv"
   ],
   "tables": {
     "adjudicated_synthesis_statistics_199.csv": {
@@ -1750,6 +1751,390 @@
           "denominator": "199"
         }
       ]
+    },
+    "final_multisource_cohort_stability.csv": {
+      "columns": [
+        "cohort",
+        "denominator",
+        "dimension",
+        "label",
+        "count",
+        "share"
+      ],
+      "rows": [
+        {
+          "cohort": "retained_pre_final_67",
+          "denominator": "67",
+          "dimension": "primary_system_shape",
+          "label": "candidate-analysis system",
+          "count": "12",
+          "share": "0.179"
+        },
+        {
+          "cohort": "retained_pre_final_67",
+          "denominator": "67",
+          "dimension": "primary_system_shape",
+          "label": "feedback-driven fuzzing agent",
+          "count": "17",
+          "share": "0.254"
+        },
+        {
+          "cohort": "retained_pre_final_67",
+          "denominator": "67",
+          "dimension": "primary_system_shape",
+          "label": "long-horizon pentest and CRS agent",
+          "count": "13",
+          "share": "0.194"
+        },
+        {
+          "cohort": "retained_pre_final_67",
+          "denominator": "67",
+          "dimension": "primary_system_shape",
+          "label": "reproduction-, validation-, and repair-centered agent",
+          "count": "25",
+          "share": "0.373"
+        },
+        {
+          "cohort": "retained_pre_final_67",
+          "denominator": "67",
+          "dimension": "principal_reported_evidence_output",
+          "label": "candidate judgment",
+          "count": "13",
+          "share": "0.194"
+        },
+        {
+          "cohort": "retained_pre_final_67",
+          "denominator": "67",
+          "dimension": "principal_reported_evidence_output",
+          "label": "controlled task completion",
+          "count": "12",
+          "share": "0.179"
+        },
+        {
+          "cohort": "retained_pre_final_67",
+          "denominator": "67",
+          "dimension": "principal_reported_evidence_output",
+          "label": "externally traceable material",
+          "count": "2",
+          "share": "0.030"
+        },
+        {
+          "cohort": "retained_pre_final_67",
+          "denominator": "67",
+          "dimension": "principal_reported_evidence_output",
+          "label": "reproducible validation",
+          "count": "30",
+          "share": "0.448"
+        },
+        {
+          "cohort": "retained_pre_final_67",
+          "denominator": "67",
+          "dimension": "principal_reported_evidence_output",
+          "label": "runtime safety signal",
+          "count": "10",
+          "share": "0.149"
+        },
+        {
+          "cohort": "retained_pre_final_67",
+          "denominator": "67",
+          "dimension": "cross_stage_capability",
+          "label": "context aggregation / rule extraction",
+          "count": "37",
+          "share": "0.552"
+        },
+        {
+          "cohort": "retained_pre_final_67",
+          "denominator": "67",
+          "dimension": "cross_stage_capability",
+          "label": "failure reuse / strategy update",
+          "count": "8",
+          "share": "0.119"
+        },
+        {
+          "cohort": "retained_pre_final_67",
+          "denominator": "67",
+          "dimension": "cross_stage_capability",
+          "label": "feedback interpretation / loop adjustment",
+          "count": "37",
+          "share": "0.552"
+        },
+        {
+          "cohort": "retained_pre_final_67",
+          "denominator": "67",
+          "dimension": "cross_stage_capability",
+          "label": "governance / human gates / disclosure control",
+          "count": "1",
+          "share": "0.015"
+        },
+        {
+          "cohort": "retained_pre_final_67",
+          "denominator": "67",
+          "dimension": "cross_stage_capability",
+          "label": "long-horizon state management",
+          "count": "8",
+          "share": "0.119"
+        },
+        {
+          "cohort": "retained_pre_final_67",
+          "denominator": "67",
+          "dimension": "cross_stage_capability",
+          "label": "no qualifying label observed",
+          "count": "15",
+          "share": "0.224"
+        },
+        {
+          "cohort": "retained_pre_final_67",
+          "denominator": "67",
+          "dimension": "cross_stage_capability",
+          "label": "tool routing / strategy routing",
+          "count": "24",
+          "share": "0.358"
+        },
+        {
+          "cohort": "retained_pre_final_67",
+          "denominator": "67",
+          "dimension": "cross_stage_capability",
+          "label": "validation organization / evidence packaging",
+          "count": "27",
+          "share": "0.403"
+        },
+        {
+          "cohort": "new_multisource_132",
+          "denominator": "132",
+          "dimension": "primary_system_shape",
+          "label": "candidate-analysis system",
+          "count": "29",
+          "share": "0.220"
+        },
+        {
+          "cohort": "new_multisource_132",
+          "denominator": "132",
+          "dimension": "primary_system_shape",
+          "label": "feedback-driven fuzzing agent",
+          "count": "16",
+          "share": "0.121"
+        },
+        {
+          "cohort": "new_multisource_132",
+          "denominator": "132",
+          "dimension": "primary_system_shape",
+          "label": "long-horizon pentest and CRS agent",
+          "count": "42",
+          "share": "0.318"
+        },
+        {
+          "cohort": "new_multisource_132",
+          "denominator": "132",
+          "dimension": "primary_system_shape",
+          "label": "reproduction-, validation-, and repair-centered agent",
+          "count": "45",
+          "share": "0.341"
+        },
+        {
+          "cohort": "new_multisource_132",
+          "denominator": "132",
+          "dimension": "principal_reported_evidence_output",
+          "label": "candidate judgment",
+          "count": "38",
+          "share": "0.288"
+        },
+        {
+          "cohort": "new_multisource_132",
+          "denominator": "132",
+          "dimension": "principal_reported_evidence_output",
+          "label": "controlled task completion",
+          "count": "44",
+          "share": "0.333"
+        },
+        {
+          "cohort": "new_multisource_132",
+          "denominator": "132",
+          "dimension": "principal_reported_evidence_output",
+          "label": "externally traceable material",
+          "count": "1",
+          "share": "0.008"
+        },
+        {
+          "cohort": "new_multisource_132",
+          "denominator": "132",
+          "dimension": "principal_reported_evidence_output",
+          "label": "reproducible validation",
+          "count": "40",
+          "share": "0.303"
+        },
+        {
+          "cohort": "new_multisource_132",
+          "denominator": "132",
+          "dimension": "principal_reported_evidence_output",
+          "label": "runtime safety signal",
+          "count": "9",
+          "share": "0.068"
+        },
+        {
+          "cohort": "new_multisource_132",
+          "denominator": "132",
+          "dimension": "cross_stage_capability",
+          "label": "context aggregation / rule extraction",
+          "count": "60",
+          "share": "0.455"
+        },
+        {
+          "cohort": "new_multisource_132",
+          "denominator": "132",
+          "dimension": "cross_stage_capability",
+          "label": "failure reuse / strategy update",
+          "count": "19",
+          "share": "0.144"
+        },
+        {
+          "cohort": "new_multisource_132",
+          "denominator": "132",
+          "dimension": "cross_stage_capability",
+          "label": "feedback interpretation / loop adjustment",
+          "count": "55",
+          "share": "0.417"
+        },
+        {
+          "cohort": "new_multisource_132",
+          "denominator": "132",
+          "dimension": "cross_stage_capability",
+          "label": "governance / human gates / disclosure control",
+          "count": "8",
+          "share": "0.061"
+        },
+        {
+          "cohort": "new_multisource_132",
+          "denominator": "132",
+          "dimension": "cross_stage_capability",
+          "label": "long-horizon state management",
+          "count": "33",
+          "share": "0.250"
+        },
+        {
+          "cohort": "new_multisource_132",
+          "denominator": "132",
+          "dimension": "cross_stage_capability",
+          "label": "no qualifying label observed",
+          "count": "50",
+          "share": "0.379"
+        },
+        {
+          "cohort": "new_multisource_132",
+          "denominator": "132",
+          "dimension": "cross_stage_capability",
+          "label": "tool routing / strategy routing",
+          "count": "35",
+          "share": "0.265"
+        },
+        {
+          "cohort": "new_multisource_132",
+          "denominator": "132",
+          "dimension": "cross_stage_capability",
+          "label": "validation organization / evidence packaging",
+          "count": "42",
+          "share": "0.318"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "adjudication_completion_manifest": {
+      "source_comparison": "data/adjudication/integrated_199_second_coder_comparison_20260730.csv",
+      "source_matrix_preserved": "data/coding/current_study_level_coding_matrix_harmonized.csv",
+      "adjudication_form": "data/adjudication/third_party_rereview_decisions_20260824.csv",
+      "study_count": 199,
+      "field_log_rows": 995,
+      "disagreement_rows": 410,
+      "unresolved_total": 0,
+      "fields": {
+        "lifecycle coverage": {
+          "unresolved": 0,
+          "reportable_point_estimate": true
+        },
+        "cross-stage capability": {
+          "unresolved": 0,
+          "reportable_point_estimate": true
+        },
+        "primary system shape": {
+          "unresolved": 0,
+          "reportable_point_estimate": true
+        },
+        "principal reported evidence output": {
+          "unresolved": 0,
+          "reportable_point_estimate": true
+        },
+        "external traceability": {
+          "unresolved": 0,
+          "reportable_point_estimate": true
+        }
+      },
+      "resolution_types": {
+        "third_party_external_rereview": 410,
+        "agreed_assignment": 585
+      },
+      "outputs": [
+        "data/coding/adjudicated_study_level_coding_matrix_199.csv",
+        "data/adjudication/adjudication_log_199_all_fields.csv",
+        "data/derived/derived_summary_tables.json"
+      ],
+      "third_party_rereview": {
+        "reviewer_initials": "OY",
+        "review_date": "2026-08-24",
+        "task_count": 460,
+        "disagreement_tasks_integrated": 410,
+        "qc_tasks_kept_separate": 50,
+        "source_workbook_name": "third_party_core_adjudication_rereview_round2_R2_material_identity_corrected_7cases.xlsx",
+        "raw_review_export": "data/adjudication/third_party_rereview_oy_20260824.csv",
+        "material_identity_crosswalk": "data/adjudication/third_party_rereview_material_crosswalk_20260824.csv",
+        "decision_export": "data/adjudication/third_party_rereview_decisions_20260824.csv",
+        "historical_form_fields_merged": [
+          "prior_form_human_final_label",
+          "prior_form_brief_reason",
+          "prior_form_evidence_location_verified",
+          "prior_form_reviewer_initials",
+          "prior_form_review_date"
+        ],
+        "qc_export": "data/adjudication/third_party_rereview_qc_20260824.csv",
+        "cnvd_post_check_task": "R2-159",
+        "cnvd_final_label": "author-reported external clue",
+        "final_statistics": "data/derived/derived_summary_tables.json#adjudicated_synthesis_statistics_199.csv",
+        "task_material_validation": {
+          "status": "passed",
+          "task_count": 460,
+          "disagreement_task_count": 410,
+          "qc_task_count": 50,
+          "unique_task_case_count": 196,
+          "coder_crosswalk_study_count": 199,
+          "corrected_task_count": 7,
+          "material_hash_count": 460
+        },
+        "coder_material_identity_validation": {
+          "status": "passed",
+          "first_coder_core_materials": 67,
+          "second_coder_core_materials": 67,
+          "multisource_materials": 132,
+          "corpus_studies": 199,
+          "files_checked": 266,
+          "minimum_title_identity_score": 0.8,
+          "low_score_files": 0,
+          "validator": "validate_coder_material_identity.py"
+        }
+      },
+      "current_final_matrix": {
+        "path": "data/coding/adjudicated_study_level_coding_matrix_199.csv",
+        "sha256": "DFC785DC9E89D21CE7CF4695F64F7BDAC11C553041D7C06EF2FBFA2E7E3BFB3D",
+        "study_count": 199,
+        "unique_matrix_ids": 199,
+        "freeze_recorded_utc": "2026-08-24T10:30:49Z",
+        "derived_views": [
+          "data/derived/derived_summary_tables.json#adjudicated_synthesis_statistics_199.csv",
+          "data/synthesis/public_artifact_availability.csv",
+          "data/synthesis/controlled_task_only_membership.csv",
+          "data/derived/derived_summary_tables.json#controlled_task_only_sensitivity.csv",
+          "data/synthesis/public_alignment_evidence_index.csv",
+          "data/synthesis/public_trigger_replay_evidence_index.csv"
+        ]
+      }
     }
   }
 }

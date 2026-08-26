@@ -6,12 +6,11 @@ This repository contains the non-sensitive artifact for a mapping-oriented scopi
 
 1. Read `SECURITY_BOUNDARY.md`.
 2. Run `python reproduce_tables.py`.
-3. Use `ARTIFACT_INDEX.md` as the compact file map.
-4. Use `docs/coding/data_dictionary.md` for field definitions.
+3. Use `docs/coding/data_dictionary.md` for field definitions.
 
 For a public archive, run `python scripts/build_public_release.py <new-output-directory>`. The builder copies only the release allowlist and manuscript-facing manifest, then validates the exported copy. Do not archive the source working tree directly.
 
-The repository is organized by function: methods and release documentation are under `docs/`; search, corpus, coding, adjudication, synthesis, and derived data occupy separate `data/` subdirectories; supporting tools are under `scripts/`; and the two release allowlists are under `manifests/`. The root retains only the files needed to identify, cite, secure, and validate the artifact.
+The repository is organized by function: methods and release documentation are under `docs/`; search, corpus, coding, adjudication, synthesis, and derived data occupy separate `data/` subdirectories; supporting tools are under `scripts/`; and the single release manifest is under `manifests/`. The root retains only the files needed to identify, cite, secure, and validate the artifact.
 
 The synchronized submission snapshot is identified by `csur-submission-2026-08-final-v10`. Earlier tags, including `csur-submission-2026-08-final-v9` and `csur-submission-2026-07-final-v8`, remain immutable historical snapshots.
 
@@ -29,6 +28,24 @@ The review integrates database and supplementary searches conducted through 2026
 
 The search used arXiv, OpenAlex, Crossref-backed publisher queries for ACM, IEEE, Springer, and Elsevier records, and supplementary checks of official conference, indexing, benchmark, project, seed, and citation sources. The access log distinguishes exportable interfaces from source-restricted web checks and records unavailable subscription services without claiming access.
 
+## Compact File Map
+
+| Location | Role |
+|---|---|
+| `README.md` | Orientation, counts, audit paths, and release use |
+| `SECURITY_BOUNDARY.md` | Public-disclosure boundary |
+| `reproduce_tables.py` | Standalone validation entry point |
+| `data/search/` | Search, screening, retrieval, and deduplication records |
+| `data/corpus/` | Source ledger, version crosswalk, publication/reference audit |
+| `data/coding/` | Preserved and final study-level matrices |
+| `data/adjudication/` | Independent comparison, OY rereview, QC, and decision log |
+| `data/synthesis/` | Source-located study synthesis and representative extractions |
+| `data/derived/` | Derived tables and adjudication completion metadata |
+| `docs/` | Protocol, coding, review, and release documentation |
+| `manifests/release_manifest.json` | Machine-readable release and manuscript file lists |
+| `scripts/` | Release builder and adjudication utilities |
+| `references/` | BibTeX metadata |
+
 ## Main Audit Paths
 
 ### Search, screening, and reconciliation
@@ -44,20 +61,20 @@ The search used arXiv, OpenAlex, Crossref-backed publisher queries for ACM, IEEE
 - `data/search/final_multisource_search_20260730_dedup_resolutions.csv`: same-study/version decisions.
 - `data/corpus/corpus.csv`: integrated 1,785-source-record ledger.
 - `data/corpus/study_version_crosswalk.csv`: 1,785 source records mapped to 1,772 studies.
-- `data/corpus/publication_status_standardized.csv`: study-level publication-status assignments.
+- `data/synthesis/study_synthesis_199.csv`: one 199-row, source-prefixed view joining publication status, technical primitives, target domain, public-artifact checks, denominator sensitivity membership, and training-overlap reporting. The component fields are retained as prefixed columns and use `matrix_id` as the join key.
 
 ### Study-level and extended synthesis
 
 - `data/coding/adjudicated_study_level_coding_matrix_199.csv`: final 199-row target-software matrix used for all descriptive distributions after third-review adjudication.
 - `data/coding/current_study_level_coding_matrix_harmonized.csv`: preserved primary author matrix retained for pre-adjudication provenance.
 - `data/coding/extended_synthesis_audit.csv`: record-level audit for 154 adjacent records, comprising 92 records with detailed public material for substantive synthesis and 62 records supporting contextual coverage mapping; AgentFuzz supplies cross-cutting governance context.
-- `data/synthesis/traditional_security_primitives.csv`: source-located, multi-label author extraction for the 199 target-software studies.
-- `data/synthesis/traditional_security_primitives_by_use_role.csv`, `data/synthesis/target_domain_extraction.csv`, and `data/synthesis/public_artifact_availability.csv`: source-located row-level extractions. Their derived cross-tabs and counts are in `data/derived/derived_summary_tables.json`.
+- `data/synthesis/traditional_security_primitives_by_use_role.csv`: source-located study--primitive role assignments at their native pair-level granularity.
+- The component study-level views formerly stored as separate files are joined in `data/synthesis/study_synthesis_199.csv`; their derived cross-tabs and counts are in `data/derived/derived_summary_tables.json`.
 - `data/synthesis/public_trigger_replay_evidence_index.csv`: reviewed trigger/replay candidates. The strict column is restricted to public, system-generated, item-level material; repositories and benchmark inputs alone are excluded. No independent artifact execution is claimed.
-- `data/synthesis/controlled_task_only_membership.csv`: all 199 row-level denominator decisions; the derived 199-versus-164 sensitivity table is in `data/derived/derived_summary_tables.json`.
+- Controlled-task membership fields are in `data/synthesis/study_synthesis_199.csv`; the derived 199-versus-164 sensitivity table is in `data/derived/derived_summary_tables.json`.
 - `data/synthesis/public_alignment_evidence_index.csv`: the local evidence chains for all four publicly aligned external-trace cases, including QRS.
-- `data/synthesis/training_data_overlap_control.csv`: source-located reporting status; its counts are in `data/derived/derived_summary_tables.json`.
-- `data/synthesis/final_multisource_cohort_stability.csv`: provenance-only comparison of historical acquisition groups under the final schema; it does not define manuscript cohorts or denominators.
+- Training-overlap reporting fields are in `data/synthesis/study_synthesis_199.csv`; their counts are in `data/derived/derived_summary_tables.json`.
+- Historical cohort stability is retained as `final_multisource_cohort_stability.csv` inside the derived-summary bundle; it does not define manuscript cohorts or denominators.
 - `data/synthesis/representative_system_mechanisms.csv`: source-located mechanism extraction used by the representative system comparison.
 - `data/synthesis/mechanism_cost_ablation_synthesis.csv`: source-located cost, ablation, and failure-recovery observations.
 - `data/synthesis/representative_reported_results.csv`: source-located rows used by the representative reported-results table.
@@ -73,7 +90,7 @@ The search used arXiv, OpenAlex, Crossref-backed publisher queries for ACM, IEEE
 - Integrated pre-adjudication reliability is included in `docs/review/ADJUDICATION_COMPLETION_20260812.md`.
 - `data/adjudication/third_party_rereview_oy_20260824.csv`: raw 460-row OY rereview export (410 disagreements plus 50 QC rows).
 - `data/adjudication/third_party_rereview_decisions_20260824.csv` and `data/adjudication/third_party_rereview_qc_20260824.csv`: integrated disagreement decisions and separately retained QC results.
-- `data/adjudication/adjudication_log_199_all_fields.csv`, `data/adjudication/adjudication_completion_manifest.json`, and `data/derived/derived_summary_tables.json`: final external-rereview log, completion manifest, and consolidated descriptive statistics. The integrated decision export also carries five `prior_form_*` columns, so earlier completed-form values are preserved without a second 410-row file.
+- `data/adjudication/adjudication_log_199_all_fields.csv` and `data/derived/derived_summary_tables.json`: final external-rereview log plus consolidated descriptive statistics and embedded adjudication completion metadata. The integrated decision export also carries five `prior_form_*` columns, so earlier completed-form values are preserved without a second 410-row file.
 - `docs/review/ADJUDICATION_COMPLETION_20260812.md`: adjudication rules, closure status, and reporting boundary.
 
 The complete review uses the same controlled fields across all 199 target-software studies. OY performed an external rereview of all 410 independent-coding disagreements plus 50 hidden-reference QC rows using the prespecified codebook and source evidence. Only disagreement decisions enter the final matrix; QC remains separate. The first- and second-coder files are preserved unchanged, and raw agreement, Cohen's kappa, AC1, and substitution results remain pre-adjudication reliability records. No post-adjudication reliability statistic is claimed.

@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import shutil
 import subprocess
 import sys
@@ -11,16 +12,16 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parent.parent
-STATIC_MANIFEST = ROOT / "manifests" / "public_release_files.txt"
-DATA_MANIFEST = ROOT / "manifests" / "manuscript_artifact_paths.txt"
+RELEASE_MANIFEST = ROOT / "manifests" / "release_manifest.json"
 
 
-def read_manifest(path: Path) -> list[str]:
-    return [
-        line.strip()
-        for line in path.read_text(encoding="utf-8-sig").splitlines()
-        if line.strip() and not line.lstrip().startswith("#")
-    ]
+def read_manifest(path: Path) -> tuple[list[str], list[str]]:
+    payload = json.loads(path.read_text(encoding="utf-8-sig"))
+    manuscript = payload.get("manuscript_artifact_paths", [])
+    static = payload.get("static_release_files", [])
+    if not isinstance(manuscript, list) or not isinstance(static, list):
+        raise SystemExit("ERROR: release manifest sections must be lists")
+    return manuscript, static
 
 
 def main() -> int:
@@ -35,7 +36,11 @@ def main() -> int:
     if output.exists():
         raise SystemExit(f"ERROR: export target already exists: {output}")
 
-    paths = read_manifest(STATIC_MANIFEST) + read_manifest(DATA_MANIFEST)
+    try:
+        manuscript_paths, static_paths = read_manifest(RELEASE_MANIFEST)
+    except (OSError, json.JSONDecodeError) as exc:
+        raise SystemExit(f"ERROR: cannot read {RELEASE_MANIFEST}: {exc}") from exc
+    paths = static_paths + manuscript_paths
     duplicates = sorted({path for path in paths if paths.count(path) > 1})
     if duplicates:
         raise SystemExit(f"ERROR: duplicate release path(s): {duplicates}")
