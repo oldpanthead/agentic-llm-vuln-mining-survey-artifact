@@ -1,7 +1,7 @@
 {
   "source_comparison": "data/integrated_199_second_coder_comparison_20260730.csv",
   "source_matrix_preserved": "data/current_study_level_coding_matrix_harmonized.csv",
-  "adjudication_form": "adjudication\\adjudication_form_199_all_disagreements_20260812.completed_human_review.csv",
+  "adjudication_form": "data/third_party_rereview_decisions_20260824.csv",
   "study_count": 199,
   "field_log_rows": 995,
   "disagreement_rows": 410,
@@ -75,7 +75,7 @@
   },
   "current_final_matrix": {
     "path": "data/adjudicated_study_level_coding_matrix_199.csv",
-    "sha256": "798E47DE8017EC179ACF278F366A1AA89086574E267A08CA489D49FEC28081CC",
+    "sha256": "DFC785DC9E89D21CE7CF4695F64F7BDAC11C553041D7C06EF2FBFA2E7E3BFB3D",
     "study_count": 199,
     "unique_matrix_ids": 199,
     "freeze_recorded_utc": "2026-08-24T10:30:49Z",
