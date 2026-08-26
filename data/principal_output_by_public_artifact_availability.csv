@@ -1,0 +1,6 @@
+principal_reported_evidence_output,studies,public_implementation_located,environment_or_build_instructions,trigger_replay_poc_pov_artifact,execution_trace_or_log,patch_artifact
+candidate judgment,51,14,0,0,1,1
+controlled task completion,56,9,1,0,1,1
+externally traceable material,3,1,1,0,0,0
+reproducible validation,70,20,3,1,3,3
+runtime safety signal,19,6,0,0,1,0
