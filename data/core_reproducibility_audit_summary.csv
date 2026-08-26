@@ -1,9 +1,0 @@
-﻿audit_dimension,reported_yes,reported_partial,not_found_after_review,unknown_not_audited,restricted_or_sensitive,not_applicable,scope_note
-public_artifact_status,0,23,7,0,0,0,30 vulnerability-mining Core rows; C27 excluded.
-target_version_status,0,17,13,0,0,0,30 vulnerability-mining Core rows; C27 excluded.
-environment_status,0,27,3,0,0,0,30 vulnerability-mining Core rows; C27 excluded.
-replay_material_status,0,24,6,0,0,0,30 vulnerability-mining Core rows; C27 excluded.
-structured_trace_status,0,18,12,0,0,0,30 vulnerability-mining Core rows; C27 excluded.
-author_reported_external_trace_status,0,21,9,0,0,0,30 vulnerability-mining Core rows; C27 excluded.
-publicly_traceable_external_material_status,0,22,8,0,0,0,30 vulnerability-mining Core rows; C27 excluded.
-claim_level_alignment_status,0,16,14,0,0,0,30 vulnerability-mining Core rows; C27 excluded.

@@ -1,5 +1,0 @@
-field,label,label_source,initial_cohort_n,update_cohort_n,total_n,interpretation
-principal_reported_evidence_output,externally traceable material,harmonized,0,4,4,"Descriptive harmonized assignment; the cohort difference is not interpreted as a temporal trend."
-principal_reported_evidence_output,externally traceable material,second_coder,6,5,11,"Independent-label substitution distributes ET cases across both cohorts."
-external_traceability,publicly aligned external trace,harmonized,0,4,4,"Item-level public alignment under the harmonized boundary; the cohort difference is not interpreted as a temporal trend."
-external_traceability,publicly aligned external trace,second_coder,6,6,12,"Independent-label substitution shows boundary sensitivity in both cohorts."

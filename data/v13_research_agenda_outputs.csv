@@ -1,7 +1,0 @@
-observation_basis,unclosed_gap,materials_to_report,structured_output,purpose
-失败归纳与策略更新仍然报告不足,错误恢复与失败复用,失败样本、覆盖缺口、策略变化、重试原因、回滚记录,failure memory；strategy update log；rollback trace,区分真正策略更新与机械重试，复核自优化是否有效
-运行时信号与可复现验证并存，但证据对象容易混写,证据链报告不充分,候选来源、工具调用、执行反馈、验证结果、失败日志、披露状态,evidence card；execution trace；failure log；disclosure status,降低误报，连接候选、触发和复现材料
-benchmark 背景、系统输出与外部确认经常混写,声明级外部确认不足,任务背景、系统输出、外部链接、issue、advisory、版本、环境、材料状态,versioned artifact；evidence-object scope；public issue / advisory link；external-confirmation status,防止将真实背景或作者报告线索写成本文独立确认
-长程编排覆盖多个工具和环境,状态管理与责任链不足,trace ID、Agent 身份、委托关系、工具调用、参数摘要、结果摘要,trace ID；Agent identity；delegation relationship；parameter summary；result summary,支撑跨 Agent 责任追踪和错误定位
-MCP、插件、hooks 与高权限工具扩展攻击面,权限边界与人工门控不足,工具 schema、目标白名单、沙箱策略、权限判定、人工审批、撤销和回滚事件,MCP server whitelist；tool schema snapshot；target allowlist；sandbox policy；permission decision；human approval event；rollback event,降低间接提示注入、供应链污染和高权限误操作风险
-修复验证和跨环境复现覆盖仍然不足,补丁正确性与环境漂移,vulnerable / patched snapshot、依赖、运行环境、回归测试、修复前后触发路径,environment manifest；patch-validation report；regression-test trace；before / after replay,支撑跨环境复核和补丁正确性判断

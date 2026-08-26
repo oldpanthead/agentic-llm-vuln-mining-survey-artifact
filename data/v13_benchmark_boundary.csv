@@ -1,9 +1,0 @@
-benchmark_or_scenario,task_background,typical_system_output,supported_claim,unsupported_extrapolation
-Cybench,CTF 与 cyber reasoning 任务,success rate、flag、trajectory,受控环境中的任务求解与规划能力,真实部署漏洞发现率；开放世界漏洞确认
-BountyBench,bug bounty 风格任务与经济指标,exploit attempt、patch、report、trajectory、dollar metric,受控真实项目风格任务中的工作流表现,实际部署收益；全部漏洞生态总体分布
-SEC-bench,C / C++ CVE、PoC 与 patch 验证任务,sanitizer、PoV、validation、artifact,已知 memory-safety 漏洞复现与验证能力,新漏洞发现；外部确认已经完成
-CyberGym,OSS-Fuzz 相关真实漏洞环境,PoC、replay、open-ended trace,特定环境下的复现、轨迹与验证表现,通用端到端自治能力；自动等同于真实新发现
-FuzzingBrain V2,OSS-Fuzz、AIxCC-style 与真实 OSS 背景,fuzzer 报告、复现流程、来源限定的 maintainer / CVE 线索,来源限定的真实项目案例与复现材料,本文独立确认的逐漏洞外部声明
-DrillAgent,SEC-bench 与 CVE PoV 场景,PoV 输入、执行状态反馈、假设修正,执行反馈驱动的已知漏洞验证,benchmark ground truth 自动等同于系统新发现
-GONDAR,Java benchmark 与 OSS-CRS 相关背景,seed、PoC exploit、运行反馈,特定环境中的反馈驱动生成与验证,作者报告的 zero-day 线索自动等同于本文独立确认
-OSS-CRS,AIxCC-style 与真实 OSS 工作流,PoV、触发输入、patch、验证结果、report、trajectory,跨阶段 CRS 工作流与证据组织能力,未经逐项核验的普遍外部确认；通用自治能力
