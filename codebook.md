@@ -29,6 +29,8 @@ A0--A3 describe the main interaction path. A4 and A5 are overlay capability tags
 
 E4a, E4b, and E4c distinguish source, public verifiability, and audit readiness. They are not a strictly linear scale of vulnerability discovery capability.
 
+Legacy crosswalk: E0 usually overlaps with candidate judgment; E1 with controlled task completion; E2 with runtime safety signal; E3 with reproducible validation; and E4a, E4b, and E4c with the external-traceability profiles below.
+
 ## Evidence Object Values
 
 - Model judgment: labels, scores, probabilities, or textual vulnerability reasoning.
@@ -37,6 +39,8 @@ E4a, E4b, and E4c distinguish source, public verifiability, and audit readiness.
 - Task background: real-vulnerability background built into a benchmark, range, or task setting.
 - External clue: author-reported CVE, bug bounty, vendor, maintainer, or disclosure-related clue.
 - Governance risk: security risks introduced by agent tool use, permissions, sandboxing, or deployment configuration.
+
+External-evidence profiles distinguish source, public verifiability, and audit readiness. They should not be read as a strictly linear scale of vulnerability discovery capability.
 
 ## Lifecycle Coverage (multi-label)
 
@@ -85,6 +89,8 @@ Code the observable result that most directly supports the study's main evaluate
 Tool count, number of agents, workflow length, benchmark name, or author wording does not determine the category. Benchmark ground truth or an aggregate author-reported CVE count does not automatically become externally traceable material. If PoC, PoV, replay, patch validation, or verified benchmark artifacts are present but external confirmation is aggregate or not item-aligned, retain reproducible validation and record the external clue separately.
 
 Prospective reporting package is a recommended reporting outcome, not one of the five current evidence-output categories. It connects a concrete system output, target version, runtime environment, reproduction material, external process, and vulnerability claim into an auditable package.
+
+Historical governance boundary value: earlier files used a governance-boundary value for C27. The current analytical allocation retains that study in extended synthesis as governance and agent-safety context, so it does not receive a target-software evidence-output label or enter target-software distributions. Historical files commonly recorded this value as N/A or another boundary-specific E-level value.
 
 ## External Traceability (single-label)
 
