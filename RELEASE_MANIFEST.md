@@ -31,7 +31,7 @@ The authoritative list is `manuscript_artifact_paths.txt`. It includes:
 - target-domain/year, publication-status, public-artifact, controlled-task membership and denominator sensitivity, public-alignment, and training-overlap reporting audits;
 - `data/final_multisource_cohort_stability.csv`;
 - integrated 199-study pre-adjudication second-coder comparison, per-label reliability, and substitution sensitivity;
-- the raw 460-row OY external rereview export, separate 410-row decision and 50-row QC layers, full 995-row log, completion manifest, and adjudicated statistics;
+- the raw 460-row OY external rereview export, separate 410-row decision and 50-row QC layers, full 995-row log, completion manifest, and adjudicated statistics. The integrated decision export supersedes the earlier completed form;
 - representative mechanism, reported-result, cost, ablation, and failure-recovery extractions;
 - reference metadata for newly integrated study-level records.
 

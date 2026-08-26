@@ -306,7 +306,11 @@ def check_adjudication(target: list[dict[str, str]]) -> None:
         require(completion_data.get("unresolved_total") == 0, "completion manifest unresolved count differs")
         final_matrix = completion_data.get("current_final_matrix", {})
         matrix_path = DATA / "adjudicated_study_level_coding_matrix_199.csv"
-        matrix_hash = hashlib.sha256(matrix_path.read_bytes()).hexdigest().upper()
+        # Git stores the CSV with LF endings, while Windows checkouts may use
+        # CRLF.  Hash the canonical LF representation so validation is
+        # independent of the checkout platform.
+        matrix_bytes = matrix_path.read_bytes().replace(b"\r\n", b"\n")
+        matrix_hash = hashlib.sha256(matrix_bytes).hexdigest().upper()
         require(final_matrix.get("path") == "data/adjudicated_study_level_coding_matrix_199.csv", "completion manifest final-matrix path differs")
         require(final_matrix.get("sha256") == matrix_hash, "completion manifest final-matrix hash differs")
         require(final_matrix.get("study_count") == 199 and final_matrix.get("unique_matrix_ids") == 199, "completion manifest final-matrix cardinality differs")
