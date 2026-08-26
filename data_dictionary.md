@@ -101,8 +101,12 @@ Legacy `Core`, `Supporting`, `Background`, and `Excluded` values remain in `corp
 | `data/target_domain_extraction.csv` | Target-software study | Source-located target domain, shape, output, year, and extraction basis. |
 | `data/target_domain_by_principal_output.csv` | Domain--output pair | Count and domain denominator. |
 | `data/publication_year_by_primary_shape.csv` | Year--shape pair | Count, year denominator, and interpretation note. |
-| `data/public_artifact_availability.csv` | Target-software study | Located implementation, build, trigger, trace, and patch indicators; no execution is implied. |
+| `data/public_artifact_availability.csv` | Target-software study | Located implementation, build, strict system-generated public trigger/replay, trace, and patch indicators. A repository or benchmark input is not itself a trigger/replay artifact. |
+| `data/public_trigger_replay_evidence_index.csv` | Reviewed trigger/replay candidate | The 14 initially located candidates, their inclusion decision, local PDF locator, and reason. Only an item recorded as included enters Table 10's trigger/replay column. |
 | `data/principal_output_by_public_artifact_availability.csv` | Output group | Public-artifact indicator counts by principal output. |
+| `data/controlled_task_only_sensitivity.csv` | Scope-by-measure row | Recomputed comparison of all 199 studies with the 35 controlled-task-only cyber-range/CTF/pentest studies excluded. |
+| `data/controlled_task_only_membership.csv` | Target-software study | Reproducible 199-row membership decision, reason, and source-located domain basis for the 35-study denominator sensitivity cohort. |
+| `data/public_alignment_evidence_index.csv` | Public-alignment case | Local evidence chain for all four publicly aligned external-trace cases, including QRS. |
 | `data/training_data_overlap_control.csv` | Target-software study | Reporting status, source location, evidence note, and audit scope. |
 | `data/training_data_overlap_control_counts.csv` | Reporting status | Count and 199-study denominator. |
 | `data/mapping_snapshot_counts.csv` | Descriptive category | Source-record composition and current study-level distributions with explicit denominators and scope notes. |

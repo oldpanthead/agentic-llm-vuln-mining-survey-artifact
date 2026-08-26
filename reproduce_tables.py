@@ -9,6 +9,8 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
+import json
 import re
 from collections import Counter
 from pathlib import Path
@@ -38,8 +40,8 @@ EVIDENCE = {
     "candidate judgment": 51,
     "controlled task completion": 56,
     "runtime safety signal": 19,
-    "reproducible validation": 69,
-    "externally traceable material": 4,
+    "reproducible validation": 70,
+    "externally traceable material": 3,
 }
 SHAPES = {
     "candidate-analysis system": 41,
@@ -68,9 +70,9 @@ CAPABILITY = {
 }
 TRACE = {
     "no external trace reported": 26,
-    "author-reported external clue": 40,
+    "author-reported external clue": 41,
     "benchmark ground truth / public material": 128,
-    "publicly aligned external trace": 5,
+    "publicly aligned external trace": 4,
 }
 PUBLICATION_STATUS = {
     "benchmark/system report": 3,
@@ -262,14 +264,35 @@ def check_adjudication(target: list[dict[str, str]]) -> None:
     require(sum(bool(row.get("disagreement_id", "").strip()) for row in log) == 410, "adjudication log must contain 410 resolved disagreements")
     require(all(row.get("final_label", "").strip() != "unresolved" for row in log), "adjudication log contains unresolved labels")
     require(len(statistics) == 28, "adjudicated statistics must contain all controlled labels and empty-set rows")
-    require(all(row.get("reportable_point_estimate") == "yes" for row in statistics), "adjudicated statistics contain a non-reportable field")
+    reporting_stat = [
+        row for row in statistics
+        if row.get("field") == "lifecycle coverage"
+        and row.get("label") == "reporting and audit"
+    ]
+    require(
+        len(reporting_stat) == 1
+        and reporting_stat[0].get("reportable_point_estimate") == "no"
+        and reporting_stat[0].get("interpretation_scope") == "adjudicated descriptive outcome only",
+        "reporting-and-audit must be retained only as a low-reliability descriptive outcome",
+    )
+    require(
+        all(
+            row.get("reportable_point_estimate") == "yes"
+            for row in statistics
+            if not (
+                row.get("field") == "lifecycle coverage"
+                and row.get("label") == "reporting and audit"
+            )
+        ),
+        "another adjudicated statistic is unexpectedly non-reportable",
+    )
     expected_statistics = {
         ("lifecycle coverage", "reporting and audit"): 43,
         ("lifecycle coverage", "no qualifying label observed"): 10,
         ("cross-stage capability", "validation organization / evidence packaging"): 69,
         ("cross-stage capability", "no qualifying label observed"): 65,
-        ("principal reported evidence output", "externally traceable material"): 4,
-        ("external traceability", "publicly aligned external trace"): 5,
+        ("principal reported evidence output", "externally traceable material"): 3,
+        ("external traceability", "publicly aligned external trace"): 4,
     }
     observed_statistics = {
         (row.get("field", ""), row.get("label", "")): int(row["count"])
@@ -278,9 +301,16 @@ def check_adjudication(target: list[dict[str, str]]) -> None:
     require(all(observed_statistics.get(key) == value for key, value in expected_statistics.items()), "key adjudicated statistics differ")
     require(completion.is_file(), "missing adjudication completion manifest")
     if completion.is_file():
-        completion_text = completion.read_text(encoding="utf-8")
-        require('"disagreement_rows": 410' in completion_text, "completion manifest disagreement count differs")
-        require('"unresolved_total": 0' in completion_text, "completion manifest unresolved count differs")
+        completion_data = json.loads(completion.read_text(encoding="utf-8"))
+        require(completion_data.get("disagreement_rows") == 410, "completion manifest disagreement count differs")
+        require(completion_data.get("unresolved_total") == 0, "completion manifest unresolved count differs")
+        final_matrix = completion_data.get("current_final_matrix", {})
+        matrix_path = DATA / "adjudicated_study_level_coding_matrix_199.csv"
+        matrix_hash = hashlib.sha256(matrix_path.read_bytes()).hexdigest().upper()
+        require(final_matrix.get("path") == "data/adjudicated_study_level_coding_matrix_199.csv", "completion manifest final-matrix path differs")
+        require(final_matrix.get("sha256") == matrix_hash, "completion manifest final-matrix hash differs")
+        require(final_matrix.get("study_count") == 199 and final_matrix.get("unique_matrix_ids") == 199, "completion manifest final-matrix cardinality differs")
+        require(bool(final_matrix.get("freeze_recorded_utc")), "completion manifest final-matrix freeze time is missing")
     require({row.get("matrix_id", "") for row in log} == {row.get("matrix_id", "") for row in target}, "adjudication log and matrix IDs differ")
     info("third-party external rereview: 410 disagreements integrated; 50 QC rows kept separate; 0 unresolved")
 
@@ -630,6 +660,73 @@ def check_domain_and_reporting_extractions(target: list[dict[str, str]]) -> None
         for field in artifact_fields:
             require(sum(row[field] == "located" for row in subset) == int(summary[field]), f"public-artifact count differs: {output} {field}")
 
+    # A public repository or benchmark input is not, by itself, a public
+    # system-generated trigger/replay. The row-level index is the authority
+    # for this deliberately narrow Table 10 column.
+    trigger_index = read_csv(DATA / "public_trigger_replay_evidence_index.csv")
+    trigger_candidates = {row["matrix_id"] for row in trigger_index}
+    require(len(trigger_index) == 14 and len(trigger_candidates) == 14, "trigger/replay index must retain 14 unique reviewed candidates")
+    require(trigger_candidates <= target_ids, "trigger/replay index contains a non-matrix study")
+    require(all(row["included_in_table_10"] in {"yes", "no"} for row in trigger_index), "invalid Table 10 trigger inclusion flag")
+    included_triggers = {row["matrix_id"] for row in trigger_index if row["included_in_table_10"] == "yes"}
+    located_triggers = {row["matrix_id"] for row in artifacts if row["trigger_replay_poc_pov_artifact"] == "located"}
+    require(included_triggers == located_triggers == {"C02"}, "strict public trigger/replay index and artifact table differ")
+    require(all(row.get("trigger_replay_evidence_scope", "") for row in artifacts), "missing trigger/replay evidence scope")
+
+    membership = read_csv(DATA / "controlled_task_only_membership.csv")
+    require(len(membership) == 199, "controlled-task membership must contain 199 rows")
+    require({row["matrix_id"] for row in membership} == target_ids, "controlled-task membership IDs differ from final matrix")
+    domain_by_id = {row["matrix_id"]: row for row in domains}
+    excluded_ids = set()
+    for row in membership:
+        matrix_row = target_by_id[row["matrix_id"]]
+        expected_excluded = (
+            matrix_row["strongest_evidence_output"] == "controlled task completion"
+            and domain_by_id[row["matrix_id"]]["target_domain"] == "cyber range, CTF, or penetration testing"
+        )
+        require(row["controlled_task_only_excluded"] == ("yes" if expected_excluded else "no"), f"controlled-task membership differs: {row['matrix_id']}")
+        require(row["principal_reported_evidence_output"] == matrix_row["strongest_evidence_output"], f"controlled-task output differs: {row['matrix_id']}")
+        require(row["target_domain"] == domain_by_id[row["matrix_id"]]["target_domain"], f"controlled-task domain differs: {row['matrix_id']}")
+        require(row["decision_reason"].strip() and row["domain_source_location"].strip(), f"controlled-task membership lacks provenance: {row['matrix_id']}")
+        if expected_excluded:
+            excluded_ids.add(row["matrix_id"])
+    require(len(excluded_ids) == 35, f"controlled-task exclusion size differs: {len(excluded_ids)}")
+
+    sensitivity = read_csv(DATA / "controlled_task_only_sensitivity.csv")
+    require(len(sensitivity) == 6, "controlled-task sensitivity must contain six result rows")
+    expected_sensitivity = {
+        ("all_target_software", "author_reported_reproducible_validation"): (70, 199),
+        ("all_target_software", "publicly_aligned_external_trace"): (4, 199),
+        ("all_target_software", "author_reported_external_clue"): (41, 199),
+        ("excluding_controlled_task_only", "author_reported_reproducible_validation"): (70, 164),
+        ("excluding_controlled_task_only", "publicly_aligned_external_trace"): (4, 164),
+        ("excluding_controlled_task_only", "author_reported_external_clue"): (41, 164),
+    }
+    actual_sensitivity = {
+        (row["scope"], row["measure"]): (int(row["count"]), int(row["denominator"]))
+        for row in sensitivity
+    }
+    require(actual_sensitivity == expected_sensitivity, "controlled-task sensitivity differs from final matrix")
+    require(all(row["controlled_task_only_excluded"] in {"0", "35"} for row in sensitivity), "controlled-task exclusion size differs")
+    retained = [row for row in target if row["matrix_id"] not in excluded_ids]
+    computed_sensitivity = {
+        ("all_target_software", "author_reported_reproducible_validation"): (sum(row["strongest_evidence_output"] == "reproducible validation" for row in target), len(target)),
+        ("all_target_software", "publicly_aligned_external_trace"): (sum(row["external_traceability"] == "publicly aligned external trace" for row in target), len(target)),
+        ("all_target_software", "author_reported_external_clue"): (sum(row["external_traceability"] == "author-reported external clue" for row in target), len(target)),
+        ("excluding_controlled_task_only", "author_reported_reproducible_validation"): (sum(row["strongest_evidence_output"] == "reproducible validation" for row in retained), len(retained)),
+        ("excluding_controlled_task_only", "publicly_aligned_external_trace"): (sum(row["external_traceability"] == "publicly aligned external trace" for row in retained), len(retained)),
+        ("excluding_controlled_task_only", "author_reported_external_clue"): (sum(row["external_traceability"] == "author-reported external clue" for row in retained), len(retained)),
+    }
+    require(actual_sensitivity == computed_sensitivity, "controlled-task sensitivity is not mechanically reproduced from membership and final matrix")
+
+    alignment = read_csv(DATA / "public_alignment_evidence_index.csv")
+    alignment_ids = {row["matrix_id"] for row in alignment}
+    matrix_alignment_ids = {row["matrix_id"] for row in target if row["external_traceability"] == "publicly aligned external trace"}
+    require(len(alignment) == 4 and alignment_ids == matrix_alignment_ids, "public-alignment index differs from final matrix")
+    require(sum(row["principal_reported_evidence_output"] == "externally traceable material" for row in alignment) == 3, "principal externally-traceable cases differ")
+    required_alignment_fields = ("system_output", "exact_item", "software_and_version", "validation_material", "public_external_record", "attribution", "local_evidence_locator")
+    require(all(all(row.get(field, "").strip() for field in required_alignment_fields) for row in alignment), "public-alignment index lacks a structured local evidence chain")
+
     contamination = read_csv(DATA / "training_data_overlap_control.csv")
     require(len(contamination) == 199, "training-overlap extraction must contain 199 rows")
     require({row["matrix_id"] for row in contamination} == target_ids, "training-overlap IDs differ from target matrix")
@@ -638,7 +735,7 @@ def check_domain_and_reporting_extractions(target: list[dict[str, str]]) -> None
     require(contamination_counts == Counter({"explicit control": 6, "discussion only": 2, "not located": 191}), f"training-overlap counts differ: {dict(contamination_counts)}")
     summary_counts = {row["status"]: int(row["count"]) for row in read_csv(DATA / "training_data_overlap_control_counts.csv")}
     require(summary_counts == dict(contamination_counts), "training-overlap summary differs")
-    info("target-domain, year, public-artifact, and training-overlap extractions verified")
+    info("target-domain, strict public-artifact, sensitivity, public-alignment, and training-overlap extractions verified")
 
 
 def check_second_coder(target: list[dict[str, str]]) -> None:

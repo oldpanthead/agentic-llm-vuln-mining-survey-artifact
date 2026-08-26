@@ -38,6 +38,10 @@ data/target_domain_by_principal_output.csv
 data/publication_year_by_primary_shape.csv
 data/public_artifact_availability.csv
 data/principal_output_by_public_artifact_availability.csv
+data/public_trigger_replay_evidence_index.csv
+data/controlled_task_only_membership.csv
+data/controlled_task_only_sensitivity.csv
+data/public_alignment_evidence_index.csv
 data/training_data_overlap_control.csv
 data/training_data_overlap_control_counts.csv
 data/mapping_snapshot_counts.csv

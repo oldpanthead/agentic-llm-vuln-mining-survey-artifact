@@ -2,8 +2,8 @@ primitive_family,principal_reported_evidence_output,count,primitive_union_denomi
 fuzzing_input_harness,candidate judgment,11,68
 fuzzing_input_harness,controlled task completion,14,68
 fuzzing_input_harness,runtime safety signal,16,68
-fuzzing_input_harness,reproducible validation,24,68
-fuzzing_input_harness,externally traceable material,3,68
+fuzzing_input_harness,reproducible validation,25,68
+fuzzing_input_harness,externally traceable material,2,68
 patch_build_test,candidate judgment,3,35
 patch_build_test,controlled task completion,5,35
 patch_build_test,runtime safety signal,3,35
@@ -22,8 +22,8 @@ replay_poc_pov,externally traceable material,1,75
 runtime_oracle,candidate judgment,17,111
 runtime_oracle,controlled task completion,23,111
 runtime_oracle,runtime safety signal,18,111
-runtime_oracle,reproducible validation,50,111
-runtime_oracle,externally traceable material,3,111
+runtime_oracle,reproducible validation,51,111
+runtime_oracle,externally traceable material,2,111
 static_taint_specification,candidate judgment,42,103
 static_taint_specification,controlled task completion,8,103
 static_taint_specification,runtime safety signal,8,103

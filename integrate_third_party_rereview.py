@@ -391,6 +391,9 @@ def write_statistics(data: Path, matrix: list[dict[str, str]]) -> None:
                     counts[label] += 1
         for label in FIELD_LABELS[field]:
             count = counts[label]
+            low_reliability_reporting = (
+                field == "lifecycle coverage" and label == "reporting and audit"
+            )
             output.append({
                 "field": field,
                 "label": label,
@@ -398,7 +401,12 @@ def write_statistics(data: Path, matrix: list[dict[str, str]]) -> None:
                 "denominator": str(len(target)),
                 "share": f"{count / len(target):.6f}",
                 "unresolved": "0",
-                "reportable_point_estimate": "yes",
+                "reportable_point_estimate": "no" if low_reliability_reporting else "yes",
+                "interpretation_scope": (
+                    "adjudicated descriptive outcome only"
+                    if low_reliability_reporting
+                    else "adjudicated distribution"
+                ),
             })
     write_csv(data / "adjudicated_synthesis_statistics_199.csv", output)
 

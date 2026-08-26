@@ -4,7 +4,7 @@
 
 This public release contains non-sensitive data and scripts supporting the ACM CSUR manuscript. It includes the integrated multi-source search through 2026-07-30, study/version reconciliation, analytical-layer allocation, the 199-study target-software coding matrix, the 154-study extended synthesis audit, complete independent second-coder files, and source-located supplementary extractions.
 
-The immutable synchronized submission tag is `csur-submission-2026-08-final-v9`. Earlier tags remain unchanged.
+The immutable synchronized submission tag is `csur-submission-2026-08-final-v10`. Earlier tags, including `csur-submission-2026-08-final-v9`, remain unchanged.
 
 ## Current Counts
 
@@ -28,7 +28,7 @@ The authoritative list is `manuscript_artifact_paths.txt`. It includes:
 - `data/extended_synthesis_audit.csv` (92 full-text-supported and 62 title/abstract-metadata-supported records);
 - study-level publication-status assignments and stratified distributions;
 - the study-level primitive extraction, workflow-active/evaluation role split, and primitive--output cross-tab;
-- target-domain/year, publication-status, public-artifact, and training-overlap reporting audits;
+- target-domain/year, publication-status, public-artifact, controlled-task membership and denominator sensitivity, public-alignment, and training-overlap reporting audits;
 - `data/final_multisource_cohort_stability.csv`;
 - integrated 199-study pre-adjudication second-coder comparison, per-label reliability, and substitution sensitivity;
 - the raw 460-row OY external rereview export, separate 410-row decision and 50-row QC layers, full 995-row log, completion manifest, and adjudicated statistics;

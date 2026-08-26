@@ -37,6 +37,71 @@ for r in domains:
     r["principal_reported_evidence_output"] = m["strongest_evidence_output"]
 write("target_domain_extraction.csv", domains)
 
+# The denominator sensitivity is a deterministic two-field classification, not
+# a post-hoc judgment.  Preserve all 199 membership decisions so the excluded
+# cohort and every retained boundary case can be recomputed directly.
+domain_by_id = {r["matrix_id"]: r for r in domains}
+controlled_task_domain = "cyber range, CTF, or penetration testing"
+membership = []
+for matrix_id, m in sorted(target.items()):
+    domain = domain_by_id[matrix_id]
+    output = m["strongest_evidence_output"]
+    is_controlled_output = output == "controlled task completion"
+    is_controlled_domain = domain["target_domain"] == controlled_task_domain
+    excluded = is_controlled_output and is_controlled_domain
+    if excluded:
+        reason = (
+            "Excluded: principal output is controlled task completion and the "
+            "author-audited target domain is cyber range, CTF, or penetration testing."
+        )
+    elif not is_controlled_output:
+        reason = f"Retained: principal output is {output}, not controlled task completion."
+    else:
+        reason = (
+            "Retained: principal output is controlled task completion, but the "
+            f"author-audited target domain is {domain['target_domain']}."
+        )
+    membership.append({
+        "matrix_id": matrix_id,
+        "study_title": m["title"],
+        "principal_reported_evidence_output": output,
+        "target_domain": domain["target_domain"],
+        "controlled_task_only_excluded": "yes" if excluded else "no",
+        "decision_reason": reason,
+        "domain_source_location": domain["source_location"],
+    })
+write("controlled_task_only_membership.csv", membership)
+
+excluded_ids = {r["matrix_id"] for r in membership if r["controlled_task_only_excluded"] == "yes"}
+scopes = {
+    "all_target_software": list(target.values()),
+    "excluding_controlled_task_only": [r for i, r in target.items() if i not in excluded_ids],
+}
+measures = {
+    "author_reported_reproducible_validation": lambda r: r["strongest_evidence_output"] == "reproducible validation",
+    "publicly_aligned_external_trace": lambda r: r["external_traceability"] == "publicly aligned external trace",
+    "author_reported_external_clue": lambda r: r["external_traceability"] == "author-reported external clue",
+}
+sensitivity = []
+definition = (
+    "principal output is controlled task completion and target domain is cyber "
+    "range, CTF, or penetration testing; real-OSS CRS workflows with another "
+    "principal output remain in the denominator"
+)
+for scope, subset in scopes.items():
+    for measure, predicate in measures.items():
+        count = sum(predicate(r) for r in subset)
+        sensitivity.append({
+            "scope": scope,
+            "controlled_task_only_excluded": len(excluded_ids) if scope == "excluding_controlled_task_only" else 0,
+            "definition": definition,
+            "measure": measure,
+            "count": count,
+            "denominator": len(subset),
+            "share": f"{count / len(subset):.6f}",
+        })
+write("controlled_task_only_sensitivity.csv", sensitivity)
+
 artifacts = read("public_artifact_availability.csv")
 for r in artifacts:
     r["principal_reported_evidence_output"] = target[r["matrix_id"]]["strongest_evidence_output"]

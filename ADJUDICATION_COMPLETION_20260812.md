@@ -37,7 +37,7 @@ The prior author-confirmed harmonized matrix had been carried forward as if it w
 - No qualifying lifecycle label observed: 10/199.
 - Validation organization / evidence packaging: 69/199.
 - No qualifying cross-stage capability observed: 65/199.
-- Externally traceable material as principal output: 4/199.
-- Publicly aligned external trace: 5/199.
+- Externally traceable material as principal output: 3/199.
+- Publicly aligned external trace: 4/199.
 
-The five retained public-alignment rows were checked separately from the MALF correction. Code-Augur's paper-level Bug 2/20 mappings correspond to published CVE-2026-48113 and CVE-2026-34830 records; Agentic Fuzzing identifies concrete Chromium issue/CVE records; QRS identifies concrete package/CVE or maintainer-patch records; and STITCH prints concrete issue/GHSA links, including a live maintainer issue. FunFuzz points to a public artifact that it says contains the failure-to-upstream-issue map; the artifact host returned an access challenge during the current check, so this network result was not treated as evidence of absence. None of these five rows rests only on an unlocated identifier analogous to CNVD-2024-16009.
+The four retained public-alignment rows were checked separately from the MALF correction: Code-Augur's paper-level Bug 2 mapping corresponds to CVE-2026-48113; Agentic Fuzzing identifies a concrete Chromium issue/CVE record; QRS identifies a concrete package/CVE and maintainer-patch record; and STITCH prints a concrete issue/GHSA link. FunFuzz was downgraded to an author-reported external clue because its local paper describes an anonymous fingerprint-to-issue map without exposing a concrete item-level public record, and the linked host returned an access challenge. That network result was not treated as evidence that the paper's mapping is false; it simply fails the strict public-alignment rule. None of the four retained rows rests only on an unlocated identifier analogous to CNVD-2024-16009.

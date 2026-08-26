@@ -11,7 +11,7 @@ This repository contains the non-sensitive artifact for a mapping-oriented scopi
 
 For a public archive, run `python build_public_release.py <new-output-directory>`. The builder copies only the release allowlist and manuscript-facing manifest, then validates the exported copy. Do not archive the source working tree directly.
 
-The synchronized submission snapshot is identified by `csur-submission-2026-08-final-v9`. Earlier tags, including `csur-submission-2026-07-final-v8`, remain immutable historical snapshots.
+The synchronized submission snapshot is identified by `csur-submission-2026-08-final-v10`. Earlier tags, including `csur-submission-2026-08-final-v9` and `csur-submission-2026-07-final-v8`, remain immutable historical snapshots.
 
 ## Current Integrated Snapshot
 
@@ -55,7 +55,9 @@ The search used arXiv, OpenAlex, Crossref-backed publisher queries for ACM, IEEE
 - `data/traditional_security_primitives_by_use_role.csv` and `data/traditional_security_primitive_use_role_counts.csv`: study--primitive rows and counts separated into workflow-active and evaluation/support use.
 - `data/traditional_security_primitive_by_output.csv`: primitive-family by principal-output co-occurrence counts.
 - `data/target_domain_extraction.csv`, `data/target_domain_by_principal_output.csv`, and `data/publication_year_by_primary_shape.csv`: source-located target-domain and descriptive year cross-tabs.
-- `data/public_artifact_availability.csv` and `data/principal_output_by_public_artifact_availability.csv`: public artifact indicators located in reviewed material; no artifact execution is claimed.
+- `data/public_artifact_availability.csv`, `data/public_trigger_replay_evidence_index.csv`, and `data/principal_output_by_public_artifact_availability.csv`: public artifact indicators. The trigger/replay column is restricted to public, system-generated, item-level material; repositories and benchmark inputs alone are excluded. No independent artifact execution is claimed.
+- `data/controlled_task_only_membership.csv` and `data/controlled_task_only_sensitivity.csv`: all 199 row-level denominator decisions and the mechanically derived 199-versus-164 sensitivity results.
+- `data/public_alignment_evidence_index.csv`: the local evidence chains for all four publicly aligned external-trace cases, including QRS.
 - `data/training_data_overlap_control.csv` and `data/training_data_overlap_control_counts.csv`: source-located reporting status for explicit training-overlap controls, discussion only, or no statement located.
 - `data/publication_status_sensitivity_analysis.csv`: 199-study shape and output distributions by publication-status group.
 - `data/final_multisource_cohort_stability.csv`: provenance-only comparison of historical acquisition groups under the final schema; it does not define manuscript cohorts or denominators.

@@ -72,5 +72,21 @@
       "low_score_files": 0,
       "validator": "validate_coder_material_identity.py"
     }
+  },
+  "current_final_matrix": {
+    "path": "data/adjudicated_study_level_coding_matrix_199.csv",
+    "sha256": "798E47DE8017EC179ACF278F366A1AA89086574E267A08CA489D49FEC28081CC",
+    "study_count": 199,
+    "unique_matrix_ids": 199,
+    "freeze_recorded_utc": "2026-08-24T10:30:49Z",
+    "derived_views": [
+      "data/adjudicated_synthesis_statistics_199.csv",
+      "data/public_artifact_availability.csv",
+      "data/principal_output_by_public_artifact_availability.csv",
+      "data/controlled_task_only_membership.csv",
+      "data/controlled_task_only_sensitivity.csv",
+      "data/public_alignment_evidence_index.csv",
+      "data/public_trigger_replay_evidence_index.csv"
+    ]
   }
 }

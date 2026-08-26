@@ -5,8 +5,8 @@ retained_pre_final_67,67,primary_system_shape,long-horizon pentest and CRS agent
 retained_pre_final_67,67,primary_system_shape,"reproduction-, validation-, and repair-centered agent",25,0.373
 retained_pre_final_67,67,principal_reported_evidence_output,candidate judgment,13,0.194
 retained_pre_final_67,67,principal_reported_evidence_output,controlled task completion,12,0.179
-retained_pre_final_67,67,principal_reported_evidence_output,externally traceable material,3,0.045
-retained_pre_final_67,67,principal_reported_evidence_output,reproducible validation,29,0.433
+retained_pre_final_67,67,principal_reported_evidence_output,externally traceable material,2,0.030
+retained_pre_final_67,67,principal_reported_evidence_output,reproducible validation,30,0.448
 retained_pre_final_67,67,principal_reported_evidence_output,runtime safety signal,10,0.149
 retained_pre_final_67,67,cross_stage_capability,context aggregation / rule extraction,37,0.552
 retained_pre_final_67,67,cross_stage_capability,failure reuse / strategy update,8,0.119

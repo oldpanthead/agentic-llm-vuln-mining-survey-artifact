@@ -58,6 +58,8 @@ Expected current counts: 1,785 source records; 1,772 studies after version recon
 - `data/training_data_overlap_control.csv` and `data/training_data_overlap_control_counts.csv`: training-overlap control reporting audit.
 - `data/mapping_snapshot_counts.csv`: source-record composition and current study-level distribution snapshot referenced by the manuscript.
 - `data/publication_status_sensitivity_analysis.csv`: publication-status robustness counts for the 199-study set.
+- `data/controlled_task_only_membership.csv` and `data/controlled_task_only_sensitivity.csv`: the 199 row-level inclusion decisions and mechanically derived 199-versus-164 denominator sensitivity.
+- `data/public_alignment_evidence_index.csv`: item-level local evidence chains for all four publicly aligned external-trace cases, including QRS.
 - `data/final_multisource_cohort_stability.csv`: provenance-only comparison of historical acquisition groups under the final schema.
 - `data/representative_system_mechanisms.csv`: representative mechanism cases.
 - `data/mechanism_cost_ablation_synthesis.csv`: source-located cost, ablation, and recovery observations.
