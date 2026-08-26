@@ -16,16 +16,16 @@ Two coders independently assigned lifecycle coverage, cross-stage capability, pr
 
 LLM-assisted preparation and deterministic scripts were limited to material assembly, task--study--field--PDF cross-checking, SHA-256 calculation, table validation, and count regeneration. OY read the supplied material and entered every task judgment. The integration validator confirms 460 unique tasks, 410 disagreement and 50 QC strata, 196 unique studies represented by those tasks, the complete 199-study coder-to-matrix identity crosswalk, legal labels and nonempty evidence locators, and all seven corrected-material task paths.
 
-The review applied the rules in `adjudication/ADJUDICATION_RULES_20260812.md`: operational definitions control; benchmark ground truth is not external confirmation; author-reported CVE, CNVD, vendor, maintainer, or bounty material is an external clue unless a concrete system result aligns with a concrete public external record; multi-label fields retain only explicitly shown labels; and evidence-insufficient cases would have been recorded as unresolved. No unresolved case remained after review.
+The review applied the rules in `docs/review/ADJUDICATION_RULES_20260812.md`: operational definitions control; benchmark ground truth is not external confirmation; author-reported CVE, CNVD, vendor, maintainer, or bounty material is an external clue unless a concrete system result aligns with a concrete public external record; multi-label fields retain only explicitly shown labels; and evidence-insufficient cases would have been recorded as unresolved. No unresolved case remained after review.
 
 ## Outputs And Reporting Boundary
 
-- `third_party_rereview_oy_20260824.csv` is the raw 460-row OY export.
-- `data/third_party_rereview_decisions_20260824.csv` preserves the integrated 410 decisions and the five historical completed-form fields in `prior_form_*` columns; `data/third_party_rereview_qc_20260824.csv` preserves the separate 50 QC rows.
-- `data/adjudicated_study_level_coding_matrix_199.csv` is the sole source for final descriptive distributions.
-- `data/adjudication_log_199_all_fields.csv` preserves the decision path for all 995 controlled study-field assignments.
-- `data/derived_summary_tables.json` contains the final counts and shares under the original table name `adjudicated_synthesis_statistics_199.csv`.
-- `data/current_study_level_coding_matrix_harmonized.csv` and `data/integrated_199_second_coder_comparison_20260730.csv` remain preserved pre-adjudication sources.
+- `data/adjudication/third_party_rereview_oy_20260824.csv` is the raw 460-row OY export.
+- `data/adjudication/third_party_rereview_decisions_20260824.csv` preserves the integrated 410 decisions and the five historical completed-form fields in `prior_form_*` columns; `data/adjudication/third_party_rereview_qc_20260824.csv` preserves the separate 50 QC rows.
+- `data/coding/adjudicated_study_level_coding_matrix_199.csv` is the sole source for final descriptive distributions.
+- `data/adjudication/adjudication_log_199_all_fields.csv` preserves the decision path for all 995 controlled study-field assignments.
+- `data/derived/derived_summary_tables.json` contains the final counts and shares under the original table name `adjudicated_synthesis_statistics_199.csv`.
+- `data/coding/current_study_level_coding_matrix_harmonized.csv` and `data/adjudication/integrated_199_second_coder_comparison_20260730.csv` remain preserved pre-adjudication sources.
 
 Agreement statistics, including raw agreement, Cohen's kappa, and AC1, describe the independent assignments before adjudication. The adjudicated matrix is not a new reliability test.
 
@@ -54,7 +54,7 @@ The calculation combines the released 67-study review with 132 studies jointly i
 
 Eligibility agreement for the new search is reported separately because the released 67-study set had already passed inclusion before its unified second-coder review. The integrated reliability result therefore covers analytical coding fields only and does not score claim-boundary prose by exact textual agreement.
 
-The underlying files are data/integrated_199_second_coder_comparison_20260730.csv, data/integrated_199_per_label_reliability_20260730.csv, data/integrated_199_label_substitution_sensitivity_20260730.csv, data/third_party_rereview_decisions_20260824.csv, data/adjudication_log_199_all_fields.csv, and data/adjudicated_study_level_coding_matrix_199.csv.
+The underlying files are data/adjudication/integrated_199_second_coder_comparison_20260730.csv, data/adjudication/integrated_199_per_label_reliability_20260730.csv, data/adjudication/integrated_199_label_substitution_sensitivity_20260730.csv, data/adjudication/third_party_rereview_decisions_20260824.csv, data/adjudication/adjudication_log_199_all_fields.csv, and data/coding/adjudicated_study_level_coding_matrix_199.csv.
 
 ## Final Key Counts
 

@@ -10,9 +10,9 @@ import sys
 from pathlib import Path
 
 
-ROOT = Path(__file__).resolve().parent
-STATIC_MANIFEST = ROOT / "public_release_files.txt"
-DATA_MANIFEST = ROOT / "manuscript_artifact_paths.txt"
+ROOT = Path(__file__).resolve().parent.parent
+STATIC_MANIFEST = ROOT / "manifests" / "public_release_files.txt"
+DATA_MANIFEST = ROOT / "manifests" / "manuscript_artifact_paths.txt"
 
 
 def read_manifest(path: Path) -> list[str]:

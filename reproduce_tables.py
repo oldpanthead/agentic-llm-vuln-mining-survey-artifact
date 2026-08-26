@@ -18,6 +18,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 DATA = ROOT / "data"
+SEARCH = DATA / "search"
+CORPUS = DATA / "corpus"
+CODING = DATA / "coding"
+ADJUDICATION = DATA / "adjudication"
+SYNTHESIS = DATA / "synthesis"
+DERIVED = DATA / "derived"
 ERRORS: list[str] = []
 INFOS: list[str] = []
 
@@ -118,7 +124,7 @@ def read_csv(path: Path) -> list[dict[str, str]]:
 
 
 def read_derived_table(name: str) -> list[dict[str, str]]:
-    bundle = DATA / "derived_summary_tables.json"
+    bundle = DERIVED / "derived_summary_tables.json"
     if not bundle.exists():
         error(f"missing derived-summary bundle: {bundle.relative_to(ROOT)}")
         return []
@@ -194,8 +200,8 @@ def micro_f1(pairs: list[tuple[set[str], set[str]]]) -> float:
 
 
 def check_manifest() -> None:
-    manifest = ROOT / "manuscript_artifact_paths.txt"
-    require(manifest.exists(), "missing manuscript_artifact_paths.txt")
+    manifest = ROOT / "manifests" / "manuscript_artifact_paths.txt"
+    require(manifest.exists(), "missing manifests/manuscript_artifact_paths.txt")
     if not manifest.exists():
         return
     paths = [
@@ -210,8 +216,8 @@ def check_manifest() -> None:
 
 
 def check_corpus() -> tuple[list[dict[str, str]], list[dict[str, str]]]:
-    corpus = read_csv(DATA / "corpus.csv")
-    crosswalk = read_csv(DATA / "study_version_crosswalk.csv")
+    corpus = read_csv(CORPUS / "corpus.csv")
+    crosswalk = read_csv(CORPUS / "study_version_crosswalk.csv")
     require(len(corpus) == EXPECTED["source_records"], "corpus.csv must contain 1,785 source records")
     require(len(crosswalk) == EXPECTED["source_records"], "crosswalk must contain 1,785 source records")
     corpus_ids = [row.get("record_id", "") for row in corpus]
@@ -238,8 +244,8 @@ def check_corpus() -> tuple[list[dict[str, str]], list[dict[str, str]]]:
 
 
 def check_matrix() -> list[dict[str, str]]:
-    source_matrix = read_csv(DATA / "current_study_level_coding_matrix_harmonized.csv")
-    matrix = read_csv(DATA / "adjudicated_study_level_coding_matrix_199.csv")
+    source_matrix = read_csv(CODING / "current_study_level_coding_matrix_harmonized.csv")
+    matrix = read_csv(CODING / "adjudicated_study_level_coding_matrix_199.csv")
     require(len(source_matrix) == EXPECTED["target_studies"], "preserved author matrix must contain 199 rows")
     require(
         {row.get("matrix_id", "") for row in source_matrix} == {row.get("matrix_id", "") for row in matrix},
@@ -261,12 +267,12 @@ def check_matrix() -> list[dict[str, str]]:
 
 
 def check_adjudication(target: list[dict[str, str]]) -> None:
-    decisions = read_csv(DATA / "third_party_rereview_decisions_20260824.csv")
-    qc_rows = read_csv(DATA / "third_party_rereview_qc_20260824.csv")
-    material_crosswalk = read_csv(DATA / "third_party_rereview_material_crosswalk_20260824.csv")
-    log = read_csv(DATA / "adjudication_log_199_all_fields.csv")
+    decisions = read_csv(ADJUDICATION / "third_party_rereview_decisions_20260824.csv")
+    qc_rows = read_csv(ADJUDICATION / "third_party_rereview_qc_20260824.csv")
+    material_crosswalk = read_csv(ADJUDICATION / "third_party_rereview_material_crosswalk_20260824.csv")
+    log = read_csv(ADJUDICATION / "adjudication_log_199_all_fields.csv")
     statistics = read_derived_table("adjudicated_synthesis_statistics_199.csv")
-    completion = DATA / "adjudication_completion_manifest.json"
+    completion = ADJUDICATION / "adjudication_completion_manifest.json"
 
     require(len(decisions) == 410, "third-party decision export must contain 410 disagreements")
     historical_fields = (
@@ -331,13 +337,13 @@ def check_adjudication(target: list[dict[str, str]]) -> None:
         require(completion_data.get("disagreement_rows") == 410, "completion manifest disagreement count differs")
         require(completion_data.get("unresolved_total") == 0, "completion manifest unresolved count differs")
         final_matrix = completion_data.get("current_final_matrix", {})
-        matrix_path = DATA / "adjudicated_study_level_coding_matrix_199.csv"
+        matrix_path = CODING / "adjudicated_study_level_coding_matrix_199.csv"
         # Git stores the CSV with LF endings, while Windows checkouts may use
         # CRLF.  Hash the canonical LF representation so validation is
         # independent of the checkout platform.
         matrix_bytes = matrix_path.read_bytes().replace(b"\r\n", b"\n")
         matrix_hash = hashlib.sha256(matrix_bytes).hexdigest().upper()
-        require(final_matrix.get("path") == "data/adjudicated_study_level_coding_matrix_199.csv", "completion manifest final-matrix path differs")
+        require(final_matrix.get("path") == "data/coding/adjudicated_study_level_coding_matrix_199.csv", "completion manifest final-matrix path differs")
         require(final_matrix.get("sha256") == matrix_hash, "completion manifest final-matrix hash differs")
         require(final_matrix.get("study_count") == 199 and final_matrix.get("unique_matrix_ids") == 199, "completion manifest final-matrix cardinality differs")
         require(bool(final_matrix.get("freeze_recorded_utc")), "completion manifest final-matrix freeze time is missing")
@@ -346,7 +352,7 @@ def check_adjudication(target: list[dict[str, str]]) -> None:
 
 
 def check_extended(target: list[dict[str, str]]) -> None:
-    rows = read_csv(DATA / "extended_synthesis_audit.csv")
+    rows = read_csv(CODING / "extended_synthesis_audit.csv")
     require(len(rows) == EXPECTED["extended_studies"], "extended synthesis must contain 154 studies")
     require(len({row.get("record_id", "") for row in rows}) == len(rows), "duplicate extended-synthesis record")
     target_records = {row.get("record_id", "") for row in target}
@@ -365,9 +371,9 @@ def check_extended(target: list[dict[str, str]]) -> None:
 
 
 def check_search_and_dedup() -> None:
-    results = read_csv(DATA / "final_multisource_search_20260730_results.csv")
-    screened = read_csv(DATA / "final_multisource_search_20260730_screening_audit.csv")
-    completed = read_csv(DATA / "final_multisource_search_20260730_complete_screening.csv")
+    results = read_csv(SEARCH / "final_multisource_search_20260730_results.csv")
+    screened = read_csv(SEARCH / "final_multisource_search_20260730_screening_audit.csv")
+    completed = read_csv(SEARCH / "final_multisource_search_20260730_complete_screening.csv")
     require(len(results) == EXPECTED["search_occurrences"], "search export must contain 12,090 source occurrences")
     require(len(screened) == EXPECTED["search_records"], "screening audit must contain 1,642 unique records")
     require(len(completed) == EXPECTED["search_records"], "complete screening audit must contain 1,642 unique records")
@@ -404,7 +410,7 @@ def check_search_and_dedup() -> None:
         "high-level exclusion account differs",
     )
     require(sum(expected_exclusions.values()) == EXPECTED["excluded_studies"], "exclusion account does not close")
-    prisma = {row["metric"]: int(row["count"]) for row in read_csv(DATA / "final_multisource_search_20260730_prisma_counts.csv")}
+    prisma = {row["metric"]: int(row["count"]) for row in read_csv(SEARCH / "final_multisource_search_20260730_prisma_counts.csv")}
     integrated_checks = {
         "integrated_source_records": 1785,
         "alternate_or_duplicate_source_versions_not_counted": 13,
@@ -468,7 +474,7 @@ def check_search_and_dedup() -> None:
         all(prisma.get(key) == value for key, value in provenance_checks.items()),
         "source-specific acquisition provenance differs from frozen audit files",
     )
-    resolutions = read_csv(DATA / "final_multisource_search_20260730_dedup_resolutions.csv")
+    resolutions = read_csv(SEARCH / "final_multisource_search_20260730_dedup_resolutions.csv")
     require(len(resolutions) == 124, "dedup audit must contain 124 candidate pairs")
     require(not any(row.get("audit_decision") == "needs_author_confirmation" for row in resolutions), "unresolved dedup pair remains")
     require(sum(row.get("audit_decision") == "same_study_or_version" for row in resolutions) == 119, "same-study/version resolution count differs")
@@ -476,7 +482,7 @@ def check_search_and_dedup() -> None:
 
 
 def check_supplementary_extractions(target: list[dict[str, str]]) -> None:
-    primitives = read_csv(DATA / "traditional_security_primitives.csv")
+    primitives = read_csv(SYNTHESIS / "traditional_security_primitives.csv")
     require(len(primitives) == EXPECTED["target_studies"], "traditional-security-primitives extraction must contain 199 rows")
     require({row.get("matrix_id", "") for row in primitives} == {row.get("matrix_id", "") for row in target}, "primitive extraction IDs differ from target matrix")
     allowed = {
@@ -488,7 +494,7 @@ def check_supplementary_extractions(target: list[dict[str, str]]) -> None:
     require(observed <= allowed, f"unknown primitive tag(s): {sorted(observed - allowed)}")
     require(all(row.get("source_location", "").strip() for row in primitives), "primitive extraction missing source location")
 
-    detailed = read_csv(DATA / "traditional_security_primitives_by_use_role.csv")
+    detailed = read_csv(SYNTHESIS / "traditional_security_primitives_by_use_role.csv")
     require(len(detailed) == 503, "study-primitive role extraction must contain 503 rows")
     target_ids = {row.get("matrix_id", "") for row in target}
     require({row.get("matrix_id", "") for row in detailed} <= target_ids, "study-primitive role extraction contains a non-target ID")
@@ -530,9 +536,9 @@ def check_supplementary_extractions(target: list[dict[str, str]]) -> None:
             require(actual == int(row["count"]), f"primitive-output count differs: {family} {row['principal_reported_evidence_output']}")
             require(int(row["primitive_union_denominator"]) == len(family_ids), f"primitive-output denominator differs: {family}")
 
-    refs = read_csv(DATA / "reference_audit.csv")
+    refs = read_csv(CORPUS / "reference_audit.csv")
     require(len(refs) == 402, "reference audit must contain 402 rows")
-    new_refs = read_csv(DATA / "final_multisource_new_study_reference_metadata_20260730.csv")
+    new_refs = read_csv(SEARCH / "final_multisource_new_study_reference_metadata_20260730.csv")
     require(len(new_refs) == 132, "new target-study reference metadata must contain 132 rows")
     require(all(row.get("official_url", "").strip() for row in new_refs), "new reference metadata missing official URL")
     refs_by_id = {row.get("record_id", ""): row for row in refs}
@@ -544,14 +550,14 @@ def check_supplementary_extractions(target: list[dict[str, str]]) -> None:
             f"reference audit differs from generated metadata: {row.get('record_id', '')}",
         )
 
-    cohort_rows = read_csv(DATA / "final_multisource_cohort_stability.csv")
+    cohort_rows = read_csv(SYNTHESIS / "final_multisource_cohort_stability.csv")
     require(len(cohort_rows) >= 32, "cohort-stability audit must contain all derived rows")
     expected_denominators = {"retained_pre_final_67": 67, "new_multisource_132": 132}
     require(
         {row.get("cohort", "") for row in cohort_rows} == set(expected_denominators),
         "cohort-stability audit has unexpected cohorts",
     )
-    pre_final_all = read_csv(DATA / "current_study_level_coding_matrix_harmonized_pre_final_multisource_20260730.csv")
+    pre_final_all = read_csv(CODING / "current_study_level_coding_matrix_harmonized_pre_final_multisource_20260730.csv")
     pre_ids = {
         row.get("matrix_id", "")
         for row in pre_final_all
@@ -592,7 +598,7 @@ def check_supplementary_extractions(target: list[dict[str, str]]) -> None:
 
 
 def check_publication_status(target: list[dict[str, str]]) -> None:
-    rows = read_csv(DATA / "publication_status_standardized.csv")
+    rows = read_csv(CORPUS / "publication_status_standardized.csv")
     target_rows = [row for row in rows if row.get("analytical_role") == "target_software_study"]
     require(len(rows) == 199, "publication-status view must contain 199 target-software records")
     require(len(target_rows) == EXPECTED["target_studies"], "publication-status target denominator must be 199")
@@ -640,7 +646,7 @@ def check_domain_and_reporting_extractions(target: list[dict[str, str]]) -> None
     target_by_id = {row["matrix_id"]: row for row in target}
     target_ids = set(target_by_id)
 
-    domains = read_csv(DATA / "target_domain_extraction.csv")
+    domains = read_csv(SYNTHESIS / "target_domain_extraction.csv")
     require(len(domains) == 199, "target-domain extraction must contain 199 rows")
     require({row["matrix_id"] for row in domains} == target_ids, "target-domain IDs differ from target matrix")
     require(all(row["source_location"].strip() for row in domains), "target-domain extraction missing source location")
@@ -672,7 +678,7 @@ def check_domain_and_reporting_extractions(target: list[dict[str, str]]) -> None
         require(actual == int(row["count"]), f"year-shape count differs: {row['publication_year']} {row['primary_system_shape']}")
         require(len(subset) == int(row["year_denominator"]), f"year denominator differs: {row['publication_year']}")
 
-    artifacts = read_csv(DATA / "public_artifact_availability.csv")
+    artifacts = read_csv(SYNTHESIS / "public_artifact_availability.csv")
     require(len(artifacts) == 199, "public-artifact extraction must contain 199 rows")
     require({row["matrix_id"] for row in artifacts} == target_ids, "public-artifact IDs differ from target matrix")
     artifact_fields = (
@@ -693,7 +699,7 @@ def check_domain_and_reporting_extractions(target: list[dict[str, str]]) -> None
     # A public repository or benchmark input is not, by itself, a public
     # system-generated trigger/replay. The row-level index is the authority
     # for this deliberately narrow Table 10 column.
-    trigger_index = read_csv(DATA / "public_trigger_replay_evidence_index.csv")
+    trigger_index = read_csv(SYNTHESIS / "public_trigger_replay_evidence_index.csv")
     trigger_candidates = {row["matrix_id"] for row in trigger_index}
     require(len(trigger_index) == 14 and len(trigger_candidates) == 14, "trigger/replay index must retain 14 unique reviewed candidates")
     require(trigger_candidates <= target_ids, "trigger/replay index contains a non-matrix study")
@@ -703,7 +709,7 @@ def check_domain_and_reporting_extractions(target: list[dict[str, str]]) -> None
     require(included_triggers == located_triggers == {"C02"}, "strict public trigger/replay index and artifact table differ")
     require(all(row.get("trigger_replay_evidence_scope", "") for row in artifacts), "missing trigger/replay evidence scope")
 
-    membership = read_csv(DATA / "controlled_task_only_membership.csv")
+    membership = read_csv(SYNTHESIS / "controlled_task_only_membership.csv")
     require(len(membership) == 199, "controlled-task membership must contain 199 rows")
     require({row["matrix_id"] for row in membership} == target_ids, "controlled-task membership IDs differ from final matrix")
     domain_by_id = {row["matrix_id"]: row for row in domains}
@@ -749,7 +755,7 @@ def check_domain_and_reporting_extractions(target: list[dict[str, str]]) -> None
     }
     require(actual_sensitivity == computed_sensitivity, "controlled-task sensitivity is not mechanically reproduced from membership and final matrix")
 
-    alignment = read_csv(DATA / "public_alignment_evidence_index.csv")
+    alignment = read_csv(SYNTHESIS / "public_alignment_evidence_index.csv")
     alignment_ids = {row["matrix_id"] for row in alignment}
     matrix_alignment_ids = {row["matrix_id"] for row in target if row["external_traceability"] == "publicly aligned external trace"}
     require(len(alignment) == 4 and alignment_ids == matrix_alignment_ids, "public-alignment index differs from final matrix")
@@ -757,7 +763,7 @@ def check_domain_and_reporting_extractions(target: list[dict[str, str]]) -> None
     required_alignment_fields = ("system_output", "exact_item", "software_and_version", "validation_material", "public_external_record", "attribution", "local_evidence_locator")
     require(all(all(row.get(field, "").strip() for field in required_alignment_fields) for row in alignment), "public-alignment index lacks a structured local evidence chain")
 
-    contamination = read_csv(DATA / "training_data_overlap_control.csv")
+    contamination = read_csv(SYNTHESIS / "training_data_overlap_control.csv")
     require(len(contamination) == 199, "training-overlap extraction must contain 199 rows")
     require({row["matrix_id"] for row in contamination} == target_ids, "training-overlap IDs differ from target matrix")
     require(all(row["source_location"].strip() for row in contamination), "training-overlap extraction missing source location")
@@ -769,10 +775,10 @@ def check_domain_and_reporting_extractions(target: list[dict[str, str]]) -> None
 
 
 def check_second_coder(target: list[dict[str, str]]) -> None:
-    new = read_csv(DATA / "final_multisource_search_20260730_all_coder_comparison.csv")
+    new = read_csv(SEARCH / "final_multisource_search_20260730_all_coder_comparison.csv")
     require(len(new) == 136, "new-search coder comparison must contain 136 reviewed records")
     require(sum(row.get("jointly_included") == "true" for row in new) == 132, "jointly included new studies must equal 132")
-    integrated = read_csv(DATA / "integrated_199_second_coder_comparison_20260730.csv")
+    integrated = read_csv(ADJUDICATION / "integrated_199_second_coder_comparison_20260730.csv")
     require(len(integrated) == EXPECTED["target_studies"], "integrated coder comparison must contain 199 studies")
     require({row.get("record_id", "") for row in integrated} == {row.get("matrix_id", "") for row in target}, "integrated coder IDs differ from target matrix")
 
@@ -802,7 +808,7 @@ def check_second_coder(target: list[dict[str, str]]) -> None:
             micro_f1(pairs),
         )
         require(all(abs(a - e) < 0.0006 for a, e in zip(actual, expected)), f"{field} reliability differs: {actual}")
-    per_label = read_csv(DATA / "integrated_199_per_label_reliability_20260730.csv")
+    per_label = read_csv(ADJUDICATION / "integrated_199_per_label_reliability_20260730.csv")
     require(len(per_label) == 13, "per-label reliability must contain 13 controlled labels")
     for row in per_label:
         field = row["field"]
@@ -822,12 +828,12 @@ def check_second_coder(target: list[dict[str, str]]) -> None:
         require(int(row["second_positive"]) == actual["second_positive"], f"second positive count differs: {field} {label}")
         for metric in ("raw_agreement", "cohen_kappa", "gwet_ac1"):
             require(abs(float(row[metric]) - actual[metric]) < 0.000002, f"{metric} differs: {field} {label}")
-    reporting = read_csv(DATA / "integrated_199_reporting_audit_disagreement_review.csv")
+    reporting = read_csv(ADJUDICATION / "integrated_199_reporting_audit_disagreement_review.csv")
     require(len(reporting) == 82, "reporting/audit disagreement audit must contain 82 rows")
     require(Counter(row["disagreement_direction"] for row in reporting) == Counter({"second_only": 78, "first_only": 4}), "reporting/audit disagreement directions differ")
     require({row["matrix_id"] for row in reporting} <= {row["record_id"] for row in integrated}, "reporting/audit audit contains an unknown study")
     require(all(row["boundary_basis"].strip() for row in reporting), "reporting/audit disagreement missing boundary basis")
-    require(len(read_csv(DATA / "integrated_199_label_substitution_sensitivity_20260730.csv")) > 0, "missing substitution sensitivity")
+    require(len(read_csv(ADJUDICATION / "integrated_199_label_substitution_sensitivity_20260730.csv")) > 0, "missing substitution sensitivity")
     info("complete independent coding comparison, per-label AC1, and disagreement audit verified")
 
 
@@ -837,7 +843,7 @@ def check_private_paths() -> None:
         re.compile(r"/Users/[^/\s]+"),
         re.compile(r"artifact_public_release_candidate/data/"),
     )
-    for path in [ROOT / "README.md", ROOT / "ARTIFACT_INDEX.md", ROOT / "RELEASE_MANIFEST.md", ROOT / "data_dictionary.md"]:
+    for path in [ROOT / "README.md", ROOT / "ARTIFACT_INDEX.md", ROOT / "docs/release/RELEASE_MANIFEST.md", ROOT / "docs/coding/data_dictionary.md"]:
         if not path.exists():
             continue
         text = path.read_text(encoding="utf-8-sig", errors="replace")

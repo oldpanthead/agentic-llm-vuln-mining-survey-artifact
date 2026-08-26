@@ -12,8 +12,11 @@ from pathlib import Path
 from validate_199_adjudication_form import FIELD_RULES, validate
 
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
+CODING = DATA / "coding"
+ADJUDICATION = DATA / "adjudication"
+DERIVED = DATA / "derived"
 
 FIELD_MAP = {
     "lifecycle coverage": {
@@ -96,7 +99,12 @@ def count_labels(matrix: list[dict[str, str]], field: str, column: str) -> tuple
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("adjudication_csv", type=Path)
-    parser.add_argument("--output-dir", type=Path, default=DATA)
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        default=None,
+        help="Optional common output directory. By default, outputs use the repository's coding, adjudication, and derived layers.",
+    )
     parser.add_argument(
         "--allow-unresolved",
         action="store_true",
@@ -111,8 +119,8 @@ def main() -> None:
         raise SystemExit("Adjudication form is invalid:\n" + "\n".join(f"- {error}" for error in errors))
 
     decisions = read_csv(args.adjudication_csv)
-    comparison = read_csv(DATA / "integrated_199_second_coder_comparison_20260730.csv")
-    source_matrix = read_csv(DATA / "current_study_level_coding_matrix_harmonized.csv")
+    comparison = read_csv(ADJUDICATION / "integrated_199_second_coder_comparison_20260730.csv")
+    source_matrix = read_csv(CODING / "current_study_level_coding_matrix_harmonized.csv")
     decisions_by_id = {row["disagreement_id"]: row for row in decisions}
     comparison_by_id = {row["record_id"]: row for row in comparison}
     matrix_by_id: dict[str, dict[str, str]] = {}
@@ -200,10 +208,16 @@ def main() -> None:
             "Resolve them or rerun with --allow-unresolved to produce non-reportable field summaries."
         )
 
-    matrix_path = args.output_dir / "adjudicated_study_level_coding_matrix_199.csv"
-    log_path = args.output_dir / "adjudication_log_199_all_fields.csv"
-    stats_path = args.output_dir / "adjudicated_synthesis_statistics_199.csv"
-    manifest_path = args.output_dir / "adjudication_completion_manifest.json"
+    if args.output_dir is None:
+        matrix_path = CODING / "adjudicated_study_level_coding_matrix_199.csv"
+        log_path = ADJUDICATION / "adjudication_log_199_all_fields.csv"
+        stats_path = DERIVED / "adjudicated_synthesis_statistics_199.csv"
+        manifest_path = ADJUDICATION / "adjudication_completion_manifest.json"
+    else:
+        matrix_path = args.output_dir / "adjudicated_study_level_coding_matrix_199.csv"
+        log_path = args.output_dir / "adjudication_log_199_all_fields.csv"
+        stats_path = args.output_dir / "adjudicated_synthesis_statistics_199.csv"
+        manifest_path = args.output_dir / "adjudication_completion_manifest.json"
     write_csv(matrix_path, final_matrix, list(source_matrix[0]))
     write_csv(log_path, log_rows, list(log_rows[0]))
 
@@ -235,8 +249,8 @@ def main() -> None:
         ["field", "label", "count", "denominator", "share", "unresolved", "reportable_point_estimate"],
     )
     manifest = {
-        "source_comparison": "data/integrated_199_second_coder_comparison_20260730.csv",
-        "source_matrix_preserved": "data/current_study_level_coding_matrix_harmonized.csv",
+        "source_comparison": "data/adjudication/integrated_199_second_coder_comparison_20260730.csv",
+        "source_matrix_preserved": "data/coding/current_study_level_coding_matrix_harmonized.csv",
         "adjudication_form": str(args.adjudication_csv),
         "study_count": len(final_matrix),
         "field_log_rows": len(log_rows),

@@ -29,7 +29,7 @@ Reviewers can use this artifact to inspect corpus construction, coding logic, an
 
 ## Release Export
 
-Build the public directory with `build_public_release.py`. The allowlist-based export excludes local review files even when a user archives the directory outside Git. `.gitignore` remains a source-repository safeguard, not the release boundary.
+Build the public directory with `python scripts/build_public_release.py <new-output-directory>`. The allowlist-based export excludes local review files even when a user archives the directory outside Git. `.gitignore` remains a source-repository safeguard, not the release boundary.
 
 The reproducibility audit follows the exclusions above and also omits Zotero PDFs and private local paths.
 

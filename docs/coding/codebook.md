@@ -127,7 +127,7 @@ Before the initial independent rereview OY had not seen the manuscript, first-ro
 
 LLM-assisted preparation and deterministic scripts were limited to material assembly, task--study--field--PDF cross-checking, SHA-256 calculation, table validation, and count regeneration. They did not replace OY's manual judgments. The integration validator checks task identities, field labels, evidence locators, hashes, and material paths.
 
-Operational definitions control; benchmark ground truth is not external confirmation; author-reported CVE, CNVD, vendor, maintainer, or bounty material is an external clue unless a concrete system result aligns with a concrete public external record; multi-label fields retain only explicitly shown labels; and evidence-insufficient cases are unresolved rather than guessed. Detailed procedure and reporting boundary are in ADJUDICATION_COMPLETION_20260812.md and adjudication/ADJUDICATION_RULES_20260812.md.
+Operational definitions control; benchmark ground truth is not external confirmation; author-reported CVE, CNVD, vendor, maintainer, or bounty material is an external clue unless a concrete system result aligns with a concrete public external record; multi-label fields retain only explicitly shown labels; and evidence-insufficient cases are unresolved rather than guessed. Detailed procedure and reporting boundary are in docs/review/ADJUDICATION_COMPLETION_20260812.md and docs/review/ADJUDICATION_RULES_20260812.md.
 
 ## Boundary Examples
 
