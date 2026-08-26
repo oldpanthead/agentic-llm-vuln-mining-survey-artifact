@@ -21,7 +21,7 @@ The review applied the rules in `adjudication/ADJUDICATION_RULES_20260812.md`: o
 ## Outputs And Reporting Boundary
 
 - `third_party_rereview_oy_20260824.csv` is the raw 460-row OY export.
-- `data/third_party_rereview_decisions_20260824.csv` and `data/third_party_rereview_qc_20260824.csv` preserve the integrated 410 decisions and separate 50 QC rows.
+- `data/third_party_rereview_decisions_20260824.csv` preserves the integrated 410 decisions and the five historical completed-form fields in `prior_form_*` columns; `data/third_party_rereview_qc_20260824.csv` preserves the separate 50 QC rows.
 - `data/adjudicated_study_level_coding_matrix_199.csv` is the sole source for final descriptive distributions.
 - `data/adjudication_log_199_all_fields.csv` preserves the decision path for all 995 controlled study-field assignments.
 - `data/adjudicated_synthesis_statistics_199.csv` provides the final counts and shares.

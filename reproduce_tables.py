@@ -250,6 +250,13 @@ def check_adjudication(target: list[dict[str, str]]) -> None:
     completion = DATA / "adjudication_completion_manifest.json"
 
     require(len(decisions) == 410, "third-party decision export must contain 410 disagreements")
+    historical_fields = (
+        "prior_form_human_final_label", "prior_form_brief_reason",
+        "prior_form_evidence_location_verified", "prior_form_reviewer_initials",
+        "prior_form_review_date",
+    )
+    require(all(field in decisions[0] for field in historical_fields), "decision export is missing merged historical-form fields")
+    require(all(all(row.get(field, "").strip() for field in historical_fields) for row in decisions), "merged historical-form fields contain blanks")
     require(len(qc_rows) == 50, "third-party QC export must contain 50 separate rows")
     require({row.get("case_id", "") for row in material_crosswalk} == {"A104", "A139", "A011", "A137"}, "corrected-material crosswalk cases differ")
     require(all(re.fullmatch(r"[0-9A-F]{64}", row.get("sha256", "")) for row in material_crosswalk), "corrected-material crosswalk contains an invalid SHA-256")

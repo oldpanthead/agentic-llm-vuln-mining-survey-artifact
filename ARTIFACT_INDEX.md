@@ -44,7 +44,8 @@ Expected current counts: 1,785 source records; 1,772 studies after version recon
 - `INTEGRATED_199_SECOND_CODER_AGREEMENT_20260730.md`: report used by the manuscript.
 - `data/final_multisource_search_20260730_all_coder_comparison.csv`: detailed comparison for newly reviewed records.
 - `third_party_rereview_oy_20260824.csv`: raw OY export for 410 disagreement and 50 QC tasks.
-- `data/third_party_rereview_decisions_20260824.csv` and `data/third_party_rereview_qc_20260824.csv`: final decision and separate QC layers; these supersede the earlier completed form.
+- `data/third_party_rereview_decisions_20260824.csv`: consolidated 410-row OY decision layer, including five `prior_form_*` columns that preserve the earlier completed-form values without a duplicate file.
+- `data/third_party_rereview_qc_20260824.csv`: separate 50-row QC layer.
 - `data/adjudication_log_199_all_fields.csv`: final audit log covering 995 study-field assignments.
 - `data/adjudicated_synthesis_statistics_199.csv` and `data/adjudication_completion_manifest.json`: final descriptive statistics and completion metadata.
 - `ADJUDICATION_COMPLETION_20260812.md`: fixed rules and reporting boundary.
