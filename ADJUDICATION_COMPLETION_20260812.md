@@ -31,6 +31,31 @@ Agreement statistics, including raw agreement, Cohen's kappa, and AC1, describe 
 
 The prior author-confirmed harmonized matrix had been carried forward as if it were the final adjudicated layer, which explains the formerly identical primary-coder and final marginal counts. OY's rereview decisions now replace that layer without modifying either coder's raw assignments. None of the 26 substantive label margins across the five rereviewed fields is identical to the corresponding primary-coder margin.
 
+## Integrated Independent-Coder Agreement
+
+The calculation combines the released 67-study review with 132 studies jointly included from the final multi-source search. Both cohorts use the same controlled label vocabulary. This is the independent assignment record before external rereview; final descriptive distributions are reported separately from the adjudicated matrix.
+
+| Cohort | Target-software studies |
+|---|---:|
+| Released study set | 67 |
+| Final multi-source search | 132 |
+| Integrated set | 199 |
+
+| Single-label field | Raw agreement | Cohen's kappa |
+|---|---:|---:|
+| primary shape | 0.884 | 0.843 |
+| principal evidence | 0.759 | 0.665 |
+| external traceability | 0.724 | 0.448 |
+
+| Multi-label field | Row exact | Mean row Jaccard | Micro F1 |
+|---|---:|---:|---:|
+| lifecycle | 0.261 | 0.726 | 0.831 |
+| capability | 0.312 | 0.782 | 0.874 |
+
+Eligibility agreement for the new search is reported separately because the released 67-study set had already passed inclusion before its unified second-coder review. The integrated reliability result therefore covers analytical coding fields only and does not score claim-boundary prose by exact textual agreement.
+
+The underlying files are data/integrated_199_second_coder_comparison_20260730.csv, data/integrated_199_per_label_reliability_20260730.csv, data/integrated_199_label_substitution_sensitivity_20260730.csv, data/third_party_rereview_decisions_20260824.csv, data/adjudication_log_199_all_fields.csv, and data/adjudicated_study_level_coding_matrix_199.csv.
+
 ## Final Key Counts
 
 - Reporting and audit: 43/199.

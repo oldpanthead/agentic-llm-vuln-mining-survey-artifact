@@ -31,7 +31,7 @@ The search used arXiv, OpenAlex, Crossref-backed publisher queries for ACM, IEEE
 
 ### Search, screening, and reconciliation
 
-- `FINAL_MULTISOURCE_SEARCH_PROTOCOL_20260730.md`: unified protocol, date range, query groups, and source-access boundaries.
+- `FINAL_MULTISOURCE_SEARCH_AND_PRISMA_20260730.md`: integrated PRISMA account, source-specific provenance, and unified search protocol.
 - `data/final_multisource_search_20260730_access_log.csv`: query-level access and export log.
 - `data/final_multisource_search_20260730_results.csv`: saved multi-source search occurrences.
 - `data/final_multisource_search_20260730_screening_audit.csv`: deterministic title/abstract triage for the 1,642 unique interface records.
@@ -73,7 +73,7 @@ The search used arXiv, OpenAlex, Crossref-backed publisher queries for ACM, IEEE
 - `data/integrated_199_per_label_reliability_20260730.csv`: lifecycle and capability label-level agreement, including Gwet's AC1.
 - `data/integrated_199_reporting_audit_disagreement_review.csv`: source-linked direction and boundary basis for reporting/audit disagreements.
 - `data/integrated_199_label_substitution_sensitivity_20260730.csv`: complete coder2 substitution counts.
-- `INTEGRATED_199_SECOND_CODER_AGREEMENT_20260730.md`: integrated pre-adjudication reliability summary.
+- Integrated pre-adjudication reliability is included in `ADJUDICATION_COMPLETION_20260812.md`.
 - `third_party_rereview_oy_20260824.csv`: raw 460-row OY rereview export (410 disagreements plus 50 QC rows).
 - `data/third_party_rereview_decisions_20260824.csv` and `data/third_party_rereview_qc_20260824.csv`: integrated disagreement decisions and separately retained QC results.
 - `data/adjudication_log_199_all_fields.csv`, `data/adjudicated_synthesis_statistics_199.csv`, and `data/adjudication_completion_manifest.json`: final external-rereview log, descriptive statistics, and completion manifest. The integrated decision export also carries five `prior_form_*` columns, so the earlier completed-form values are preserved without a second 410-row file.

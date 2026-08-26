@@ -54,7 +54,7 @@ This dictionary covers the current clean public export. Historical build files r
 - `failure reuse / strategy update`
 - `governance / human gates / disclosure control`
 
-Detailed coding boundaries are defined in `unified_second_coder_codebook.md` and `evidence_output_codebook.md`.
+Detailed coding boundaries are defined in `codebook.md`.
 
 ## Search And Screening Files
 

@@ -9,8 +9,7 @@ Expected current counts: 1,785 source records; 1,772 studies after version recon
 
 ## Integrated Search
 
-- `FINAL_MULTISOURCE_SEARCH_PROTOCOL_20260730.md`: protocol and source-access boundaries.
-- `FINAL_MULTISOURCE_SEARCH_AND_PRISMA_20260730.md`: manuscript-facing integrated PRISMA-ScR allocation with source-specific acquisition provenance.
+- `FINAL_MULTISOURCE_SEARCH_AND_PRISMA_20260730.md`: integrated PRISMA-ScR allocation, source-specific acquisition provenance, and the final search protocol.
 - `data/final_multisource_search_20260730_access_log.csv`: query attempts, interfaces, timestamps, status, and raw export paths.
 - `data/final_multisource_search_20260730_results.csv`: 12,090 saved source occurrences.
 - `data/final_multisource_search_20260730_source_counts.csv`: source-interface occurrence totals.
@@ -32,8 +31,7 @@ Expected current counts: 1,785 source records; 1,772 studies after version recon
 - `data/reference_audit.csv`: citation and source-role audit.
 - `data/publication_status_standardized.csv`: study-level publication-status assignments.
 - `data/publication_status_distribution_by_layer.csv`: publication-status-stratified evidence and shape counts.
-- `unified_second_coder_codebook.md`: controlled coding definitions and boundary rules.
-- `evidence_output_codebook.md`: principal evidence-output labels.
+- `codebook.md`: unified lifecycle, capability, system-shape, principal-output, external-traceability, review, and historical-crosswalk rules.
 
 ## Complete Independent Review
 
@@ -41,7 +39,7 @@ Expected current counts: 1,785 source records; 1,772 studies after version recon
 - `data/integrated_199_per_label_reliability_20260730.csv`: lifecycle and capability label-level reliability, including Gwet's AC1.
 - `data/integrated_199_reporting_audit_disagreement_review.csv`: reporting/audit disagreement directions and boundary basis.
 - `data/integrated_199_label_substitution_sensitivity_20260730.csv`: full-label substitution counts.
-- `INTEGRATED_199_SECOND_CODER_AGREEMENT_20260730.md`: report used by the manuscript.
+- Integrated independent-coder agreement is included in `ADJUDICATION_COMPLETION_20260812.md`.
 - `data/final_multisource_search_20260730_all_coder_comparison.csv`: detailed comparison for newly reviewed records.
 - `third_party_rereview_oy_20260824.csv`: raw OY export for 410 disagreement and 50 QC tasks.
 - `data/third_party_rereview_decisions_20260824.csv`: consolidated 410-row OY decision layer, including five `prior_form_*` columns that preserve the earlier completed-form values without a duplicate file.

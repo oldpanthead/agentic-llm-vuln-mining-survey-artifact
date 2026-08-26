@@ -47,6 +47,16 @@ The default public mode has no dependency on a manuscript checkout. It verifies 
 
 Create a clean public directory with `python build_public_release.py <new-output-directory>`. The export is assembled from `public_release_files.txt` and `manuscript_artifact_paths.txt` and is validated after copying.
 
+## Release Gate
+
+- The release cutoff is 2026-07-30 and the synchronized submission tag is `csur-submission-2026-08-final-v10`.
+- `README.md`, `ARTIFACT_INDEX.md`, this manifest, `data_dictionary.md`, and `codebook.md` describe the current release.
+- `manuscript_artifact_paths.txt` lists the manuscript-facing files; all paths must exist and be unique.
+- `reproduce_tables.py` validates the integrated corpus, adjudicated distributions, provenance, and pre-adjudication independent-coder files in standalone mode. Re-run it after staging a clean export.
+- The raw 460-row OY export, 410-row decision layer, separate 50-row QC layer, 995-row decision log, completion manifest, and final matrix are present and validated.
+- Publish only an allowlisted export. Exclude `.git/`, caches, logs, full-text PDFs, private paths, proposed or unresolved working files, credentials, private targets, exploit payloads, sensitive crash inputs, and vendor-private communications.
+- Before release, confirm the repository URL, release date, and author-approved disclosure metadata. `SECURITY_BOUNDARY.md` defines the disclosure boundary.
+
 ## Historical Provenance
 
 The tagged source repository retains earlier search and coding stages, including 31-record, 41-record, and 67-study views. The clean public export excludes those historical build files except for the frozen pre-final matrix used by the current validator.
