@@ -1,0 +1,1755 @@
+{
+  "format": "derived-summary-tables-v1",
+  "generated_from": [
+    "adjudicated_synthesis_statistics_199.csv",
+    "controlled_task_only_sensitivity.csv",
+    "final_multisource_exclusion_summary.csv",
+    "final_multisource_search_20260730_source_counts.csv",
+    "mapping_snapshot_counts.csv",
+    "publication_status_distribution_by_layer.csv",
+    "publication_status_sensitivity_analysis.csv",
+    "principal_output_by_public_artifact_availability.csv",
+    "publication_year_by_primary_shape.csv",
+    "target_domain_by_principal_output.csv",
+    "traditional_security_primitive_use_role_counts.csv",
+    "traditional_security_primitive_by_output.csv",
+    "traditional_security_primitives_not_specified.csv",
+    "training_data_overlap_control_counts.csv"
+  ],
+  "tables": {
+    "adjudicated_synthesis_statistics_199.csv": {
+      "columns": [
+        "field",
+        "label",
+        "count",
+        "denominator",
+        "share",
+        "unresolved",
+        "reportable_point_estimate",
+        "interpretation_scope"
+      ],
+      "rows": [
+        {
+          "field": "lifecycle coverage",
+          "label": "candidate analysis",
+          "count": "153",
+          "denominator": "199",
+          "share": "0.768844",
+          "unresolved": "0",
+          "reportable_point_estimate": "yes",
+          "interpretation_scope": "adjudicated distribution"
+        },
+        {
+          "field": "lifecycle coverage",
+          "label": "path and input exploration",
+          "count": "77",
+          "denominator": "199",
+          "share": "0.386935",
+          "unresolved": "0",
+          "reportable_point_estimate": "yes",
+          "interpretation_scope": "adjudicated distribution"
+        },
+        {
+          "field": "lifecycle coverage",
+          "label": "execution observation",
+          "count": "115",
+          "denominator": "199",
+          "share": "0.577889",
+          "unresolved": "0",
+          "reportable_point_estimate": "yes",
+          "interpretation_scope": "adjudicated distribution"
+        },
+        {
+          "field": "lifecycle coverage",
+          "label": "reproduction and validation",
+          "count": "79",
+          "denominator": "199",
+          "share": "0.396985",
+          "unresolved": "0",
+          "reportable_point_estimate": "yes",
+          "interpretation_scope": "adjudicated distribution"
+        },
+        {
+          "field": "lifecycle coverage",
+          "label": "patch validation",
+          "count": "33",
+          "denominator": "199",
+          "share": "0.165829",
+          "unresolved": "0",
+          "reportable_point_estimate": "yes",
+          "interpretation_scope": "adjudicated distribution"
+        },
+        {
+          "field": "lifecycle coverage",
+          "label": "reporting and audit",
+          "count": "43",
+          "denominator": "199",
+          "share": "0.216080",
+          "unresolved": "0",
+          "reportable_point_estimate": "no",
+          "interpretation_scope": "adjudicated descriptive outcome only"
+        },
+        {
+          "field": "lifecycle coverage",
+          "label": "no qualifying label observed",
+          "count": "10",
+          "denominator": "199",
+          "share": "0.050251",
+          "unresolved": "0",
+          "reportable_point_estimate": "yes",
+          "interpretation_scope": "adjudicated distribution"
+        },
+        {
+          "field": "cross-stage capability",
+          "label": "context aggregation / rule extraction",
+          "count": "97",
+          "denominator": "199",
+          "share": "0.487437",
+          "unresolved": "0",
+          "reportable_point_estimate": "yes",
+          "interpretation_scope": "adjudicated distribution"
+        },
+        {
+          "field": "cross-stage capability",
+          "label": "tool routing / strategy routing",
+          "count": "59",
+          "denominator": "199",
+          "share": "0.296482",
+          "unresolved": "0",
+          "reportable_point_estimate": "yes",
+          "interpretation_scope": "adjudicated distribution"
+        },
+        {
+          "field": "cross-stage capability",
+          "label": "feedback interpretation / loop adjustment",
+          "count": "92",
+          "denominator": "199",
+          "share": "0.462312",
+          "unresolved": "0",
+          "reportable_point_estimate": "yes",
+          "interpretation_scope": "adjudicated distribution"
+        },
+        {
+          "field": "cross-stage capability",
+          "label": "validation organization / evidence packaging",
+          "count": "69",
+          "denominator": "199",
+          "share": "0.346734",
+          "unresolved": "0",
+          "reportable_point_estimate": "yes",
+          "interpretation_scope": "adjudicated distribution"
+        },
+        {
+          "field": "cross-stage capability",
+          "label": "long-horizon state management",
+          "count": "41",
+          "denominator": "199",
+          "share": "0.206030",
+          "unresolved": "0",
+          "reportable_point_estimate": "yes",
+          "interpretation_scope": "adjudicated distribution"
+        },
+        {
+          "field": "cross-stage capability",
+          "label": "failure reuse / strategy update",
+          "count": "27",
+          "denominator": "199",
+          "share": "0.135678",
+          "unresolved": "0",
+          "reportable_point_estimate": "yes",
+          "interpretation_scope": "adjudicated distribution"
+        },
+        {
+          "field": "cross-stage capability",
+          "label": "governance / human gates / disclosure control",
+          "count": "9",
+          "denominator": "199",
+          "share": "0.045226",
+          "unresolved": "0",
+          "reportable_point_estimate": "yes",
+          "interpretation_scope": "adjudicated distribution"
+        },
+        {
+          "field": "cross-stage capability",
+          "label": "no qualifying label observed",
+          "count": "65",
+          "denominator": "199",
+          "share": "0.326633",
+          "unresolved": "0",
+          "reportable_point_estimate": "yes",
+          "interpretation_scope": "adjudicated distribution"
+        },
+        {
+          "field": "primary system shape",
+          "label": "candidate-analysis system",
+          "count": "41",
+          "denominator": "199",
+          "share": "0.206030",
+          "unresolved": "0",
+          "reportable_point_estimate": "yes",
+          "interpretation_scope": "adjudicated distribution"
+        },
+        {
+          "field": "primary system shape",
+          "label": "feedback-driven fuzzing agent",
+          "count": "33",
+          "denominator": "199",
+          "share": "0.165829",
+          "unresolved": "0",
+          "reportable_point_estimate": "yes",
+          "interpretation_scope": "adjudicated distribution"
+        },
+        {
+          "field": "primary system shape",
+          "label": "reproduction-, validation-, and repair-centered agent",
+          "count": "70",
+          "denominator": "199",
+          "share": "0.351759",
+          "unresolved": "0",
+          "reportable_point_estimate": "yes",
+          "interpretation_scope": "adjudicated distribution"
+        },
+        {
+          "field": "primary system shape",
+          "label": "long-horizon pentest and CRS agent",
+          "count": "55",
+          "denominator": "199",
+          "share": "0.276382",
+          "unresolved": "0",
+          "reportable_point_estimate": "yes",
+          "interpretation_scope": "adjudicated distribution"
+        },
+        {
+          "field": "principal reported evidence output",
+          "label": "candidate judgment",
+          "count": "51",
+          "denominator": "199",
+          "share": "0.256281",
+          "unresolved": "0",
+          "reportable_point_estimate": "yes",
+          "interpretation_scope": "adjudicated distribution"
+        },
+        {
+          "field": "principal reported evidence output",
+          "label": "controlled task completion",
+          "count": "56",
+          "denominator": "199",
+          "share": "0.281407",
+          "unresolved": "0",
+          "reportable_point_estimate": "yes",
+          "interpretation_scope": "adjudicated distribution"
+        },
+        {
+          "field": "principal reported evidence output",
+          "label": "runtime safety signal",
+          "count": "19",
+          "denominator": "199",
+          "share": "0.095477",
+          "unresolved": "0",
+          "reportable_point_estimate": "yes",
+          "interpretation_scope": "adjudicated distribution"
+        },
+        {
+          "field": "principal reported evidence output",
+          "label": "reproducible validation",
+          "count": "70",
+          "denominator": "199",
+          "share": "0.351759",
+          "unresolved": "0",
+          "reportable_point_estimate": "yes",
+          "interpretation_scope": "adjudicated distribution"
+        },
+        {
+          "field": "principal reported evidence output",
+          "label": "externally traceable material",
+          "count": "3",
+          "denominator": "199",
+          "share": "0.015075",
+          "unresolved": "0",
+          "reportable_point_estimate": "yes",
+          "interpretation_scope": "adjudicated distribution"
+        },
+        {
+          "field": "external traceability",
+          "label": "no external trace reported",
+          "count": "26",
+          "denominator": "199",
+          "share": "0.130653",
+          "unresolved": "0",
+          "reportable_point_estimate": "yes",
+          "interpretation_scope": "adjudicated distribution"
+        },
+        {
+          "field": "external traceability",
+          "label": "author-reported external clue",
+          "count": "41",
+          "denominator": "199",
+          "share": "0.206030",
+          "unresolved": "0",
+          "reportable_point_estimate": "yes",
+          "interpretation_scope": "adjudicated distribution"
+        },
+        {
+          "field": "external traceability",
+          "label": "benchmark ground truth / public material",
+          "count": "128",
+          "denominator": "199",
+          "share": "0.643216",
+          "unresolved": "0",
+          "reportable_point_estimate": "yes",
+          "interpretation_scope": "adjudicated distribution"
+        },
+        {
+          "field": "external traceability",
+          "label": "publicly aligned external trace",
+          "count": "4",
+          "denominator": "199",
+          "share": "0.020101",
+          "unresolved": "0",
+          "reportable_point_estimate": "yes",
+          "interpretation_scope": "adjudicated distribution"
+        }
+      ]
+    },
+    "controlled_task_only_sensitivity.csv": {
+      "columns": [
+        "scope",
+        "controlled_task_only_excluded",
+        "definition",
+        "measure",
+        "count",
+        "denominator",
+        "share"
+      ],
+      "rows": [
+        {
+          "scope": "all_target_software",
+          "controlled_task_only_excluded": "0",
+          "definition": "principal output is controlled task completion and target domain is cyber range, CTF, or penetration testing; real-OSS CRS workflows with another principal output remain in the denominator",
+          "measure": "author_reported_reproducible_validation",
+          "count": "70",
+          "denominator": "199",
+          "share": "0.351759"
+        },
+        {
+          "scope": "all_target_software",
+          "controlled_task_only_excluded": "0",
+          "definition": "principal output is controlled task completion and target domain is cyber range, CTF, or penetration testing; real-OSS CRS workflows with another principal output remain in the denominator",
+          "measure": "publicly_aligned_external_trace",
+          "count": "4",
+          "denominator": "199",
+          "share": "0.020101"
+        },
+        {
+          "scope": "all_target_software",
+          "controlled_task_only_excluded": "0",
+          "definition": "principal output is controlled task completion and target domain is cyber range, CTF, or penetration testing; real-OSS CRS workflows with another principal output remain in the denominator",
+          "measure": "author_reported_external_clue",
+          "count": "41",
+          "denominator": "199",
+          "share": "0.206030"
+        },
+        {
+          "scope": "excluding_controlled_task_only",
+          "controlled_task_only_excluded": "35",
+          "definition": "principal output is controlled task completion and target domain is cyber range, CTF, or penetration testing; real-OSS CRS workflows with another principal output remain in the denominator",
+          "measure": "author_reported_reproducible_validation",
+          "count": "70",
+          "denominator": "164",
+          "share": "0.426829"
+        },
+        {
+          "scope": "excluding_controlled_task_only",
+          "controlled_task_only_excluded": "35",
+          "definition": "principal output is controlled task completion and target domain is cyber range, CTF, or penetration testing; real-OSS CRS workflows with another principal output remain in the denominator",
+          "measure": "publicly_aligned_external_trace",
+          "count": "4",
+          "denominator": "164",
+          "share": "0.024390"
+        },
+        {
+          "scope": "excluding_controlled_task_only",
+          "controlled_task_only_excluded": "35",
+          "definition": "principal output is controlled task completion and target domain is cyber range, CTF, or penetration testing; real-OSS CRS workflows with another principal output remain in the denominator",
+          "measure": "author_reported_external_clue",
+          "count": "41",
+          "denominator": "164",
+          "share": "0.250000"
+        }
+      ]
+    },
+    "final_multisource_exclusion_summary.csv": {
+      "columns": [
+        "exclusion_group",
+        "count",
+        "screening_basis",
+        "analytical_treatment"
+      ],
+      "rows": [
+        {
+          "exclusion_group": "interface_title_abstract_exclusions",
+          "count": "703",
+          "screening_basis": "Resolved from title and abstract against the operational scope",
+          "analytical_treatment": "Excluded from the analytical corpus"
+        },
+        {
+          "exclusion_group": "interface_full_text_exclusions",
+          "count": "3",
+          "screening_basis": "Assessed at full text and classified as near-neighbor studies",
+          "analytical_treatment": "Excluded from the analytical corpus"
+        },
+        {
+          "exclusion_group": "interface_retrieval_stage_exclusions",
+          "count": "25",
+          "screening_basis": "Resolved at report retrieval from public availability and metadata",
+          "analytical_treatment": "Excluded; includes 16 potentially eligible reports not retrieved and 9 metadata-resolved out-of-scope records"
+        },
+        {
+          "exclusion_group": "supplementary_retained_exclusions",
+          "count": "20",
+          "screening_basis": "Retained exclusion decisions from supplementary identification methods",
+          "analytical_treatment": "Excluded from the analytical corpus"
+        }
+      ]
+    },
+    "final_multisource_search_20260730_source_counts.csv": {
+      "columns": [
+        "source_interface",
+        "exported_occurrences",
+        "occurrences_entering_deduplication",
+        "count_note"
+      ],
+      "rows": [
+        {
+          "source_interface": "acm_crossref",
+          "exported_occurrences": "2000",
+          "occurrences_entering_deduplication": "34",
+          "count_note": "publisher/Crossref export subject to the recorded per-query cap and title-level security-task filter"
+        },
+        {
+          "source_interface": "arxiv",
+          "exported_occurrences": "1673",
+          "occurrences_entering_deduplication": "1673",
+          "count_note": "source-query boundary; all exported occurrences entered deduplication"
+        },
+        {
+          "source_interface": "crossref",
+          "exported_occurrences": "2000",
+          "occurrences_entering_deduplication": "84",
+          "count_note": "publisher/Crossref export subject to the recorded per-query cap and title-level security-task filter"
+        },
+        {
+          "source_interface": "elsevier_crossref",
+          "exported_occurrences": "2000",
+          "occurrences_entering_deduplication": "14",
+          "count_note": "publisher/Crossref export subject to the recorded per-query cap and title-level security-task filter"
+        },
+        {
+          "source_interface": "ieee_crossref",
+          "exported_occurrences": "2000",
+          "occurrences_entering_deduplication": "53",
+          "count_note": "publisher/Crossref export subject to the recorded per-query cap and title-level security-task filter"
+        },
+        {
+          "source_interface": "openalex",
+          "exported_occurrences": "417",
+          "occurrences_entering_deduplication": "417",
+          "count_note": "source-query boundary; all exported occurrences entered deduplication"
+        },
+        {
+          "source_interface": "springer_crossref",
+          "exported_occurrences": "2000",
+          "occurrences_entering_deduplication": "14",
+          "count_note": "publisher/Crossref export subject to the recorded per-query cap and title-level security-task filter"
+        }
+      ]
+    },
+    "mapping_snapshot_counts.csv": {
+      "columns": [
+        "view",
+        "category",
+        "count",
+        "denominator",
+        "scope_note"
+      ],
+      "rows": [
+        {
+          "view": "year_distribution",
+          "category": "2023",
+          "count": "80",
+          "denominator": "1785 integrated source records",
+          "scope_note": "source-record composition; versions remain represented"
+        },
+        {
+          "view": "year_distribution",
+          "category": "2024",
+          "count": "301",
+          "denominator": "1785 integrated source records",
+          "scope_note": "source-record composition; versions remain represented"
+        },
+        {
+          "view": "year_distribution",
+          "category": "2025",
+          "count": "725",
+          "denominator": "1785 integrated source records",
+          "scope_note": "source-record composition; versions remain represented"
+        },
+        {
+          "view": "year_distribution",
+          "category": "2026",
+          "count": "679",
+          "denominator": "1785 integrated source records",
+          "scope_note": "source-record composition; versions remain represented"
+        },
+        {
+          "view": "source_type_distribution",
+          "category": "book/thesis/report/other",
+          "count": "89",
+          "denominator": "1785 integrated source records",
+          "scope_note": "source-record composition; categories describe retained metadata form"
+        },
+        {
+          "view": "source_type_distribution",
+          "category": "conference paper",
+          "count": "82",
+          "denominator": "1785 integrated source records",
+          "scope_note": "source-record composition; categories describe retained metadata form"
+        },
+        {
+          "view": "source_type_distribution",
+          "category": "formal DOI/source record",
+          "count": "297",
+          "denominator": "1785 integrated source records",
+          "scope_note": "source-record composition; categories describe retained metadata form"
+        },
+        {
+          "view": "source_type_distribution",
+          "category": "journal article",
+          "count": "59",
+          "denominator": "1785 integrated source records",
+          "scope_note": "source-record composition; categories describe retained metadata form"
+        },
+        {
+          "view": "source_type_distribution",
+          "category": "preprint/arXiv",
+          "count": "1258",
+          "denominator": "1785 integrated source records",
+          "scope_note": "source-record composition; categories describe retained metadata form"
+        },
+        {
+          "view": "primary_system_shape",
+          "category": "candidate analysis",
+          "count": "46",
+          "denominator": "199 target-software studies",
+          "scope_note": "one primary shape per target-software study; capabilities remain multi-label"
+        },
+        {
+          "view": "primary_system_shape",
+          "category": "feedback-driven fuzzing",
+          "count": "34",
+          "denominator": "199 target-software studies",
+          "scope_note": "one primary shape per target-software study; capabilities remain multi-label"
+        },
+        {
+          "view": "primary_system_shape",
+          "category": "reproduction/validation/repair",
+          "count": "62",
+          "denominator": "199 target-software studies",
+          "scope_note": "one primary shape per target-software study; capabilities remain multi-label"
+        },
+        {
+          "view": "primary_system_shape",
+          "category": "long-horizon pentest/CRS",
+          "count": "57",
+          "denominator": "199 target-software studies",
+          "scope_note": "one primary shape per target-software study; capabilities remain multi-label"
+        },
+        {
+          "view": "final_canonical_stratification",
+          "category": "target-software study-level coded studies",
+          "count": "199",
+          "denominator": "1772 canonical studies",
+          "scope_note": "analysis-use allocation after version reconciliation"
+        },
+        {
+          "view": "final_canonical_stratification",
+          "category": "extended synthesis studies",
+          "count": "154",
+          "denominator": "1772 canonical studies",
+          "scope_note": "analysis-use allocation after version reconciliation"
+        },
+        {
+          "view": "final_canonical_stratification",
+          "category": "background/reference studies",
+          "count": "668",
+          "denominator": "1772 canonical studies",
+          "scope_note": "analysis-use allocation after version reconciliation"
+        },
+        {
+          "view": "final_canonical_stratification",
+          "category": "excluded studies",
+          "count": "751",
+          "denominator": "1772 canonical studies",
+          "scope_note": "analysis-use allocation after version reconciliation"
+        }
+      ]
+    },
+    "publication_status_distribution_by_layer.csv": {
+      "columns": [
+        "publication_status_standardized",
+        "target_software_studies",
+        "evidence_candidate judgment",
+        "evidence_controlled task completion",
+        "evidence_runtime safety signal",
+        "evidence_reproducible validation",
+        "evidence_externally traceable material",
+        "shape_candidate-analysis system",
+        "shape_feedback-driven fuzzing agent",
+        "shape_reproduction-, validation-, and repair-centered agent",
+        "shape_long-horizon pentest and CRS agent",
+        "failure_reuse_or_strategy_update",
+        "governance_or_human_gates"
+      ],
+      "rows": [
+        {
+          "publication_status_standardized": "benchmark/system report",
+          "target_software_studies": "3",
+          "evidence_candidate judgment": "0",
+          "evidence_controlled task completion": "2",
+          "evidence_runtime safety signal": "0",
+          "evidence_reproducible validation": "1",
+          "evidence_externally traceable material": "0",
+          "shape_candidate-analysis system": "0",
+          "shape_feedback-driven fuzzing agent": "0",
+          "shape_reproduction-, validation-, and repair-centered agent": "1",
+          "shape_long-horizon pentest and CRS agent": "2",
+          "failure_reuse_or_strategy_update": "0",
+          "governance_or_human_gates": "0"
+        },
+        {
+          "publication_status_standardized": "conference",
+          "target_software_studies": "18",
+          "evidence_candidate judgment": "2",
+          "evidence_controlled task completion": "5",
+          "evidence_runtime safety signal": "3",
+          "evidence_reproducible validation": "7",
+          "evidence_externally traceable material": "1",
+          "shape_candidate-analysis system": "2",
+          "shape_feedback-driven fuzzing agent": "5",
+          "shape_reproduction-, validation-, and repair-centered agent": "7",
+          "shape_long-horizon pentest and CRS agent": "4",
+          "failure_reuse_or_strategy_update": "9",
+          "governance_or_human_gates": "1"
+        },
+        {
+          "publication_status_standardized": "journal",
+          "target_software_studies": "13",
+          "evidence_candidate judgment": "3",
+          "evidence_controlled task completion": "1",
+          "evidence_runtime safety signal": "3",
+          "evidence_reproducible validation": "6",
+          "evidence_externally traceable material": "0",
+          "shape_candidate-analysis system": "3",
+          "shape_feedback-driven fuzzing agent": "4",
+          "shape_reproduction-, validation-, and repair-centered agent": "6",
+          "shape_long-horizon pentest and CRS agent": "0",
+          "failure_reuse_or_strategy_update": "5",
+          "governance_or_human_gates": "0"
+        },
+        {
+          "publication_status_standardized": "preprint",
+          "target_software_studies": "164",
+          "evidence_candidate judgment": "29",
+          "evidence_controlled task completion": "46",
+          "evidence_runtime safety signal": "15",
+          "evidence_reproducible validation": "69",
+          "evidence_externally traceable material": "5",
+          "shape_candidate-analysis system": "41",
+          "shape_feedback-driven fuzzing agent": "25",
+          "shape_reproduction-, validation-, and repair-centered agent": "48",
+          "shape_long-horizon pentest and CRS agent": "50",
+          "failure_reuse_or_strategy_update": "79",
+          "governance_or_human_gates": "17"
+        },
+        {
+          "publication_status_standardized": "report/other",
+          "target_software_studies": "1",
+          "evidence_candidate judgment": "0",
+          "evidence_controlled task completion": "1",
+          "evidence_runtime safety signal": "0",
+          "evidence_reproducible validation": "0",
+          "evidence_externally traceable material": "0",
+          "shape_candidate-analysis system": "0",
+          "shape_feedback-driven fuzzing agent": "0",
+          "shape_reproduction-, validation-, and repair-centered agent": "0",
+          "shape_long-horizon pentest and CRS agent": "1",
+          "failure_reuse_or_strategy_update": "1",
+          "governance_or_human_gates": "0"
+        }
+      ]
+    },
+    "publication_status_sensitivity_analysis.csv": {
+      "columns": [
+        "scope",
+        "publication_status_group",
+        "dimension",
+        "label",
+        "count",
+        "denominator",
+        "share"
+      ],
+      "rows": [
+        {
+          "scope": "199_target_software_studies",
+          "publication_status_group": "all_target_software",
+          "dimension": "primary_system_shape",
+          "label": "candidate-analysis system",
+          "count": "41",
+          "denominator": "199",
+          "share": "0.206030"
+        },
+        {
+          "scope": "199_target_software_studies",
+          "publication_status_group": "all_target_software",
+          "dimension": "primary_system_shape",
+          "label": "feedback-driven fuzzing agent",
+          "count": "33",
+          "denominator": "199",
+          "share": "0.165829"
+        },
+        {
+          "scope": "199_target_software_studies",
+          "publication_status_group": "all_target_software",
+          "dimension": "primary_system_shape",
+          "label": "long-horizon pentest and CRS agent",
+          "count": "55",
+          "denominator": "199",
+          "share": "0.276382"
+        },
+        {
+          "scope": "199_target_software_studies",
+          "publication_status_group": "all_target_software",
+          "dimension": "primary_system_shape",
+          "label": "reproduction-, validation-, and repair-centered agent",
+          "count": "70",
+          "denominator": "199",
+          "share": "0.351759"
+        },
+        {
+          "scope": "199_target_software_studies",
+          "publication_status_group": "all_target_software",
+          "dimension": "principal_reported_evidence_output",
+          "label": "candidate judgment",
+          "count": "51",
+          "denominator": "199",
+          "share": "0.256281"
+        },
+        {
+          "scope": "199_target_software_studies",
+          "publication_status_group": "all_target_software",
+          "dimension": "principal_reported_evidence_output",
+          "label": "controlled task completion",
+          "count": "56",
+          "denominator": "199",
+          "share": "0.281407"
+        },
+        {
+          "scope": "199_target_software_studies",
+          "publication_status_group": "all_target_software",
+          "dimension": "principal_reported_evidence_output",
+          "label": "externally traceable material",
+          "count": "3",
+          "denominator": "199",
+          "share": "0.015075"
+        },
+        {
+          "scope": "199_target_software_studies",
+          "publication_status_group": "all_target_software",
+          "dimension": "principal_reported_evidence_output",
+          "label": "reproducible validation",
+          "count": "70",
+          "denominator": "199",
+          "share": "0.351759"
+        },
+        {
+          "scope": "199_target_software_studies",
+          "publication_status_group": "all_target_software",
+          "dimension": "principal_reported_evidence_output",
+          "label": "runtime safety signal",
+          "count": "19",
+          "denominator": "199",
+          "share": "0.095477"
+        },
+        {
+          "scope": "199_target_software_studies",
+          "publication_status_group": "conference_or_journal",
+          "dimension": "primary_system_shape",
+          "label": "candidate-analysis system",
+          "count": "6",
+          "denominator": "31",
+          "share": "0.193548"
+        },
+        {
+          "scope": "199_target_software_studies",
+          "publication_status_group": "conference_or_journal",
+          "dimension": "primary_system_shape",
+          "label": "feedback-driven fuzzing agent",
+          "count": "9",
+          "denominator": "31",
+          "share": "0.290323"
+        },
+        {
+          "scope": "199_target_software_studies",
+          "publication_status_group": "conference_or_journal",
+          "dimension": "primary_system_shape",
+          "label": "long-horizon pentest and CRS agent",
+          "count": "5",
+          "denominator": "31",
+          "share": "0.161290"
+        },
+        {
+          "scope": "199_target_software_studies",
+          "publication_status_group": "conference_or_journal",
+          "dimension": "primary_system_shape",
+          "label": "reproduction-, validation-, and repair-centered agent",
+          "count": "11",
+          "denominator": "31",
+          "share": "0.354839"
+        },
+        {
+          "scope": "199_target_software_studies",
+          "publication_status_group": "conference_or_journal",
+          "dimension": "principal_reported_evidence_output",
+          "label": "candidate judgment",
+          "count": "7",
+          "denominator": "31",
+          "share": "0.225806"
+        },
+        {
+          "scope": "199_target_software_studies",
+          "publication_status_group": "conference_or_journal",
+          "dimension": "principal_reported_evidence_output",
+          "label": "controlled task completion",
+          "count": "8",
+          "denominator": "31",
+          "share": "0.258065"
+        },
+        {
+          "scope": "199_target_software_studies",
+          "publication_status_group": "conference_or_journal",
+          "dimension": "principal_reported_evidence_output",
+          "label": "reproducible validation",
+          "count": "10",
+          "denominator": "31",
+          "share": "0.322581"
+        },
+        {
+          "scope": "199_target_software_studies",
+          "publication_status_group": "conference_or_journal",
+          "dimension": "principal_reported_evidence_output",
+          "label": "runtime safety signal",
+          "count": "6",
+          "denominator": "31",
+          "share": "0.193548"
+        },
+        {
+          "scope": "199_target_software_studies",
+          "publication_status_group": "preprint",
+          "dimension": "primary_system_shape",
+          "label": "candidate-analysis system",
+          "count": "35",
+          "denominator": "164",
+          "share": "0.213415"
+        },
+        {
+          "scope": "199_target_software_studies",
+          "publication_status_group": "preprint",
+          "dimension": "primary_system_shape",
+          "label": "feedback-driven fuzzing agent",
+          "count": "24",
+          "denominator": "164",
+          "share": "0.146341"
+        },
+        {
+          "scope": "199_target_software_studies",
+          "publication_status_group": "preprint",
+          "dimension": "primary_system_shape",
+          "label": "long-horizon pentest and CRS agent",
+          "count": "47",
+          "denominator": "164",
+          "share": "0.286585"
+        },
+        {
+          "scope": "199_target_software_studies",
+          "publication_status_group": "preprint",
+          "dimension": "primary_system_shape",
+          "label": "reproduction-, validation-, and repair-centered agent",
+          "count": "58",
+          "denominator": "164",
+          "share": "0.353659"
+        },
+        {
+          "scope": "199_target_software_studies",
+          "publication_status_group": "preprint",
+          "dimension": "principal_reported_evidence_output",
+          "label": "candidate judgment",
+          "count": "43",
+          "denominator": "164",
+          "share": "0.262195"
+        },
+        {
+          "scope": "199_target_software_studies",
+          "publication_status_group": "preprint",
+          "dimension": "principal_reported_evidence_output",
+          "label": "controlled task completion",
+          "count": "46",
+          "denominator": "164",
+          "share": "0.280488"
+        },
+        {
+          "scope": "199_target_software_studies",
+          "publication_status_group": "preprint",
+          "dimension": "principal_reported_evidence_output",
+          "label": "externally traceable material",
+          "count": "3",
+          "denominator": "164",
+          "share": "0.018293"
+        },
+        {
+          "scope": "199_target_software_studies",
+          "publication_status_group": "preprint",
+          "dimension": "principal_reported_evidence_output",
+          "label": "reproducible validation",
+          "count": "59",
+          "denominator": "164",
+          "share": "0.359756"
+        },
+        {
+          "scope": "199_target_software_studies",
+          "publication_status_group": "preprint",
+          "dimension": "principal_reported_evidence_output",
+          "label": "runtime safety signal",
+          "count": "13",
+          "denominator": "164",
+          "share": "0.079268"
+        },
+        {
+          "scope": "199_target_software_studies",
+          "publication_status_group": "benchmark_report_or_other",
+          "dimension": "primary_system_shape",
+          "label": "long-horizon pentest and CRS agent",
+          "count": "3",
+          "denominator": "4",
+          "share": "0.750000"
+        },
+        {
+          "scope": "199_target_software_studies",
+          "publication_status_group": "benchmark_report_or_other",
+          "dimension": "primary_system_shape",
+          "label": "reproduction-, validation-, and repair-centered agent",
+          "count": "1",
+          "denominator": "4",
+          "share": "0.250000"
+        },
+        {
+          "scope": "199_target_software_studies",
+          "publication_status_group": "benchmark_report_or_other",
+          "dimension": "principal_reported_evidence_output",
+          "label": "candidate judgment",
+          "count": "1",
+          "denominator": "4",
+          "share": "0.250000"
+        },
+        {
+          "scope": "199_target_software_studies",
+          "publication_status_group": "benchmark_report_or_other",
+          "dimension": "principal_reported_evidence_output",
+          "label": "controlled task completion",
+          "count": "2",
+          "denominator": "4",
+          "share": "0.500000"
+        },
+        {
+          "scope": "199_target_software_studies",
+          "publication_status_group": "benchmark_report_or_other",
+          "dimension": "principal_reported_evidence_output",
+          "label": "reproducible validation",
+          "count": "1",
+          "denominator": "4",
+          "share": "0.250000"
+        }
+      ]
+    },
+    "principal_output_by_public_artifact_availability.csv": {
+      "columns": [
+        "principal_reported_evidence_output",
+        "studies",
+        "public_implementation_located",
+        "environment_or_build_instructions",
+        "trigger_replay_poc_pov_artifact",
+        "execution_trace_or_log",
+        "patch_artifact"
+      ],
+      "rows": [
+        {
+          "principal_reported_evidence_output": "candidate judgment",
+          "studies": "51",
+          "public_implementation_located": "14",
+          "environment_or_build_instructions": "0",
+          "trigger_replay_poc_pov_artifact": "0",
+          "execution_trace_or_log": "1",
+          "patch_artifact": "1"
+        },
+        {
+          "principal_reported_evidence_output": "controlled task completion",
+          "studies": "56",
+          "public_implementation_located": "9",
+          "environment_or_build_instructions": "1",
+          "trigger_replay_poc_pov_artifact": "0",
+          "execution_trace_or_log": "1",
+          "patch_artifact": "1"
+        },
+        {
+          "principal_reported_evidence_output": "externally traceable material",
+          "studies": "3",
+          "public_implementation_located": "1",
+          "environment_or_build_instructions": "1",
+          "trigger_replay_poc_pov_artifact": "0",
+          "execution_trace_or_log": "0",
+          "patch_artifact": "0"
+        },
+        {
+          "principal_reported_evidence_output": "reproducible validation",
+          "studies": "70",
+          "public_implementation_located": "20",
+          "environment_or_build_instructions": "3",
+          "trigger_replay_poc_pov_artifact": "1",
+          "execution_trace_or_log": "3",
+          "patch_artifact": "3"
+        },
+        {
+          "principal_reported_evidence_output": "runtime safety signal",
+          "studies": "19",
+          "public_implementation_located": "6",
+          "environment_or_build_instructions": "0",
+          "trigger_replay_poc_pov_artifact": "0",
+          "execution_trace_or_log": "1",
+          "patch_artifact": "0"
+        }
+      ]
+    },
+    "publication_year_by_primary_shape.csv": {
+      "columns": [
+        "publication_year",
+        "primary_system_shape",
+        "count",
+        "year_denominator",
+        "interpretation_note"
+      ],
+      "rows": [
+        {
+          "publication_year": "2023",
+          "primary_system_shape": "candidate-analysis system",
+          "count": "1",
+          "year_denominator": "2",
+          "interpretation_note": "Descriptive count; 2026 is an incomplete publication year."
+        },
+        {
+          "publication_year": "2023",
+          "primary_system_shape": "feedback-driven fuzzing agent",
+          "count": "0",
+          "year_denominator": "2",
+          "interpretation_note": "Descriptive count; 2026 is an incomplete publication year."
+        },
+        {
+          "publication_year": "2023",
+          "primary_system_shape": "reproduction-, validation-, and repair-centered agent",
+          "count": "1",
+          "year_denominator": "2",
+          "interpretation_note": "Descriptive count; 2026 is an incomplete publication year."
+        },
+        {
+          "publication_year": "2023",
+          "primary_system_shape": "long-horizon pentest and CRS agent",
+          "count": "0",
+          "year_denominator": "2",
+          "interpretation_note": "Descriptive count; 2026 is an incomplete publication year."
+        },
+        {
+          "publication_year": "2024",
+          "primary_system_shape": "candidate-analysis system",
+          "count": "1",
+          "year_denominator": "13",
+          "interpretation_note": "Descriptive count; 2026 is an incomplete publication year."
+        },
+        {
+          "publication_year": "2024",
+          "primary_system_shape": "feedback-driven fuzzing agent",
+          "count": "1",
+          "year_denominator": "13",
+          "interpretation_note": "Descriptive count; 2026 is an incomplete publication year."
+        },
+        {
+          "publication_year": "2024",
+          "primary_system_shape": "reproduction-, validation-, and repair-centered agent",
+          "count": "7",
+          "year_denominator": "13",
+          "interpretation_note": "Descriptive count; 2026 is an incomplete publication year."
+        },
+        {
+          "publication_year": "2024",
+          "primary_system_shape": "long-horizon pentest and CRS agent",
+          "count": "4",
+          "year_denominator": "13",
+          "interpretation_note": "Descriptive count; 2026 is an incomplete publication year."
+        },
+        {
+          "publication_year": "2025",
+          "primary_system_shape": "candidate-analysis system",
+          "count": "18",
+          "year_denominator": "84",
+          "interpretation_note": "Descriptive count; 2026 is an incomplete publication year."
+        },
+        {
+          "publication_year": "2025",
+          "primary_system_shape": "feedback-driven fuzzing agent",
+          "count": "11",
+          "year_denominator": "84",
+          "interpretation_note": "Descriptive count; 2026 is an incomplete publication year."
+        },
+        {
+          "publication_year": "2025",
+          "primary_system_shape": "reproduction-, validation-, and repair-centered agent",
+          "count": "29",
+          "year_denominator": "84",
+          "interpretation_note": "Descriptive count; 2026 is an incomplete publication year."
+        },
+        {
+          "publication_year": "2025",
+          "primary_system_shape": "long-horizon pentest and CRS agent",
+          "count": "26",
+          "year_denominator": "84",
+          "interpretation_note": "Descriptive count; 2026 is an incomplete publication year."
+        },
+        {
+          "publication_year": "2026",
+          "primary_system_shape": "candidate-analysis system",
+          "count": "21",
+          "year_denominator": "100",
+          "interpretation_note": "Descriptive count; 2026 is an incomplete publication year."
+        },
+        {
+          "publication_year": "2026",
+          "primary_system_shape": "feedback-driven fuzzing agent",
+          "count": "21",
+          "year_denominator": "100",
+          "interpretation_note": "Descriptive count; 2026 is an incomplete publication year."
+        },
+        {
+          "publication_year": "2026",
+          "primary_system_shape": "reproduction-, validation-, and repair-centered agent",
+          "count": "33",
+          "year_denominator": "100",
+          "interpretation_note": "Descriptive count; 2026 is an incomplete publication year."
+        },
+        {
+          "publication_year": "2026",
+          "primary_system_shape": "long-horizon pentest and CRS agent",
+          "count": "25",
+          "year_denominator": "100",
+          "interpretation_note": "Descriptive count; 2026 is an incomplete publication year."
+        }
+      ]
+    },
+    "target_domain_by_principal_output.csv": {
+      "columns": [
+        "target_domain",
+        "principal_reported_evidence_output",
+        "count",
+        "domain_denominator"
+      ],
+      "rows": [
+        {
+          "target_domain": "cyber range, CTF, or penetration testing",
+          "principal_reported_evidence_output": "candidate judgment",
+          "count": "0",
+          "domain_denominator": "36"
+        },
+        {
+          "target_domain": "cyber range, CTF, or penetration testing",
+          "principal_reported_evidence_output": "controlled task completion",
+          "count": "35",
+          "domain_denominator": "36"
+        },
+        {
+          "target_domain": "cyber range, CTF, or penetration testing",
+          "principal_reported_evidence_output": "runtime safety signal",
+          "count": "0",
+          "domain_denominator": "36"
+        },
+        {
+          "target_domain": "cyber range, CTF, or penetration testing",
+          "principal_reported_evidence_output": "reproducible validation",
+          "count": "1",
+          "domain_denominator": "36"
+        },
+        {
+          "target_domain": "cyber range, CTF, or penetration testing",
+          "principal_reported_evidence_output": "externally traceable material",
+          "count": "0",
+          "domain_denominator": "36"
+        },
+        {
+          "target_domain": "firmware, embedded, IoT, or OT",
+          "principal_reported_evidence_output": "candidate judgment",
+          "count": "4",
+          "domain_denominator": "11"
+        },
+        {
+          "target_domain": "firmware, embedded, IoT, or OT",
+          "principal_reported_evidence_output": "controlled task completion",
+          "count": "2",
+          "domain_denominator": "11"
+        },
+        {
+          "target_domain": "firmware, embedded, IoT, or OT",
+          "principal_reported_evidence_output": "runtime safety signal",
+          "count": "2",
+          "domain_denominator": "11"
+        },
+        {
+          "target_domain": "firmware, embedded, IoT, or OT",
+          "principal_reported_evidence_output": "reproducible validation",
+          "count": "3",
+          "domain_denominator": "11"
+        },
+        {
+          "target_domain": "firmware, embedded, IoT, or OT",
+          "principal_reported_evidence_output": "externally traceable material",
+          "count": "0",
+          "domain_denominator": "11"
+        },
+        {
+          "target_domain": "mixed or general software targets",
+          "principal_reported_evidence_output": "candidate judgment",
+          "count": "4",
+          "domain_denominator": "29"
+        },
+        {
+          "target_domain": "mixed or general software targets",
+          "principal_reported_evidence_output": "controlled task completion",
+          "count": "5",
+          "domain_denominator": "29"
+        },
+        {
+          "target_domain": "mixed or general software targets",
+          "principal_reported_evidence_output": "runtime safety signal",
+          "count": "4",
+          "domain_denominator": "29"
+        },
+        {
+          "target_domain": "mixed or general software targets",
+          "principal_reported_evidence_output": "reproducible validation",
+          "count": "15",
+          "domain_denominator": "29"
+        },
+        {
+          "target_domain": "mixed or general software targets",
+          "principal_reported_evidence_output": "externally traceable material",
+          "count": "1",
+          "domain_denominator": "29"
+        },
+        {
+          "target_domain": "native binary, compiler, or operating system",
+          "principal_reported_evidence_output": "candidate judgment",
+          "count": "4",
+          "domain_denominator": "20"
+        },
+        {
+          "target_domain": "native binary, compiler, or operating system",
+          "principal_reported_evidence_output": "controlled task completion",
+          "count": "3",
+          "domain_denominator": "20"
+        },
+        {
+          "target_domain": "native binary, compiler, or operating system",
+          "principal_reported_evidence_output": "runtime safety signal",
+          "count": "2",
+          "domain_denominator": "20"
+        },
+        {
+          "target_domain": "native binary, compiler, or operating system",
+          "principal_reported_evidence_output": "reproducible validation",
+          "count": "10",
+          "domain_denominator": "20"
+        },
+        {
+          "target_domain": "native binary, compiler, or operating system",
+          "principal_reported_evidence_output": "externally traceable material",
+          "count": "1",
+          "domain_denominator": "20"
+        },
+        {
+          "target_domain": "protocol and networked service",
+          "principal_reported_evidence_output": "candidate judgment",
+          "count": "2",
+          "domain_denominator": "7"
+        },
+        {
+          "target_domain": "protocol and networked service",
+          "principal_reported_evidence_output": "controlled task completion",
+          "count": "0",
+          "domain_denominator": "7"
+        },
+        {
+          "target_domain": "protocol and networked service",
+          "principal_reported_evidence_output": "runtime safety signal",
+          "count": "1",
+          "domain_denominator": "7"
+        },
+        {
+          "target_domain": "protocol and networked service",
+          "principal_reported_evidence_output": "reproducible validation",
+          "count": "4",
+          "domain_denominator": "7"
+        },
+        {
+          "target_domain": "protocol and networked service",
+          "principal_reported_evidence_output": "externally traceable material",
+          "count": "0",
+          "domain_denominator": "7"
+        },
+        {
+          "target_domain": "repository, package, or source code",
+          "principal_reported_evidence_output": "candidate judgment",
+          "count": "21",
+          "domain_denominator": "53"
+        },
+        {
+          "target_domain": "repository, package, or source code",
+          "principal_reported_evidence_output": "controlled task completion",
+          "count": "7",
+          "domain_denominator": "53"
+        },
+        {
+          "target_domain": "repository, package, or source code",
+          "principal_reported_evidence_output": "runtime safety signal",
+          "count": "4",
+          "domain_denominator": "53"
+        },
+        {
+          "target_domain": "repository, package, or source code",
+          "principal_reported_evidence_output": "reproducible validation",
+          "count": "20",
+          "domain_denominator": "53"
+        },
+        {
+          "target_domain": "repository, package, or source code",
+          "principal_reported_evidence_output": "externally traceable material",
+          "count": "1",
+          "domain_denominator": "53"
+        },
+        {
+          "target_domain": "smart contract and blockchain",
+          "principal_reported_evidence_output": "candidate judgment",
+          "count": "10",
+          "domain_denominator": "22"
+        },
+        {
+          "target_domain": "smart contract and blockchain",
+          "principal_reported_evidence_output": "controlled task completion",
+          "count": "2",
+          "domain_denominator": "22"
+        },
+        {
+          "target_domain": "smart contract and blockchain",
+          "principal_reported_evidence_output": "runtime safety signal",
+          "count": "4",
+          "domain_denominator": "22"
+        },
+        {
+          "target_domain": "smart contract and blockchain",
+          "principal_reported_evidence_output": "reproducible validation",
+          "count": "6",
+          "domain_denominator": "22"
+        },
+        {
+          "target_domain": "smart contract and blockchain",
+          "principal_reported_evidence_output": "externally traceable material",
+          "count": "0",
+          "domain_denominator": "22"
+        },
+        {
+          "target_domain": "web application, API, or database",
+          "principal_reported_evidence_output": "candidate judgment",
+          "count": "6",
+          "domain_denominator": "21"
+        },
+        {
+          "target_domain": "web application, API, or database",
+          "principal_reported_evidence_output": "controlled task completion",
+          "count": "2",
+          "domain_denominator": "21"
+        },
+        {
+          "target_domain": "web application, API, or database",
+          "principal_reported_evidence_output": "runtime safety signal",
+          "count": "2",
+          "domain_denominator": "21"
+        },
+        {
+          "target_domain": "web application, API, or database",
+          "principal_reported_evidence_output": "reproducible validation",
+          "count": "11",
+          "domain_denominator": "21"
+        },
+        {
+          "target_domain": "web application, API, or database",
+          "principal_reported_evidence_output": "externally traceable material",
+          "count": "0",
+          "domain_denominator": "21"
+        }
+      ]
+    },
+    "traditional_security_primitive_use_role_counts.csv": {
+      "columns": [
+        "primitive_family",
+        "workflow_active_studies",
+        "evaluation_support_studies",
+        "both_roles",
+        "union_studies",
+        "denominator"
+      ],
+      "rows": [
+        {
+          "primitive_family": "static_taint_specification",
+          "workflow_active_studies": "94",
+          "evaluation_support_studies": "40",
+          "both_roles": "31",
+          "union_studies": "103",
+          "denominator": "199"
+        },
+        {
+          "primitive_family": "fuzzing_input_harness",
+          "workflow_active_studies": "59",
+          "evaluation_support_studies": "31",
+          "both_roles": "22",
+          "union_studies": "68",
+          "denominator": "199"
+        },
+        {
+          "primitive_family": "symbolic_constraint",
+          "workflow_active_studies": "58",
+          "evaluation_support_studies": "14",
+          "both_roles": "10",
+          "union_studies": "62",
+          "denominator": "199"
+        },
+        {
+          "primitive_family": "runtime_oracle",
+          "workflow_active_studies": "89",
+          "evaluation_support_studies": "62",
+          "both_roles": "40",
+          "union_studies": "111",
+          "denominator": "199"
+        },
+        {
+          "primitive_family": "replay_poc_pov",
+          "workflow_active_studies": "58",
+          "evaluation_support_studies": "47",
+          "both_roles": "30",
+          "union_studies": "75",
+          "denominator": "199"
+        },
+        {
+          "primitive_family": "patch_build_test",
+          "workflow_active_studies": "29",
+          "evaluation_support_studies": "17",
+          "both_roles": "11",
+          "union_studies": "35",
+          "denominator": "199"
+        },
+        {
+          "primitive_family": "recon_scan_pentest",
+          "workflow_active_studies": "44",
+          "evaluation_support_studies": "21",
+          "both_roles": "16",
+          "union_studies": "49",
+          "denominator": "199"
+        }
+      ]
+    },
+    "traditional_security_primitive_by_output.csv": {
+      "columns": [
+        "primitive_family",
+        "principal_reported_evidence_output",
+        "count",
+        "primitive_union_denominator"
+      ],
+      "rows": [
+        {
+          "primitive_family": "fuzzing_input_harness",
+          "principal_reported_evidence_output": "candidate judgment",
+          "count": "11",
+          "primitive_union_denominator": "68"
+        },
+        {
+          "primitive_family": "fuzzing_input_harness",
+          "principal_reported_evidence_output": "controlled task completion",
+          "count": "14",
+          "primitive_union_denominator": "68"
+        },
+        {
+          "primitive_family": "fuzzing_input_harness",
+          "principal_reported_evidence_output": "runtime safety signal",
+          "count": "16",
+          "primitive_union_denominator": "68"
+        },
+        {
+          "primitive_family": "fuzzing_input_harness",
+          "principal_reported_evidence_output": "reproducible validation",
+          "count": "25",
+          "primitive_union_denominator": "68"
+        },
+        {
+          "primitive_family": "fuzzing_input_harness",
+          "principal_reported_evidence_output": "externally traceable material",
+          "count": "2",
+          "primitive_union_denominator": "68"
+        },
+        {
+          "primitive_family": "patch_build_test",
+          "principal_reported_evidence_output": "candidate judgment",
+          "count": "3",
+          "primitive_union_denominator": "35"
+        },
+        {
+          "primitive_family": "patch_build_test",
+          "principal_reported_evidence_output": "controlled task completion",
+          "count": "5",
+          "primitive_union_denominator": "35"
+        },
+        {
+          "primitive_family": "patch_build_test",
+          "principal_reported_evidence_output": "runtime safety signal",
+          "count": "3",
+          "primitive_union_denominator": "35"
+        },
+        {
+          "primitive_family": "patch_build_test",
+          "principal_reported_evidence_output": "reproducible validation",
+          "count": "23",
+          "primitive_union_denominator": "35"
+        },
+        {
+          "primitive_family": "patch_build_test",
+          "principal_reported_evidence_output": "externally traceable material",
+          "count": "1",
+          "primitive_union_denominator": "35"
+        },
+        {
+          "primitive_family": "recon_scan_pentest",
+          "principal_reported_evidence_output": "candidate judgment",
+          "count": "4",
+          "primitive_union_denominator": "49"
+        },
+        {
+          "primitive_family": "recon_scan_pentest",
+          "principal_reported_evidence_output": "controlled task completion",
+          "count": "42",
+          "primitive_union_denominator": "49"
+        },
+        {
+          "primitive_family": "recon_scan_pentest",
+          "principal_reported_evidence_output": "runtime safety signal",
+          "count": "0",
+          "primitive_union_denominator": "49"
+        },
+        {
+          "primitive_family": "recon_scan_pentest",
+          "principal_reported_evidence_output": "reproducible validation",
+          "count": "3",
+          "primitive_union_denominator": "49"
+        },
+        {
+          "primitive_family": "recon_scan_pentest",
+          "principal_reported_evidence_output": "externally traceable material",
+          "count": "0",
+          "primitive_union_denominator": "49"
+        },
+        {
+          "primitive_family": "replay_poc_pov",
+          "principal_reported_evidence_output": "candidate judgment",
+          "count": "8",
+          "primitive_union_denominator": "75"
+        },
+        {
+          "primitive_family": "replay_poc_pov",
+          "principal_reported_evidence_output": "controlled task completion",
+          "count": "16",
+          "primitive_union_denominator": "75"
+        },
+        {
+          "primitive_family": "replay_poc_pov",
+          "principal_reported_evidence_output": "runtime safety signal",
+          "count": "4",
+          "primitive_union_denominator": "75"
+        },
+        {
+          "primitive_family": "replay_poc_pov",
+          "principal_reported_evidence_output": "reproducible validation",
+          "count": "46",
+          "primitive_union_denominator": "75"
+        },
+        {
+          "primitive_family": "replay_poc_pov",
+          "principal_reported_evidence_output": "externally traceable material",
+          "count": "1",
+          "primitive_union_denominator": "75"
+        },
+        {
+          "primitive_family": "runtime_oracle",
+          "principal_reported_evidence_output": "candidate judgment",
+          "count": "17",
+          "primitive_union_denominator": "111"
+        },
+        {
+          "primitive_family": "runtime_oracle",
+          "principal_reported_evidence_output": "controlled task completion",
+          "count": "23",
+          "primitive_union_denominator": "111"
+        },
+        {
+          "primitive_family": "runtime_oracle",
+          "principal_reported_evidence_output": "runtime safety signal",
+          "count": "18",
+          "primitive_union_denominator": "111"
+        },
+        {
+          "primitive_family": "runtime_oracle",
+          "principal_reported_evidence_output": "reproducible validation",
+          "count": "51",
+          "primitive_union_denominator": "111"
+        },
+        {
+          "primitive_family": "runtime_oracle",
+          "principal_reported_evidence_output": "externally traceable material",
+          "count": "2",
+          "primitive_union_denominator": "111"
+        },
+        {
+          "primitive_family": "static_taint_specification",
+          "principal_reported_evidence_output": "candidate judgment",
+          "count": "42",
+          "primitive_union_denominator": "103"
+        },
+        {
+          "primitive_family": "static_taint_specification",
+          "principal_reported_evidence_output": "controlled task completion",
+          "count": "8",
+          "primitive_union_denominator": "103"
+        },
+        {
+          "primitive_family": "static_taint_specification",
+          "principal_reported_evidence_output": "runtime safety signal",
+          "count": "8",
+          "primitive_union_denominator": "103"
+        },
+        {
+          "primitive_family": "static_taint_specification",
+          "principal_reported_evidence_output": "reproducible validation",
+          "count": "43",
+          "primitive_union_denominator": "103"
+        },
+        {
+          "primitive_family": "static_taint_specification",
+          "principal_reported_evidence_output": "externally traceable material",
+          "count": "2",
+          "primitive_union_denominator": "103"
+        },
+        {
+          "primitive_family": "symbolic_constraint",
+          "principal_reported_evidence_output": "candidate judgment",
+          "count": "23",
+          "primitive_union_denominator": "62"
+        },
+        {
+          "primitive_family": "symbolic_constraint",
+          "principal_reported_evidence_output": "controlled task completion",
+          "count": "5",
+          "primitive_union_denominator": "62"
+        },
+        {
+          "primitive_family": "symbolic_constraint",
+          "principal_reported_evidence_output": "runtime safety signal",
+          "count": "6",
+          "primitive_union_denominator": "62"
+        },
+        {
+          "primitive_family": "symbolic_constraint",
+          "principal_reported_evidence_output": "reproducible validation",
+          "count": "28",
+          "primitive_union_denominator": "62"
+        },
+        {
+          "primitive_family": "symbolic_constraint",
+          "principal_reported_evidence_output": "externally traceable material",
+          "count": "0",
+          "primitive_union_denominator": "62"
+        }
+      ]
+    },
+    "traditional_security_primitives_not_specified.csv": {
+      "columns": [
+        "matrix_id",
+        "system",
+        "source_location",
+        "audit_note"
+      ],
+      "rows": [
+        {
+          "matrix_id": "FMS0533",
+          "system": "Detecting Vulnerability-Inducing Commits via Multi-Stage Reasoning with LLM-Base",
+          "source_location": "Public full text, extracted pages ; https://arxiv.org/abs/2607.05772",
+          "audit_note": "No member of the seven controlled primitive families was explicitly located in the reviewed material."
+        },
+        {
+          "matrix_id": "FMS1041",
+          "system": "Okara",
+          "source_location": "Public full text, extracted pages ; https://arxiv.org/abs/2601.22770",
+          "audit_note": "No member of the seven controlled primitive families was explicitly located in the reviewed material."
+        },
+        {
+          "matrix_id": "FMS1640",
+          "system": "ZeroDayBench",
+          "source_location": "Public full text, extracted pages ; https://arxiv.org/abs/2603.02297",
+          "audit_note": "No member of the seven controlled primitive families was explicitly located in the reviewed material."
+        }
+      ]
+    },
+    "training_data_overlap_control_counts.csv": {
+      "columns": [
+        "status",
+        "count",
+        "denominator"
+      ],
+      "rows": [
+        {
+          "status": "explicit control",
+          "count": "6",
+          "denominator": "199"
+        },
+        {
+          "status": "discussion only",
+          "count": "2",
+          "denominator": "199"
+        },
+        {
+          "status": "not located",
+          "count": "191",
+          "denominator": "199"
+        }
+      ]
+    }
+  }
+}

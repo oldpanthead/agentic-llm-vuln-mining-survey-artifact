@@ -1,4 +1,0 @@
-matrix_id,system,source_location,audit_note
-FMS0533,Detecting Vulnerability-Inducing Commits via Multi-Stage Reasoning with LLM-Base,"Public full text, extracted pages ; https://arxiv.org/abs/2607.05772",No member of the seven controlled primitive families was explicitly located in the reviewed material.
-FMS1041,Okara,"Public full text, extracted pages ; https://arxiv.org/abs/2601.22770",No member of the seven controlled primitive families was explicitly located in the reviewed material.
-FMS1640,ZeroDayBench,"Public full text, extracted pages ; https://arxiv.org/abs/2603.02297",No member of the seven controlled primitive families was explicitly located in the reviewed material.

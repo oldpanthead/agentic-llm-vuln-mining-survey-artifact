@@ -12,11 +12,10 @@ Expected current counts: 1,785 source records; 1,772 studies after version recon
 - `FINAL_MULTISOURCE_SEARCH_AND_PRISMA_20260730.md`: integrated PRISMA-ScR allocation, source-specific acquisition provenance, and the final search protocol.
 - `data/final_multisource_search_20260730_access_log.csv`: query attempts, interfaces, timestamps, status, and raw export paths.
 - `data/final_multisource_search_20260730_results.csv`: 12,090 saved source occurrences.
-- `data/final_multisource_search_20260730_source_counts.csv`: source-interface occurrence totals.
+- `data/derived_summary_tables.json`: consolidated derived summaries, including source-interface and exclusion counts.
 - `data/final_multisource_search_20260730_screening_audit.csv`: deterministic triage for 1,642 unique interface records.
 - `data/final_multisource_search_20260730_fulltext_assessment.csv`: retrieval and assessment evidence from the eligibility workflow.
 - `data/final_multisource_search_20260730_complete_screening.csv`: frozen final screening and analytical-allocation audit for all 1,642 records.
-- `data/final_multisource_exclusion_summary.csv`: stage-level closure of the 751 excluded studies.
 - `data/final_multisource_search_20260730_prisma_counts.csv`: integrated flow counts and source-specific provenance regenerated from frozen audit files.
 - `data/final_multisource_search_20260730_dedup_resolutions.csv`: same-study/version resolutions.
 
@@ -30,7 +29,7 @@ Expected current counts: 1,785 source records; 1,772 studies after version recon
 - `data/extended_synthesis_audit.csv`: 154-study thematic-use audit: 92 records with detailed public material for substantive synthesis and 62 records supporting contextual coverage mapping, including cross-cutting governance context.
 - `data/reference_audit.csv`: citation and source-role audit.
 - `data/publication_status_standardized.csv`: study-level publication-status assignments.
-- `data/publication_status_distribution_by_layer.csv`: publication-status-stratified evidence and shape counts.
+- `data/derived_summary_tables.json`: publication-status distributions and sensitivity tables.
 - `codebook.md`: unified lifecycle, capability, system-shape, principal-output, external-traceability, review, and historical-crosswalk rules.
 
 ## Complete Independent Review
@@ -45,19 +44,18 @@ Expected current counts: 1,785 source records; 1,772 studies after version recon
 - `data/third_party_rereview_decisions_20260824.csv`: consolidated 410-row OY decision layer, including five `prior_form_*` columns that preserve the earlier completed-form values without a duplicate file.
 - `data/third_party_rereview_qc_20260824.csv`: separate 50-row QC layer.
 - `data/adjudication_log_199_all_fields.csv`: final audit log covering 995 study-field assignments.
-- `data/adjudicated_synthesis_statistics_199.csv` and `data/adjudication_completion_manifest.json`: final descriptive statistics and completion metadata.
+- `data/derived_summary_tables.json` and `data/adjudication_completion_manifest.json`: final descriptive statistics and completion metadata.
 - `ADJUDICATION_COMPLETION_20260812.md`: fixed rules and reporting boundary.
 
 ## Supplementary Extractions
 
 - `data/traditional_security_primitives.csv`: 199-study RQ1 extraction with source locations.
-- `data/traditional_security_primitives_by_use_role.csv`, `data/traditional_security_primitive_use_role_counts.csv`, and `data/traditional_security_primitive_by_output.csv`: workflow-active/evaluation role split and output co-occurrence.
-- `data/target_domain_extraction.csv`, `data/target_domain_by_principal_output.csv`, and `data/publication_year_by_primary_shape.csv`: target-domain and year cross-tabs used in the study-level figure.
-- `data/public_artifact_availability.csv` and `data/principal_output_by_public_artifact_availability.csv`: located public artifact indicators by output.
-- `data/training_data_overlap_control.csv` and `data/training_data_overlap_control_counts.csv`: training-overlap control reporting audit.
-- `data/mapping_snapshot_counts.csv`: source-record composition and current study-level distribution snapshot referenced by the manuscript.
-- `data/publication_status_sensitivity_analysis.csv`: publication-status robustness counts for the 199-study set.
-- `data/controlled_task_only_membership.csv` and `data/controlled_task_only_sensitivity.csv`: the 199 row-level inclusion decisions and mechanically derived 199-versus-164 denominator sensitivity.
+- `data/traditional_security_primitives_by_use_role.csv`: row-level workflow-active/evaluation-support assignments; derived role counts and output co-occurrence are in `data/derived_summary_tables.json`.
+- `data/target_domain_extraction.csv`: source-located target-domain extraction; domain-output and year-shape cross-tabs are in `data/derived_summary_tables.json`.
+- `data/public_artifact_availability.csv`: row-level located public-artifact indicators; output summaries are in `data/derived_summary_tables.json`.
+- `data/training_data_overlap_control.csv`: row-level training-overlap control reporting audit; counts are in `data/derived_summary_tables.json`.
+- Mapping snapshots and publication-status sensitivity counts are in `data/derived_summary_tables.json`.
+- `data/controlled_task_only_membership.csv`: the 199 row-level inclusion decisions; the mechanically derived 199-versus-164 sensitivity is in `data/derived_summary_tables.json`.
 - `data/public_alignment_evidence_index.csv`: item-level local evidence chains for all four publicly aligned external-trace cases, including QRS.
 - `data/final_multisource_cohort_stability.csv`: provenance-only comparison of historical acquisition groups under the final schema.
 - `data/representative_system_mechanisms.csv`: representative mechanism cases.
@@ -71,7 +69,7 @@ Expected current counts: 1,785 source records; 1,772 studies after version recon
 - `SECURITY_BOUNDARY.md`: excluded sensitive material.
 - `RELEASE_MANIFEST.md`: release scope and validation status.
 - `data_dictionary.md`: field definitions and historical/current status.
-- `FINAL_HARMONIZATION_AND_ARTIFACT_CLOSURE_REPORT.md`: current closure record.
+- Closure record is included in `RELEASE_MANIFEST.md`.
 
 ## Historical Files
 

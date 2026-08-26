@@ -24,7 +24,7 @@ The review applied the rules in `adjudication/ADJUDICATION_RULES_20260812.md`: o
 - `data/third_party_rereview_decisions_20260824.csv` preserves the integrated 410 decisions and the five historical completed-form fields in `prior_form_*` columns; `data/third_party_rereview_qc_20260824.csv` preserves the separate 50 QC rows.
 - `data/adjudicated_study_level_coding_matrix_199.csv` is the sole source for final descriptive distributions.
 - `data/adjudication_log_199_all_fields.csv` preserves the decision path for all 995 controlled study-field assignments.
-- `data/adjudicated_synthesis_statistics_199.csv` provides the final counts and shares.
+- `data/derived_summary_tables.json` contains the final counts and shares under the original table name `adjudicated_synthesis_statistics_199.csv`.
 - `data/current_study_level_coding_matrix_harmonized.csv` and `data/integrated_199_second_coder_comparison_20260730.csv` remain preserved pre-adjudication sources.
 
 Agreement statistics, including raw agreement, Cohen's kappa, and AC1, describe the independent assignments before adjudication. The adjudicated matrix is not a new reliability test.

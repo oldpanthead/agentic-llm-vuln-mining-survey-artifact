@@ -1,8 +1,0 @@
-source_interface,exported_occurrences,occurrences_entering_deduplication,count_note
-acm_crossref,2000,34,publisher/Crossref export subject to the recorded per-query cap and title-level security-task filter
-arxiv,1673,1673,source-query boundary; all exported occurrences entered deduplication
-crossref,2000,84,publisher/Crossref export subject to the recorded per-query cap and title-level security-task filter
-elsevier_crossref,2000,14,publisher/Crossref export subject to the recorded per-query cap and title-level security-task filter
-ieee_crossref,2000,53,publisher/Crossref export subject to the recorded per-query cap and title-level security-task filter
-openalex,417,417,source-query boundary; all exported occurrences entered deduplication
-springer_crossref,2000,14,publisher/Crossref export subject to the recorded per-query cap and title-level security-task filter

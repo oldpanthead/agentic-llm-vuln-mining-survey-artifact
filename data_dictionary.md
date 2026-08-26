@@ -62,10 +62,9 @@ Detailed coding boundaries are defined in `codebook.md`.
 |---|---|---|
 | `data/final_multisource_search_20260730_access_log.csv` | Query attempt | Source/interface, query, timestamp, status, raw-file identifier, and returned count. |
 | `data/final_multisource_search_20260730_results.csv` | Saved source occurrence | Query provenance plus title, authors, abstract, venue, DOI, arXiv ID, URL, and record type. |
-| `data/final_multisource_search_20260730_source_counts.csv` | Source interface | Exported occurrence and deduplication-entry counts. |
+| `data/derived_summary_tables.json` | Derived table bundle | Machine-readable derived summaries listed below, retained with original table names, columns, and rows. |
 | `data/final_multisource_search_20260730_screening_audit.csv` | Deduplicated discovery record | Title/abstract triage, existing-record match, full-text status, final layer, canonical study, and notes. |
 | `data/final_multisource_search_20260730_complete_screening.csv` | Frozen screened record | Screening stage, final analytical layer, decision basis, counting status, and coder provenance. |
-| `data/final_multisource_exclusion_summary.csv` | Exclusion group | Stage-level exclusion count and analytical treatment. |
 | `data/final_multisource_search_20260730_fulltext_assessment.csv` | Report sought | Access, assessment, version, author decision, and confirmation status. |
 | `data/final_multisource_search_20260730_prisma_counts.csv` | Flow metric | Manuscript-facing integrated flow and source-specific provenance counts. |
 | `data/final_multisource_search_20260730_dedup_resolutions.csv` | Candidate record pair | Match basis, title similarity, audit decision, and provenance. |
@@ -91,25 +90,15 @@ Legacy `Core`, `Supporting`, `Background`, and `Excluded` values remain in `corp
 | File | Unit | Purpose and key fields |
 |---|---|---|
 | `data/publication_status_standardized.csv` | Target-software study | Standardized publication status with output, shape, capabilities, and traceability. |
-| `data/publication_status_distribution_by_layer.csv` | Publication-status group | Study, output, shape, failure-reuse, and governance counts. |
-| `data/publication_status_sensitivity_analysis.csv` | Status-by-label row | Count, denominator, and share by scope and controlled dimension. |
 | `data/traditional_security_primitives.csv` | Target-software study | Controlled primitive tags, named tools, source location, and extraction note. |
 | `data/traditional_security_primitives_by_use_role.csv` | Study--primitive pair | Workflow-active/evaluation-support role and assignment basis. |
-| `data/traditional_security_primitive_use_role_counts.csv` | Primitive family | Non-exclusive role counts and 199-study denominator. |
-| `data/traditional_security_primitive_by_output.csv` | Primitive--output pair | Co-occurrence count and primitive-family denominator. |
-| `data/traditional_security_primitives_not_specified.csv` | Target-software study | Closure rows where no controlled primitive family was located. |
 | `data/target_domain_extraction.csv` | Target-software study | Source-located target domain, shape, output, year, and extraction basis. |
-| `data/target_domain_by_principal_output.csv` | Domain--output pair | Count and domain denominator. |
-| `data/publication_year_by_primary_shape.csv` | Year--shape pair | Count, year denominator, and interpretation note. |
 | `data/public_artifact_availability.csv` | Target-software study | Located implementation, build, strict system-generated public trigger/replay, trace, and patch indicators. A repository or benchmark input is not itself a trigger/replay artifact. |
 | `data/public_trigger_replay_evidence_index.csv` | Reviewed trigger/replay candidate | The 14 initially located candidates, their inclusion decision, local PDF locator, and reason. Only an item recorded as included enters Table 10's trigger/replay column. |
-| `data/principal_output_by_public_artifact_availability.csv` | Output group | Public-artifact indicator counts by principal output. |
-| `data/controlled_task_only_sensitivity.csv` | Scope-by-measure row | Recomputed comparison of all 199 studies with the 35 controlled-task-only cyber-range/CTF/pentest studies excluded. |
 | `data/controlled_task_only_membership.csv` | Target-software study | Reproducible 199-row membership decision, reason, and source-located domain basis for the 35-study denominator sensitivity cohort. |
 | `data/public_alignment_evidence_index.csv` | Public-alignment case | Local evidence chain for all four publicly aligned external-trace cases, including QRS. |
 | `data/training_data_overlap_control.csv` | Target-software study | Reporting status, source location, evidence note, and audit scope. |
-| `data/training_data_overlap_control_counts.csv` | Reporting status | Count and 199-study denominator. |
-| `data/mapping_snapshot_counts.csv` | Descriptive category | Source-record composition and current study-level distributions with explicit denominators and scope notes. |
+| `data/derived_summary_tables.json` | Derived table bundle | Includes source counts, exclusion summary, adjudicated statistics, publication-status distributions and sensitivity, primitive role/output tables, unspecified-primitive closure rows, domain/output and year/shape cross-tabs, artifact summaries, controlled-task sensitivity, training-overlap counts, and mapping snapshots. |
 | `data/final_multisource_cohort_stability.csv` | Cohort-by-label row | Provenance-only count and share across historical acquisition groups. |
 | `data/representative_system_mechanisms.csv` | Representative system | Model, runtime, state/feedback, workflow endpoint, source location, and note. |
 | `data/mechanism_cost_ablation_synthesis.csv` | Reported observation | Cost, ablation, or recovery observation with original unit/comparison and source location. |
@@ -130,7 +119,6 @@ Legacy `Core`, `Supporting`, `Background`, and `Excluded` values remain in `corp
 | `data/third_party_rereview_qc_20260824.csv` | QC task | Fifty rule-application checks with the same task/material identity fields, retained separately from final decisions and reliability statistics. |
 | `data/third_party_rereview_material_crosswalk_20260824.csv` | Corrected case material | Identity correction and SHA-256 record for A104, A139, A011, and A137. |
 | `data/adjudication_log_199_all_fields.csv` | Study-field assignment | Full adjudication audit log for all 995 controlled study-field assignments. |
-| `data/adjudicated_synthesis_statistics_199.csv` | Controlled label | Final count, denominator, share, unresolved status, and reportability from the adjudicated matrix. |
 | `data/adjudication_completion_manifest.json` | Adjudication run | Inputs, outputs, disagreement count, unresolved count, and field reportability. |
 
 Final descriptive distributions use the adjudicated matrix. Independent assignments and substitution results remain separate as pre-adjudication reliability and sensitivity records; the adjudicated matrix is not a new reliability test.

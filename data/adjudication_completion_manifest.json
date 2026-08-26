@@ -35,7 +35,7 @@
   "outputs": [
     "data\\adjudicated_study_level_coding_matrix_199.csv",
     "data\\adjudication_log_199_all_fields.csv",
-    "data\\adjudicated_synthesis_statistics_199.csv"
+    "data\\derived_summary_tables.json"
   ],
   "third_party_rereview": {
     "reviewer_initials": "OY",
@@ -57,7 +57,7 @@
     "qc_export": "data/third_party_rereview_qc_20260824.csv",
     "cnvd_post_check_task": "R2-159",
     "cnvd_final_label": "author-reported external clue",
-    "final_statistics": "data/adjudicated_synthesis_statistics_199.csv",
+    "final_statistics": "data/derived_summary_tables.json#adjudicated_synthesis_statistics_199.csv",
     "task_material_validation": {
       "status": "passed",
       "task_count": 460,
@@ -87,11 +87,11 @@
     "unique_matrix_ids": 199,
     "freeze_recorded_utc": "2026-08-24T10:30:49Z",
     "derived_views": [
-      "data/adjudicated_synthesis_statistics_199.csv",
+      "data/derived_summary_tables.json#adjudicated_synthesis_statistics_199.csv",
       "data/public_artifact_availability.csv",
-      "data/principal_output_by_public_artifact_availability.csv",
+      "data/public_artifact_availability.csv",
       "data/controlled_task_only_membership.csv",
-      "data/controlled_task_only_sensitivity.csv",
+      "data/derived_summary_tables.json#controlled_task_only_sensitivity.csv",
       "data/public_alignment_evidence_index.csv",
       "data/public_trigger_replay_evidence_index.csv"
     ]

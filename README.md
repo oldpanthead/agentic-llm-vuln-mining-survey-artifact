@@ -37,14 +37,12 @@ The search used arXiv, OpenAlex, Crossref-backed publisher queries for ACM, IEEE
 - `data/final_multisource_search_20260730_screening_audit.csv`: deterministic title/abstract triage for the 1,642 unique interface records.
 - `data/final_multisource_search_20260730_fulltext_assessment.csv`: retrieval and assessment evidence retained from the eligibility workflow.
 - `data/final_multisource_search_20260730_complete_screening.csv`: frozen final screening stage, analytical allocation, and decision basis for all 1,642 records.
-- `data/final_multisource_exclusion_summary.csv`: high-level account of the 751 exclusions by screening stage and basis.
+- `data/derived_summary_tables.json`: consolidated machine-readable derived summaries, including exclusion, publication-status, primitive, domain, artifact, sensitivity, mapping, and adjudicated-statistics tables.
 - `data/final_multisource_search_20260730_prisma_counts.csv`: manuscript-facing integrated PRISMA-ScR allocation plus source-specific acquisition provenance.
-- `data/final_multisource_search_20260730_source_counts.csv`: source-interface occurrence counts.
 - `data/final_multisource_search_20260730_dedup_resolutions.csv`: same-study/version decisions.
 - `data/corpus.csv`: integrated 1,785-source-record ledger.
 - `data/study_version_crosswalk.csv`: 1,785 source records mapped to 1,772 studies.
 - `data/publication_status_standardized.csv`: study-level publication-status assignments.
-- `data/publication_status_distribution_by_layer.csv`: publication-status-stratified evidence and shape counts used in the manuscript.
 
 ### Study-level and extended synthesis
 
@@ -52,14 +50,11 @@ The search used arXiv, OpenAlex, Crossref-backed publisher queries for ACM, IEEE
 - `data/current_study_level_coding_matrix_harmonized.csv`: preserved primary author matrix retained for pre-adjudication provenance.
 - `data/extended_synthesis_audit.csv`: record-level audit for 154 adjacent records, comprising 92 records with detailed public material for substantive synthesis and 62 records supporting contextual coverage mapping; AgentFuzz supplies cross-cutting governance context.
 - `data/traditional_security_primitives.csv`: source-located, multi-label author extraction for the 199 target-software studies.
-- `data/traditional_security_primitives_by_use_role.csv` and `data/traditional_security_primitive_use_role_counts.csv`: study--primitive rows and counts separated into workflow-active and evaluation/support use.
-- `data/traditional_security_primitive_by_output.csv`: primitive-family by principal-output co-occurrence counts.
-- `data/target_domain_extraction.csv`, `data/target_domain_by_principal_output.csv`, and `data/publication_year_by_primary_shape.csv`: source-located target-domain and descriptive year cross-tabs.
-- `data/public_artifact_availability.csv`, `data/public_trigger_replay_evidence_index.csv`, and `data/principal_output_by_public_artifact_availability.csv`: public artifact indicators. The trigger/replay column is restricted to public, system-generated, item-level material; repositories and benchmark inputs alone are excluded. No independent artifact execution is claimed.
-- `data/controlled_task_only_membership.csv` and `data/controlled_task_only_sensitivity.csv`: all 199 row-level denominator decisions and the mechanically derived 199-versus-164 sensitivity results.
+- `data/traditional_security_primitives_by_use_role.csv`, `data/target_domain_extraction.csv`, and `data/public_artifact_availability.csv`: source-located row-level extractions. Their derived cross-tabs and counts are in `data/derived_summary_tables.json`.
+- `data/public_trigger_replay_evidence_index.csv`: reviewed trigger/replay candidates. The strict column is restricted to public, system-generated, item-level material; repositories and benchmark inputs alone are excluded. No independent artifact execution is claimed.
+- `data/controlled_task_only_membership.csv`: all 199 row-level denominator decisions; the derived 199-versus-164 sensitivity table is in `data/derived_summary_tables.json`.
 - `data/public_alignment_evidence_index.csv`: the local evidence chains for all four publicly aligned external-trace cases, including QRS.
-- `data/training_data_overlap_control.csv` and `data/training_data_overlap_control_counts.csv`: source-located reporting status for explicit training-overlap controls, discussion only, or no statement located.
-- `data/publication_status_sensitivity_analysis.csv`: 199-study shape and output distributions by publication-status group.
+- `data/training_data_overlap_control.csv`: source-located reporting status; its counts are in `data/derived_summary_tables.json`.
 - `data/final_multisource_cohort_stability.csv`: provenance-only comparison of historical acquisition groups under the final schema; it does not define manuscript cohorts or denominators.
 - `data/representative_system_mechanisms.csv`: source-located mechanism extraction used by the representative system comparison.
 - `data/mechanism_cost_ablation_synthesis.csv`: source-located cost, ablation, and failure-recovery observations.
@@ -76,7 +71,7 @@ The search used arXiv, OpenAlex, Crossref-backed publisher queries for ACM, IEEE
 - Integrated pre-adjudication reliability is included in `ADJUDICATION_COMPLETION_20260812.md`.
 - `third_party_rereview_oy_20260824.csv`: raw 460-row OY rereview export (410 disagreements plus 50 QC rows).
 - `data/third_party_rereview_decisions_20260824.csv` and `data/third_party_rereview_qc_20260824.csv`: integrated disagreement decisions and separately retained QC results.
-- `data/adjudication_log_199_all_fields.csv`, `data/adjudicated_synthesis_statistics_199.csv`, and `data/adjudication_completion_manifest.json`: final external-rereview log, descriptive statistics, and completion manifest. The integrated decision export also carries five `prior_form_*` columns, so the earlier completed-form values are preserved without a second 410-row file.
+- `data/adjudication_log_199_all_fields.csv`, `data/adjudication_completion_manifest.json`, and `data/derived_summary_tables.json`: final external-rereview log, completion manifest, and consolidated descriptive statistics. The integrated decision export also carries five `prior_form_*` columns, so earlier completed-form values are preserved without a second 410-row file.
 - `ADJUDICATION_COMPLETION_20260812.md`: adjudication rules, closure status, and reporting boundary.
 
 The complete review uses the same controlled fields across all 199 target-software studies. OY performed an external rereview of all 410 independent-coding disagreements plus 50 hidden-reference QC rows using the prespecified codebook and source evidence. Only disagreement decisions enter the final matrix; QC remains separate. The first- and second-coder files are preserved unchanged, and raw agreement, Cohen's kappa, AC1, and substitution results remain pre-adjudication reliability records. No post-adjudication reliability statistic is claimed.
