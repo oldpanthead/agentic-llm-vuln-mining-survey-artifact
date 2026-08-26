@@ -47,6 +47,13 @@
     "raw_review_export": "third_party_rereview_oy_20260824.csv",
     "material_identity_crosswalk": "data/third_party_rereview_material_crosswalk_20260824.csv",
     "decision_export": "data/third_party_rereview_decisions_20260824.csv",
+    "historical_form_fields_merged": [
+      "prior_form_human_final_label",
+      "prior_form_brief_reason",
+      "prior_form_evidence_location_verified",
+      "prior_form_reviewer_initials",
+      "prior_form_review_date"
+    ],
     "qc_export": "data/third_party_rereview_qc_20260824.csv",
     "cnvd_post_check_task": "R2-159",
     "cnvd_final_label": "author-reported external clue",
