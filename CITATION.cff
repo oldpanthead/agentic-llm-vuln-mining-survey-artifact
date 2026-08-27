@@ -8,8 +8,8 @@ authors:
     affiliation: "University of Chinese Academy of Sciences"
     email: "fangjingran25@mails.ucas.ac.cn"
 abstract: "Non-sensitive audit artifact for a mapping-oriented scoping review of Agentic LLM systems for vulnerability mining, including corpus metadata, workflow-capability-evidence coding, independent second-coder results, reference audits, and reproducibility checks."
-date-released: "2026-07-22"
-version: "1.0.0"
+date-released: "2026-08-27"
+version: "1.1.0"
 repository-code: "https://github.com/oldpanthead/agentic-llm-vuln-mining-survey-artifact"
 license: "CC-BY-4.0 AND MIT"
 keywords:

@@ -8,11 +8,11 @@ This repository contains the non-sensitive artifact for a mapping-oriented scopi
 2. Run `python reproduce_tables.py`.
 3. Use `docs/coding/data_dictionary.md` for field definitions.
 
-For a public archive, run `python scripts/build_public_release.py <new-output-directory>`. The builder copies only the release allowlist and manuscript-facing manifest, then validates the exported copy. Do not archive the source working tree directly.
+This is the compact public release. It contains directly readable core audit files plus five function-based ZIP bundles that preserve the remaining allowlisted records under their original relative paths. Run `python reproduce_tables.py` to validate the full artifact; it expands the bundles only in a temporary directory. To inspect a bundled record manually, extract the relevant archive without changing the release directory.
 
 The repository is organized by function: methods and release documentation are under `docs/`; search, corpus, coding, adjudication, synthesis, and derived data occupy separate `data/` subdirectories; supporting tools are under `scripts/`; and the single release manifest is under `manifests/`. The root retains only the files needed to identify, cite, secure, and validate the artifact.
 
-The synchronized submission snapshot is identified by `csur-submission-2026-08-final-v10`. Earlier tags, including `csur-submission-2026-08-final-v9` and `csur-submission-2026-07-final-v8`, remain immutable historical snapshots.
+The synchronized submission snapshot is identified by `csur-submission-2026-08-final-v11`. Earlier tags, including `csur-submission-2026-08-final-v10`, `csur-submission-2026-08-final-v9`, and `csur-submission-2026-07-final-v8`, remain immutable historical snapshots.
 
 ## Current Integrated Snapshot
 
@@ -91,6 +91,7 @@ The search used arXiv, OpenAlex, Crossref-backed publisher queries for ACM, IEEE
 - `data/adjudication/third_party_rereview_oy_20260824.csv`: raw 460-row OY rereview export (410 disagreements plus 50 QC rows).
 - `data/adjudication/third_party_rereview_decisions_20260824.csv` and `data/adjudication/third_party_rereview_qc_20260824.csv`: integrated disagreement decisions and separately retained QC results.
 - `data/adjudication/adjudication_log_199_all_fields.csv` and `data/derived/derived_summary_tables.json`: final external-rereview log plus consolidated descriptive statistics and embedded adjudication completion metadata. The integrated decision export also carries five `prior_form_*` columns, so earlier completed-form values are preserved without a second 410-row file.
+- `data/adjudication/claim_alignment_reconciled_199.csv`: the separate central-claim wording reconciliation (155 independent agreements, 44 third-party adjudications, 190 aligned, and nine overclaim labels). It is a reporting-alignment record, not a truth, reproducibility, or quality measure.
 - `docs/review/ADJUDICATION_COMPLETION_20260812.md`: adjudication rules, closure status, and reporting boundary.
 
 The complete review uses the same controlled fields across all 199 target-software studies. OY performed an external rereview of all 410 independent-coding disagreements plus 50 hidden-reference QC rows using the prespecified codebook and source evidence. Only disagreement decisions enter the final matrix; QC remains separate. The first- and second-coder files are preserved unchanged, and raw agreement, Cohen's kappa, AC1, and substitution results remain pre-adjudication reliability records. No post-adjudication reliability statistic is claimed.

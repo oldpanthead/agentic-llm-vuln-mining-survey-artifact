@@ -12,6 +12,11 @@ import csv
 import hashlib
 import json
 import re
+import shutil
+import subprocess
+import sys
+import tempfile
+import zipfile
 from collections import Counter
 from pathlib import Path
 
@@ -406,7 +411,38 @@ def check_adjudication(target: list[dict[str, str]]) -> None:
         require(final_matrix.get("study_count") == 199 and final_matrix.get("unique_matrix_ids") == 199, "completion manifest final-matrix cardinality differs")
         require(bool(final_matrix.get("freeze_recorded_utc")), "completion manifest final-matrix freeze time is missing")
     require({row.get("matrix_id", "") for row in log} == {row.get("matrix_id", "") for row in target}, "adjudication log and matrix IDs differ")
+    matrix_fields = {
+        "lifecycle coverage": "lifecycle_coverage",
+        "cross-stage capability": "cross_stage_capabilities",
+        "primary system shape": "primary_system_shape",
+        "principal reported evidence output": "strongest_evidence_output",
+        "external traceability": "external_traceability",
+    }
+    matrix_by_id = {row.get("matrix_id", ""): row for row in target}
+    log_by_key = {(row.get("matrix_id", ""), row.get("field", "")): row for row in log}
+    for matrix_id, matrix_row in matrix_by_id.items():
+        for field, matrix_column in matrix_fields.items():
+            log_row = log_by_key.get((matrix_id, field))
+            require(log_row is not None, f"adjudication log is missing {matrix_id} / {field}")
+            if log_row is not None:
+                require(
+                    split_labels(log_row.get("final_label", "")) == split_labels(matrix_row.get(matrix_column, "")),
+                    f"adjudication log final label differs from final matrix: {matrix_id} / {field}",
+                )
     info("third-party external rereview: 410 disagreements integrated; 50 QC rows kept separate; 0 unresolved")
+
+
+def check_claim_alignment() -> None:
+    rows = read_csv(ADJUDICATION / "claim_alignment_reconciled_199.csv")
+    require(len(rows) == EXPECTED["target_studies"], "claim-alignment reconciliation must contain 199 rows")
+    require(len({row.get("matrix_id", "") for row in rows}) == len(rows), "duplicate matrix_id in claim-alignment reconciliation")
+    require(
+        Counter(row.get("final_claim_alignment", "") for row in rows) == {"aligned": 190, "overclaim": 9},
+        "claim-alignment final distribution differs",
+    )
+    require(sum(row.get("independent_agreement", "") == "yes" for row in rows) == 155, "claim-alignment independent-agreement count differs")
+    require(sum(bool(row.get("rong_final_label", "").strip()) for row in rows) == 44, "claim-alignment adjudication count differs")
+    info("claim-alignment reconciliation: 155 agreements, 44 adjudicated disagreements, 190 aligned and 9 overclaim")
 
 
 def check_extended(target: list[dict[str, str]]) -> None:
@@ -968,7 +1004,38 @@ def check_manuscript(path: Path) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--manuscript", type=Path, help="optional path to main_acm_csur.tex")
+    parser.add_argument("--expanded-compact-release", action="store_true", help=argparse.SUPPRESS)
     args = parser.parse_args()
+
+    compact_manifest = ROOT / "compact_bundle_manifest.json"
+    if compact_manifest.exists() and not SEARCH.exists() and not args.expanded_compact_release:
+        try:
+            bundle_manifest = json.loads(compact_manifest.read_text(encoding="utf-8-sig"))
+            bundles = bundle_manifest.get("bundles", {})
+            require(isinstance(bundles, dict) and bundles, "invalid compact bundle manifest")
+            if ERRORS:
+                print(f"VALIDATION_FAILED errors={len(ERRORS)}")
+                return 1
+            with tempfile.TemporaryDirectory(prefix="artifact-validate-") as temporary:
+                expanded = Path(temporary) / "artifact"
+                shutil.copytree(ROOT, expanded)
+                for archive in bundles:
+                    archive_path = expanded / archive
+                    require(archive_path.is_file(), f"compact bundle is missing: {archive}")
+                    if archive_path.is_file():
+                        with zipfile.ZipFile(archive_path) as handle:
+                            handle.extractall(expanded)
+                if ERRORS:
+                    print(f"VALIDATION_FAILED errors={len(ERRORS)}")
+                    return 1
+                command = [sys.executable, "reproduce_tables.py", "--expanded-compact-release"]
+                if args.manuscript:
+                    command.extend(["--manuscript", str(args.manuscript.resolve())])
+                return subprocess.run(command, cwd=expanded, check=False).returncode
+        except (OSError, json.JSONDecodeError, zipfile.BadZipFile) as exc:
+            error(f"cannot expand compact artifact release: {exc}")
+            print(f"VALIDATION_FAILED errors={len(ERRORS)}")
+            return 1
 
     check_manifest()
     _, _ = check_corpus()
@@ -976,6 +1043,7 @@ def main() -> int:
     check_extended(target)
     check_search_and_dedup()
     check_adjudication(target)
+    check_claim_alignment()
     check_supplementary_extractions(target)
     check_publication_status(target)
     check_domain_and_reporting_extractions(target)

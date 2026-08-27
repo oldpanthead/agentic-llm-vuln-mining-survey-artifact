@@ -4,7 +4,7 @@
 
 This public release contains non-sensitive data and scripts supporting the ACM CSUR manuscript. It includes the integrated multi-source search through 2026-07-30, study/version reconciliation, analytical-layer allocation, the 199-study target-software coding matrix, the 154-study extended synthesis audit, complete independent second-coder files, and source-located supplementary extractions.
 
-The immutable synchronized submission tag is `csur-submission-2026-08-final-v10`. Earlier tags, including `csur-submission-2026-08-final-v9`, remain unchanged.
+The immutable synchronized submission tag is `csur-submission-2026-08-final-v11`. Earlier tags, including `csur-submission-2026-08-final-v10` and `csur-submission-2026-08-final-v9`, remain unchanged.
 
 ## Current Counts
 
@@ -45,14 +45,15 @@ python reproduce_tables.py
 
 The default public mode has no dependency on a manuscript checkout. It verifies file presence, the complete 410-row adjudication record, the final 199-study matrix and adjudicated statistics, unique CSV headers, corpus and layer counts, study/version uniqueness, shape and evidence distributions, lifecycle and capability counts, external traceability, integrated PRISMA allocation and source-specific acquisition provenance, primitive-use roles and output coupling, publication-status sensitivity, target-domain/year cross-tabs, public-artifact indicators, training-overlap reporting, reference metadata, and complete pre-adjudication reliability files. Optional manuscript validation is available through `--manuscript`.
 
-Create a clean public directory with `python scripts/build_public_release.py <new-output-directory>`. The export is assembled from `manifests/release_manifest.json` and is validated after copying.
+Create a full clean public directory with `python scripts/build_public_release.py <new-output-directory>`. The export is assembled from `manifests/release_manifest.json` and is validated after copying. `python scripts/build_compact_release.py <new-output-directory>` creates a 30-file reviewer-facing variant: directly useful audit files remain visible, while complete low-frequency record groups are stored in function-based ZIP bundles and expand automatically during validation.
 
 ## Release Gate
 
-- The release cutoff is 2026-07-30 and the synchronized submission tag is `csur-submission-2026-08-final-v10`.
+- The release cutoff is 2026-07-30 and the synchronized submission tag is `csur-submission-2026-08-final-v11`.
 - `README.md`, this manifest, `docs/coding/data_dictionary.md`, and `docs/coding/codebook.md` describe the current release.
 - `manifests/release_manifest.json` lists the manuscript-facing and static release files; all paths must exist and be unique.
 - `reproduce_tables.py` validates the integrated corpus, adjudicated distributions, provenance, and pre-adjudication independent-coder files in standalone mode. Re-run it after staging a clean export.
+- The separate 199-row claim-alignment reconciliation is present and validates 155 agreements, 44 third-party adjudications, 190 aligned labels, and nine overclaim labels. It is a narrowly scoped reporting-alignment audit.
 - The raw 460-row OY export, 410-row decision layer, separate 50-row QC layer, 995-row decision log, embedded completion metadata, and final matrix are present and validated.
 - Publish only an allowlisted export. Exclude `.git/`, caches, logs, full-text PDFs, private paths, proposed or unresolved working files, credentials, private targets, exploit payloads, sensitive crash inputs, and vendor-private communications.
 - Before release, confirm the repository URL, release date, and author-approved disclosure metadata. `SECURITY_BOUNDARY.md` defines the disclosure boundary.
@@ -115,4 +116,4 @@ For post-inclusion coding, Shangru Zhao independently reviewed all 199 included 
 - Undefined citations/references: none. Two overfull boxes remain in the Section 5 comparison table for a separate layout pass.
 - Visual inspection covered abstract, methodology, lifecycle, Table 10, sensitivity analysis, conclusion, appendix, and reference-tail pages; no overlap or clipping was found.
 
-The immutable synchronized release is `csur-submission-2026-08-final-v10`.
+The immutable synchronized release is `csur-submission-2026-08-final-v11`.
