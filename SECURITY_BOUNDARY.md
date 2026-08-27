@@ -29,9 +29,9 @@ Reviewers can use this artifact to inspect corpus construction, coding logic, an
 
 ## Release Export
 
-Build the public directory with `python scripts/build_public_release.py <new-output-directory>`. The allowlist-based export excludes local review files even when a user archives the directory outside Git. `.gitignore` remains a source-repository safeguard, not the release boundary.
+This tagged repository is the public export. The compact bundle manifest and `reproduce_tables.py` define the files that belong to this snapshot; internal release-builder scripts and superseded manifests remain in repository history.
 
 The reproducibility audit follows the exclusions above and also omits Zotero PDFs and private local paths.
 
-The product-ecosystem snapshot records only official public product, model, help, blog, and policy materials. It remains outside the research-study counts, and product changes do not alter study-level statistics without a documented corpus update.
+Official product and policy pages, when encountered during boundary checks, remain outside the research-study counts and do not alter study-level statistics without a documented corpus update. They are not included as empirical study evidence in this release.
 

@@ -54,7 +54,7 @@ The calculation combines the released 67-study review with 132 studies jointly i
 
 Eligibility agreement for the new search is reported separately because the released 67-study set had already passed inclusion before its unified second-coder review. The integrated reliability result therefore covers analytical coding fields only and does not score claim-boundary prose by exact textual agreement.
 
-The underlying files are data/adjudication/integrated_199_second_coder_comparison_20260730.csv, data/adjudication/integrated_199_per_label_reliability_20260730.csv, data/adjudication/integrated_199_label_substitution_sensitivity_20260730.csv, data/adjudication/third_party_rereview_decisions_20260824.csv, data/adjudication/adjudication_log_199_all_fields.csv, and data/coding/adjudicated_study_level_coding_matrix_199.csv.
+The underlying files are data/adjudication/integrated_199_second_coder_comparison_20260730.csv, data/adjudication/integrated_199_per_label_reliability_20260730.csv, data/adjudication/third_party_rereview_decisions_20260824.csv, data/adjudication/adjudication_log_199_all_fields.csv, and data/coding/adjudicated_study_level_coding_matrix_199.csv.
 
 ## Final Key Counts
 

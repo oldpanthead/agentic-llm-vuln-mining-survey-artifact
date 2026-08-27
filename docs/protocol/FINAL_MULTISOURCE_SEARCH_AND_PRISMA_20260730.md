@@ -101,7 +101,7 @@ This pass is a final coverage check. It does not overwrite earlier search export
 3. PoV and CRS: proof of vulnerability, PoV, cyber reasoning system, or CRS; LLM or agent.
 4. Review and evaluation context: review or survey; LLM or large language model; vulnerability, fuzzing, or software security.
 
-Exact source-specific strings are written to the machine-readable manifest produced by final_multisource_search_20260730.py.
+Exact source-specific strings and access outcomes are preserved in the released search access log and screening ledgers.
 
 ### Discovery Sources
 

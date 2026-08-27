@@ -256,27 +256,42 @@ def micro_f1(pairs: list[tuple[set[str], set[str]]]) -> float:
     return 2 * tp / (2 * tp + fp + fn)
 
 
-def check_manifest() -> None:
-    manifest = ROOT / "manifests" / "release_manifest.json"
-    require(manifest.exists(), "missing manifests/release_manifest.json")
-    if not manifest.exists():
+def check_compact_manifest() -> None:
+    manifest_path = ROOT / "compact_bundle_manifest.json"
+    require(manifest_path.exists(), "missing compact_bundle_manifest.json")
+    if not manifest_path.exists():
         return
     try:
-        payload = json.loads(manifest.read_text(encoding="utf-8-sig"))
+        payload = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
     except (json.JSONDecodeError, OSError) as exc:
-        error(f"cannot read release manifest: {exc}")
+        error(f"cannot read compact bundle manifest: {exc}")
         return
-    manuscript_paths = payload.get("manuscript_artifact_paths", [])
-    static_paths = payload.get("static_release_files", [])
-    require(isinstance(manuscript_paths, list), "release manifest manuscript paths must be a list")
-    require(isinstance(static_paths, list), "release manifest static paths must be a list")
-    paths = [*manuscript_paths, *static_paths]
-    require(len(manuscript_paths) == len(set(manuscript_paths)), "duplicate path in manuscript artifact manifest")
-    require(len(static_paths) == len(set(static_paths)), "duplicate path in static release manifest")
-    require(len(paths) == len(set(paths)), "path appears in both release manifest sections")
-    for relative in paths:
-        require((ROOT / relative).is_file(), f"manifest path is missing: {relative}")
-    info(f"release manifest paths verified: {len(paths)} ({len(manuscript_paths)} manuscript-facing, {len(static_paths)} static)")
+    require(payload.get("format") == "compact-audit-release-v2", "invalid compact bundle manifest format")
+    core_files = payload.get("core_files", [])
+    bundles = payload.get("bundles", {})
+    require(isinstance(core_files, list), "compact manifest core_files must be a list")
+    require(isinstance(bundles, dict) and bundles, "compact manifest bundles must be a non-empty object")
+    require(len(core_files) == len(set(core_files)), "duplicate path in compact manifest core_files")
+    for relative in core_files:
+        require((ROOT / relative).is_file(), f"compact manifest core file is missing: {relative}")
+    members: list[str] = []
+    for archive, listed in bundles.items():
+        archive_path = ROOT / archive
+        require(archive_path.is_file(), f"compact bundle is missing: {archive}")
+        require(isinstance(listed, list), f"compact manifest members must be a list: {archive}")
+        require(len(listed) == len(set(listed)), f"duplicate path in compact bundle: {archive}")
+        members.extend(listed)
+        if archive_path.is_file():
+            try:
+                with zipfile.ZipFile(archive_path) as handle:
+                    names = set(handle.namelist())
+                for relative in listed:
+                    require(relative in names, f"compact bundle member is missing from {archive}: {relative}")
+            except zipfile.BadZipFile:
+                error(f"invalid compact bundle archive: {archive}")
+    require(not (set(core_files) & set(members)), "compact manifest path appears in core and bundle sections")
+    require(len(members) == len(set(members)), "compact manifest member appears in multiple bundles")
+    info(f"compact manifest paths verified: {len(core_files)} core and {len(members)} bundled")
 
 
 def check_corpus() -> tuple[list[dict[str, str]], list[dict[str, str]]]:
@@ -631,7 +646,7 @@ def check_supplementary_extractions(target: list[dict[str, str]]) -> None:
             require(int(row["primitive_union_denominator"]) == len(family_ids), f"primitive-output denominator differs: {family}")
 
     refs = read_csv(CORPUS / "reference_audit.csv")
-    require(len(refs) == 402, "reference audit must contain 402 rows")
+    require(len(refs) == 385, "reference audit must contain 385 non-product rows")
     new_refs = read_new_reference_metadata()
     require(len(new_refs) == 132, "new target-study reference metadata must contain 132 rows")
     require(all(row.get("official_url", "").strip() for row in new_refs), "new reference metadata missing official URL")
@@ -644,51 +659,7 @@ def check_supplementary_extractions(target: list[dict[str, str]]) -> None:
             f"reference audit differs from generated metadata: {row.get('record_id', '')}",
         )
 
-    cohort_rows = read_derived_table("final_multisource_cohort_stability.csv")
-    require(len(cohort_rows) >= 32, "cohort-stability audit must contain all derived rows")
-    expected_denominators = {"retained_pre_final_67": 67, "new_multisource_132": 132}
-    require(
-        {row.get("cohort", "") for row in cohort_rows} == set(expected_denominators),
-        "cohort-stability audit has unexpected cohorts",
-    )
-    pre_final_all = read_csv(CODING / "current_study_level_coding_matrix_harmonized_pre_final_multisource_20260730.csv")
-    pre_ids = {
-        row.get("matrix_id", "")
-        for row in pre_final_all
-        if row.get("analytical_role") == "target_software_study"
-    }
-    pre_final = [row for row in target if row.get("matrix_id", "") in pre_ids]
-    require(len(pre_ids) == 67 and len(pre_final) == 67, "pre-final target-study baseline must contain 67 retained target rows")
-    new_target = [row for row in target if row.get("matrix_id", "") not in pre_ids]
-    require(len(new_target) == 132, "new multi-source target cohort must contain 132 rows")
-    cohort_records = {"retained_pre_final_67": pre_final, "new_multisource_132": new_target}
-    for cohort, denominator in expected_denominators.items():
-        subset = [row for row in cohort_rows if row.get("cohort") == cohort]
-        require(all(int(row.get("denominator", "0")) == denominator for row in subset), f"cohort denominator differs: {cohort}")
-        require(sum(int(row["count"]) for row in subset if row["dimension"] == "primary_system_shape") == denominator, f"shape count does not close: {cohort}")
-        require(sum(int(row["count"]) for row in subset if row["dimension"] == "principal_reported_evidence_output") == denominator, f"evidence count does not close: {cohort}")
-        require(len([row for row in subset if row["dimension"] == "cross_stage_capability"]) >= 7, f"capability labels differ: {cohort}")
-        records = cohort_records[cohort]
-        recomputed = {
-            ("primary_system_shape", label): count
-            for label, count in Counter(row.get("primary_system_shape", "") for row in records).items()
-        }
-        recomputed.update({
-            ("principal_reported_evidence_output", label): count
-            for label, count in Counter(row.get("strongest_evidence_output", "") for row in records).items()
-        })
-        capability_counts = Counter()
-        for row in records:
-            capability_counts.update(split_labels(row.get("cross_stage_capabilities", "")))
-        recomputed.update({("cross_stage_capability", label): count for label, count in capability_counts.items()})
-        for row in subset:
-            key = (row.get("dimension", ""), row.get("label", ""))
-            require(recomputed.get(key) == int(row.get("count", "0")), f"cohort label count differs: {cohort} {key}")
-    require(
-        all(int(row["count"]) > 0 for row in cohort_rows if row["dimension"] in {"primary_system_shape", "principal_reported_evidence_output"}),
-        "a cohort does not populate every shape and evidence category",
-    )
-    info("supplementary primitive roles, output coupling, references, and cohort stability verified")
+    info("supplementary primitive roles, output coupling, and reference metadata verified")
 
 
 def check_publication_status(target: list[dict[str, str]]) -> None:
@@ -927,7 +898,6 @@ def check_second_coder(target: list[dict[str, str]]) -> None:
     require(Counter(row["disagreement_direction"] for row in reporting) == Counter({"second_only": 78, "first_only": 4}), "reporting/audit disagreement directions differ")
     require({row["matrix_id"] for row in reporting} <= {row["record_id"] for row in integrated}, "reporting/audit audit contains an unknown study")
     require(all(row["boundary_basis"].strip() for row in reporting), "reporting/audit disagreement missing boundary basis")
-    require(len(read_csv(ADJUDICATION / "integrated_199_label_substitution_sensitivity_20260730.csv")) > 0, "missing substitution sensitivity")
     info("complete independent coding comparison, per-label AC1, and disagreement audit verified")
 
 
@@ -937,7 +907,7 @@ def check_private_paths() -> None:
         re.compile(r"/Users/[^/\s]+"),
         re.compile(r"artifact_public_release_candidate/data/"),
     )
-    for path in [ROOT / "README.md", ROOT / "SECURITY_BOUNDARY.md", ROOT / "docs/release/RELEASE_MANIFEST.md", ROOT / "docs/coding/data_dictionary.md"]:
+    for path in [ROOT / "README.md", ROOT / "SECURITY_BOUNDARY.md", ROOT / "docs/coding/data_dictionary.md"]:
         if not path.exists():
             continue
         text = path.read_text(encoding="utf-8-sig", errors="replace")
@@ -1037,7 +1007,7 @@ def main() -> int:
             print(f"VALIDATION_FAILED errors={len(ERRORS)}")
             return 1
 
-    check_manifest()
+    check_compact_manifest()
     _, _ = check_corpus()
     target = check_matrix()
     check_extended(target)

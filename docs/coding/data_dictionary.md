@@ -77,10 +77,9 @@ Detailed coding boundaries are defined in `docs/coding/codebook.md`.
 | `data/corpus/study_version_crosswalk.csv` | Source record | Mapping to canonical study and record, version type, counting status, and deduplication basis. |
 | `data/coding/adjudicated_study_level_coding_matrix_199.csv` | Target-software study | Final 199-row third-review adjudicated matrix used for descriptive distributions. |
 | `data/coding/current_study_level_coding_matrix_harmonized.csv` | Target-software study | Preserved primary author matrix covering lifecycle, output, traceability, claim boundary, shape, and capabilities before adjudication. |
-| `data/coding/current_study_level_coding_matrix_harmonized_pre_final_multisource_20260730.csv` | Historical target-software study | Frozen pre-final matrix used only for provenance and cohort-stability checks. |
 | `data/coding/extended_synthesis_audit.csv` | Extended-synthesis study | Material basis, synthesis role, RQ contribution, manuscript use, and reason for not entering study-level coding. |
 | `data/corpus/reference_audit.csv` | Reference record | Canonical title, publication status, venue, verified URL, DOI/arXiv ID, citation key, and `new__*` fields for the 132 newly integrated records. |
-| `references/references_final_multisource_new_studies_20260730.bib` | BibTeX entry | Bibliographic export corresponding to newly integrated study-level records. |
+| `references/references_merged_manuscript.bib` | BibTeX entry | Complete BibTeX file used by the synchronized manuscript, including newly integrated study-level records. |
 
 Legacy `Core`, `Supporting`, `Background`, and `Excluded` values remain in `corpus.csv` for source-record provenance. Current manuscript denominators are determined from the version crosswalk and harmonized study-level/extended-synthesis files.
 
@@ -92,11 +91,10 @@ Legacy `Core`, `Supporting`, `Background`, and `Excluded` values remain in `corp
 | `data/synthesis/traditional_security_primitives_by_use_role.csv` | Study--primitive pair | Workflow-active/evaluation-support role and assignment basis. |
 | `data/synthesis/public_trigger_replay_evidence_index.csv` | Reviewed trigger/replay candidate | The 14 initially located candidates, their inclusion decision, local PDF locator, and reason. Only an item recorded as included enters Table 10's trigger/replay column. |
 | `data/synthesis/public_alignment_evidence_index.csv` | Public-alignment case | Local evidence chain for all four publicly aligned external-trace cases, including QRS. |
-| `data/derived/derived_summary_tables.json` | Derived table bundle | Includes source counts, exclusion summary, adjudicated statistics, publication-status distributions and sensitivity, primitive role/output tables, unspecified-primitive closure rows, domain/output and year/shape cross-tabs, artifact summaries, controlled-task sensitivity, training-overlap counts, mapping snapshots, the provenance-only `final_multisource_cohort_stability.csv` table, and embedded adjudication completion metadata. |
+| `data/derived/derived_summary_tables.json` | Derived table bundle | Includes source counts, exclusion summary, adjudicated statistics, publication-status distributions and sensitivity, primitive role/output tables, unspecified-primitive closure rows, domain/output and year/shape cross-tabs, artifact summaries, controlled-task sensitivity, training-overlap counts, mapping snapshots, and embedded adjudication completion metadata. |
 | `data/synthesis/representative_system_mechanisms.csv` | Representative system | Model, runtime, state/feedback, workflow endpoint, source location, and note. |
 | `data/synthesis/mechanism_cost_ablation_synthesis.csv` | Reported observation | Cost, ablation, or recovery observation with original unit/comparison and source location. |
 | `data/synthesis/representative_reported_results.csv` | Representative system | Evaluation setting, reported result, validation material, and source location. |
-| `data/synthesis/product_ecosystem_snapshot.csv` | Public product material | Independent product-ecosystem context outside research-study denominators. |
 
 ## Independent Coding Files
 
@@ -106,7 +104,6 @@ Legacy `Core`, `Supporting`, `Background`, and `Excluded` values remain in `corp
 | `data/adjudication/integrated_199_second_coder_comparison_20260730.csv` | Target-software study | Complete first/second assignment comparison for all controlled fields. |
 | `data/adjudication/integrated_199_per_label_reliability_20260730.csv` | Controlled label | Positive counts, raw agreement, Cohen's kappa, Gwet's AC1, and interpretation note. |
 | `data/adjudication/integrated_199_reporting_audit_disagreement_review.csv` | Reporting/audit disagreement | Direction, assignments, and source-linked boundary basis. |
-| `data/adjudication/integrated_199_label_substitution_sensitivity_20260730.csv` | Controlled label | First-coder and complete coder-substitution counts and difference. |
 | `data/adjudication/third_party_rereview_oy_20260824.csv` | Rereview task | Raw OY export for 410 disagreement tasks and 50 hidden-reference QC tasks. |
 | `data/adjudication/third_party_rereview_decisions_20260824.csv` | Disagreement | OY decision, rationale, locator, task/case/study/field identity, material path and SHA-256, integration provenance, and five `prior_form_*` columns carrying the corresponding historical completed-form values for all 410 disagreements. This is the consolidated decision/provenance file; the historical form is not distributed as a second copy. |
 | `data/adjudication/third_party_rereview_qc_20260824.csv` | QC task | Fifty rule-application checks with the same task/material identity fields, retained separately from final decisions and reliability statistics. |
@@ -114,8 +111,8 @@ Legacy `Core`, `Supporting`, `Background`, and `Excluded` values remain in `corp
 | `data/adjudication/adjudication_log_199_all_fields.csv` | Study-field assignment | Full adjudication audit log for all 995 controlled study-field assignments. |
 | `data/derived/derived_summary_tables.json` | Adjudication metadata | The `metadata.adjudication_completion_manifest` object records inputs, outputs, disagreement count, unresolved count, and field reportability. |
 
-Final descriptive distributions use the adjudicated matrix. Independent assignments and substitution results remain separate as pre-adjudication reliability and sensitivity records; the adjudicated matrix is not a new reliability test.
+Final descriptive distributions use the adjudicated matrix. Independent assignments and per-label agreement remain separate as pre-adjudication reliability records; the adjudicated matrix is not a new reliability test.
 
 ## Validation
 
-`reproduce_tables.py` verifies manifest completeness, the completed 410-row adjudication record, the final matrix and statistics, unique headers, expected denominators, controlled distributions, search/reconciliation arithmetic, supplementary extraction closure, publication-status stratification, and complete pre-adjudication second-coder statistics. It exits with `VALIDATION_OK` only when all checks pass.
+`reproduce_tables.py` verifies compact-manifest completeness, the completed 410-row adjudication record, the final matrix and statistics, unique headers, expected denominators, controlled distributions, search/reconciliation arithmetic, supplementary extraction closure, publication-status stratification, and complete pre-adjudication second-coder statistics. It exits with `VALIDATION_OK` only when all checks pass.

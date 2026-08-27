@@ -8,11 +8,11 @@ This repository contains the non-sensitive artifact for a mapping-oriented scopi
 2. Run `python reproduce_tables.py`.
 3. Use `docs/coding/data_dictionary.md` for field definitions.
 
-This is the compact public release. It contains directly readable core audit files plus five function-based ZIP bundles that preserve the remaining allowlisted records under their original relative paths. Run `python reproduce_tables.py` to validate the full artifact; it expands the bundles only in a temporary directory. To inspect a bundled record manually, extract the relevant archive without changing the release directory.
+This is the compact public release. It contains directly readable core audit files plus three function-based ZIP bundles that preserve the remaining final audit records under their original relative paths. Run `python reproduce_tables.py` to validate the full artifact; it expands the bundles only in a temporary directory. To inspect a bundled record manually, extract the relevant archive without changing the release directory.
 
-The repository is organized by function: methods and release documentation are under `docs/`; search, corpus, coding, adjudication, synthesis, and derived data occupy separate `data/` subdirectories; supporting tools are under `scripts/`; and the single release manifest is under `manifests/`. The root retains only the files needed to identify, cite, secure, and validate the artifact.
+The repository is organized by function: protocol, coding, and review documentation are under `docs/`; search, corpus, coding, adjudication, synthesis, and derived data occupy separate `data/` subdirectories. The root retains only the files needed to identify, cite, secure, and validate the artifact; internal release-builder scripts and superseded manifests are kept in repository history, not in this submission snapshot.
 
-The synchronized submission snapshot is identified by `csur-submission-2026-08-final-v11`. Earlier tags, including `csur-submission-2026-08-final-v10`, `csur-submission-2026-08-final-v9`, and `csur-submission-2026-07-final-v8`, remain immutable historical snapshots.
+The synchronized submission snapshot is identified by `csur-submission-2026-08-final-v12`. Earlier tags, including `csur-submission-2026-08-final-v11`, `csur-submission-2026-08-final-v10`, and `csur-submission-2026-08-final-v9`, remain immutable historical snapshots.
 
 ## Current Integrated Snapshot
 
@@ -41,9 +41,7 @@ The search used arXiv, OpenAlex, Crossref-backed publisher queries for ACM, IEEE
 | `data/adjudication/` | Independent comparison, OY rereview, QC, and decision log |
 | `data/synthesis/` | Source-located study synthesis and representative extractions |
 | `data/derived/` | Derived tables and adjudication completion metadata |
-| `docs/` | Protocol, coding, review, and release documentation |
-| `manifests/release_manifest.json` | Machine-readable release and manuscript file lists |
-| `scripts/` | Release builder and adjudication utilities |
+| `docs/` | Protocol, coding, and review documentation |
 | `references/` | BibTeX metadata |
 
 ## Main Audit Paths
@@ -66,19 +64,20 @@ The search used arXiv, OpenAlex, Crossref-backed publisher queries for ACM, IEEE
 ### Study-level and extended synthesis
 
 - `data/coding/adjudicated_study_level_coding_matrix_199.csv`: final 199-row target-software matrix used for all descriptive distributions after third-review adjudication.
-- `data/coding/current_study_level_coding_matrix_harmonized.csv`: preserved primary author matrix retained for pre-adjudication provenance.
-- `data/coding/extended_synthesis_audit.csv`: record-level audit for 154 adjacent records, comprising 92 records with detailed public material for substantive synthesis and 62 records supporting contextual coverage mapping; AgentFuzz supplies cross-cutting governance context.
-- `data/synthesis/traditional_security_primitives_by_use_role.csv`: source-located study--primitive role assignments at their native pair-level granularity.
+- `data/coding/current_study_level_coding_matrix_harmonized.csv` (in `bundles/corpus_and_synthesis.zip`): preserved primary author matrix retained for pre-adjudication provenance.
+- `data/coding/extended_synthesis_audit.csv` (in `bundles/corpus_and_synthesis.zip`): record-level audit for 154 adjacent records, comprising 92 records with detailed public material for substantive synthesis and 62 records supporting contextual coverage mapping; AgentFuzz supplies cross-cutting governance context.
+- `data/synthesis/traditional_security_primitives_by_use_role.csv` (in `bundles/corpus_and_synthesis.zip`): source-located study--primitive role assignments at their native pair-level granularity.
 - The component study-level views formerly stored as separate files are joined in `data/synthesis/study_synthesis_199.csv`; their derived cross-tabs and counts are in `data/derived/derived_summary_tables.json`.
-- `data/synthesis/public_trigger_replay_evidence_index.csv`: reviewed trigger/replay candidates. The strict column is restricted to public, system-generated, item-level material; repositories and benchmark inputs alone are excluded. No independent artifact execution is claimed.
+- `data/synthesis/public_trigger_replay_evidence_index.csv` (in `bundles/corpus_and_synthesis.zip`): reviewed trigger/replay candidates. The strict column is restricted to public, system-generated, item-level material; repositories and benchmark inputs alone are excluded. No independent artifact execution is claimed.
 - Controlled-task membership fields are in `data/synthesis/study_synthesis_199.csv`; the derived 199-versus-164 sensitivity table is in `data/derived/derived_summary_tables.json`.
-- `data/synthesis/public_alignment_evidence_index.csv`: the local evidence chains for all four publicly aligned external-trace cases, including QRS.
+- `data/synthesis/public_alignment_evidence_index.csv` (in `bundles/corpus_and_synthesis.zip`): the local evidence chains for all four publicly aligned external-trace cases, including QRS.
 - Training-overlap reporting fields are in `data/synthesis/study_synthesis_199.csv`; their counts are in `data/derived/derived_summary_tables.json`.
-- Historical cohort stability is retained as `final_multisource_cohort_stability.csv` inside the derived-summary bundle; it does not define manuscript cohorts or denominators.
-- `data/synthesis/representative_system_mechanisms.csv`: source-located mechanism extraction used by the representative system comparison.
-- `data/synthesis/mechanism_cost_ablation_synthesis.csv`: source-located cost, ablation, and failure-recovery observations.
-- `data/synthesis/representative_reported_results.csv`: source-located rows used by the representative reported-results table.
-- `references/references_final_multisource_new_studies_20260730.bib`: reference metadata for newly integrated study-level records.
+- Historical cohort-stability calculations and other superseded transition tables are retained in repository history; they do not define manuscript cohorts or denominators.
+- `data/synthesis/representative_system_mechanisms.csv` (in `bundles/corpus_and_synthesis.zip`): source-located mechanism extraction used by the representative system comparison.
+- `data/derived/empirical_reporting_completeness.csv` (in `bundles/corpus_and_synthesis.zip`): source-located reporting completeness counts for the 67-study extraction subset.
+- `data/synthesis/mechanism_cost_ablation_synthesis.csv` (in `bundles/corpus_and_synthesis.zip`): source-located cost, ablation, and failure-recovery observations.
+- `data/synthesis/representative_reported_results.csv` (in `bundles/corpus_and_synthesis.zip`): source-located rows used by the representative reported-results table.
+- `references/references_merged_manuscript.bib`: the complete BibTeX file used by the synchronized manuscript; it contains the newly integrated study references.
 
 ### Independent second-coder review
 
@@ -86,7 +85,7 @@ The search used arXiv, OpenAlex, Crossref-backed publisher queries for ACM, IEEE
 - `data/adjudication/integrated_199_second_coder_comparison_20260730.csv`: complete comparison for all 199 target-software studies.
 - `data/adjudication/integrated_199_per_label_reliability_20260730.csv`: lifecycle and capability label-level agreement, including Gwet's AC1.
 - `data/adjudication/integrated_199_reporting_audit_disagreement_review.csv`: source-linked direction and boundary basis for reporting/audit disagreements.
-- `data/adjudication/integrated_199_label_substitution_sensitivity_20260730.csv`: complete coder2 substitution counts.
+- Per-label agreement and the remaining sensitivity inputs are in `data/adjudication/integrated_199_per_label_reliability_20260730.csv` and `data/adjudication/integrated_199_second_coder_comparison_20260730.csv`.
 - Integrated pre-adjudication reliability is included in `docs/review/ADJUDICATION_COMPLETION_20260812.md`.
 - `data/adjudication/third_party_rereview_oy_20260824.csv`: raw 460-row OY rereview export (410 disagreements plus 50 QC rows).
 - `data/adjudication/third_party_rereview_decisions_20260824.csv` and `data/adjudication/third_party_rereview_qc_20260824.csv`: integrated disagreement decisions and separately retained QC results.
@@ -98,7 +97,7 @@ The complete review uses the same controlled fields across all 199 target-softwa
 
 ## Historical Provenance
 
-The tagged source repository retains files concerning the earlier 31-record, 41-record, 67-study, July 15 arXiv, and July 16 official-source checks. They document codebook development, earlier search stages, and prior submission snapshots; they are not the current corpus denominators or the current reliability result. The clean public export omits these historical build files.
+The tagged source repository retains files concerning earlier 31-record, 41-record, 67-study, July 15 arXiv, and July 16 official-source checks, as well as release-builder scripts and superseded manifests. They document codebook development and prior submission snapshots; they are not the current corpus denominators or reliability result. The clean public export omits these historical build files.
 
 ## Evidence and Security Boundaries
 

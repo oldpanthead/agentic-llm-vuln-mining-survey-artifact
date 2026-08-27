@@ -1,6 +1,6 @@
 {
-  "format": "compact-audit-release-v1",
-  "description": "All files in bundles are preserved with their original relative paths and expand automatically during validation.",
+  "format": "compact-audit-release-v2",
+  "description": "The release contains final audit evidence only; obsolete build files, duplicate manifests, product snapshots, and pre-final transition matrices are excluded.",
   "core_files": [
     "CITATION.cff",
     "LICENSE-CODE",
@@ -10,30 +10,16 @@
     "data/adjudication/adjudication_log_199_all_fields.csv",
     "data/adjudication/claim_alignment_reconciled_199.csv",
     "data/coding/adjudicated_study_level_coding_matrix_199.csv",
-    "data/coding/current_study_level_coding_matrix_harmonized.csv",
     "data/corpus/corpus.csv",
     "data/corpus/study_version_crosswalk.csv",
     "data/derived/derived_summary_tables.json",
-    "data/derived/empirical_reporting_completeness.csv",
     "data/synthesis/study_synthesis_199.csv",
     "docs/coding/codebook.md",
     "docs/coding/data_dictionary.md",
-    "references/references_final_multisource_new_studies_20260730.bib",
     "references/references_merged_manuscript.bib",
     "reproduce_tables.py"
   ],
   "bundles": {
-    "bundles/docs_and_tools.zip": [
-      "docs/protocol/FINAL_MULTISOURCE_SEARCH_AND_PRISMA_20260730.md",
-      "docs/release/RELEASE_MANIFEST.md",
-      "docs/review/ADJUDICATION_COMPLETION_20260812.md",
-      "docs/review/ADJUDICATION_RULES_20260812.md",
-      "manifests/release_manifest.json",
-      "scripts/build_compact_release.py",
-      "scripts/build_public_release.py",
-      "scripts/finalize_199_adjudication.py",
-      "scripts/validate_199_adjudication_form.py"
-    ],
     "bundles/search.zip": [
       "data/search/final_multisource_search_20260730_access_log.csv",
       "data/search/final_multisource_search_20260730_all_coder_comparison.csv",
@@ -44,13 +30,19 @@
       "data/search/final_multisource_search_20260730_results.csv",
       "data/search/final_multisource_search_20260730_screening_audit.csv"
     ],
-    "bundles/corpus_and_coding.zip": [
-      "data/coding/current_study_level_coding_matrix_harmonized_pre_final_multisource_20260730.csv",
+    "bundles/corpus_and_synthesis.zip": [
+      "data/coding/current_study_level_coding_matrix_harmonized.csv",
       "data/coding/extended_synthesis_audit.csv",
-      "data/corpus/reference_audit.csv"
+      "data/corpus/reference_audit.csv",
+      "data/derived/empirical_reporting_completeness.csv",
+      "data/synthesis/mechanism_cost_ablation_synthesis.csv",
+      "data/synthesis/public_alignment_evidence_index.csv",
+      "data/synthesis/public_trigger_replay_evidence_index.csv",
+      "data/synthesis/representative_reported_results.csv",
+      "data/synthesis/representative_system_mechanisms.csv",
+      "data/synthesis/traditional_security_primitives_by_use_role.csv"
     ],
     "bundles/reliability_and_rereview.zip": [
-      "data/adjudication/integrated_199_label_substitution_sensitivity_20260730.csv",
       "data/adjudication/integrated_199_per_label_reliability_20260730.csv",
       "data/adjudication/integrated_199_reporting_audit_disagreement_review.csv",
       "data/adjudication/integrated_199_second_coder_comparison_20260730.csv",
@@ -58,15 +50,6 @@
       "data/adjudication/third_party_rereview_material_crosswalk_20260824.csv",
       "data/adjudication/third_party_rereview_oy_20260824.csv",
       "data/adjudication/third_party_rereview_qc_20260824.csv"
-    ],
-    "bundles/synthesis.zip": [
-      "data/synthesis/mechanism_cost_ablation_synthesis.csv",
-      "data/synthesis/product_ecosystem_snapshot.csv",
-      "data/synthesis/public_alignment_evidence_index.csv",
-      "data/synthesis/public_trigger_replay_evidence_index.csv",
-      "data/synthesis/representative_reported_results.csv",
-      "data/synthesis/representative_system_mechanisms.csv",
-      "data/synthesis/traditional_security_primitives_by_use_role.csv"
     ]
   }
 }
