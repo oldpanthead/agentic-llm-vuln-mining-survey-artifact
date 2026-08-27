@@ -291,6 +291,18 @@ def check_compact_manifest() -> None:
                 error(f"invalid compact bundle archive: {archive}")
     require(not (set(core_files) & set(members)), "compact manifest path appears in core and bundle sections")
     require(len(members) == len(set(members)), "compact manifest member appears in multiple bundles")
+    declared = set(core_files) | set(bundles) | {"compact_bundle_manifest.json"}
+    # In expanded validation mode, bundled members are materialized beside the
+    # archives; in public mode they remain inside ZIP files. Both layouts must
+    # be closed under the manifest, with no untracked release files.
+    if any((ROOT / relative).is_file() for relative in members):
+        declared |= set(members)
+    actual = {
+        path.relative_to(ROOT).as_posix()
+        for path in ROOT.rglob("*")
+        if path.is_file() and ".git" not in path.parts
+    }
+    require(actual == declared, f"release files differ from compact manifest: extra={sorted(actual - declared)}, missing={sorted(declared - actual)}")
     info(f"compact manifest paths verified: {len(core_files)} core and {len(members)} bundled")
 
 

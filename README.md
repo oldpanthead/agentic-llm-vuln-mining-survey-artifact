@@ -12,7 +12,7 @@ This is the compact public release. It contains directly readable core audit fil
 
 The repository is organized by function: protocol, coding, and review documentation are under `docs/`; search, corpus, coding, adjudication, synthesis, and derived data occupy separate `data/` subdirectories. The root retains only the files needed to identify, cite, secure, and validate the artifact; internal release-builder scripts and superseded manifests are kept in repository history, not in this submission snapshot.
 
-The synchronized submission snapshot is identified by `csur-submission-2026-08-final-v12`. Earlier tags, including `csur-submission-2026-08-final-v11`, `csur-submission-2026-08-final-v10`, and `csur-submission-2026-08-final-v9`, remain immutable historical snapshots.
+The synchronized submission snapshot is identified by `csur-submission-2026-08-final-v13`. Earlier tags, including `csur-submission-2026-08-final-v12`, `csur-submission-2026-08-final-v11`, and `csur-submission-2026-08-final-v10`, remain immutable historical snapshots.
 
 ## Current Integrated Snapshot
 
@@ -41,14 +41,14 @@ The search used arXiv, OpenAlex, Crossref-backed publisher queries for ACM, IEEE
 | `data/adjudication/` | Independent comparison, OY rereview, QC, and decision log |
 | `data/synthesis/` | Source-located study synthesis and representative extractions |
 | `data/derived/` | Derived tables and adjudication completion metadata |
-| `docs/` | Protocol, coding, and review documentation |
+| `docs/` | Coding documentation directly; protocol and review documentation are in the function bundles |
 | `references/` | BibTeX metadata |
 
 ## Main Audit Paths
 
 ### Search, screening, and reconciliation
 
-- `docs/protocol/FINAL_MULTISOURCE_SEARCH_AND_PRISMA_20260730.md`: integrated PRISMA account, source-specific provenance, and unified search protocol.
+- `docs/protocol/FINAL_MULTISOURCE_SEARCH_AND_PRISMA_20260730.md` (in `bundles/search.zip`): integrated PRISMA account, source-specific provenance, and unified search protocol.
 - `data/search/final_multisource_search_20260730_access_log.csv`: query-level access and export log.
 - `data/search/final_multisource_search_20260730_results.csv`: saved multi-source search occurrences.
 - `data/search/final_multisource_search_20260730_screening_audit.csv`: deterministic title/abstract triage for the 1,642 unique interface records.
@@ -91,7 +91,7 @@ The search used arXiv, OpenAlex, Crossref-backed publisher queries for ACM, IEEE
 - `data/adjudication/third_party_rereview_decisions_20260824.csv` and `data/adjudication/third_party_rereview_qc_20260824.csv`: integrated disagreement decisions and separately retained QC results.
 - `data/adjudication/adjudication_log_199_all_fields.csv` and `data/derived/derived_summary_tables.json`: final external-rereview log plus consolidated descriptive statistics and embedded adjudication completion metadata. The integrated decision export also carries five `prior_form_*` columns, so earlier completed-form values are preserved without a second 410-row file.
 - `data/adjudication/claim_alignment_reconciled_199.csv`: the separate central-claim wording reconciliation (155 independent agreements, 44 third-party adjudications, 190 aligned, and nine overclaim labels). It is a reporting-alignment record, not a truth, reproducibility, or quality measure.
-- `docs/review/ADJUDICATION_COMPLETION_20260812.md`: adjudication rules, closure status, and reporting boundary.
+- `docs/review/ADJUDICATION_COMPLETION_20260812.md` and `docs/review/ADJUDICATION_RULES_20260812.md` (in `bundles/reliability_and_rereview.zip`): adjudication closure record, reporting boundary, and operational rules.
 
 The complete review uses the same controlled fields across all 199 target-software studies. OY performed an external rereview of all 410 independent-coding disagreements plus 50 hidden-reference QC rows using the prespecified codebook and source evidence. Only disagreement decisions enter the final matrix; QC remains separate. The first- and second-coder files are preserved unchanged, and raw agreement, Cohen's kappa, AC1, and substitution results remain pre-adjudication reliability records. No post-adjudication reliability statistic is claimed.
 

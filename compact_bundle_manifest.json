@@ -21,6 +21,7 @@
   ],
   "bundles": {
     "bundles/search.zip": [
+      "docs/protocol/FINAL_MULTISOURCE_SEARCH_AND_PRISMA_20260730.md",
       "data/search/final_multisource_search_20260730_access_log.csv",
       "data/search/final_multisource_search_20260730_all_coder_comparison.csv",
       "data/search/final_multisource_search_20260730_complete_screening.csv",
@@ -43,6 +44,8 @@
       "data/synthesis/traditional_security_primitives_by_use_role.csv"
     ],
     "bundles/reliability_and_rereview.zip": [
+      "docs/review/ADJUDICATION_COMPLETION_20260812.md",
+      "docs/review/ADJUDICATION_RULES_20260812.md",
       "data/adjudication/integrated_199_per_label_reliability_20260730.csv",
       "data/adjudication/integrated_199_reporting_audit_disagreement_review.csv",
       "data/adjudication/integrated_199_second_coder_comparison_20260730.csv",
