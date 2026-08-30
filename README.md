@@ -38,7 +38,7 @@ The search used arXiv, OpenAlex, Crossref-backed publisher queries for ACM, IEEE
 | `data/search/` | Search, screening, retrieval, and deduplication records |
 | `data/corpus/` | Source ledger, version crosswalk, publication/reference audit |
 | `data/coding/` | Preserved and final study-level matrices |
-| `data/adjudication/` | Independent comparison, OY rereview, QC, and decision log |
+| `data/adjudication/` | Independent comparison, OY rereview, and decision log |
 | `data/synthesis/` | Source-located study synthesis and representative extractions |
 | `data/derived/` | Derived tables and adjudication completion metadata |
 | `docs/` | Coding documentation directly; protocol and review documentation are in the function bundles |
@@ -89,13 +89,12 @@ The search used arXiv, OpenAlex, Crossref-backed publisher queries for ACM, IEEE
 - `data/adjudication/integrated_199_reporting_audit_disagreement_review.csv`: source-linked direction and boundary basis for reporting/audit disagreements.
 - Per-label agreement and the remaining sensitivity inputs are in `data/adjudication/integrated_199_per_label_reliability_20260730.csv` and `data/adjudication/integrated_199_second_coder_comparison_20260730.csv`.
 - Integrated pre-adjudication reliability is included in `docs/review/ADJUDICATION_COMPLETION_20260812.md`.
-- `data/adjudication/third_party_rereview_oy_20260824.csv`: raw 460-row OY rereview export (410 disagreements plus 50 QC rows).
-- `data/adjudication/third_party_rereview_decisions_20260824.csv` and `data/adjudication/third_party_rereview_qc_20260824.csv`: integrated disagreement decisions and separately retained QC results.
+- `data/adjudication/third_party_rereview_decisions_20260824.csv`: OY decisions for the 410 independent-coding disagreements; historical completed-form fields remain merged in this file.
 - `data/adjudication/adjudication_log_199_all_fields.csv` and `data/derived/derived_summary_tables.json`: final external-rereview log plus consolidated descriptive statistics and embedded adjudication completion metadata. The integrated decision export also carries five `prior_form_*` columns, so earlier completed-form values are preserved without a second 410-row file.
-- `data/adjudication/claim_alignment_reconciled_199.csv`: the separate central-claim wording reconciliation (155 independent agreements, 44 third-party adjudications, 190 aligned, and nine overclaim labels). It is a reporting-alignment record, not a truth, reproducibility, or quality measure.
+- `data/adjudication/claim_alignment_reconciled_199.csv`: 199-row auxiliary wording audit retaining Fang/Zhao/Rong/final labels, evidence location, material availability, and current-matrix crosswalk fields. The 190 aligned and nine overclaim labels describe wording alignment only, not study quality, truth, or independent reproducibility.
 - `docs/review/ADJUDICATION_COMPLETION_20260812.md` and `docs/review/ADJUDICATION_RULES_20260812.md` (in `bundles/reliability_and_rereview.zip`): adjudication closure record, reporting boundary, and operational rules.
 
-The complete review uses the same controlled fields across all 199 target-software studies. OY performed an external rereview of all 410 independent-coding disagreements plus 50 hidden-reference QC rows using the prespecified codebook and source evidence. Only disagreement decisions enter the final matrix; QC remains separate. The first- and second-coder files are preserved unchanged, and raw agreement, Cohen's kappa, AC1, and substitution results remain pre-adjudication reliability records. The subsequent 60-study check was performed by the same reviewer as a post-adjudication rule-application diagnostic; it is not an independent replication, gold-standard accuracy test, or post-adjudication reliability estimate.
+The complete review uses the same controlled fields across all 199 target-software studies. OY externally rereviewed the 410 independent-coding disagreements using the prespecified codebook and source evidence. The final matrix combines 583 unchanged agreement assignments, 410 OY-reviewed disagreement units, two later FunFuzz evidence corrections, and one later MALF official-record correction; the field log consequently tags 409 units as OY rereviews and three as post-adjudication corrections. For multi-label fields, OY reread the complete label set and could apply a stricter source-located rule, including `no qualifying label observed`, rather than mechanically selecting one coder. The first- and second-coder files are preserved unchanged, and raw agreement, Cohen's kappa, AC1, and substitution results remain pre-adjudication reliability records. The subsequent 60-study check was completed by Dou Xingwang as an independent post-adjudication rule-application diagnostic; it is not a gold-standard accuracy test or post-adjudication reliability estimate.
 
 ## Historical Provenance
 

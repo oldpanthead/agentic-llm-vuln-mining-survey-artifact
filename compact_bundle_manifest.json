@@ -29,13 +29,15 @@
       "data/search/final_multisource_search_20260730_fulltext_assessment.csv",
       "data/search/final_multisource_search_20260730_prisma_counts.csv",
       "data/search/final_multisource_search_20260730_results.csv",
-      "data/search/final_multisource_search_20260730_screening_audit.csv"
+      "data/search/final_multisource_search_20260730_screening_audit.csv",
+      "data/search/screening_reliability_sample_153.csv"
     ],
     "bundles/corpus_and_synthesis.zip": [
       "data/coding/current_study_level_coding_matrix_harmonized.csv",
       "data/coding/extended_synthesis_audit.csv",
       "data/corpus/reference_audit.csv",
       "data/derived/empirical_reporting_completeness.csv",
+      "data/synthesis/empirical_reporting_completeness_members_67.csv",
       "data/synthesis/mechanism_cost_ablation_synthesis.csv",
       "data/synthesis/public_alignment_evidence_index.csv",
       "data/synthesis/public_trigger_replay_evidence_index.csv",
@@ -55,8 +57,6 @@
       "data/adjudication/integrated_199_second_coder_comparison_20260730.csv",
       "data/adjudication/third_party_rereview_decisions_20260824.csv",
       "data/adjudication/third_party_rereview_material_crosswalk_20260824.csv",
-      "data/adjudication/third_party_rereview_oy_20260824.csv",
-      "data/adjudication/third_party_rereview_qc_20260824.csv",
       "data/adjudication/final_matrix_reapplication_check_tasks_60.csv",
       "data/adjudication/final_matrix_reapplication_check_public_material_60.csv",
       "data/derived/final_matrix_reapplication_check_summary.csv"
