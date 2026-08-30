@@ -27,3 +27,9 @@ ZOTERO_PDF_RESOLUTION_REPORT_PRIVATE.md
 # Build/archive outputs
 *.zip
 *.log
+tmp/
+
+# Restricted independent-recoding packet and its local validation helpers
+adjudication/final_matrix_repro_check_20260829/
+scripts/prepare_final_matrix_repro_check.py
+scripts/validate_final_matrix_repro_delivery.py

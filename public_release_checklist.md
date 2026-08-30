@@ -5,11 +5,11 @@ This checklist describes the current integrated artifact. It is a release gate, 
 ## Current Snapshot
 
 - Search and integration cutoff: 2026-07-30.
-- Release date: 2026-08-17.
+- Release date: 2026-08-31.
 - Source records: 1,785; version-reconciled studies: 1,772.
 - Target-software studies: 199; extended-synthesis studies: 154.
 - Background/reference studies: 668; excluded studies: 751.
-- Synchronized submission tag: `csur-submission-2026-08-final-v9`.
+- Synchronized submission tag: `csur-submission-2026-08-final-v14`.
 
 ## Public Contents
 

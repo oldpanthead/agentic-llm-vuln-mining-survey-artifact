@@ -243,14 +243,12 @@ def check_matrix() -> list[dict[str, str]]:
 
 def check_adjudication(target: list[dict[str, str]]) -> None:
     decisions = read_csv(DATA / "third_party_rereview_decisions_20260824.csv")
-    qc_rows = read_csv(DATA / "third_party_rereview_qc_20260824.csv")
     material_crosswalk = read_csv(DATA / "third_party_rereview_material_crosswalk_20260824.csv")
     log = read_csv(DATA / "adjudication_log_199_all_fields.csv")
     statistics = read_csv(DATA / "adjudicated_synthesis_statistics_199.csv")
     completion = DATA / "adjudication_completion_manifest.json"
 
     require(len(decisions) == 410, "third-party decision export must contain 410 disagreements")
-    require(len(qc_rows) == 50, "third-party QC export must contain 50 separate rows")
     require({row.get("case_id", "") for row in material_crosswalk} == {"A104", "A139", "A011", "A137"}, "corrected-material crosswalk cases differ")
     require(all(re.fullmatch(r"[0-9A-F]{64}", row.get("sha256", "")) for row in material_crosswalk), "corrected-material crosswalk contains an invalid SHA-256")
     require(len({row.get("third_party_task_id", "") for row in decisions}) == len(decisions), "third-party decision export has duplicate task IDs")
@@ -262,6 +260,38 @@ def check_adjudication(target: list[dict[str, str]]) -> None:
     require(len(cnvd) == 1 and cnvd[0].get("third_party_original_final_label") == "publicly aligned external trace" and cnvd[0].get("third_party_final_label") == "author-reported external clue" and "official-record check" in cnvd[0].get("decision_provenance", ""), "R2-159 post-adjudication provenance differs")
     require(len(log) == 995, "adjudication log must contain one row per study-field assignment")
     require(sum(bool(row.get("disagreement_id", "").strip()) for row in log) == 410, "adjudication log must contain 410 resolved disagreements")
+    require(
+        Counter(row.get("resolution_type", "") for row in log)
+         == Counter({"agreed_assignment": 583, "third_party_external_rereview": 409, "post_adjudication_evidence_correction": 3}),
+        "adjudication log resolution-type counts differ",
+    )
+    u17_corrections = [
+        row for row in log
+        if row.get("matrix_id") == "U17"
+        and row.get("resolution_type") == "post_adjudication_evidence_correction"
+    ]
+    require(
+        len(u17_corrections) == 2
+        and {row.get("field") for row in u17_corrections}
+        == {"principal reported evidence output", "external traceability"}
+        and {row.get("final_label") for row in u17_corrections}
+        == {"reproducible validation", "author-reported external clue"}
+        and all("post-adjudication" in row.get("brief_reason", "") for row in u17_corrections),
+        "U17 post-adjudication corrections are missing or inconsistent",
+    )
+    malf_correction = [
+        row for row in log
+        if row.get("matrix_id") == "C11"
+        and row.get("field") == "external traceability"
+        and row.get("resolution_type") == "post_adjudication_evidence_correction"
+    ]
+    require(
+        len(malf_correction) == 1
+        and malf_correction[0].get("final_label") == "author-reported external clue"
+        and malf_correction[0].get("reviewer_initials") == "author"
+        and "CNVD-2024-16009" in malf_correction[0].get("evidence_location", ""),
+        "MALF post-adjudication correction is missing or inconsistent",
+    )
     require(all(row.get("final_label", "").strip() != "unresolved" for row in log), "adjudication log contains unresolved labels")
     require(len(statistics) == 28, "adjudicated statistics must contain all controlled labels and empty-set rows")
     reporting_stat = [
@@ -304,6 +334,17 @@ def check_adjudication(target: list[dict[str, str]]) -> None:
         completion_data = json.loads(completion.read_text(encoding="utf-8"))
         require(completion_data.get("disagreement_rows") == 410, "completion manifest disagreement count differs")
         require(completion_data.get("unresolved_total") == 0, "completion manifest unresolved count differs")
+        require(
+            completion_data.get("resolution_types")
+              == {"third_party_external_rereview": 409, "agreed_assignment": 583, "post_adjudication_evidence_correction": 3},
+            "completion manifest resolution-type counts differ",
+        )
+        independent_check = completion_data.get("independent_rule_application_check", {})
+        require(independent_check.get("reviewer_name") == "Dou Xingwang", "independent rule-application reviewer differs")
+        require(independent_check.get("affiliation") == "University of Chinese Academy of Sciences", "independent reviewer affiliation differs")
+        require(independent_check.get("study_count") == 60 and independent_check.get("task_count") == 300, "independent rule-application sample size differs")
+        require(independent_check.get("construct_design_participation") is False and independent_check.get("independent_of_oy_rereview") is True, "independent rule-application independence metadata differs")
+        require(independent_check.get("changes_final_matrix") is False and independent_check.get("gold_standard_accuracy_estimate") is False, "independent rule-application reporting boundary differs")
         final_matrix = completion_data.get("current_final_matrix", {})
         matrix_path = DATA / "adjudicated_study_level_coding_matrix_199.csv"
         matrix_hash = hashlib.sha256(matrix_path.read_bytes()).hexdigest().upper()
@@ -312,7 +353,7 @@ def check_adjudication(target: list[dict[str, str]]) -> None:
         require(final_matrix.get("study_count") == 199 and final_matrix.get("unique_matrix_ids") == 199, "completion manifest final-matrix cardinality differs")
         require(bool(final_matrix.get("freeze_recorded_utc")), "completion manifest final-matrix freeze time is missing")
     require({row.get("matrix_id", "") for row in log} == {row.get("matrix_id", "") for row in target}, "adjudication log and matrix IDs differ")
-    info("third-party external rereview: 410 disagreements integrated; 50 QC rows kept separate; 0 unresolved")
+    info("third-party external rereview: 410 disagreements integrated; 0 unresolved")
 
 
 def check_extended(target: list[dict[str, str]]) -> None:
@@ -442,6 +483,23 @@ def check_search_and_dedup() -> None:
     require(len(resolutions) == 124, "dedup audit must contain 124 candidate pairs")
     require(not any(row.get("audit_decision") == "needs_author_confirmation" for row in resolutions), "unresolved dedup pair remains")
     require(sum(row.get("audit_decision") == "same_study_or_version" for row in resolutions) == 119, "same-study/version resolution count differs")
+    reliability = read_csv(DATA / "screening_reliability_sample_153.csv")
+    require(len(reliability) == 153, "screening reliability sample must contain 153 records")
+    require(len({row.get("discovery_id", "") for row in reliability}) == 153, "screening reliability sample contains duplicate IDs")
+    require(all(row.get("calibration_excluded") == "true" for row in reliability), "screening sample includes calibration records")
+    require(all(row.get("sample_role") == "formal_random_screening_sample" for row in reliability), "screening sample role differs")
+    first = [row.get("first_decision", "") for row in reliability]
+    second = [row.get("second_decision", "") for row in reliability]
+    consensus = [row.get("consensus_decision", "") for row in reliability]
+    require(set(first) <= {"RETAIN", "EXCLUDE"} and set(second) <= {"RETAIN", "EXCLUDE"}, "screening sample contains an invalid decision")
+    require(raw_agreement(first, second) == 142 / 153, "screening sample agreement differs from 142/153")
+    require(abs(kappa(first, second) - 0.690) < 0.001, "screening sample kappa differs from 0.690")
+    first_binary = ["1" if value == "RETAIN" else "0" for value in first]
+    second_binary = ["1" if value == "RETAIN" else "0" for value in second]
+    require(abs(gwet_ac1_binary(first_binary, second_binary) - 0.906) < 0.001, "screening sample AC1 differs from 0.906")
+    require(sum(a != b for a, b in zip(first, second)) == 11, "screening sample disagreement count differs")
+    require(all(value in {"RETAIN", "EXCLUDE"} for value in consensus), "screening consensus contains an invalid decision")
+    info("153-record screening reliability sample and 142/153, kappa, AC1 metrics verified")
     info("integrated PRISMA allocation and source-specific provenance verified through 2026-07-30")
 
 
@@ -735,6 +793,23 @@ def check_domain_and_reporting_extractions(target: list[dict[str, str]]) -> None
     require(contamination_counts == Counter({"explicit control": 6, "discussion only": 2, "not located": 191}), f"training-overlap counts differ: {dict(contamination_counts)}")
     summary_counts = {row["status"]: int(row["count"]) for row in read_csv(DATA / "training_data_overlap_control_counts.csv")}
     require(summary_counts == dict(contamination_counts), "training-overlap summary differs")
+    claim_audit = read_csv(DATA / "claim_alignment_reconciled_199.csv")
+    require(len(claim_audit) == 199, "claim-alignment audit must contain 199 rows")
+    require({row.get("matrix_id", "") for row in claim_audit} == target_ids, "claim-alignment IDs differ from target matrix")
+    required_claim_fields = {
+        "fang_label", "zhao_label", "rong_final_label", "final_label",
+        "evidence_locator", "material_availability", "final_principal_output",
+        "final_external_traceability",
+    }
+    require(required_claim_fields <= set(claim_audit[0]), "claim-alignment audit fields are incomplete")
+    require(Counter(row.get("final_label", "") for row in claim_audit) == Counter({"aligned": 190, "overclaim": 9}), "claim-alignment final labels differ")
+    require(not ({"principal_output", "matrix_external_traceability"} & set(claim_audit[0])), "claim-alignment audit retains stale crosswalk columns")
+    require(all(row.get("final_principal_output") == target_by_id[row["matrix_id"]]["strongest_evidence_output"] for row in claim_audit), "claim-alignment principal-output crosswalk differs")
+    require(all(row.get("final_external_traceability") == target_by_id[row["matrix_id"]]["external_traceability"] for row in claim_audit), "claim-alignment traceability crosswalk differs")
+    completeness_members = read_csv(DATA / "empirical_reporting_completeness_members_67.csv")
+    require(len(completeness_members) == 67 and len({row.get("matrix_id", "") for row in completeness_members}) == 67, "reporting-completeness membership must contain 67 unique studies")
+    require({row.get("matrix_id", "") for row in completeness_members} == {row["matrix_id"] for row in target if row["record_id"].startswith("CP")}, "reporting-completeness membership differs from core 67")
+    require(all(row.get("synthesis_stratum") == "core_target_67" for row in completeness_members), "reporting-completeness synthesis stratum differs")
     info("target-domain, strict public-artifact, sensitivity, public-alignment, and training-overlap extractions verified")
 
 

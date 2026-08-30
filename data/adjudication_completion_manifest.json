@@ -29,37 +29,34 @@
     }
   },
   "resolution_types": {
-    "third_party_external_rereview": 410,
-    "agreed_assignment": 585
+    "third_party_external_rereview": 409,
+    "agreed_assignment": 583,
+    "post_adjudication_evidence_correction": 3
   },
   "outputs": [
     "data\\adjudicated_study_level_coding_matrix_199.csv",
     "data\\adjudication_log_199_all_fields.csv",
     "data\\adjudicated_synthesis_statistics_199.csv"
   ],
-  "third_party_rereview": {
+    "third_party_rereview": {
     "reviewer_initials": "OY",
     "review_date": "2026-08-24",
-    "task_count": 460,
+    "task_count": 410,
     "disagreement_tasks_integrated": 410,
-    "qc_tasks_kept_separate": 50,
     "source_workbook_name": "third_party_core_adjudication_rereview_round2_R2_material_identity_corrected_7cases.xlsx",
-    "raw_review_export": "third_party_rereview_oy_20260824.csv",
     "material_identity_crosswalk": "data/third_party_rereview_material_crosswalk_20260824.csv",
     "decision_export": "data/third_party_rereview_decisions_20260824.csv",
-    "qc_export": "data/third_party_rereview_qc_20260824.csv",
     "cnvd_post_check_task": "R2-159",
     "cnvd_final_label": "author-reported external clue",
     "final_statistics": "data/adjudicated_synthesis_statistics_199.csv",
     "task_material_validation": {
       "status": "passed",
-      "task_count": 460,
+      "task_count": 410,
       "disagreement_task_count": 410,
-      "qc_task_count": 50,
       "unique_task_case_count": 196,
       "coder_crosswalk_study_count": 199,
       "corrected_task_count": 7,
-      "material_hash_count": 460
+      "material_hash_count": 410
     },
     "coder_material_identity_validation": {
       "status": "passed",
@@ -72,6 +69,21 @@
       "low_score_files": 0,
       "validator": "validate_coder_material_identity.py"
     }
+  },
+  "independent_rule_application_check": {
+    "reviewer_name": "Dou Xingwang",
+    "affiliation": "University of Chinese Academy of Sciences",
+    "research_area": "firmware-vulnerability mining",
+    "construct_design_participation": false,
+    "independent_of_oy_rereview": true,
+    "study_count": 60,
+    "task_count": 300,
+    "purpose": "independent external recoding of the final matrix under the frozen codebook",
+    "changes_final_matrix": false,
+    "gold_standard_accuracy_estimate": false,
+    "summary": "data/final_matrix_reapplication_check_summary.csv",
+    "packet_directory": "adjudication/final_matrix_repro_check_20260829/DELIVERY_TO_OY_EMPIRICAL_RULES_20260830",
+    "completed_output_directory": "adjudication/final_matrix_repro_check_20260829/REVIEW_OUTPUT_EMPIRICAL_RULES_FINAL_20260830"
   },
   "current_final_matrix": {
     "path": "data/adjudicated_study_level_coding_matrix_199.csv",

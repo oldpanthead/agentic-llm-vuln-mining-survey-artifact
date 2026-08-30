@@ -4,7 +4,7 @@
 
 This public release contains non-sensitive data and scripts supporting the ACM CSUR manuscript. It includes the integrated multi-source search through 2026-07-30, study/version reconciliation, analytical-layer allocation, the 199-study target-software coding matrix, the 154-study extended synthesis audit, complete independent second-coder files, and source-located supplementary extractions.
 
-The immutable synchronized submission tag is `csur-submission-2026-08-final-v10`. Earlier tags, including `csur-submission-2026-08-final-v9`, remain unchanged.
+The immutable synchronized submission tag is `csur-submission-2026-08-final-v14`. Earlier tags, including `csur-submission-2026-08-final-v10` and `csur-submission-2026-08-final-v9`, remain unchanged.
 
 ## Current Counts
 
@@ -27,11 +27,12 @@ The authoritative list is `manuscript_artifact_paths.txt`. It includes:
 - `data/adjudicated_study_level_coding_matrix_199.csv` as the final descriptive source, with `data/current_study_level_coding_matrix_harmonized.csv` preserved as the primary pre-adjudication matrix;
 - `data/extended_synthesis_audit.csv` (92 full-text-supported and 62 title/abstract-metadata-supported records);
 - study-level publication-status assignments and stratified distributions;
+- `data/derived/empirical_reporting_completeness.csv` for the 67-study qualitative-synthesis subset;
 - the study-level primitive extraction, workflow-active/evaluation role split, and primitive--output cross-tab;
 - target-domain/year, publication-status, public-artifact, controlled-task membership and denominator sensitivity, public-alignment, and training-overlap reporting audits;
 - `data/final_multisource_cohort_stability.csv`;
 - integrated 199-study pre-adjudication second-coder comparison, per-label reliability, and substitution sensitivity;
-- the raw 460-row OY external rereview export, separate 410-row decision and 50-row QC layers, full 995-row log, completion manifest, and adjudicated statistics;
+- the 410-row OY external rereview decision export, full 995-row log, completion manifest, and adjudicated statistics;
 - representative mechanism, reported-result, cost, ablation, and failure-recovery extractions;
 - reference metadata for newly integrated study-level records.
 
@@ -50,6 +51,10 @@ Create a clean public directory with `python build_public_release.py <new-output
 ## Historical Provenance
 
 The tagged source repository retains earlier search and coding stages, including 31-record, 41-record, and 67-study views. The clean public export excludes those historical build files except for the frozen pre-final matrix used by the current validator.
+
+## Post-adjudication rule-application diagnostic
+
+The public release retains the frozen 60-study/300-task summary and task provenance metadata. The completed empirical output was produced by Dou Xingwang (University of Chinese Academy of Sciences; firmware-vulnerability mining), an external reviewer who did not participate in construct design or OY's 410-unit rereview. It is an independent external recoding against the final matrix, not a gold-standard accuracy estimate; it does not alter the 199-study matrix or replace the pre-adjudication reliability records. The blind packet, task-level responses, restricted key, and source PDFs remain outside the clean export because the source PDFs are not redistributable. Field-level agreement is reported as a diagnostic and is expected to differ between single-label and multi-label fields. The three-level external-traceability crosswalk and realized 14/15/12/16/3 output strata are recorded in the summary and manuscript.
 
 ## Security Boundary
 

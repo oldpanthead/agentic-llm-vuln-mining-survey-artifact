@@ -11,7 +11,7 @@ This repository contains the non-sensitive artifact for a mapping-oriented scopi
 
 For a public archive, run `python build_public_release.py <new-output-directory>`. The builder copies only the release allowlist and manuscript-facing manifest, then validates the exported copy. Do not archive the source working tree directly.
 
-The synchronized submission snapshot is identified by `csur-submission-2026-08-final-v10`. Earlier tags, including `csur-submission-2026-08-final-v9` and `csur-submission-2026-07-final-v8`, remain immutable historical snapshots.
+The synchronized submission snapshot is identified by `csur-submission-2026-08-final-v14`. Earlier tags, including `csur-submission-2026-08-final-v10`, `csur-submission-2026-08-final-v9`, and `csur-submission-2026-07-final-v8`, remain immutable historical snapshots.
 
 ## Current Integrated Snapshot
 
@@ -59,6 +59,7 @@ The search used arXiv, OpenAlex, Crossref-backed publisher queries for ACM, IEEE
 - `data/controlled_task_only_membership.csv` and `data/controlled_task_only_sensitivity.csv`: all 199 row-level denominator decisions and the mechanically derived 199-versus-164 sensitivity results.
 - `data/public_alignment_evidence_index.csv`: the local evidence chains for all four publicly aligned external-trace cases, including QRS.
 - `data/training_data_overlap_control.csv` and `data/training_data_overlap_control_counts.csv`: source-located reporting status for explicit training-overlap controls, discussion only, or no statement located.
+- `data/derived/empirical_reporting_completeness.csv`: source-located reporting-completeness extraction for the 67-study subset used in the qualitative synthesis; its denominator is 67, not the full 199-study matrix.
 - `data/publication_status_sensitivity_analysis.csv`: 199-study shape and output distributions by publication-status group.
 - `data/final_multisource_cohort_stability.csv`: provenance-only comparison of historical acquisition groups under the final schema; it does not define manuscript cohorts or denominators.
 - `data/representative_system_mechanisms.csv`: source-located mechanism extraction used by the representative system comparison.
@@ -74,12 +75,16 @@ The search used arXiv, OpenAlex, Crossref-backed publisher queries for ACM, IEEE
 - `data/integrated_199_reporting_audit_disagreement_review.csv`: source-linked direction and boundary basis for reporting/audit disagreements.
 - `data/integrated_199_label_substitution_sensitivity_20260730.csv`: complete coder2 substitution counts.
 - `INTEGRATED_199_SECOND_CODER_AGREEMENT_20260730.md`: integrated pre-adjudication reliability summary.
-- `third_party_rereview_oy_20260824.csv`: raw 460-row OY rereview export (410 disagreements plus 50 QC rows).
-- `data/third_party_rereview_decisions_20260824.csv` and `data/third_party_rereview_qc_20260824.csv`: integrated disagreement decisions and separately retained QC results.
+- `data/third_party_rereview_decisions_20260824.csv`: OY decisions for all 410 independent-coding disagreement tasks.
 - `data/adjudication_log_199_all_fields.csv`, `data/adjudicated_synthesis_statistics_199.csv`, and `data/adjudication_completion_manifest.json`: final external-rereview log, descriptive statistics, and completion manifest.
+- `data/claim_alignment_reconciled_199.csv`: 199-row auxiliary wording-audit record with coder labels, evidence locators, material availability, and current final-matrix crosswalk fields.
+- `data/screening_reliability_sample_153.csv`: record-level independent screening sample used to reproduce the 142/153 agreement result; the 20-record calibration is separate.
+- `data/empirical_reporting_completeness_members_67.csv`: membership list for the 67-study reporting-completeness subset.
 - `ADJUDICATION_COMPLETION_20260812.md`: adjudication rules, closure status, and reporting boundary.
 
-The complete review uses the same controlled fields across all 199 target-software studies. OY performed an external rereview of all 410 independent-coding disagreements plus 50 hidden-reference QC rows using the prespecified codebook and source evidence. Only disagreement decisions enter the final matrix; QC remains separate. The first- and second-coder files are preserved unchanged, and raw agreement, Cohen's kappa, AC1, and substitution results remain pre-adjudication reliability records. No post-adjudication reliability statistic is claimed.
+The complete review uses the same controlled fields across all 199 target-software studies. OY performed an external rereview of all 410 independent-coding disagreements using the prespecified codebook and source evidence. The final matrix combines 583 unchanged agreement assignments, 410 OY-reviewed disagreement units, two later evidence corrections for U17 (FunFuzz), and one later official-record correction for C11 (MALF); the final log consequently tags 409 units as OY rereviews and three as post-adjudication corrections. The first- and second-coder files are preserved unchanged, and raw agreement, Cohen's kappa, AC1, and substitution results remain pre-adjudication reliability records. A separate random 50-study sample was used as an external interpretability check; it diagnoses rule boundaries and is not a validation of the complete final matrix.
+
+The public summary `data/final_matrix_reapplication_check_summary.csv` reports the completed 60-study/300-task rule-application metrics by field. The check was completed by Dou Xingwang (University of Chinese Academy of Sciences; firmware-vulnerability mining), who did not participate in construct design or OY's rereview. It is an independent external recoding against the final matrix, but it is not a gold-standard accuracy estimate and does not modify the 199-study matrix. The source packet and completed task-level responses are retained in the restricted audit workspace; the public release exposes the summary and provenance metadata only because the packet contains non-redistributable source PDFs. The packet's three-level external-traceability vocabulary maps `benchmark ground truth / public material` to `no external trace reported`, and `publicly aligned external trace` to `item-aligned external record` for comparison only. The realized sample is candidate judgment 14, controlled task completion 15, runtime safety signal 12, reproducible validation 16, and externally traceable material 3; the minimum-12 stratification target could not be met for the three-study externally traceable stratum.
 
 ## Historical Provenance
 
@@ -90,6 +95,10 @@ The tagged source repository retains files concerning the earlier 31-record, 41-
 The manuscript synthesis uses workflow position, cross-stage capability, primary system shape, principal reported evidence output, external traceability, and structured claim-boundary notes. The CSV field `strongest_evidence_output` remains as a historical schema name for compatibility.
 
 The public artifact excludes undisclosed PoCs, exploit payloads, sensitive crash inputs, private targets, credentials, live reproduction steps, local document-library paths, private databases, full-text PDFs, and vendor-private or bug-bounty communications.
+
+## Post-adjudication rule-application diagnostic
+
+The completed 60-study/300-task check is separate from OY's 410-unit rereview and Rong Zhoujie's interpretability sample. The public release provides its frozen field-level summary in `data/final_matrix_reapplication_check_summary.csv`; the blind packet, source materials, and task-level response files remain in the restricted audit workspace and are not part of the clean export because the source PDFs are not redistributable. The check does not modify the final matrix or constitute a gold-standard accuracy estimate.
 
 ## License
 

@@ -35,7 +35,7 @@ Expected current counts: 1,785 source records; 1,772 studies after version recon
 - `unified_second_coder_codebook.md`: controlled coding definitions and boundary rules.
 - `evidence_output_codebook.md`: principal evidence-output labels.
 
-## Complete Independent Review
+## Coding, Reliability, and Rereview Records
 
 - `data/integrated_199_second_coder_comparison_20260730.csv`: complete field comparison.
 - `data/integrated_199_per_label_reliability_20260730.csv`: lifecycle and capability label-level reliability, including Gwet's AC1.
@@ -43,11 +43,21 @@ Expected current counts: 1,785 source records; 1,772 studies after version recon
 - `data/integrated_199_label_substitution_sensitivity_20260730.csv`: full-label substitution counts.
 - `INTEGRATED_199_SECOND_CODER_AGREEMENT_20260730.md`: report used by the manuscript.
 - `data/final_multisource_search_20260730_all_coder_comparison.csv`: detailed comparison for newly reviewed records.
-- `third_party_rereview_oy_20260824.csv`: raw OY export for 410 disagreement and 50 QC tasks.
-- `data/third_party_rereview_decisions_20260824.csv` and `data/third_party_rereview_qc_20260824.csv`: final decision and separate QC layers.
+- `data/third_party_rereview_decisions_20260824.csv`: OY decisions for all 410 disagreement tasks.
 - `data/adjudication_log_199_all_fields.csv`: final audit log covering 995 study-field assignments.
+- `data/claim_alignment_reconciled_199.csv`: 199-row auxiliary wording-audit record with coder labels, final label, evidence locator, material availability, and current final-matrix crosswalk fields.
+- `data/screening_reliability_sample_153.csv`: record-level 153-item screening reliability sample; 20 calibration items are excluded.
+- `data/empirical_reporting_completeness_members_67.csv`: membership list for the 67-study reporting-completeness subset.
 - `data/adjudicated_synthesis_statistics_199.csv` and `data/adjudication_completion_manifest.json`: final descriptive statistics and completion metadata.
 - `ADJUDICATION_COMPLETION_20260812.md`: fixed rules and reporting boundary.
+
+### Post-adjudication rule-application diagnostic
+
+- The blind packet, restricted scoring key, and source materials are maintained outside the clean public export; only the frozen summary is distributed.
+
+The 60-study/300-task check is a completed independent external recoding by Dou Xingwang (University of Chinese Academy of Sciences; firmware-vulnerability mining), who did not participate in construct design or OY's 410-unit rereview. It is separate from the 410-unit decision layer and Rong Zhoujie's 50-study interpretability check; it does not change the final 199-study matrix, provide a gold standard, or constitute a claim of perfect label truth. The public release exposes the frozen field-level summary only; the blind packet and source materials remain in the restricted audit workspace because the source PDFs are not redistributable. For its three-level external-traceability comparison, `benchmark ground truth / public material` is mapped to `no external trace reported`, and `publicly aligned external trace` to `item-aligned external record`. The realized principal-output strata are 14/15/12/16/3 because the externally traceable stratum contains only three studies.
+
+- `data/final_matrix_reapplication_check_summary.csv`: public five-field summary of the 60-study/300-task check; task-level materials and the comparison key remain separately controlled.
 
 ## Supplementary Extractions
 
@@ -56,6 +66,7 @@ Expected current counts: 1,785 source records; 1,772 studies after version recon
 - `data/target_domain_extraction.csv`, `data/target_domain_by_principal_output.csv`, and `data/publication_year_by_primary_shape.csv`: target-domain and year cross-tabs used in the study-level figure.
 - `data/public_artifact_availability.csv` and `data/principal_output_by_public_artifact_availability.csv`: located public artifact indicators by output.
 - `data/training_data_overlap_control.csv` and `data/training_data_overlap_control_counts.csv`: training-overlap control reporting audit.
+- `data/derived/empirical_reporting_completeness.csv`: reporting-completeness extraction for the 67-study qualitative-synthesis subset (explicitly not a 199-study prevalence estimate).
 - `data/mapping_snapshot_counts.csv`: source-record composition and current study-level distribution snapshot referenced by the manuscript.
 - `data/publication_status_sensitivity_analysis.csv`: publication-status robustness counts for the 199-study set.
 - `data/controlled_task_only_membership.csv` and `data/controlled_task_only_sensitivity.csv`: the 199 row-level inclusion decisions and mechanically derived 199-versus-164 denominator sensitivity.

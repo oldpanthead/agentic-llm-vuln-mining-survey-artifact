@@ -116,7 +116,7 @@ Legacy `Core`, `Supporting`, `Background`, and `Excluded` values remain in `corp
 | `data/representative_reported_results.csv` | Representative system | Evaluation setting, reported result, validation material, and source location. |
 | `data/product_ecosystem_snapshot.csv` | Public product material | Independent product-ecosystem context outside research-study denominators. |
 
-## Independent Coding Files
+## Coding, Reliability, and Rereview Files
 
 | File | Unit | Purpose and key fields |
 |---|---|---|
@@ -125,13 +125,16 @@ Legacy `Core`, `Supporting`, `Background`, and `Excluded` values remain in `corp
 | `data/integrated_199_per_label_reliability_20260730.csv` | Controlled label | Positive counts, raw agreement, Cohen's kappa, Gwet's AC1, and interpretation note. |
 | `data/integrated_199_reporting_audit_disagreement_review.csv` | Reporting/audit disagreement | Direction, assignments, and source-linked boundary basis. |
 | `data/integrated_199_label_substitution_sensitivity_20260730.csv` | Controlled label | First-coder and complete coder-substitution counts and difference. |
-| `third_party_rereview_oy_20260824.csv` | Rereview task | Raw OY export for 410 disagreement tasks and 50 hidden-reference QC tasks. |
 | `data/third_party_rereview_decisions_20260824.csv` | Disagreement | OY decision, rationale, locator, task/case/study/field identity, material path and SHA-256, and integration provenance for 410 disagreements. |
-| `data/third_party_rereview_qc_20260824.csv` | QC task | Fifty rule-application checks with the same task/material identity fields, retained separately from final decisions and reliability statistics. |
 | `data/third_party_rereview_material_crosswalk_20260824.csv` | Corrected case material | Identity correction and SHA-256 record for A104, A139, A011, and A137. |
-| `data/adjudication_log_199_all_fields.csv` | Study-field assignment | Full adjudication audit log for all 995 controlled study-field assignments. |
+| `data/adjudication_log_199_all_fields.csv` | Study-field assignment | Full adjudication audit log for all 995 controlled study-field assignments: 583 unchanged agreements, 409 OY rereview assignments, two U17 (FunFuzz) corrections, and one C11 (MALF) official-record correction. |
+| `data/claim_alignment_reconciled_199.csv` | Auxiliary wording audit | One row per study with Fang/Zhao/Rong/final wording labels, evidence locator, material availability, and crosswalked current principal output and external traceability. |
+| `data/screening_reliability_sample_153.csv` | Screening reliability | Record-level first/second/consensus decisions for the 153-item independent sample; the 20-item calibration is excluded. |
+| `data/empirical_reporting_completeness_members_67.csv` | Reporting-completeness membership | The 67 core target studies used as the denominator for the nine-item reporting-completeness extraction. |
 | `data/adjudicated_synthesis_statistics_199.csv` | Controlled label | Final count, denominator, share, unresolved status, and reportability from the adjudicated matrix. |
-| `data/adjudication_completion_manifest.json` | Adjudication run | Inputs, outputs, disagreement count, unresolved count, and field reportability. |
+| `data/adjudication_completion_manifest.json` | Adjudication run | Inputs, outputs, disagreement count, resolution-type counts, unresolved count, field reportability, and the independent 60-study rule-application check metadata. |
+
+The 60-study/300-task rule-application check was completed by Dou Xingwang (University of Chinese Academy of Sciences; firmware-vulnerability mining), independently of OY's rereview and the construct-design process. It compares a stratified sample with the final matrix, does not change that matrix, and is not treated as a gold-standard accuracy estimate.
 
 Final descriptive distributions use the adjudicated matrix. Independent assignments and substitution results remain separate as pre-adjudication reliability and sensitivity records; the adjudicated matrix is not a new reliability test.
 

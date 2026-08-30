@@ -1,0 +1,6 @@
+field,field_type,n,primary_metric,primary_value,secondary_metric,secondary_value,additional_metric,additional_value,notes
+primary system shape,single-label,60,raw agreement,0.667,Cohen kappa,0.553,,,40/60 raw agreement; diagnostic only
+external traceability,single-label,60,raw agreement,0.700,Cohen kappa,0.354,,,42/60 raw agreement; diagnostic only
+principal reported evidence output,single-label,60,raw agreement,0.417,Cohen kappa,0.218,,,25/60 raw agreement; diagnostic only
+lifecycle coverage,multi-label,60,exact-set agreement,0.233,mean row Jaccard,0.596,micro-F1,0.709,14/60 exact sets; diagnostic only
+cross-stage capability,multi-label,60,exact-set agreement,0.083,mean row Jaccard,0.293,micro-F1,0.455,5/60 exact sets; diagnostic only
