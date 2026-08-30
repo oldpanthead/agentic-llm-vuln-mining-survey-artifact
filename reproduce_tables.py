@@ -459,6 +459,32 @@ def check_adjudication(target: list[dict[str, str]]) -> None:
     info("third-party external rereview: 410 disagreements integrated; 50 QC rows kept separate; 0 unresolved")
 
 
+def check_reapplication_diagnostic() -> None:
+    summary = read_csv(DATA / "derived" / "final_matrix_reapplication_check_summary.csv")
+    tasks = read_csv(ADJUDICATION / "final_matrix_reapplication_check_tasks_60.csv")
+    descriptors = read_csv(ADJUDICATION / "final_matrix_reapplication_check_public_material_60.csv")
+    require(len(summary) == 5, "reapplication diagnostic summary must contain five fields")
+    require(len(tasks) == 300, "reapplication diagnostic must contain 300 task rows")
+    require(len(descriptors) == 60, "reapplication diagnostic must contain 60 descriptors")
+    require(len({row.get("task_id", "") for row in tasks}) == 300, "reapplication diagnostic task IDs must be unique")
+    require(len({row.get("sample_id", "") for row in descriptors}) == 60, "reapplication diagnostic sample IDs must be unique")
+    expected = {
+        "primary system shape": ("raw agreement", "0.667", "Cohen kappa", "0.553"),
+        "external traceability": ("raw agreement", "0.700", "Cohen kappa", "0.354"),
+        "principal reported evidence output": ("raw agreement", "0.417", "Cohen kappa", "0.218"),
+        "lifecycle coverage": ("exact-set agreement", "0.233", "mean row Jaccard", "0.596"),
+        "cross-stage capability": ("exact-set agreement", "0.083", "mean row Jaccard", "0.293"),
+    }
+    observed = {row.get("field", ""): row for row in summary}
+    require(set(observed) == set(expected), "reapplication diagnostic fields differ")
+    for field, values in expected.items():
+        row = observed.get(field, {})
+        require(tuple(row.get(key, "") for key in ("primary_metric", "primary_value", "secondary_metric", "secondary_value")) == values, f"reapplication diagnostic metrics differ: {field}")
+    require(all(row.get("reviewer_label", "").strip() for row in tasks), "reapplication diagnostic contains blank reviewer labels")
+    require(all(row.get("material_sha256", "").strip() for row in tasks), "reapplication diagnostic contains blank material hashes")
+    info("post-adjudication rule-application diagnostic: 60 studies and 300 tasks verified")
+
+
 def check_claim_alignment() -> None:
     rows = read_csv(ADJUDICATION / "claim_alignment_reconciled_199.csv")
     require(len(rows) == EXPECTED["target_studies"], "claim-alignment reconciliation must contain 199 rows")
@@ -1025,6 +1051,7 @@ def main() -> int:
     check_extended(target)
     check_search_and_dedup()
     check_adjudication(target)
+    check_reapplication_diagnostic()
     check_claim_alignment()
     check_supplementary_extractions(target)
     check_publication_status(target)

@@ -1,6 +1,6 @@
 {
   "format": "compact-audit-release-v2",
-  "description": "The release contains final audit evidence only; obsolete build files, duplicate manifests, product snapshots, and pre-final transition matrices are excluded.",
+  "description": "The release contains final audit evidence and the completed post-adjudication rule-application diagnostic; obsolete build files, duplicate manifests, product snapshots, and pre-final transition matrices are excluded.",
   "core_files": [
     "CITATION.cff",
     "LICENSE-CODE",
@@ -46,13 +46,20 @@
     "bundles/reliability_and_rereview.zip": [
       "docs/review/ADJUDICATION_COMPLETION_20260812.md",
       "docs/review/ADJUDICATION_RULES_20260812.md",
+      "docs/review/final_matrix_reapplication_check_README.md",
+      "docs/review/final_matrix_reapplication_check_RULES.md",
+      "docs/review/final_matrix_reapplication_check_FREEZE_RECORD.md",
+      "docs/review/final_matrix_reapplication_check_SHA256.txt",
       "data/adjudication/integrated_199_per_label_reliability_20260730.csv",
       "data/adjudication/integrated_199_reporting_audit_disagreement_review.csv",
       "data/adjudication/integrated_199_second_coder_comparison_20260730.csv",
       "data/adjudication/third_party_rereview_decisions_20260824.csv",
       "data/adjudication/third_party_rereview_material_crosswalk_20260824.csv",
       "data/adjudication/third_party_rereview_oy_20260824.csv",
-      "data/adjudication/third_party_rereview_qc_20260824.csv"
+      "data/adjudication/third_party_rereview_qc_20260824.csv",
+      "data/adjudication/final_matrix_reapplication_check_tasks_60.csv",
+      "data/adjudication/final_matrix_reapplication_check_public_material_60.csv",
+      "data/derived/final_matrix_reapplication_check_summary.csv"
     ]
   }
 }

@@ -110,6 +110,13 @@ Legacy `Core`, `Supporting`, `Background`, and `Excluded` values remain in `corp
 | `data/adjudication/third_party_rereview_material_crosswalk_20260824.csv` | Corrected case material | Identity correction and SHA-256 record for A104, A139, A011, and A137. |
 | `data/adjudication/adjudication_log_199_all_fields.csv` | Study-field assignment | Full adjudication audit log for all 995 controlled study-field assignments. |
 | `data/derived/derived_summary_tables.json` | Adjudication metadata | The `metadata.adjudication_completion_manifest` object records inputs, outputs, disagreement count, unresolved count, and field reportability. |
+| `data/adjudication/final_matrix_reapplication_check_tasks_60.csv` | Post-adjudication diagnostic task | OY's completed 300-task reapplication of the five frozen fields on 60 sampled studies, with source locators and excerpts; not an independent replication or accuracy estimate. |
+| `data/adjudication/final_matrix_reapplication_check_public_material_60.csv` | Post-adjudication diagnostic descriptor | Binary public-material descriptors for the 60 sampled studies, retained separately from task labels. |
+| `data/derived/final_matrix_reapplication_check_summary.csv` | Post-adjudication diagnostic summary | Field-level agreement metrics for the 60-study/300-task check; exact-set agreement, Jaccard, and micro-F1 are descriptive diagnostics only. |
+| `docs/review/final_matrix_reapplication_check_README.md` | Diagnostic protocol | Scope, source basis, and interpretation limits for the post-adjudication check. |
+| `docs/review/final_matrix_reapplication_check_RULES.md` | Diagnostic rules | Versioned empirical rules used for the completed check. |
+| `docs/review/final_matrix_reapplication_check_FREEZE_RECORD.md` | Diagnostic freeze record | Payload freeze and completion record. |
+| `docs/review/final_matrix_reapplication_check_SHA256.txt` | Diagnostic integrity record | SHA-256 values for the completed diagnostic payload. |
 
 Final descriptive distributions use the adjudicated matrix. Independent assignments and per-label agreement remain separate as pre-adjudication reliability records; the adjudicated matrix is not a new reliability test.
 
