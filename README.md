@@ -12,7 +12,7 @@ This is the compact public release. It contains directly readable core audit fil
 
 The repository is organized by function: protocol, coding, and review documentation are under `docs/`; search, corpus, coding, adjudication, synthesis, and derived data occupy separate `data/` subdirectories. The root retains only the files needed to identify, cite, secure, and validate the artifact; internal release-builder scripts and superseded manifests are kept in repository history, not in this submission snapshot.
 
-The synchronized submission snapshot is identified by `csur-submission-2026-08-final-v16`. The preceding `csur-submission-2026-08-final-v15`, `csur-submission-2026-08-final-v14`, and earlier tags remain immutable historical snapshots.
+The synchronized submission snapshot is identified by `csur-submission-2026-08-final-v17`. The preceding `csur-submission-2026-08-final-v16`, `csur-submission-2026-08-final-v15`, `csur-submission-2026-08-final-v14`, and earlier tags remain immutable historical snapshots.
 
 ## Current Integrated Snapshot
 
