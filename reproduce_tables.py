@@ -513,6 +513,40 @@ def check_reapplication_diagnostic() -> None:
     info("post-adjudication rule-application diagnostic by Dou Xingwang: 60 studies and 300 tasks verified")
 
 
+def check_rong_external_interpretability() -> None:
+    rows = read_csv(ADJUDICATION / "rong_external_interpretability_check_50.csv")
+    fields = {
+        "reporting and audit": (11, 14, 13, 11),
+        "validation organization / evidence packaging": (28, 8, 9, 4),
+        "context aggregation / rule extraction": (41, 3, 2, 3),
+        "external traceability": (26, 1, 20, 2),
+    }
+    require(len(rows) == 200, "Rong external-interpretability check must contain 200 field rows")
+    require(set(row.get("field", "") for row in rows) == set(fields), "Rong check fields differ")
+    require(len({row.get("sample_rank", "") for row in rows}) == 50, "Rong check must contain 50 sampled studies")
+    require(len({row.get("record_id", "") for row in rows}) == 50, "Rong check record IDs must be unique by study")
+    require(all(row.get("sample_role") == "external_interpretability_check" for row in rows), "Rong check sample role differs")
+    require(all(row.get("sample_seed") == "20260821" for row in rows), "Rong check random seed differs")
+    require(all(row.get("reference_source") == "current_study_level_coding_matrix_harmonized.csv (pre-adjudication reference)" for row in rows), "Rong check reference source differs")
+    require(all(row.get("rong_label", "").strip() for row in rows), "Rong check contains blank judgments")
+    require(all(row.get("evidence_locator", "").strip() for row in rows), "Rong check contains blank evidence locators")
+    unresolved = [row for row in rows if row.get("record_id") == "CP209"]
+    require(len(unresolved) == 4 and all(row.get("comparable") == "no" for row in unresolved), "Rong unresolved CP209 rows differ")
+    for field, expected in fields.items():
+        subset = [row for row in rows if row.get("field") == field]
+        comparable = [row for row in subset if row.get("comparable") == "yes"]
+        require(len(subset) == 50 and len(comparable) == 49, f"Rong comparable count differs: {field}")
+        observed = (
+            sum(row.get("rong_positive") == "True" and row.get("reference_positive") == "True" for row in comparable),
+            sum(row.get("rong_positive") == "True" and row.get("reference_positive") == "False" for row in comparable),
+            sum(row.get("rong_positive") == "False" and row.get("reference_positive") == "True" for row in comparable),
+            sum(row.get("rong_positive") == "False" and row.get("reference_positive") == "False" for row in comparable),
+        )
+        require(observed == expected, f"Rong confusion matrix differs: {field}")
+        require(all(row.get("agreement") in {"yes", "no"} for row in comparable), f"Rong agreement flags are invalid: {field}")
+    info("Rong external interpretability check: 50 studies, 200 field rows, 49 comparable per field verified")
+
+
 def check_claim_alignment() -> None:
     rows = read_csv(ADJUDICATION / "claim_alignment_reconciled_199.csv")
     require(len(rows) == EXPECTED["target_studies"], "claim-alignment reconciliation must contain 199 rows")
@@ -1106,6 +1140,7 @@ def main() -> int:
     check_search_and_dedup()
     check_adjudication(target)
     check_reapplication_diagnostic()
+    check_rong_external_interpretability()
     check_claim_alignment()
     check_supplementary_extractions(target)
     check_publication_status(target)

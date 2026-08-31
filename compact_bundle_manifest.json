@@ -55,8 +55,10 @@
       "data/adjudication/integrated_199_per_label_reliability_20260730.csv",
       "data/adjudication/integrated_199_reporting_audit_disagreement_review.csv",
       "data/adjudication/integrated_199_second_coder_comparison_20260730.csv",
+      "data/adjudication/rong_external_interpretability_check_50.csv",
       "data/adjudication/third_party_rereview_decisions_20260824.csv",
       "data/adjudication/third_party_rereview_material_crosswalk_20260824.csv",
+      "docs/review/rong_external_interpretability_check.md",
       "data/adjudication/final_matrix_reapplication_check_tasks_60.csv",
       "data/adjudication/final_matrix_reapplication_check_public_material_60.csv",
       "data/derived/final_matrix_reapplication_check_summary.csv"
